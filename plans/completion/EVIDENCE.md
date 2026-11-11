@@ -100,3 +100,8 @@
 - docs/60；conference固定v1.0.67源码/Help明确下线，本机退出5；日程会议、实体会议室、听记分开，8边界检查通过，official-office-boundary.json。
 - 一次原生私聊交办，Kimi实际官方mySpace/根目录查询、唯一意图/一次+upload/按ID+info和+download，57B原件比对，IM完整回复和客户端下载Quick Look打开。39审计4负向，drive-ui-ledger和drive-audit-negative.json。
 - DM53/134/143/197、群/旧日志保持，同session无部署变化；1200样本10.001h未满24h。私有local/office-boundary-20261112；下段合成语音本人听记，不录环境/发卡片，未知按原ID对账。
+
+## E044 — 合成语音听记分析及私聊报告交付
+- docs/61；scripts/accept_minutes_ui.py 51只读检查/5负向通过，minutes-ui-ledger.json 与 minutes-audit-negative.json。
+- 两次原生输入：准备后单次WAV上传；提示无原稿或答案。Kimi一次官方创建/原taskUuid独立读回，转写/摘要/三行动项准确，关键词空列表明确报告；2125B报告客户端下载Quick Look打开并核尾页。
+- DM55/139/148/204，群/旧证据及native session保持，无部署变化。原观察1229样本10.243h/6不可达仍未满24h。私有local/minutes-ui-20261112；不算原生语音条、独立会议、独立待办指派通过。

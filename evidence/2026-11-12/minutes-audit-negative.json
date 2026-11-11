@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "wrong_task_id_rejected": true,
+    "unrequested_card_rejected": true,
+    "incorrect_budget_transcript_rejected": true,
+    "missing_server_action_rejected": true,
+    "altered_client_report_rejected": true
+  },
+  "scope": "In-memory negative audit inputs only; no service writes, no recreation or mutation of original evidence."
+}

@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "exact_two_new_tasks": true,
+    "exact_five_new_outbox": true,
+    "native_session_unchanged": true,
+    "prepare_authorized_completed_input": true,
+    "prepare_confirmed_bound_replies": true,
+    "prepare_no_self_echo_task": true,
+    "prepare_log_preserved": true,
+    "preparation_waited_without_tools_or_files": true,
+    "prompt_contains_no_transcript_or_answers": true,
+    "file_authorized_completed_input": true,
+    "file_confirmed_bound_replies": true,
+    "file_no_self_echo_task": true,
+    "file_log_preserved": true,
+    "single_original_wav_exact": true,
+    "runtime_input_original_bytes": true,
+    "office_records_preserved": true,
+    "official_upload_completed": true,
+    "independent_detail_same_created_id": true,
+    "detail_complete_no_failures": true,
+    "explicit_profile_title_and_language": true,
+    "bounded_analysis_without_cards_or_extra_generation": true,
+    "official_commands_succeeded": true,
+    "upload_input_matches_original": true,
+    "single_actual_create_and_intent": true,
+    "actual_separate_detail_and_report_tools": true,
+    "dry_run_not_mistaken_for_creation": true,
+    "transcript_matches_synthetic_source": true,
+    "server_summary_key_facts": true,
+    "server_three_action_items": true,
+    "report_transcript_and_summary_exact": true,
+    "report_actions_and_empty_keywords_truthful": true,
+    "upload_detail_artifacts_consistent": true,
+    "single_report_staged_download_exact": true,
+    "official_im_resource_exact": true,
+    "native_download_completed": true,
+    "native_report_opened_and_end_reviewed": true,
+    "full_native_reply_correct": true,
+    "no_private_ids_or_urls_in_report": true,
+    "one_text_and_one_file_attempt": true,
+    "reviewed_frames_preserved": true
+  },
+  "source": {
+    "bytes": 701836,
+    "sha256": "49300778ccbd5ba9763c55495b39de4be74f77a68feb21d0a00d6d25cd12e7bf"
+  },
+  "report": {
+    "bytes": 2125,
+    "sha256": "416afde7e2829f1bbfc96ae3a946ec35e3710068299f3f4edebbad722a1ebdb6"
+  },
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 55,
+      "outbox": 139,
+      "deliveries": 148,
+      "events": 204
+    }
+  },
+  "scope": "Synthetic WAV file via native DM, one official minutes creation and independent detail, actual Kimi report, native reply/download/open. Not native voice, independent conference, or assigned standalone todo verification."
+}
