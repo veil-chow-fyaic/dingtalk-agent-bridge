@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-11",
+  "input": "veil native DingTalk UI; liev receives via bound DWS profile",
+  "cases": [
+    {
+      "case": "native_bridge_fixture_direct",
+      "visibleSender": "liev (human account), through AI label",
+      "viewerOpened": true,
+      "clientDownload": true,
+      "downloadedOriginalOpened": "Finder Quick Look; DAB MEDIA TEST 20261111 visible",
+      "originalBytes": 1853,
+      "originalEqual": true
+    },
+    {
+      "case": "kimi_generated_native_image_direct",
+      "inputSentOnceFromUI": true,
+      "ackAndResultVisible": true,
+      "visibleSender": "liev (human account), through AI label",
+      "viewerOpened": true,
+      "clientDownload": true,
+      "downloadedOriginalOpened": "Finder Quick Look; blue rectangle visible",
+      "originalBytes": 246,
+      "originalEqual": true,
+      "dimensions": [
+        96,
+        64
+      ],
+      "rgb": [
+        0,
+        100,
+        200
+      ]
+    }
+  ],
+  "group": {
+    "tested": false,
+    "observedMemberCount": 3,
+    "reason": "Original two-account test scope changed; confirmation pending, no new group send"
+  },
+  "privateArtifacts": "local/native-image-bridge-20261111; raw AX/screenshots and account data excluded from Git",
+  "limitations": [
+    "PNG direct only for the new route",
+    "JPEG UI not tested",
+    "No 24-hour claim"
+  ]
+}

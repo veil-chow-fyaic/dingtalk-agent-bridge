@@ -122,3 +122,9 @@ python3 -m unittest discover -s tests -v
 当前76个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
 
 真实 HTTP 验收证据见 `evidence/2026-11-11/service-acceptance.json` 和 `service-restart-acceptance.json`，仅含脱敏结果。
+
+## 原生图片（2026-11-11 更新）
+
+路由可选 `imageUploadBinary` 指定[固定源码构建的窄补充](../integrations/dws_image_upload/README.md)，`binary` 继续原版 DWS。新 `image` 只走独立图片，不再走 Markdown；未配置明确拒绝，旧 key 仍只读返回旧回执。PNG/JPEG 原生最多2MiB且不压缩，普通 `file` 保留20MiB上限。配置后传输和对应gateway需重启才能加载。
+
+发送回执新增 `upload_state`、`image_delivery=native`。`upload_unknown` 表示上传结果未确认且没有调用消息发送；不要换key/自动重传，官方暂无上传任务对账接口。`outcome_unknown` 表示发送阶段可能已执行，仍沿用有task ID只查询、无task ID按历史对账的规则。不要把二者都当“消息已丢失”。gateway有上传配置时，把≤2MiB PNG/JPEG结果自动作为image，其它结果作为文件。完整现场边界见[docs/33](33-native-image-bridge.md)。

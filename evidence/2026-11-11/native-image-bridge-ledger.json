@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-11",
+  "scope": "Direct chat native image transport plus real runtime output; UI observations are separate",
+  "fixture": {
+    "bytes": 1853,
+    "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582"
+  },
+  "generated": {
+    "bytes": 246,
+    "sha256": "ecdd707aeed67d0cb0fd571fb8a4657e192e97f0ecb42f7be706c4ab8057e0fb",
+    "dimensions": [
+      96,
+      64
+    ]
+  },
+  "group": "not_sent_pending_membership_scope_confirmation",
+  "checks": {
+    "group_old_deliveries_unchanged": true,
+    "direct_old_deliveries_unchanged": true,
+    "intent_bound_to_route": true,
+    "confirmed_native_delivery": true,
+    "durable_upload_media": true,
+    "one_self_history_event": true,
+    "observed_media_matches_upload": true,
+    "original_resources_intact": true,
+    "client_download_intact": true,
+    "old_jobs_unchanged": true,
+    "old_agent_deliveries_unchanged": true,
+    "fixture_reply_did_not_trigger_task": true,
+    "one_completed_real_task": true,
+    "task_all_three_replies_confirmed": true,
+    "task_one_native_image": true,
+    "generated_reply_identity": true,
+    "generated_reply_did_not_trigger_task": true,
+    "generated_dimensions": true,
+    "generated_pixels": true,
+    "task_client_download_intact": true,
+    "installed_companion_matches_build": true,
+    "addon_matches_build": true
+  },
+  "ok": true
+}

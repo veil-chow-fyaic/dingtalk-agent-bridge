@@ -216,7 +216,8 @@
                     "type": "string"
                   },
                   "image": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Project-relative PNG/JPEG, <=2 MiB, native image only; requires route imageUploadBinary. Upload uncertainty is upload_unknown; no automatic retry or Markdown fallback."
                   }
                 },
                 "required": [

@@ -212,7 +212,12 @@ class Gateway:
                 text=result['text'].replace('![','[')
                 for index in range(0,max(len(text),1),6000):
                     self.emit(job['id'],'text-'+str(index),{'text':'[Agent] '+(text[index:index+6000] or '任务已完成。')})
-                for index,item in enumerate(outputs):self.emit(job['id'],'file-'+str(index),{'file':item['file']})
+                for index,item in enumerate(outputs):
+                    path=self.root/item['file']
+                    native_image=(self.route.get('imageUploadBinary') and
+                                  path.suffix.lower() in {'.png','.jpg','.jpeg'} and
+                                  path.stat().st_size <= 2*1024*1024)
+                    self.emit(job['id'],'file-'+str(index),{'image' if native_image else 'file':item['file']})
                 self.db.execute('UPDATE jobs SET state="completed",result=? WHERE id=?',
                     (json.dumps({'response':result,'artifacts':outputs},ensure_ascii=False),job['id']))
         except Exception as exc:

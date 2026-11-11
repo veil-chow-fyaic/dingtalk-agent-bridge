@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -6,18 +7,22 @@ from unittest.mock import patch
 from types import SimpleNamespace
 from dingtalk_bridge.core import Bridge, BridgeError, DWS
 
-CFG = {'profile': 'corp:user', 'group': 'g', 'name': 'test', 'selfSenderId': 'self', 'binary': 'dws'}
+CFG = {'profile': 'corp:user', 'group': 'g', 'name': 'test', 'selfSenderId': 'self', 'binary': 'dws',
+       'imageUploadBinary': 'dws-image-upload'}
 
 class Fake:
     def __init__(self):
         self.sent = 0
         self.fail = False
         self.complete = True
+        self.uploaded = 0
+        self.send_args = []
         self.messages = [{'messageId': 'm1', 'conversationId': 'g', 'senderId': 'self', 'text': 'same'},
                          {'messageId': 'm2', 'conversationId': 'g', 'senderId': 'other', 'text': 'same'}]
     def call(self, args):
         if '+messages-send' in args:
             self.sent += 1
+            self.send_args.append(args)
             if self.fail: raise BridgeError('timeout')
             return {'sendReceipt': {'openTaskId': 'task'}}
         if '+messages-query-send-status' in args:
@@ -25,6 +30,10 @@ class Fake:
         if '+chat-messages' in args:
             return {'messages': self.messages, 'count': len(self.messages), 'complete': self.complete}
         raise AssertionError(args)
+
+    def upload_image(self, path):
+        self.uploaded += 1
+        return '$uploaded'
 
 class Tests(unittest.TestCase):
     def setUp(self):
@@ -101,10 +110,93 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.fake.sent, 1)
     def test_image_has_separate_payload_identity(self):
         (self.root/"fixtures").mkdir()
-        (self.root/"fixtures/image.png").write_bytes(b"fixture")
+        (self.root/"fixtures/image.png").write_bytes(b"\x89PNG\r\n\x1a\nfixture")
         self.assertEqual(self.b.send("img", image="fixtures/image.png")["state"], "confirmed")
         with self.assertRaises(ValueError): self.b.send("img", file="fixtures/image.png")
         self.assertEqual(self.fake.sent, 1)
+        self.assertEqual(self.fake.uploaded, 1)
+        self.assertIn('--media-id', self.fake.send_args[0])
+        self.assertNotIn('--markdown', self.fake.send_args[0])
+
+    def image_fixture(self):
+        path = self.root / 'fixtures/image.png'
+        path.parent.mkdir(exist_ok=True)
+        path.write_bytes(b'\x89PNG\r\n\x1a\nfixture')
+        return 'fixtures/image.png'
+
+    def test_native_image_restart_does_not_upload_or_send_twice(self):
+        f = self.image_fixture()
+        self.b.send('img', image=f)
+        self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+        receipt = self.b.send('img', image=f)
+        self.assertTrue(receipt['replayed'])
+        self.assertEqual(receipt['upload_state'], 'uploaded')
+        self.assertEqual((self.fake.uploaded, self.fake.sent), (1, 1))
+
+    def test_image_upload_timeout_never_attempts_message(self):
+        f = self.image_fixture()
+        with patch.object(self.fake, 'upload_image', side_effect=BridgeError('timeout')) as upload:
+            self.assertEqual(self.b.send('img', image=f)['state'], 'upload_unknown')
+            self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+            self.b.send('img', image=f)
+            self.b.reconcile('img')
+        self.assertEqual(upload.call_count, 1)
+        self.assertEqual(self.fake.sent, 0)
+
+    def test_crash_during_image_upload_preserves_unknown_and_no_resend(self):
+        f = self.image_fixture()
+        with patch.object(self.fake, 'upload_image', side_effect=SystemExit):
+            with self.assertRaises(SystemExit): self.b.send('img', image=f)
+        self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+        self.assertEqual(self.b.send('img', image=f)['state'], 'upload_unknown')
+        self.assertEqual(self.fake.sent, 0)
+
+    def test_crash_after_image_upload_preserves_media_and_never_resends(self):
+        f = self.image_fixture()
+        with patch.object(self.fake, 'call', side_effect=SystemExit):
+            with self.assertRaises(SystemExit): self.b.send('img', image=f)
+        self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+        receipt = self.b.send('img', image=f)
+        self.assertEqual(receipt['state'], 'outcome_unknown')
+        self.assertEqual(receipt['upload_state'], 'uploaded')
+        self.assertEqual(self.b.db.execute('SELECT media_id FROM image_uploads').fetchone()[0], '$uploaded')
+        self.assertEqual((self.fake.uploaded, self.fake.sent), (1, 0))
+
+    def test_legacy_inline_key_keeps_receipt_without_native_upload(self):
+        f = self.image_fixture()
+        digest = hashlib.sha256((self.root/f).read_bytes()).hexdigest()
+        payload = json.dumps({'kind':'image', 'sha256':digest, 'name':'image.png',
+                              'staged':f'local/runtime/staged/{digest}/image.png'}, sort_keys=True, ensure_ascii=False)
+        self.b.db.execute('INSERT INTO deliveries VALUES (?,?,?,?,?,?,?)',
+                          ('old', hashlib.sha256(payload.encode()).hexdigest(), payload, 'confirmed', 'oldtask', 'oldmsg', None))
+        self.b.db.commit()
+        self.b.config = {k:v for k,v in CFG.items() if k != 'imageUploadBinary'}
+        self.assertTrue(self.b.send('old', image=f)['replayed'])
+        self.assertEqual((self.fake.uploaded, self.fake.sent), (0, 0))
+        with self.assertRaisesRegex(ValueError, 'imageUploadBinary'): self.b.send('new', image=f)
+        self.assertIsNone(self.b.delivery('new'))
+
+    def test_image_validation_and_corrupt_stage_fail_before_remote_calls(self):
+        f = self.image_fixture()
+        for data in (b'not PNG', b'\x89PNG\r\n\x1a\n' + b'x' * (2*1024*1024)):
+            (self.root/f).write_bytes(data)
+            with self.assertRaises(ValueError): self.b.send('invalid', image=f)
+        self.image_fixture()
+        digest = hashlib.sha256((self.root/f).read_bytes()).hexdigest()
+        stage = self.b.local / 'staged' / digest / 'image.png'
+        stage.parent.mkdir(parents=True, exist_ok=True); stage.write_bytes(b'corrupt')
+        with self.assertRaisesRegex(ValueError, 'integrity'): self.b.send('corrupt', image=f)
+        self.assertEqual((self.fake.uploaded, self.fake.sent), (0, 0))
+
+    def test_dws_upload_requires_v2_chat_image_without_compression(self):
+        cli = DWS(self.root, CFG)
+        good = {'mediaIdV2':'$v2','bizType':'CHAT_IMAGE','compressed':False}
+        with patch.object(DWS, 'call', return_value=good) as call:
+            self.assertEqual(cli.upload_image('fixtures/image.png'), '$v2')
+            self.assertEqual(call.call_args.args[0], ['chat','bridge-image-upload','--file','fixtures/image.png','--yes'])
+        for change in ({'mediaIdV2':''}, {'mediaIdV2':'@v1'}, {'compressed':True}, {'bizType':'approval_image'}):
+            with patch.object(DWS, 'call', return_value={**good, **change}):
+                with self.assertRaises(BridgeError): cli.upload_image('fixtures/image.png')
     def test_unobserved_attachment_rejected(self):
         with self.assertRaises(ValueError): self.b.download('unknown')
     def test_single_owner(self):

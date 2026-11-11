@@ -40,6 +40,20 @@ class DWS:
             raise BridgeError('DWS inner business failure')
         return data
 
+    def upload_image(self, relative_path):
+        # The companion only adds a CHAT_IMAGE leaf to the pinned official CLI.
+        # Authentication, profile selection and the upload protocol stay in DWS.
+        binary = self.config.get('imageUploadBinary')
+        if not binary:
+            raise BridgeError('Native image upload is not configured')
+        uploader = DWS(self.root, {**self.config, 'binary': binary})
+        data = uploader.call(['chat', 'bridge-image-upload', '--file', relative_path, '--yes'])
+        media_id = data.get('mediaIdV2')
+        if (not isinstance(media_id, str) or not media_id.startswith('$') or
+                data.get('bizType') != 'CHAT_IMAGE' or data.get('compressed') is not False):
+            raise BridgeError('Invalid native image upload receipt; message not sent')
+        return media_id
+
 
 class Bridge:
     """One routed conversation worker. No runtime dependency or automatic replies."""
@@ -75,6 +89,8 @@ class Bridge:
           CREATE TABLE IF NOT EXISTS deliveries (
             key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, payload TEXT NOT NULL,
             state TEXT NOT NULL, task_id TEXT, message_id TEXT, error TEXT);
+          CREATE TABLE IF NOT EXISTS image_uploads (
+            key TEXT PRIMARY KEY, state TEXT NOT NULL, media_id TEXT, error TEXT);
         ''')
         scope = json.dumps([config['profile'], config['group']])
         prior = self.db.execute('SELECT value FROM meta WHERE key="scope"').fetchone()
@@ -86,6 +102,8 @@ class Bridge:
         self.db.execute('INSERT OR IGNORE INTO meta VALUES (?,?)', ('scope', scope))
         # A crash after reservation cannot be assumed not sent.
         self.db.execute('UPDATE deliveries SET state="outcome_unknown" WHERE state="executing"')
+        self.db.execute('UPDATE deliveries SET state="upload_unknown" WHERE state="uploading"')
+        self.db.execute('UPDATE image_uploads SET state="outcome_unknown" WHERE state="uploading"')
         self.db.commit()
         (self.local / 'bridge.sqlite3').chmod(0o600)
 
@@ -173,7 +191,8 @@ class Bridge:
     def delivery(self, key):
         with self.lock:
             row = self.db.execute('SELECT key,state,task_id,message_id,error FROM deliveries WHERE key=?', (key,)).fetchone()
-        return dict(row) if row else None
+            upload = self.db.execute('SELECT state FROM image_uploads WHERE key=?', (key,)).fetchone()
+        return {**dict(row), **({'upload_state': upload[0], 'image_delivery': 'native'} if upload else {})} if row else None
 
     def send(self, key, text=None, file=None, image=None):
         if not isinstance(key, str) or not key or len(key) > 128:
@@ -205,6 +224,8 @@ class Bridge:
             if not stage.exists():
                 stage.write_bytes(content)
                 stage.chmod(0o600)
+            if stage.is_symlink() or hashlib.sha256(stage.read_bytes()).hexdigest() != digest:
+                raise ValueError('Staged file integrity mismatch; no upload or send attempted')
             payload = {'kind': 'image' if image is not None else 'file', 'sha256': digest, 'name': source.name,
                        'staged': str(stage.relative_to(self.root))}
         serialized = json.dumps(payload, sort_keys=True, ensure_ascii=False)
@@ -215,15 +236,39 @@ class Bridge:
                 if row[0] != fingerprint:
                     raise ValueError('Idempotency key already belongs to another payload')
                 return {**self.delivery(key), 'replayed': True}
+            if image is not None:
+                if not self.config.get('imageUploadBinary'):
+                    raise ValueError('Native image upload requires imageUploadBinary; no Markdown fallback')
+                if len(content) > 2 * 1024 * 1024:
+                    raise ValueError('Native image limit is 2 MiB without compression; use file mode for larger originals')
+                signature = b'\x89PNG\r\n\x1a\n' if source.suffix.lower() == '.png' else b'\xff\xd8\xff'
+                if not content.startswith(signature):
+                    raise ValueError('Image content does not match PNG/JPEG extension')
             self.db.execute('INSERT INTO deliveries(key,fingerprint,payload,state) VALUES (?,?,?,?)',
-                            (key, fingerprint, serialized, 'executing'))
+                            (key, fingerprint, serialized, 'uploading' if image is not None else 'executing'))
+            if image is not None:
+                self.db.execute('INSERT INTO image_uploads(key,state) VALUES (?,"uploading")', (key,))
             self.db.commit()
         args = ['chat', '+messages-send', '--as', 'user', *self.target_args(),
                 '--idempotency-key', key, '--yes']
         if text is not None:
             args += ['--text', text]
         elif image is not None:
-            args += ['--markdown', '![DAB image](./' + payload['staged'] + ')']
+            try:
+                media_id = self.dws.upload_image(payload['staged'])
+                with self.lock:
+                    self.db.execute('UPDATE image_uploads SET state="uploaded",media_id=? WHERE key=?', (media_id, key))
+                    # Commit the send reservation before invoking DWS. A crash here
+                    # is conservatively unknown; startup must never resend it.
+                    self.db.execute('UPDATE deliveries SET state="executing" WHERE key=?', (key,))
+                    self.db.commit()
+            except Exception:
+                with self.lock:
+                    self.db.execute('UPDATE image_uploads SET state="outcome_unknown",error="image_upload_failed_or_unknown" WHERE key=?', (key,))
+                    self.db.execute('UPDATE deliveries SET state="upload_unknown",error="Image upload failed or unknown; message not attempted" WHERE key=?', (key,))
+                    self.db.commit()
+                return self.delivery(key)
+            args += ['--msg-type', 'image', '--media-id', media_id]
         else:
             args += ['--msg-type', 'file', '--file', payload['staged']]
         try:

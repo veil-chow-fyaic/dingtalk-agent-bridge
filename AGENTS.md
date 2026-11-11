@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/32（原生图片缺口与官方路径）、31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/33（原生图片已接入与Kimi生成图私聊验收）、32（原生图片缺口与官方路径）、31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -45,3 +45,8 @@ XLSX/ZIP八格传输、8资源完整，四份客户端下载原件分别在Numbe
 
 ## 2026-11-11 20:36原生图片检查点
 旧Markdown出站PNG可见但当前私聊客户端不能打开查看器/保存，真人原生PNG可打开作为对照。官方Shortcut已有--msg-type image --media-id，新的独立类型实验DAB-NATIVE-PNG-20261111-direct-001已经SUCCESS，UI下载原件Quick Look打开与fixture一致；脚本accept_native_image.py只读。docs/32/E011，私密intent/send/status及截图在local/native-png-20261111。bridge仍使用Markdown，未修改发送代码；下一步优先查官方本地上传取mediaId、持久化分阶段状态和失败对账，再接入群/私聊验证。不得将原生实验当作旧Markdown已客户端下载。
+
+## 2026-11-11 21:10 原生图片实现检查点
+已实现本地图片上传→独立image发送，原版DWS仍v1.0.67；imageUploadBinary指向隔离的本地补充入口（非官方发布命令），源码固定v1.0.67，只增加叶子/注册并复用官方CHAT_IMAGE上传和鉴权。上传/投递分阶段持久化，未知不重试，旧Markdown key不重放。PNG/JPEG原生上限2MiB、不压缩；新image无配置明确拒绝，不降级Markdown。私聊bridge fixture＋veil UI交办Kimi实际生成96×64蓝色PNG均完成独立图片查看器、客户端下载、Quick Look打开、字节一致。84回归、6 Go叶子用例/schema完整性、22项只读检查通过；docs/33/E012。
+20:53发现原群现有3人（既有两账号外新增成员），没有在群发本轮图片，已发异步范围确认问题；这是新变化，不是缺第二账号。保持两账号白名单，不扩大执行人；未获答复继续私聊音视频/引用多附件和独立代码工作。群gateway尚未重启加载新图片artifact选择，私聊gateway已加载；传输两路已加载。
+20:54部署重启传输，私聊gateway随后重启；24h观察run不变，maintenance.ndjson记录维护，不冒充零中断/同一版本24h。原51条bridge投递、私聊14旧任务34旧投递保持。原始证据local/native-image-bridge-20261111，只读复核scripts/accept_native_image_bridge.py。下一步C01私聊音视频原件与原生类型，原群范围确认后补原生图；心跳继续。

@@ -1,0 +1,13 @@
+{
+  "upstreamCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "addonSha256": "ca2da70b1c3774d80584e738e76158dd4c7494f60bb5cd59e6f5053756a4fa6f",
+  "binarySha256": "598a22165efb6c2da1b0b8164b3e31b12daef84e6ec05b17e4c8e554a782d58b",
+  "go": "go version go1.26.7 darwin/arm64",
+  "command": "chat bridge-image-upload",
+  "stockDWSUnchanged": true,
+  "upstreamTag": "v1.0.67",
+  "uploaderCases": 6,
+  "upstreamSchemaCompleteness": "passed",
+  "pythonSuite": 84,
+  "officialGoArchiveSha256": "020a1e8224811be75163e920bc77e0926a1390a6aeea19bdcf23f74b9d749f6d"
+}

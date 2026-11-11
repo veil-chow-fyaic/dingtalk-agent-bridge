@@ -85,6 +85,19 @@ class AgentGatewayTests(unittest.TestCase):
         self.api.events=[event(text='/agent 问题',sender='self')];self.g.intake()
         self.api.fail_once=True;self.g.flush();self.g.flush();self.assertEqual(len(self.api.sends),1)
 
+    def test_generated_images_use_native_delivery_only_when_supported_and_small(self):
+        for seq, enabled, size, field in [(1,True,20,'image'),(2,False,20,'file'),(3,True,2*1024*1024+1,'file')]:
+            with self.subTest(enabled=enabled,size=size):
+                self.g.route={**CFG, **({'imageUploadBinary':'companion'} if enabled else {})}
+                def run(prompt,workspace,run_dir,session,cancel,remember,images):
+                    (workspace/'exports/result.png').write_bytes(b'\x89PNG\r\n\x1a\n'+b'x'*(size-8))
+                    return {'text':'图像已生成','files':['exports/result.png']}
+                self.g.runtime.run=run
+                self.api.events.append(event(seq,text='/agent 生成图片',sender='self'))
+                self.g.intake();self.g.execute_one();self.g.flush()
+                row=self.g.db.execute('SELECT payload FROM outbox WHERE key LIKE ? ORDER BY rowid DESC LIMIT 1',('%-file-0',)).fetchone()
+                self.assertEqual(set(json.loads(row[0])),{field})
+
     def test_crashed_execution_is_not_replayed(self):
         self.api.events=[event(text='/agent 工作',sender='self')];self.g.intake()
         with self.g.db:self.g.db.execute('UPDATE jobs SET state="running"')
