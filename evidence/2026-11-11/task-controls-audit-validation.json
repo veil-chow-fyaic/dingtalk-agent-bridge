@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "checks": 100,
+  "negativeChecks": {
+    "missingCaseRejected": true,
+    "cancelledFileEvidenceRejected": true
+  },
+  "mode": "in-memory substitutions only; no message or original ledger mutation"
+}

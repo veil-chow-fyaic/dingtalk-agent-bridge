@@ -32,6 +32,18 @@ def command_for(model,settings):
     return text or ('请处理收到的附件。' if list(media_parts(model)) else None)
 
 
+def status_text(summary):
+    jobs,delivery=summary['jobs'],summary['delivery']
+    attention=sum(jobs.get(s,0) for s in ('blocked','failed','interrupted'))
+    uncertain=sum(delivery.get(s,0) for s in ('submitted','outcome_unknown','upload_unknown'))
+    return ('[Agent] 任务状态：执行中 '+str(jobs.get('running',0))+'，排队 '+str(jobs.get('queued',0))
+            +'，等待附件 '+str(jobs.get('waiting_media',0))+'。\n'
+            +'已完成 '+str(jobs.get('completed',0))+'，已取消 '+str(jobs.get('cancelled',0))
+            +'；需处理的历史记录 '+str(attention)+'。\n'
+            +'回复：已确认 '+str(delivery.get('confirmed',0))+'，待发送 '+str(delivery.get('pending',0))
+            +'，结果未确认 '+str(uncertain)+'。')
+
+
 def stage_outputs(root,workspace,job_id,result):
     root=Path(root).resolve();workspace=Path(workspace).resolve();exports=(workspace/'exports').resolve()
     if not exports.is_relative_to(workspace):raise ValueError('Exports directory escaped workspace')
@@ -148,8 +160,10 @@ class Gateway:
                 if state=='blocked':
                     self.emit(job_id,'blocked',{'text':'[Agent] 这条消息有未能完整解析的内容，暂未执行；请改用文字加文件附件重新说明。'});continue
                 if command in {'status','状态'}:
-                    summary=self.summary();self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
-                    self.emit(job_id,'status',{'text':'[Agent] 任务状态：'+json.dumps(summary,ensure_ascii=False)})
+                    # The query itself is complete before taking its snapshot;
+                    # otherwise an idle conversation falsely reports one queued job.
+                    self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
+                    self.emit(job_id,'status',{'text':status_text(self.summary())})
                 elif command in {'cancel','取消'}:
                     running=self.db.execute('SELECT count(*) FROM jobs WHERE state="running"').fetchone()[0]
                     if running:self.cancel.set()

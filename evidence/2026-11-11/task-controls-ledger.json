@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-11",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_unchanged_during_experiment": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "pre_fix_phantom_queue_reproduced": true,
+    "idle_status_fixed": true,
+    "real_running_and_queued_counts": true,
+    "same_body_distinct_messages_processed_once": true,
+    "cancel_request_and_stopped_result": true,
+    "queued_task_followed_cancel": true,
+    "actual_sleep_tool_called": true,
+    "owned_processes_ended": true,
+    "cancelled_output_absent_after_deadline": true,
+    "cancelled_job_has_no_artifacts": true,
+    "seed_visible_then_new_context_answer": true,
+    "new_acknowledged_in_chat": true,
+    "generation_advanced_once": true,
+    "native_binding_cleared_then_replaced": true,
+    "new_workspace_separate": true,
+    "exact_nine_new_requests": true,
+    "exact_four_new_runtime_runs": true
+  },
+  "cases": [
+    {
+      "case": "status-before-fix",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true
+      }
+    },
+    {
+      "case": "status-after-fix",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true
+      }
+    },
+    {
+      "case": "status-running",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true
+      }
+    },
+    {
+      "case": "cancel-task",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true,
+        "runtime_log_preserved": true
+      }
+    },
+    {
+      "case": "next-task",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true,
+        "runtime_log_preserved": true
+      }
+    },
+    {
+      "case": "cancel",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true
+      }
+    },
+    {
+      "case": "seed",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true,
+        "runtime_log_preserved": true
+      }
+    },
+    {
+      "case": "new",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true
+      }
+    },
+    {
+      "case": "new-check",
+      "checks": {
+        "immutable_job": true,
+        "input_committed": true,
+        "authorized_nonself_input": true,
+        "expected_final_state": true,
+        "exact_confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_only_for_real_tasks": true,
+        "runtime_log_preserved": true
+      }
+    }
+  ],
+  "requests": 9,
+  "confirmedReplies": 14,
+  "realRuntimeCalls": 4,
+  "knownPreFixFailure": "Status counted its own request as queued; original request/response retained",
+  "uiEvidence": "Native veil input, liev status/stop/next/new-context replies captured privately",
+  "limits": [
+    "Direct-chat controls only; group controls not newly sent",
+    "New-session isolation is not an OS security sandbox",
+    "Cancellation does not undo actions already completed by a task"
+  ],
+  "ok": true
+}

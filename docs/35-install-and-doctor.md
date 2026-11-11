@@ -50,3 +50,5 @@ python3 -m dingtalk_bridge.doctor   --agent-config local/agent-config.json   --a
 9项新增诊断/安装路径测试覆盖：离线不调用网络/不创建状态、占位符/缺配置、同步过期/不完整/路由错误、账本身份冲突不修复、白名单/runtime冲突、构建摘要/令牌权限、401脱敏、重定向不带token跟随、CLI从工作目录读token；账本读取显式关闭连接。全量93项在干净导出中通过。构建与测试原始日志留local，脱敏证据见[安装验证](../evidence/2026-11-11/clean-install-validation.json)、[现场doctor](../evidence/2026-11-11/doctor-live.json)、[回归](../evidence/2026-11-11/scenario-regression.json)。
 
 本轮还尝试从原生UI引用既有报告，消息菜单受CUA窗口坐标定位错误阻塞，未发出新消息；没有把普通文本替代成“引用通过”。窗口已恢复原显示器。该项与包安装是独立证据，后续继续补引用/多附件、状态/取消、统一管理和恢复。
+
+后续状态修复将当前全量回归增至95项（docs/36）；本页93项与wheel模块摘要描述的是安装检查点7427eb4，不把该历史wheel说成含后续代码。最终交付仍需对最终版本统一复核。

@@ -119,7 +119,7 @@ with urlopen(req) as response:
 python3 -m unittest discover -s tests -v
 ```
 
-当前93个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
+当前95个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
 
 真实 HTTP 验收证据见 `evidence/2026-11-11/service-acceptance.json` 和 `service-restart-acceptance.json`，仅含脱敏结果。
 
@@ -130,3 +130,5 @@ python3 -m unittest discover -s tests -v
 发送回执新增 `upload_state`、`image_delivery=native`。`upload_unknown` 表示上传结果未确认且没有调用消息发送；不要换key/自动重传，官方暂无上传任务对账接口。`outcome_unknown` 表示发送阶段可能已执行，仍沿用有task ID只查询、无task ID按历史对账的规则。不要把二者都当“消息已丢失”。gateway有上传配置时，把≤2MiB PNG/JPEG结果自动作为image，其它结果作为文件。完整现场边界见[docs/33](33-native-image-bridge.md)。
 
 安装包及只读doctor的准确语义、退出码、干净导出验证见[docs/35](35-install-and-doctor.md)。旧service_ctl/agent_ctl仍管理当前检出，不等于统一多worker管理已完成。
+
+状态查询现以中文展示快照；自身先标完成再统计，避免空闲误报排队。实际取消和新会话UI证据见[docs/36](36-task-control-ui.md)。群和私聊gateway已一并加载该修复与原生图片结果选择，群图片新UI案例仍受原群范围待答复限制。

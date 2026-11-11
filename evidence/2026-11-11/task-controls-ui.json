@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-11",
+  "inputIdentity": "veil native DingTalk UI",
+  "replyIdentity": "liev bound DWS user profile, not bot",
+  "observations": {
+    "beforeFix": "Idle status visibly returned queued:1 although query was completed and no queued jobs remained",
+    "afterFix": "Execution 0 / queued 0 / waiting attachment 0, historical attention count 1",
+    "duringTask": "Execution 1 / queued 1, matching one actual sleeping runtime and one following request",
+    "cancel": "Both cancellation request and task-stopped replies visible; next real task returned 队列继续437",
+    "newSession": "Seed reply 已记住琥珀719, new acknowledgement 已开始新会话, new runtime reply 新会话无旧口令"
+  },
+  "requests": 9,
+  "confirmedReplies": 14,
+  "runtimeCalls": 4,
+  "cancelOutputAbsentAfter120Seconds": true,
+  "groupNewMessages": 0,
+  "rawEvidence": "Private screenshots/AX snapshots remain local/task-controls-20261111; no identifiers or chat exports committed",
+  "scope": "Direct controls; waiting-media cancellation remains automated test coverage only"
+}

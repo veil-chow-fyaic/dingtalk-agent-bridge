@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import threading
 import unittest
-from dingtalk_bridge.agent_gateway import Gateway,command_for,stage_outputs
+from dingtalk_bridge.agent_gateway import Gateway,command_for,stage_outputs,status_text
 from dingtalk_bridge.agent_runtime import LocalRuntime
 from dingtalk_bridge.message_model import normalize
 from test_routing_consumer import CFG,event
@@ -138,6 +138,26 @@ class AgentGatewayTests(unittest.TestCase):
         self.api.events.append(event(2,text='/agent cancel',sender='self'));self.g.intake()
         self.assertEqual(self.g.summary()['jobs'],{'cancelled':1,'completed':1})
         self.assertFalse(self.g.execute_one());self.assertEqual(self.runtime.calls,0)
+
+    def test_idle_status_does_not_report_its_own_request_as_queued(self):
+        self.api.events=[event(1,text='/agent status',sender='self')]
+        self.g.intake();self.g.flush()
+        self.assertEqual(self.runtime.calls,0)
+        self.assertFalse(self.g.execute_one())
+        self.assertEqual(len(self.api.sends),1)
+        text=next(iter(self.api.sends.values()))['text']
+        self.assertIn('执行中 0，排队 0，等待附件 0',text)
+        self.assertIn('已完成 1',text)
+        self.g.intake();self.g.flush();self.assertEqual(len(self.api.sends),1)
+
+    def test_status_keeps_real_pending_work_and_uncertain_replies_visible(self):
+        self.api.events=[event(1,text='/agent task',sender='self'),event(2,text='/agent status',sender='self')]
+        self.g.intake();self.g.flush()
+        reply=next(v['text'] for v in self.api.sends.values() if '任务状态' in v['text'])
+        self.assertIn('排队 1',reply)
+        text=status_text({'jobs':{'blocked':1,'failed':2,'interrupted':3,'waiting_media':4},
+                          'delivery':{'upload_unknown':1,'outcome_unknown':2,'submitted':3}})
+        self.assertIn('等待附件 4',text);self.assertIn('历史记录 6',text);self.assertIn('结果未确认 6',text)
 
     def test_exports_directory_symlink_escape_rejected(self):
         workspace=self.g.workspace();(workspace/'exports').rmdir()

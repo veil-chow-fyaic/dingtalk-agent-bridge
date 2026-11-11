@@ -1,8 +1,8 @@
 {
   "date": "2026-11-11",
   "ok": true,
-  "tests": 93,
-  "seconds": 9.434,
+  "tests": 95,
+  "seconds": 13.537,
   "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
   "results": [
     {
@@ -31,6 +31,10 @@
     },
     {
       "test": "test_agent_gateway.AgentGatewayTests.test_generated_images_use_native_delivery_only_when_supported_and_small",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_idle_status_does_not_report_its_own_request_as_queued",
       "result": "passed"
     },
     {
@@ -75,6 +79,10 @@
     },
     {
       "test": "test_agent_gateway.AgentGatewayTests.test_stalled_download_does_not_block_status_or_cancel",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_status_keeps_real_pending_work_and_uncertain_replies_visible",
       "result": "passed"
     },
     {
