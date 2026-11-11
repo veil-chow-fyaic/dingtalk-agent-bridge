@@ -13,7 +13,10 @@ CASES = {f'{route}-{kind}': (route, field, filename)
          for route in ('group', 'direct')
          for kind, field, filename in (
              ('png', 'image', 'dab-image-001.png'),
-             ('pdf', 'file', 'dab-document-001.pdf'))}
+             ('pdf', 'file', 'dab-document-001.pdf'),
+             ('docx', 'file', 'dab-office-001.docx'),
+             ('xlsx', 'file', 'dab-office-001.xlsx'),
+             ('zip', 'file', 'dab-archive-001.zip'))}
 
 
 def main():

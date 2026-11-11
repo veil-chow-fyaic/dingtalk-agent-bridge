@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-11",
+  "state": "running",
+  "passed": false,
+  "run_id": "reliability-20261111",
+  "started_at": "2026-11-11T19:36:08.198636+08:00",
+  "planned_duration_seconds": 86400,
+  "sample_interval_seconds": 30,
+  "verification": "one initial live sample; full duration not yet reached",
+  "limitations": [
+    "Read-only health/events sampling is not synthetic traffic coverage",
+    "Requires this Mac and service to stay running; stale active status alone is not liveness proof",
+    "Remaining media/UI/installation scenarios still required"
+  ]
+}

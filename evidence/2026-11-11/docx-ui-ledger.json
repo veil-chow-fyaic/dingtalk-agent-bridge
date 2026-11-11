@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-11",
+  "scope": "four DOCX directions plus actual direct task and client-downloaded original/result; UI separately observed",
+  "cases": [
+    {
+      "case": "group-docx-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "unprefixed_file_did_not_execute": true
+      }
+    },
+    {
+      "case": "group-docx-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true
+      }
+    },
+    {
+      "case": "direct-docx-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "one_actual_task": true,
+        "completed_with_file_content": true,
+        "ack_answer_and_file_confirmed": true,
+        "replies_from_bound_account": true,
+        "one_result_file": true,
+        "result_client_download_intact": true,
+        "result_file_content_correct": true
+      }
+    },
+    {
+      "case": "direct-docx-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true
+      }
+    }
+  ],
+  "checks": {},
+  "fixture": {
+    "bytes": 926,
+    "sha256": "e010fdcfa6976a35fd5ac2901f8b31a87afcf7672efa32aeebc8df465de26fb6"
+  },
+  "ok": true
+}

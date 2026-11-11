@@ -44,3 +44,5 @@
 2026-11-11 19:05：Git基线及暂存隐私门已落地；PNG/PDF四方向8案例原件通过；真人PNG别名修复＋双端图文任务通过；群5/私聊11个真实Stream事件匹配history。详见[docs/28](28-media-matrix-and-real-events.md)。下一步继续C01其他格式与C02服务Stream/断连，随后运行交付/24h、办公接入；不标整个项目完成。
 
 2026-11-11后续：两路Stream常驻唤醒、双账号短停机补漏、订阅子进程重连通过；群PDF客户端下载补齐。见[docs/29](29-stream-service-and-offline-recovery.md)。下一步C01其他文件UI、C04交付与真实24h；完整项目保持未完成。
+
+19:52：DOCX四方向及客户端下载打开、Kimi提取TXT回传通过；24h观察19:36启动未完成。见[docs/30](30-docx-ui-and-reliability-start.md)，下一步XLSX/ZIP、剩余媒体与运行交付。

@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-11",
+  "observer": "Codex native CUA; veil client, liev DWS user identity",
+  "observations": [
+    {
+      "local_file": "group-docx-uploaded.png",
+      "sha256": "ad6f7c1ef227294845db489ac9aedebb46a541437cb09de806535d21c0f69b92",
+      "observation": "群UI显示veil上传完成和liev返回DOCX卡片"
+    },
+    {
+      "local_file": "group-docx-textedit.png",
+      "sha256": "c61c450b21a0bbb68853e0e179941a53e79c590b721ecfb417d628d23539598a",
+      "observation": "群客户端下载原件在TextEdit打开，正文可读"
+    },
+    {
+      "local_file": "direct-docx-in.png",
+      "sha256": "420a11509b12804eeec09df9da7e4e180ee20f69b6c6e61b60577781308dea71",
+      "observation": "veil私聊上传DOCX完成"
+    },
+    {
+      "local_file": "direct-docx-result-and-original.png",
+      "sha256": "1035093a0077df92522d2bca220d5921fba8751536f900b5b6419bedbe66602e",
+      "observation": "liev私聊返回DOCX卡片与任务答复"
+    },
+    {
+      "local_file": "direct-docx-textedit.png",
+      "sha256": "004420792f3b0cb4898a230c9fe8545a48bb48f8fd8f7b9f4860457750f1f9c1",
+      "observation": "私聊客户端下载原件在TextEdit打开"
+    },
+    {
+      "local_file": "direct-docx-answer-visible.png",
+      "sha256": "cbaa58dfa66dac62792f50ac93610306d3181dd954beb0c627a2cf8dfb780e70",
+      "observation": "liev完整任务回复可见，内容正确"
+    },
+    {
+      "local_file": "direct-docx-result-open.png",
+      "sha256": "790e55b7a30d7ded450adb2bf5e7774b3f4d2b3e20c09676110f466f81e35221",
+      "observation": "Agent提取TXT通过钉钉客户端下载并打开，内容正确"
+    }
+  ],
+  "limitations": [
+    "Original screenshots/AX are private local only",
+    "Quick Look attempts did not expose DOCX body; successful read evidence uses TextEdit",
+    "Simple one-paragraph DOCX; complex layout/macros are outside this sample"
+  ]
+}

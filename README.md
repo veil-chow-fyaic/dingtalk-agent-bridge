@@ -4,7 +4,9 @@
 
 **2026-11-11双账号基础UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
 
-最新恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
+最新文件验收：[DOCX四方向与24h观察启动](docs/30-docx-ui-and-reliability-start.md)。群/私聊的DOCX均已客户端下载并打开，私聊实际任务输出TXT也已下载打开。24h观察于11月11日19:36启动，尚未达时长。
+
+恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
 
 媒体扩展：[PNG/PDF双向、真人图片缺陷修复与真实事件](docs/28-media-matrix-and-real-events.md)。8个传输案例、10份资源原件一致；群/私聊识图任务UI通过，真实Stream采到16条业务事件。尚未完成所有格式及长期稳定性。活动长任务见[续跑入口](plans/completion/INIT.md)。
 
@@ -54,7 +56,7 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：29份当前/历史分明的知识文档。
+- `docs/`：30份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
 - `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和76项回归。
