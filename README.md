@@ -6,7 +6,7 @@
 
 图片接入：[原生图片 bridge 与实际 Kimi 结果交付](docs/33-native-image-bridge.md)。本地上传→独立 image 已实现，私聊两份原件客户端下载、Quick Look 打开及字节校验通过；其中一份由 veil UI 交办、Kimi 实际生成。官方 v1.0.67 缺独立上传叶子，以隔离补充命令复用官方上传/鉴权，原版 DWS 不变。原群现为3人，新群图测试待范围确认；JPEG等未由PNG结果外推。
 
-音视频进展：[WAV私聊出站原件下载与播放器打开](docs/34-audio-video-file-progress.md)，仅文件矩阵首格；原生语音/视频仍未通过。
+音视频进展：[WAV/MP4私聊双向、实际分析与客户端下载打开](docs/34-audio-video-file-progress.md)，四格与两份Kimi报告通过。MP4按file发送，但客户端呈现可播放视频卡片；WAV语音条和独立video协议仍未证实，群四格待范围确认。
 
 最新文件验收：[XLSX/ZIP八格双向与实际任务](docs/31-xlsx-zip-ui-acceptance.md)。四份客户端原件下载后打开/解包，两个Kimi任务及TXT客户端下载打开通过；此前[DOCX四方向](docs/30-docx-ui-and-reliability-start.md)保留。24h观察于11月11日19:36启动，尚未达时长。
 

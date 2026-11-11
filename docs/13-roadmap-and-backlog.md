@@ -1,5 +1,7 @@
 # 当前执行清单与闭环状态
 
+最新增量（21:42）：[WAV/MP4私聊双向与实际任务](34-audio-video-file-progress.md)四格通过，两份报告客户端下载打开、旧账本保持；MP4虽按file发送，客户端可播放和下载原件。语音条/独立video协议不冒充通过。下一步引用与多附件，群范围问题待答复。
+
 最新增量（21:10）：[原生图片已接入并完成实际Kimi生成图私聊交付](33-native-image-bridge.md)，两份原件客户端下载打开与字节校验通过，84项回归。隔离补充入口只暴露官方CHAT_IMAGE上传；原群现3人，新群图测试待范围确认，私聊独立继续。24h记录含部署维护窗口，尚未完成。
 
 更新：2026-11-11。总需求见 [docs/17](17-requirements-progress-review.md)。活动执行清单在[plans/completion/TODO](../plans/completion/TODO.md)，本页是产品摘要；每轮按CURRENT_MISSION、CRITICAL_PATH与证据账本接续，不维护第二份活动TODO。用户明确授权veil客户端→liev DWS，原群和私聊双账号UI验收已通过，见[docs/27](27-two-account-ui-acceptance.md)。不扩成任意业务联系人。

@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-11",
+  "caseCoverage": [
+    "direct-wav-out",
+    "direct-wav-in",
+    "direct-mp4-out",
+    "direct-mp4-in"
+  ],
+  "senders": {
+    "input": "veil native DingTalk UI",
+    "output": "liev DWS user identity; not bot"
+  },
+  "inputMethod": "Finder-selected synthetic fixture copied and pasted into confirmed liev DM; one upload per format",
+  "observations": {
+    "wavOut": "File card, client saved original, Finder Quick Look audio duration 0:01; no acoustic quality claim",
+    "wavIn": "Upload visible then task acknowledgement; actual result TXT card downloaded and opened, 16000 Hz / 1.000 s / 440 Hz",
+    "mp4Out": "Playable video card despite file protocol; DingTalk viewer blue at 00:01/00:01; download succeeded; actual client file Quick Look blue",
+    "mp4In": "UI upload; actual analysis result TXT card downloaded and opened, H.264 / 320×180 / 10 fps / 1 s / blue / no audio"
+  },
+  "clientResults": [
+    "WAV original",
+    "MP4 original",
+    "WAV analysis TXT",
+    "MP4 analysis TXT"
+  ],
+  "independentMediaValidation": {
+    "wavHz": 440.0,
+    "wavPeak": 1000,
+    "mp4DecodedFrames": 10,
+    "mp4Colors": [
+      [
+        0,
+        0,
+        255
+      ]
+    ],
+    "mp4DecodedSha256": "e3a57e9300985739cf082ef775110086edb3b51ec7523a9ad2d64f6fff87c651"
+  },
+  "limitations": [
+    "No native voice bubble",
+    "No separate video protocol proven",
+    "Group cases pending membership scope confirmation",
+    "One-second synthetic fixtures only",
+    "Raw screenshots and account identifiers remain local"
+  ]
+}

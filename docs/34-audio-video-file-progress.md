@@ -1,13 +1,30 @@
-# 音视频原件：私聊 WAV 出站首格
+# 音视频私聊双向原件与实际任务验收
 
-2026-11-11 21:19。图片功能提交 `c090085` 后继续下一段，已完成 liev→veil 私聊 WAV 文件的真实客户端下载和系统播放器打开。**这只完成 WAV/MP4 八格文件矩阵中的一格，不是原生语音条通过。**
+2026-11-11 21:42。WAV、MP4 私聊两个方向共四格已通过：veil 用钉钉真实 UI 发附件，liev 通过固定 DWS v1.0.67 收发；两次入站由本地 Kimi 实际分析并返回 TXT，两个结果均在客户端保存后由 Finder Quick Look 打开。群四格尚未补测，原群新增第三人的范围答复仍待确认。
 
-固定官方 v1.0.67 的[发送实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go)在 `file/audio/video` 分支把服务端类型统一设为 `file`，Help 也明确 audio/video 是文件语义别名。因此本次直接使用 bridge `file` 入口；没有把改一个 flag 当成原生音视频实现，没有修改这一官方映射。
+## 官方类型与客户端表现
 
-实验 `DAB-MATRIX-20261111-direct-wav`：已持久确认，历史和客户端都呈现文件；veil 在钉钉点击下载并保存到本机，`direct-received.wav` 与 fixture 逐字节一致（32044 B），资源下载原件也相同。随后在 Finder Quick Look 打开此实际下载文件，音频播放器显示时长 0:01、播放进度到 00:01；独立 WAV 解析确认单声道、16000 Hz、16000 帧。没有以工具无报错声称听觉质量通过。
+官方 v1.0.67 的[发送实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go)把 `file/audio/video` 都映射为服务端 `file`，Help 明确后两者是语义别名。本次使用 bridge `file`，没有另造媒体上传或发送 API。
 
-原始证据、资源及客户端文件留在 `local/audio-video-ui-20261111/`。下载后前台曾切回旧聊天搜索窗口，该截图只说明窗口焦点变化，不当作音频已打开；最终通过 Finder 的实际播放器确认。
+但协议类型不能直接推导客户端能力。WAV 呈现文件卡片，没有语音条；MP4 虽在 DWS history 中仍为 `[文件]`，钉钉将其呈现为带播放按钮、时长 00:00:01 的视频卡片。点击后打开客户端视频查看器，显示 liev、文件名及蓝色画面，进度到 00:01/00:01。该播放/下载能力已有真实证据；独立原生 video 消息协议、语音条和语音转写仍没有证据，不能合并成“所有原生音视频通过”。这也修正了先前笼统的“视频未通过”。
 
-只读复核：`python3 scripts/accept_wav_direct.py`；[脱敏证据](../evidence/2026-11-11/wav-direct-file-ledger.json)。已确认实验不再发送。`media_matrix_probe.py` 新增 WAV/MP4 文件案例，MP4 本轮只预览、未发送。
+## 四格与用户实际操作
 
-下一步先用 veil UI 上传 WAV 到 liev 私聊、验证实际任务处理，再补私聊 MP4 双向及客户端下载打开；原群增加第三人的范围问题仍待答复，不等待该项开展私聊工作。原生语音/视频须另有官方服务契约、可调用入口与 UI 实测，当前明确未通过。
+| 案例 | 输入/发送 | 用户侧与原件结果 |
+|---|---|---|
+| WAV 出站 | liev 的 bridge `file`，稳定 key `DAB-MATRIX-20261111-direct-wav`，21:14 已确认，未重发 | veil 下载 32044 B；Quick Look 音频播放器时长1秒、进度到末尾；不声称听觉质量已验 |
+| WAV 入站 | 21:28，veil 在 Finder 复制合成文件，钉钉 liev 私聊输入框粘贴，客户端直接上传一次 | DWS 下载原件相同，Kimi 实际解析 PCM/采样率/时长/频率，返回文字和分析 TXT；客户端下载387 B并实际打开 |
+| MP4 出站 | 21:32，稳定 key `DAB-MATRIX-20261111-direct-mp4`，确认后不重发 | 客户端视频卡片/查看器播放，下载1894 B原件，再在 Finder Quick Look 打开蓝色画面 |
+| MP4 入站 | 21:35，veil 同样通过真实 UI 上传合成 MP4 一次 | DWS 下载原件相同，Kimi 用 ffprobe/抽帧分析，返回文字和467 B分析 TXT；客户端下载后实际打开 |
+
+四个资源均与 fixtures 字节一致。WAV 独立解析为单声道、16-bit、16000 Hz、16000帧、1秒，零交叉复算440 Hz、峰值1000；MP4 独立 ffprobe 为H.264、320×180、10 fps、10帧、1秒、无音频，再以 ffmpeg 解码全部10帧，所有像素RGB(0,0,255)，与实际任务结果一致。两个报告的客户端文件与生成件 SHA-256 相同。
+
+两次入站恰好产生两个任务、6条确认回复；liev 自身消息不触发任务。此前56条传输投递（群12/私聊44）、18条任务（群3/私聊15，含历史blocked）、44条agent投递（群7/私聊37）逐行保持。没有重试旧实验、擦除失败或扩大执行人白名单。
+
+## 可复核证据与限制
+
+- `python3 scripts/accept_audio_video_direct.py`：只读54项检查通过，包括四格、模型/原件、身份、两次真实任务、报告下载、旧账本不变；固定结束快照容许之后独立实验，不改变本次范围。
+- [账本证据](../evidence/2026-11-11/audio-video-direct-ledger.json)、[UI观察](../evidence/2026-11-11/audio-video-direct-ui.json)、[审计负向验证](../evidence/2026-11-11/audio-video-audit-validation.json)。内存注入损坏客户端下载/缺失资源均被拒绝，未改原件和聊天。
+- 原始截图、AX树、事件、资源、任务和下载件只在 `local/audio-video-ui-20261111/`。旧 `accept_wav_direct.py` 保留首格复核，不能拿首格报告代替四格。
+- 坐标点击曾报窗口定位错误，转用原生控件和 Finder 复制/客户端粘贴；打开 TXT 调用超时后只读复核发现已经打开，没有再次发送。滚动条值变化未带来正文可见，那些截图不作为正文通过；任务结果以可见文件卡片和真正打开的下载报告验收。
+- 单纯上传附件会独立触发任务，本轮没有把后续文本合并成同一任务。下一步引用/多附件、状态/取消与运行交付继续。24h观察保留原run；21:42仍约2小时，不报24h通过。

@@ -1,0 +1,9 @@
+{
+  "ok": true,
+  "checks": 54,
+  "negativeChecks": {
+    "clientCorruptionRejected": true,
+    "missingResourceRejected": true
+  },
+  "mode": "In-memory substitutions only; original files, ledgers and messages unchanged."
+}

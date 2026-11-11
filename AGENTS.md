@@ -53,3 +53,6 @@ XLSX/ZIP八格传输、8资源完整，四份客户端下载原件分别在Numbe
 
 ## 2026-11-11 21:20 下一段WAV检查点
 原生图片实现已提交c090085。随后完成liev→veil私聊WAV文件：固定key DAB-MATRIX-20261111-direct-wav已confirmed，UI文件卡片下载，32044B客户端下载与原件一致，Finder Quick Look音频播放器显示1秒；8项只读检查通过。docs/34，scripts/accept_wav_direct.py。不是原生语音条。WAV/MP4探针已新增；MP4仅预览未发送。下一步veil UI上传WAV到liev私聊并核验实际任务，再做MP4私聊双向；原群3人范围问题仍待回复，不重发已确认WAV，不等待群确认停止其他工作。
+
+## 2026-11-11 21:42 音视频私聊闭环
+WAV/MP4私聊双向四格、4资源原件、2个真实Kimi分析任务6回复、2份报告客户端下载Quick Look打开通过；54项只读审计及缺资源/损坏下载负向检查通过，旧账本逐行保持。docs/34/E014，scripts/accept_audio_video_direct.py。MP4虽官方按file发送，UI实际为可播放视频卡片，客户端播放/保存/系统打开均通过；不能笼统再说视频无播放能力，也不能推成独立video协议/语音条通过。原群4格待范围答复，下一步私聊引用、多附件与任务控制。观察run不变，约2小时，未满24h。
