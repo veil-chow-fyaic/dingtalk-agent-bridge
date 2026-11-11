@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "baselineChecks": 43,
+  "baselinePassed": true,
+  "negativeChecks": {
+    "missing_official_image_resources_rejected": true,
+    "corrupt_client_bytes_rejected": true,
+    "counterclockwise_same_dimensions_rejected": true
+  },
+  "original_evidence_unchanged": true,
+  "ok": true
+}

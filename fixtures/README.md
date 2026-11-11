@@ -10,3 +10,5 @@
 历史单账号API/摘要证据见evidence/2026-11-11/solo-acceptance.json。当前双账号UI：TXT/CSV见docs/27，PNG/PDF见docs/28–29，DOCX四方向、客户端原件/提取结果打开见docs/30。XLSX/ZIP见docs/31，原生PNG桥接与实际生成图私聊见docs/33；WAV/MP4私聊双向四格与实际分析报告下载打开见docs/34，群音视频方向继续。MP4按文件传输但客户端可播放；不等于独立video协议/原生语音条通过。原始聊天/截图仅在local/。
 
 E026新增dab-multi-image-a/b.png，两张不同尺寸/颜色/形状合成图；原生私聊一次粘贴在同一消息，真实Kimi两次读取及报告下载打开通过，详见docs/45。
+
+E029新增dab-jpeg-source.jpg（400×240），只含合成编号、58、橙色条与绿色箭头；私聊原件读图/旋转/结果下载打开见docs/48。

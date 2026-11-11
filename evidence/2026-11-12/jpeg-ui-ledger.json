@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_old_runtime_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_old_runtime_logs_preserved": true,
+    "immutable_completed_job": true,
+    "one_job_for_input": true,
+    "authorized_native_input": true,
+    "one_text_plus_jpeg": true,
+    "exact_prompt_no_answer_leak": true,
+    "source_original_bytes": true,
+    "source_jpeg_dimensions": true,
+    "runtime_log_preserved": true,
+    "actual_source_media_read_once": true,
+    "runtime_staged_source_intact": true,
+    "runtime_received_source_jpeg_bytes": true,
+    "initial_text_read_error_retained": true,
+    "actual_rotation_tool": true,
+    "two_artifacts": true,
+    "output_staged_export_exact": true,
+    "client_image_exact": true,
+    "client_content_is_jpeg_despite_png_suffix": true,
+    "independent_clockwise_rotation": true,
+    "client_report_exact": true,
+    "actual_report_write": true,
+    "report_correct": true,
+    "image_official_resources_intact": true,
+    "file_official_resources_intact": true,
+    "one_native_image_delivery": true,
+    "four_confirmed_replies": true,
+    "bound_reply_identity": true,
+    "no_reply_echo_task": true,
+    "exact_one_new_task": true,
+    "exact_four_new_outbox": true,
+    "native_session_unchanged": true,
+    "one_send_attempt": true,
+    "reviewed_frames_preserved": true,
+    "report_opened_ui": true,
+    "image_opened_ui": true
+  },
+  "runtimeCalls": 1,
+  "confirmedReplies": 4,
+  "source": {
+    "bytes": 16061,
+    "sha256": "5fb114b5c0d7fbeeef3d4930e64dea1c0bb34ee6ce6878557f883613f2798fc8",
+    "format": "JPEG",
+    "dimensions": [
+      400,
+      240
+    ]
+  },
+  "clientImage": {
+    "bytes": 8234,
+    "sha256": "ec4238dd512c5b81fb81351e0c4b06490b8b12a3d5f3eda809da20d2b5e54a2a",
+    "format": "JPEG",
+    "dimensions": [
+      240,
+      400
+    ],
+    "savedSuffix": ".jpg.png"
+  },
+  "clientReport": {
+    "bytes": 295,
+    "sha256": "cc4ce6379e7fc44b7e9b7414496eb77fd6f940178056ea3dc0746ce46fc226c6"
+  },
+  "decodedRotationMAE": {
+    "clockwise": 1.261965277777778,
+    "counterclockwise": 70.67908333333334
+  },
+  "limits": [
+    "Direct chat only; group scope confirmation pending",
+    "Short text reply not separately viewed",
+    "Client forced PNG suffix; bytes remain exact JPEG",
+    "Lossy re-encoding by runtime; no transport compression observed",
+    "Not arbitrary multi-attachment/native voice/EXIF orientation coverage"
+  ],
+  "ok": true
+}
