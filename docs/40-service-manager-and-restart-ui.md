@@ -59,3 +59,6 @@ python3 -m dingtalk_bridge.service_manager --agent-config local/agent-config.jso
 [只读审计](../scripts/accept_service_manager.py)有39项检查；删除一个确认回复、破坏客户端下载内容的两项内存负向注入均被识别。公开记录：[账本](../evidence/2026-11-11/service-manager-ledger.json)、[安装](../evidence/2026-11-11/service-manager-install-validation.json)、[UI观察](../evidence/2026-11-11/service-manager-ui.json)、[审计负向验证](../evidence/2026-11-11/service-manager-audit-validation.json)。原始进程记录、截图、AX、账号账本只在本机 `local/service-manager-20261111/`。
 
 原24h观察器未重启，迁移维护记入原 run。此检查点511样本、约4.25小时、累计3个不可用采样；维护停机可能落在采样之间，不能因本段未新增不可用采样宣称无中断。24h尚未完成，网络分区、凭据过期、引用/完整长文气泡、群新增范围及办公闭环仍按活动计划继续。
+
+## E027部署补记
+137回归与新wheel六入口/18模块已过，当前三进程已加载引用发送实现。停机时出现PID变化保护错误，后独立status为全部stopped，才正常启动；未强杀，错误原样保留。原观察器不重置，维护累计6不可用，详见[docs/46](46-quoted-text-reply.md)。

@@ -57,6 +57,11 @@ if 'event' in a:
 if '+conversation-info' in a:d={'result':{'conversationInfo':{'openConversationId':'g'}}}
 elif '+chat-messages' in a:d={'messages':[{'messageId':'stream-message','conversationId':'g','senderId':'other','text':'from committed history'}] if Path('history-ready').exists() else [],'complete':True}
 elif '+chat-list' in a:d={'chats':[{'openConversationId':'g','conversationType':'group','name':'fixture'}],'complete':True,'paginationKnown':True,'hasMore':False,'nextCursor':0}
+elif '+messages-reply' in a:
+ assert a[a.index('--message-id')+1]=='stream-message'
+ assert a[a.index('--content')+1]=='quoted text'
+ d={'result':{'openTaskId':'quote-task'}}
+elif '+messages-query-send-status' in a:d={'result':{'sendStatus':'SUCCESS'},'messageRef':{'openConversationId':'g','openMessageId':'quote-message'}}
 else:raise SystemExit(7)
 print(json.dumps(d))
 ''');binary.chmod(0o700)
@@ -113,6 +118,14 @@ print(json.dumps(d))
                 self.assertEqual(health['stream_listeners'][0]['accepted_hints'],1)
                 self.assertGreater(health['poll_scheduler']['stream_hint_cycles'],hint_cycles)
                 self.assertEqual(health['poll_scheduler']['last_trigger'],'stream_hint')
+                def send(body):
+                    req=Request(f'http://127.0.0.1:{port}/v1/send',data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+token_path.read_text().strip(),'Content-Type':'application/json'})
+                    with urlopen(req,timeout=3) as r:return json.load(r)
+                quote={'idempotency_key':'http-quote','text':'quoted text','reply_to':'stream-message'}
+                self.assertEqual(send(quote)['state'],'confirmed')
+                self.assertTrue(send(quote)['replayed'])
+                with self.assertRaises(HTTPError) as missing:send({**quote,'idempotency_key':'missing','reply_to':'foreign-message'})
+                self.assertEqual(missing.exception.code,400);missing.exception.close()
             finally:
                 child.send_signal(signal.SIGTERM)
                 try:code=child.wait(timeout=8)

@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-12",
+  "tests": 137,
+  "result": "passed",
+  "newCoreTests": 5,
+  "newCliTest": 1,
+  "extendedHttpContract": true,
+  "testLogSha256": "e0ee77c53b4832020e7aadfe51a1469eaae07e127f6966ecf2fea2d8e856a147",
+  "auditChecks": 30,
+  "negativeChecks": {
+    "different_reference_rejected": true,
+    "different_reply_rejected": true
+  },
+  "ok": true
+}

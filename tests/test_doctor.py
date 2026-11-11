@@ -174,6 +174,19 @@ class DoctorTests(unittest.TestCase):
                 patch('sys.argv', ['dab', 'health']), patch('sys.stdout', new_callable=io.StringIO):
             cli.main()
 
+    def test_cli_quote_preserves_route_reference_and_stdin_text(self):
+        def response(request, **kwargs):
+            self.assertEqual(json.loads(request.data), {'account_id': 'a', 'conversation_id': 'g',
+                'idempotency_key': 'quote', 'reply_to': 'source', 'text': 'quoted\n中文'})
+            self.assertTrue(request.full_url.endswith('/v1/send'))
+            return io.StringIO('{"state":"confirmed"}')
+        with patch.object(Path, 'read_text', return_value='synthetic-token'), \
+                patch.object(cli, 'urlopen', side_effect=response), \
+                patch('sys.argv', ['dab', '--account-id', 'a', '--conversation-id', 'g', 'send',
+                                   '--key', 'quote', '--reply-to', 'source', '--text-stdin']), \
+                patch('sys.stdin', io.StringIO('quoted\n中文')), patch('sys.stdout', new_callable=io.StringIO):
+            cli.main()
+
 
 if __name__ == '__main__':
     unittest.main()

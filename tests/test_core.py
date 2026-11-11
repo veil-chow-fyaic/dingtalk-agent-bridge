@@ -20,7 +20,7 @@ class Fake:
         self.messages = [{'messageId': 'm1', 'conversationId': 'g', 'senderId': 'self', 'text': 'same'},
                          {'messageId': 'm2', 'conversationId': 'g', 'senderId': 'other', 'text': 'same'}]
     def call(self, args):
-        if '+messages-send' in args:
+        if '+messages-send' in args or '+messages-reply' in args:
             self.sent += 1
             self.send_args.append(args)
             if self.fail: raise BridgeError('timeout')
@@ -57,6 +57,58 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.b.send('k', text='hello')['state'], 'outcome_unknown')
         self.b.send('k', text='hello')
         self.assertEqual(self.fake.sent, 1)
+    def test_quote_identity_survives_restart_and_binds_source(self):
+        self.b.sync()
+        self.assertEqual(self.b.send('quote', text='reply', reply_to='m2')['state'], 'confirmed')
+        self.assertIn('+messages-reply', self.fake.send_args[0])
+        self.assertIn('--content', self.fake.send_args[0])
+        self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+        self.assertTrue(self.b.send('quote', text='reply', reply_to='m2')['replayed'])
+        for ref in ('m1', None):
+            with self.assertRaises(ValueError): self.b.send('quote', text='reply', reply_to=ref)
+        self.assertEqual(self.fake.sent, 1)
+
+    def test_quote_rejects_missing_foreign_or_unknown_sender_before_reservation(self):
+        self.b.sync()
+        original = json.loads(self.b.db.execute('SELECT body FROM events WHERE message_id="m2"').fetchone()[0])
+        for field, value in [('account_id', 'foreign'), ('conversation_id', 'foreign'), ('sender_id', None), ('message_id', 'foreign')]:
+            with self.subTest(field=field):
+                event = {**original, field: value}
+                self.b.db.execute('UPDATE events SET body=? WHERE message_id="m2"', (json.dumps(event),))
+                self.b.db.commit()
+                with self.assertRaises(ValueError): self.b.send('bad', text='reply', reply_to='m2')
+                self.assertIsNone(self.b.delivery('bad'))
+        for ref in ('missing', '', ' m2', 7, {}):
+            with self.assertRaises(ValueError): self.b.send('bad', text='reply', reply_to=ref)
+        for mode in ('file', 'image'):
+            with self.assertRaises(ValueError): self.b.send('bad', **{mode: 'fixtures/a.png'}, reply_to='m2')
+        self.assertEqual(self.fake.sent, 0); self.assertEqual(self.fake.uploaded, 0)
+
+    def test_quote_unknown_restart_never_reissues_even_if_source_removed(self):
+        self.b.sync(); self.fake.fail = True
+        self.assertEqual(self.b.send('quote', text='reply', reply_to='m2')['state'], 'outcome_unknown')
+        self.b.db.execute('DELETE FROM events'); self.b.db.commit()
+        self.b.close(); self.b = Bridge(self.root, CFG, self.fake)
+        self.assertTrue(self.b.send('quote', text='reply', reply_to='m2')['replayed'])
+        self.assertEqual(self.b.reconcile('quote')['state'], 'outcome_unknown')
+        self.assertEqual(self.fake.sent, 1)
+
+    def test_quote_direct_binds_both_peer_and_conversation(self):
+        self.b.close()
+        self.b = Bridge(self.root, {**CFG, 'conversationType': 'direct', 'peerOpenDingTalkId': 'peer'}, self.fake)
+        self.b.sync(); self.b.send('quote', text='reply', reply_to='m2')
+        args = self.fake.send_args[0]
+        self.assertEqual(args[args.index('--group') + 1], 'g')
+        self.assertEqual(args[args.index('--open-dingtalk-id') + 1], 'peer')
+
+    def test_quote_raw_group_receipt_and_ambiguous_result(self):
+        self.b.sync(); original = self.fake.call
+        for index, receipt in enumerate(({'result': {'openTaskId': 'task'}},
+                                        {'result': [{'openTaskId': 'task'}, {'openTaskId': 'other-task'}]},
+                                        {'referencedMessage': {'openTaskId': 'source-task'}})):
+            with patch.object(self.fake, 'call', side_effect=lambda args: receipt if '+messages-reply' in args else original(args)):
+                value = self.b.send('raw' + str(index), text='reply', reply_to='m2')
+            self.assertEqual(value['state'], 'confirmed' if index == 0 else 'outcome_unknown')
     def test_personal_text_limit_counts_utf16_before_any_send_or_reservation(self):
         self.assertEqual(self.b.send('edge',text='🙂'*2560)['state'],'confirmed')
         for text in ('a'*5121, '🙂'*2560+'a', '中'*5121):

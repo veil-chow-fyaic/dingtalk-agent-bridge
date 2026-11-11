@@ -129,3 +129,6 @@ E019补充：官方错误的invalid_request+PARAM_ERROR可在首次发送阶段�
 官方在access有效期前5分钟进入刷新条件，运行请求由OAuthProvider加锁刷新；网络/限流/5xx等临时刷新失败不会直接判凭据失效，终态/未知错误分开处理。运行时显式AuthRefreshRequired标记最多触发一次刷新重试，不泛化到普通403/业务报错；显式token或插件凭据不改无关登录存储。自研bridge不另造OAuth刷新，也不能在官方重试之后对未知写入换key重发。[有效期判定](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/auth/token.go)、[刷新实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/auth/oauth_provider.go)、[运行时重试边界](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/app/auth_refresh_retry.go)。
 
 01:59:49实际readonly命令成功，当前access/refresh均有效，未请求刷新；只保留公开字段与源码摘要的[边界证据](../evidence/2026-11-12/auth-refresh-boundary-review.json)。可在下一次自然access刷新窗口前后观察readonly元数据和服务健康；自然轮换与“真正失效refresh凭据后的重新授权恢复”是两个不同场景。未复制/改写凭据、调整系统时间或撤销授权；目前没有安全独立制造真实失效refresh凭据的现场方案，该项仍未验，不以模拟token错误代替。
+
+## E027引用回复接入
+官方已有messages-reply个人引用（群/私聊），本轮无需新增官方叶子。bridge只补可选reply_to的本路由源校验、幂等持久化及回执差异兼容；DWS负责源/peer校验、引用协议和状态。私聊原生UI实际气泡已过，群及入站引用未过，见[docs/46](46-quoted-text-reply.md)。

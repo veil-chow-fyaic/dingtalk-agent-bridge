@@ -3,7 +3,7 @@
   "info": {
     "title": "DingTalk Bridge — Runtime-neutral IM tools",
     "version": "0.3.0-experimental",
-    "description": "Account/conversation routed IM. Current live evidence is one test group; multi-route/direct behavior has deterministic tests. Not a claim of all DingTalk scope support."
+    "description": "Account/conversation routed IM. Native UI evidence covers the authorized test group and direct pair; see the acceptance matrix for untested scope."
   },
   "servers": [
     {
@@ -218,6 +218,12 @@
                   "image": {
                     "type": "string",
                     "description": "Project-relative PNG/JPEG, <=2 MiB, native image only; requires route imageUploadBinary. Upload uncertainty is upload_unknown; no automatic retry or Markdown fallback."
+                  },
+                  "reply_to": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2048,
+                    "description": "Optional quote of a message already observed in the selected route with a known sender. Text only. Source is part of the idempotency fingerprint. DWS revalidates source and recipient."
                   }
                 },
                 "required": [
@@ -281,7 +287,12 @@
                       ]
                     }
                   }
-                ]
+                ],
+                "dependentRequired": {
+                  "reply_to": [
+                    "text"
+                  ]
+                }
               }
             }
           }

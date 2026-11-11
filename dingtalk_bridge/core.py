@@ -220,16 +220,21 @@ class Bridge:
             self.db.execute('UPDATE deliveries SET state="rejected",error="PARAM_ERROR" WHERE key=?', (key,))
         return self.delivery(key)
 
-    def send(self, key, text=None, file=None, image=None):
+    def send(self, key, text=None, file=None, image=None, reply_to=None):
         if not isinstance(key, str) or not key or len(key) > 128:
             raise ValueError('A stable idempotency key is required (1-128 chars)')
         if sum(x is not None for x in (text, file, image)) != 1:
             raise ValueError('Provide exactly one of text, file or image')
+        if reply_to is not None and (text is None or not isinstance(reply_to, str) or
+                                     not reply_to.strip() or reply_to != reply_to.strip() or len(reply_to) > 2048):
+            raise ValueError('reply_to requires text and a nonempty message ID (up to 2048 chars)')
         payload = {}
         if text is not None:
             if not isinstance(text, str) or not text or len(text.encode()) > 65536 or '![' in text:
                 raise ValueError('Use plain text up to 64 KiB; inline images need a separate verified route')
             payload = {'kind': 'text', 'text': text}
+            if reply_to is not None:
+                payload['reply_to'] = reply_to
         else:
             f = Path(image if image is not None else file)
             if f.is_absolute() or '..' in f.parts:
@@ -265,6 +270,14 @@ class Bridge:
             # Replay lookup precedes validation so old payloads stay immutable.
             if text is not None and utf16_units(text) > PERSONAL_TEXT_UNITS:
                 raise ValueError('Personal text exceeds 5120 UTF-16 units; split it or send a file')
+            if reply_to is not None:
+                source_row = self.db.execute('SELECT body FROM events WHERE message_id=?', (reply_to,)).fetchone()
+                source_event = json.loads(source_row[0]) if source_row else {}
+                if (source_event.get('message_id') != reply_to or
+                        source_event.get('conversation_id') != self.config['group'] or
+                        source_event.get('account_id') != self.config.get('accountId', 'default') or
+                        not source_event.get('sender_id')):
+                    raise ValueError('reply_to must identify an observed message with a known sender in this route')
             if image is not None:
                 if not self.config.get('imageUploadBinary'):
                     raise ValueError('Native image upload requires imageUploadBinary; no Markdown fallback')
@@ -280,7 +293,14 @@ class Bridge:
             self.db.commit()
         args = ['chat', '+messages-send', '--as', 'user', *self.target_args(),
                 '--idempotency-key', key, '--yes']
-        if text is not None:
+        if reply_to is not None:
+            # Official DWS resolves the source again and checks the direct peer.
+            # Explicit group binds the expected conversation even for a DM.
+            args = ['chat', '+messages-reply', '--as', 'user', '--group', self.config['group'],
+                    '--message-id', reply_to, '--content', text, '--idempotency-key', key, '--yes']
+            if self.config.get('conversationType') == 'direct':
+                args += ['--open-dingtalk-id', self.config['peerOpenDingTalkId']]
+        elif text is not None:
             args += ['--text', text]
         elif image is not None:
             try:
@@ -303,7 +323,26 @@ class Bridge:
         try:
             data = self.dws.call(args)
             task = data.get('sendReceipt', {}).get('openTaskId')
-            if not task:
+            if not task and reply_to is not None:
+                # v1.0.67 group quote returns raw MCP data; DM quote projects a
+                # sendReceipt. Only inspect official response wrappers, never the
+                # referenced source message. Ambiguous receipts remain unknown.
+                tasks = set()
+                def collect(value):
+                    if isinstance(value, dict):
+                        for name in ('openTaskId', 'taskId'):
+                            candidate = value.get(name)
+                            if isinstance(candidate, str) and candidate.strip():
+                                tasks.add(candidate.strip())
+                        for name in ('result', 'data', 'response', 'content', 'message'):
+                            collect(value.get(name))
+                    elif isinstance(value, list):
+                        for item in value:
+                            collect(item)
+                collect(data)
+                if len(tasks) == 1:
+                    task = tasks.pop()
+            if not isinstance(task, str) or not task.strip():
                 raise BridgeError('No send task ID; do not resend')
             with self.lock:
                 self.db.execute('UPDATE deliveries SET state="submitted",task_id=? WHERE key=?', (task, key))

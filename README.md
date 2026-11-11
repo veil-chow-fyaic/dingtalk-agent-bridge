@@ -82,3 +82,5 @@ python3 scripts/verify_handoff.py
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
 已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。
+
+通用纯文本引用回复：`dab ... send --key STABLE_KEY --reply-to SOURCE_MESSAGE_ID --text TEXT`；源必须已在所选路由观察到。HTTP同名字段reply_to，未知投递不重发；私聊原生UI已验，详情与未验边界见[引用回复](docs/46-quoted-text-reply.md)。

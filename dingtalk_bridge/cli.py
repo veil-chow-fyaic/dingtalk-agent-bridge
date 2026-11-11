@@ -17,6 +17,7 @@ def main():
     events=sub.add_parser('events');events.add_argument('--after',type=int,default=0);events.add_argument('--limit',type=int,default=100)
     events.add_argument('--wait-seconds',type=float,default=0)
     send=sub.add_parser('send');send.add_argument('--key',required=True)
+    send.add_argument('--reply-to',help='Quote an observed message in this route; text only')
     content=send.add_mutually_exclusive_group(required=True)
     content.add_argument('--text');content.add_argument('--text-stdin',action='store_true');content.add_argument('--file');content.add_argument('--image')
     for action in ['status','reconcile']:
@@ -30,7 +31,7 @@ def main():
     data=None
     if a.action=='send':
         data={**selector,'idempotency_key':a.key}
-        for field in ('text','file','image'):
+        for field in ('text','file','image','reply_to'):
             if getattr(a,field,None) is not None:data[field]=getattr(a,field)
         if a.text_stdin:data['text']=sys.stdin.read(65537)
         path='/v1/send'
