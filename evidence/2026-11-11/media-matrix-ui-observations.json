@@ -51,10 +51,14 @@
       "local_file": "direct-pure-png-fix-reply.png",
       "sha256": "9db409d894e94af4700a3c0d3463ace2b69b26c0e6d48e9e32a1dcafd18eb5df",
       "observation": "原生纯图片重测，实际双资源别名验证成功后，liev UI回复正确文字及320×180"
+    },
+    {
+      "local_file": "group-pdf-opened.png",
+      "sha256": "d4db312b5af75442011300464d19dfbb07fe06a594ffe88dc9c11a14991cd6d0",
+      "observation": "19:15补验：原群liev PDF通过客户端另存group-received.pdf，Finder Quick Look打开，内容可读，摘要与fixture相同"
     }
   ],
   "limitations": [
-    "group PDF client download/open pending",
     "outbound images client save pending",
     "initial direct image blocked before alias fix; original failure retained",
     "UI screenshots contain private sidebar and are excluded from Git"

@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-11",
+  "scope": "five UI-originated messages, committed history, runtime/outbox, short service outage and one owned subscriber restart",
+  "cases": [
+    {
+      "case": "DAB-STREAM-LIVE-GROUP-001",
+      "route": "group",
+      "checks": {
+        "committed_once": true,
+        "observed_once": true,
+        "expected_task_count": true,
+        "committed_body_matches_observation": true,
+        "business_hint_seen": true,
+        "history_polled_by_stream_hint": true
+      },
+      "first_observed_delay_seconds": 3.212,
+      "poll_trigger_at_observation": "stream_hint"
+    },
+    {
+      "case": "DAB-STREAM-OFFLINE-GROUP-001",
+      "route": "group",
+      "checks": {
+        "committed_once": true,
+        "observed_once": true,
+        "expected_task_count": true,
+        "committed_body_matches_observation": true,
+        "sent_while_confirmed_offline": true,
+        "observed_after_restart": true,
+        "authorized_peer_task": true,
+        "completed_with_expected_answer": true,
+        "ack_and_result_confirmed_once": true,
+        "final_reply_once": true,
+        "replies_from_bound_account": true
+      },
+      "first_observed_delay_seconds": 22.119,
+      "poll_trigger_at_observation": "startup"
+    },
+    {
+      "case": "DAB-STREAM-RECONNECT-GROUP-001",
+      "route": "group",
+      "checks": {
+        "committed_once": true,
+        "observed_once": true,
+        "expected_task_count": true,
+        "committed_body_matches_observation": true,
+        "business_hint_seen": true,
+        "history_polled_by_stream_hint": true,
+        "observed_after_reconnect": true,
+        "subscriber_connected_again": true
+      },
+      "first_observed_delay_seconds": 4.08,
+      "poll_trigger_at_observation": "stream_hint"
+    },
+    {
+      "case": "DAB-STREAM-LIVE-DM-001",
+      "route": "direct",
+      "checks": {
+        "committed_once": true,
+        "observed_once": true,
+        "expected_task_count": true,
+        "committed_body_matches_observation": true,
+        "business_hint_seen": true,
+        "history_polled_by_stream_hint": true,
+        "authorized_peer_task": true,
+        "completed_with_expected_answer": true,
+        "ack_and_result_confirmed_once": true,
+        "final_reply_once": true,
+        "replies_from_bound_account": true
+      },
+      "first_observed_delay_seconds": 3.507,
+      "poll_trigger_at_observation": "stream_hint"
+    },
+    {
+      "case": "DAB-STREAM-OFFLINE-DM-001",
+      "route": "direct",
+      "checks": {
+        "committed_once": true,
+        "observed_once": true,
+        "expected_task_count": true,
+        "committed_body_matches_observation": true,
+        "sent_while_confirmed_offline": true,
+        "observed_after_restart": true,
+        "authorized_peer_task": true,
+        "completed_with_expected_answer": true,
+        "ack_and_result_confirmed_once": true,
+        "final_reply_once": true,
+        "replies_from_bound_account": true
+      },
+      "first_observed_delay_seconds": 211.128,
+      "poll_trigger_at_observation": "startup"
+    }
+  ],
+  "routes": {
+    "group": {
+      "checks": {
+        "old_jobs_unchanged": true,
+        "old_outbox_unchanged": true,
+        "binding_generation_and_session_unchanged": true,
+        "old_execution_logs_unchanged": true
+      },
+      "historical_jobs_preserved": 2,
+      "historical_outbox_preserved": 5,
+      "historical_run_files_preserved": 6
+    },
+    "direct": {
+      "checks": {
+        "old_jobs_unchanged": true,
+        "old_outbox_unchanged": true,
+        "binding_generation_and_session_unchanged": true,
+        "old_execution_logs_unchanged": true
+      },
+      "historical_jobs_preserved": 10,
+      "historical_outbox_preserved": 23,
+      "historical_run_files_preserved": 27
+    }
+  },
+  "checks": {
+    "separate_native_sessions": true,
+    "all_observed_event_ids_unique": true,
+    "offline_window_confirmed": true,
+    "outage_observed_by_independent_reader": true,
+    "subscriber_reconnected_without_service_restart": true
+  },
+  "observation": {
+    "active": false,
+    "samples": 892,
+    "unavailable_samples": 230,
+    "new_events": 11,
+    "elapsed_seconds": 899.78
+  },
+  "limitations": [
+    "UI screenshots are separately observed and retained locally",
+    "Message timestamps have second precision; first-observed delay includes the 1-second sampling interval and uncalibrated clocks",
+    "Controlled graceful process interruption is not a real network partition, token expiry or 24-hour reliability result"
+  ],
+  "ok": true
+}

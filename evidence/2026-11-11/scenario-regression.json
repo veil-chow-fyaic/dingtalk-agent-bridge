@@ -2,7 +2,7 @@
   "date": "2026-11-11",
   "ok": true,
   "tests": 76,
-  "seconds": 10.283,
+  "seconds": 15.228,
   "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
   "results": [
     {
@@ -309,5 +309,6 @@
       "test": "test_stream_http.StreamTests.test_target_commands_and_scope_filter",
       "result": "passed"
     }
-  ]
+  ],
+  "checkpoint": "service Stream business-event wake after ready; 2026-11-11 evening"
 }

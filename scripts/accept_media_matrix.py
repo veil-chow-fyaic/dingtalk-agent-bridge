@@ -70,8 +70,9 @@ def audit():
             report['checks']['pure_native_image_retest_completed_with_verified_alias']=pure['state']=='completed' and len(candidates)==1 and candidates[0].get('verified') is True and candidates[0]['sha256']==image_hash
             answer=json.loads(pure['result'])['response']['text'] if pure['result'] else ''
             report['checks']['pure_native_image_retest_correct_answer']=all(x in answer for x in ('DAB MEDIA TEST 20261111','320','180'))
-    received=private/'direct-received.pdf'
-    report['checks']['direct_client_download_matches_pdf']=received.exists() and received.read_bytes()==(ROOT/'fixtures/dab-document-001.pdf').read_bytes()
+    for route in ('group','direct'):
+        received=private/(route+'-received.pdf')
+        report['checks'][route+'_client_download_matches_pdf']=received.exists() and received.read_bytes()==(ROOT/'fixtures/dab-document-001.pdf').read_bytes()
     report['ok']=all(all(x['checks'].values()) for x in report['cases']) and all(report['checks'].values()) and all(
         s['all_in_committed_history'] and s['events']==s['unique_message_ids'] for s in report['stream']) and all(
         t['completed_once_with_correct_answer'] and t['aliases_verified_when_present'] for t in report['tasks'].values())

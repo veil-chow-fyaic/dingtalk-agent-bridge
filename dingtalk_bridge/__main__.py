@@ -6,6 +6,7 @@ from pathlib import Path
 import secrets
 import signal
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
 from .core import BridgeError
@@ -33,15 +34,25 @@ def main():
     token = token_path.read_text().strip()
     stop = threading.Event()
     wake = threading.Event()
+    scheduler_lock=threading.Lock()
+    scheduler={'cycles':0,'stream_hint_cycles':0,'timer_cycles':0,'last_trigger':None,
+               'last_started_at':None,'last_completed_at':None}
     listeners={key:StreamListener(root,b.config,wake.set) for key,b in hub.routes.items()
                if b.config.get('receiveMode')=='stream_hint'}
 
     def poll():
+        trigger='startup'
         while not stop.is_set():
             wake.clear()
+            with scheduler_lock:
+                scheduler['cycles']+=1
+                if trigger in {'stream_hint','timer'}:scheduler[trigger+'_cycles']+=1
+                scheduler.update(last_trigger=trigger,last_started_at=time.time())
             hub.poll(stop)
+            with scheduler_lock:scheduler['last_completed_at']=time.time()
             wake.wait(a.poll_seconds)
-            if wake.is_set():stop.wait(1)  # coalesce bursts; no unbounded event queue
+            trigger='stream_hint' if wake.is_set() else 'timer'
+            if trigger=='stream_hint':stop.wait(1)  # coalesce bursts; no unbounded event queue
 
     class Handler(BaseHTTPRequestHandler):
         protocol_version = 'HTTP/1.0'
@@ -75,7 +86,8 @@ def main():
                     if not isinstance(data, dict):
                         raise ValueError('JSON object required')
                 if not write and u.path == '/v1/health':
-                    return self.respond(200, {**hub.health(),'stream_listeners':[
+                    with scheduler_lock:polling=dict(scheduler)
+                    return self.respond(200, {**hub.health(),'poll_scheduler':polling,'stream_listeners':[
                         {'account_id':k[0],'conversation_id':k[1],**s.status()} for k,s in listeners.items()]})
                 if not write and u.path == '/v1/conversations':
                     return self.respond(200, {'conversations':hub.conversations()})

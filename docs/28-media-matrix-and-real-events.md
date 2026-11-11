@@ -9,7 +9,7 @@
 | 路径 | 图片与PDF传输 | 用户界面 | 文件核验 |
 |---|---|---|---|
 | veil→liev 群 | 两条分别收到 | veil原生图片气泡、PDF上传完成；无命令不执行 | PNG两资源和PDF原件一致 |
-| liev→veil 群 | 两条confirmed | liev左侧图片、PDF卡片/预览、“通过AI发送” | bridge下载一致；本轮未在客户端另下载群PDF |
+| liev→veil 群 | 两条confirmed | liev左侧图片、PDF卡片/预览、“通过AI发送” | bridge下载一致；本轮未另下载群PDF；19:15续跑已下载打开并校验，见docs/29 |
 | veil→liev 私聊 | 两条分别收到 | veil原生图片、PDF上传；PDF触发真实Kimi识别并返回TXT | PNG两资源和PDF原件一致 |
 | liev→veil 私聊 | 两条confirmed | liev图片/文件消息；PDF客户端下载为direct-received.pdf，Finder Quick Look打开 | PDF客户端下载摘要一致；图片的完整客户端另存待补 |
 
@@ -31,7 +31,7 @@ PNG 1853字节，SHA-256 `14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83
 
 真实字段包括type、event_id、timestamp、subscribe_id、message_id、conversation_id、sender、sender_open_dingtalk_id、content、create_time、event_time。现有字段适配能接受实际业务。事件时间到本机观察时间样本为群0.551–0.771秒、私聊0.434–0.819秒；这是跨时钟样本，未经时钟校准，不能当端到端回复SLA，也不是事件到history可查的延迟。
 
-**常驻服务仍为15秒history轮询。**此次独立订阅验证实际事件供给；唤醒集成、断线恢复、24小时长期行为继续待测。health已移除固定`skipped_by_user`状态，改报账本中明确`from_self=false`的实际数量；未知身份不会计入，health不自称UI验收。
+**本轮19:05时常驻服务仍为15秒history轮询；后续已启用Stream并完成唤醒/补漏，见[docs/29](29-stream-service-and-offline-recovery.md)。**此次独立订阅验证实际事件供给；唤醒集成、断线恢复、24小时长期行为继续待测。health已移除固定`skipped_by_user`状态，改报账本中明确`from_self=false`的实际数量；未知身份不会计入，health不自称UI验收。
 
 ## 可复核资料与版本管理
 

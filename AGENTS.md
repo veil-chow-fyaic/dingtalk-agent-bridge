@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/28（最新媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -12,7 +12,7 @@
 
 真实配置local/service-config.json含两个liev路由，各自新状态目录。原周威单群配置备份local/ui-two-account-20261111/previous-*.json，旧legacy账本原位保留且不再激活；禁止将旧stateStorage=legacy迁到新profile。新gateway initialCursor仅初始化全新consumer一次（群49/私聊1），重启持久cursor优先，不回放旧任务。
 
-127.0.0.1:18768传输服务，15秒history轮询。群gateway local/agent-config.json；私聊gateway local/agent-direct-config.json。scripts/agent_ctl.py默认管理群，--config local/agent-direct-config.json管理私聊，各自PID/日志。均仅允许veil且allowSelfCommands=false。无开机自启。实际runtime是已登录Kimi；Codex CLI已登录但真实请求超时，adapter保留。Kimi工作区提示词不是OS沙箱，不能开放任意成员执行。
+127.0.0.1:18768传输服务，两路已启用stream_hint唤醒history，15秒定时补读兜底（docs/29）。群gateway local/agent-config.json；私聊gateway local/agent-direct-config.json。scripts/agent_ctl.py默认管理群，--config local/agent-direct-config.json管理私聊，各自PID/日志。均仅允许veil且allowSelfCommands=false。无开机自启。实际runtime是已登录Kimi；Codex CLI已登录但真实请求超时，adapter保留。Kimi工作区提示词不是OS沙箱，不能开放任意成员执行。
 
 ## 证据、身份和资料边界
 
@@ -20,7 +20,7 @@
 
 固定实验DWS v1.0.67在local/bin/v1.0.67，保留全局v1.0.61。官方优先：DWS负责身份/权限/profile、聊天/历史/资源、办公API；自研补普通账号任务队列、会话、白名单、文件、幂等和恢复。官方已有dev connect机器人到本地Agent、OpenClaw Connector，不再声称bot接入全须自研。没有创建bot。
 
-普通账号覆盖外部业务的动机保留；bot类型需独立调查，不照搬企微规则。官方契约、源码、上游报告、服务端实测、UI、独立对端分层。Stream ready不等于业务入站，file不等于原生音视频，用户读取不等于标记已读。当前未通过：Codex实际执行、原生音视频、Stream与服务唤醒集成/断连恢复、bot/外部客户UI、完整办公接入、24/72h可靠性、恶意隔离。
+普通账号覆盖外部业务的动机保留；bot类型需独立调查，不照搬企微规则。官方契约、源码、上游报告、服务端实测、UI、独立对端分层。Stream ready不等于业务入站，file不等于原生音视频，用户读取不等于标记已读。当前未通过：Codex实际执行、原生音视频、真实网络中断/授权过期恢复、bot/外部客户UI、完整办公接入、24/72h可靠性、恶意隔离。
 
 ## 持续工作规则
 
@@ -32,3 +32,6 @@
 
 ## 2026-11-11 19:05续跑检查点
 PNG/PDF群/私聊双向8案例、10资源摘要一致；私聊PDF客户端下载并Quick Look打开。真实有限Stream捕获群5/私聊11事件，全部匹配history、无重复，退出码0；这不是常驻服务已启用Stream（当前仍history）。真人PNG的双资源别名曾使一条DM任务blocked；已以下载SHA相同证明别名再合并语义，未知/不同内容仍拒绝。新DM图在前/群图在后任务均完成320×180并UI核对；原blocked保留审计，不静默重跑。完整复核scripts/accept_media_matrix.py；docs/28。76项自动测试。长期任务heartbeat id=bridge，每30分钟附着当前聊天，机器/Codex在线时续跑；无新结果保持安静。
+
+## 2026-11-11 常驻事件与恢复检查点
+当前以docs/29覆盖上段19:05的部署描述：两路stream_hint已启用，保留15秒history补读。veil真实UI 5条消息→3任务6回复，短停机时群/私聊任务补回且UI可见；受控终止一个服务拥有的群订阅子进程后自动重连，新消息正常。12旧任务、28旧投递、33旧执行日志与session保持，不重放历史。群PDF已客户端下载打开，摘要一致。只读复核scripts/accept_stream_integration.py；网络分区/过期凭据/24h仍未完成。

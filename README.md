@@ -4,7 +4,9 @@
 
 **2026-11-11双账号基础UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
 
-最新扩展：[PNG/PDF双向、真人图片缺陷修复与真实事件](docs/28-media-matrix-and-real-events.md)。8个传输案例、10份资源原件一致；群/私聊识图任务UI通过，真实Stream采到16条业务事件。尚未完成所有格式及长期稳定性。活动长任务见[续跑入口](plans/completion/INIT.md)。
+最新恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
+
+媒体扩展：[PNG/PDF双向、真人图片缺陷修复与真实事件](docs/28-media-matrix-and-real-events.md)。8个传输案例、10份资源原件一致；群/私聊识图任务UI通过，真实Stream采到16条业务事件。尚未完成所有格式及长期稳定性。活动长任务见[续跑入口](plans/completion/INIT.md)。
 
 目标是把钉钉作为本地 Agent 的工作入口：群聊/私聊交办、附件输入、执行反馈、连续上下文与结果交付。bridge 保持通用，同时交付可用的具体 runtime 接入。官方已有 `dws dev connect` 机器人本地接入；我们补的是普通账号路线的执行与恢复。官方/自研边界、71项回归和新增现场场景见 [能力边界与场景台账](docs/25-official-boundary-and-scenarios.md)。先看 [实际使用与验收](docs/24-local-agent-product-and-acceptance.md)。
 
@@ -37,7 +39,7 @@
 
 用户已授权：客户端veil（组织名周威），DWS精确绑定liev；只监听原内部群和这两人的私聊。组织/profile是鉴权路由上下文，不是产品固定租户。旧周威账本与配置备份保留。
 
-隔离DWS v1.0.67、全局v1.0.61保留。HTTP+SQLite监听127.0.0.1:18768，每15秒补读两个指定会话；群和私聊各一个Kimi gateway，仅允许veil发任务，liev自身消息忽略，无开机自启。70事件/5任务/14投递是docs/27的历史基线；新增媒体和事件任务见docs/28，以实时status为准。私聊直接发文字/附件，群以 `/agent` 开头。Kimi没有OS级沙箱，未对任意联系人开放。
+隔离DWS v1.0.67、全局v1.0.61保留。HTTP+SQLite监听127.0.0.1:18768，官方Stream提示唤醒history，另每15秒补读两个指定会话；群和私聊各一个Kimi gateway，仅允许veil发任务，liev自身消息忽略，无开机自启。70事件/5任务/14投递是docs/27的历史基线；新增媒体、事件、恢复任务见docs/28–29，以实时status为准。私聊直接发文字/附件，群以 `/agent` 开头。Kimi没有OS级沙箱，未对任意联系人开放。
 
 ```bash
 python3 scripts/service_ctl.py status
@@ -52,7 +54,7 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：28份当前/历史分明的知识文档。
+- `docs/`：29份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
 - `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和76项回归。

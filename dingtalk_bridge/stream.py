@@ -42,7 +42,9 @@ class StreamListener:
         except (ValueError,TypeError):
             with self.lock:self.state['rejected_lines']+=1
             return
-        with self.lock:self.state['accepted_hints']+=1
+        with self.lock:
+            self.state['accepted_hints']+=1
+            self.state['last_hint_at']=time.time()
         # No event body is delivered as a complete message. DWS documents media
         # event content as potentially descriptive only. Committed history dedups it.
         self.wake()

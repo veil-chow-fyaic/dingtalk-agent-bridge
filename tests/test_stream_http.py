@@ -44,18 +44,26 @@ class HTTPContractTests(unittest.TestCase):
     def test_public_endpoints_auth_discovery_wait_and_shutdown(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);binary=root/'dws';local=root/'local';local.mkdir()
-            binary.write_text('#!'+sys.executable+'''\nimport json,sys
+            binary.write_text('#!'+sys.executable+'''\nimport json,sys,time,signal
+from pathlib import Path
 a=sys.argv
+if 'event' in a:
+ signal.signal(signal.SIGTERM,lambda *_:exit(0))
+ print('[event] ready',file=sys.stderr,flush=True)
+ while not Path('emit').exists():time.sleep(.02)
+ Path('history-ready').touch()
+ print(json.dumps({'message_id':'stream-message','conversation_id':'g'}),flush=True)
+ while True:time.sleep(.1)
 if '+conversation-info' in a:d={'result':{'conversationInfo':{'openConversationId':'g'}}}
-elif '+chat-messages' in a:d={'messages':[],'complete':True}
+elif '+chat-messages' in a:d={'messages':[{'messageId':'stream-message','conversationId':'g','senderId':'other','text':'from committed history'}] if Path('history-ready').exists() else [],'complete':True}
 elif '+chat-list' in a:d={'chats':[{'openConversationId':'g','conversationType':'group','name':'fixture'}],'complete':True,'paginationKnown':True,'hasMore':False,'nextCursor':0}
 else:raise SystemExit(7)
 print(json.dumps(d))
 ''');binary.chmod(0o700)
-            (local/'service-config.json').write_text(json.dumps(CFG))
+            (local/'service-config.json').write_text(json.dumps({**CFG,'receiveMode':'stream_hint'}))
             with socket.socket() as sock:sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
             env={**os.environ,'PYTHONPATH':str(ROOT)}
-            child=subprocess.Popen([sys.executable,'-m','dingtalk_bridge','--port',str(port),'--poll-seconds','5'],cwd=root,env=env,
+            child=subprocess.Popen([sys.executable,'-m','dingtalk_bridge','--port',str(port),'--poll-seconds','60'],cwd=root,env=env,
                 stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             try:
                 token_path=local/'runtime/http-token';deadline=time.monotonic()+8
@@ -81,6 +89,30 @@ print(json.dumps(d))
                 invalid.exception.close()
                 with self.assertRaises(HTTPError) as foreign:get('/v1/events?account_id=wrong&conversation_id=g')
                 foreign.exception.close()
+                # Let the ready notification's own wake/poll finish first. The
+                # following assertion must prove a business-event wake, not ready.
+                deadline=time.monotonic()+8
+                while time.monotonic()<deadline:
+                    baseline=get('/v1/health');scheduler=baseline['poll_scheduler']
+                    if (baseline['stream_listeners'][0]['ready'] and scheduler['stream_hint_cycles']>=1
+                            and scheduler['last_completed_at']>=scheduler['last_started_at']):break
+                    time.sleep(.05)
+                else:self.fail('Initial ready wake did not finish')
+                self.assertEqual(get('/v1/events')['events'],[])
+                hint_cycles=scheduler['stream_hint_cycles']
+                # A real child event must wake history polling well before the
+                # 60-second fallback; event body itself is never the API payload.
+                (root/'emit').touch();deadline=time.monotonic()+8
+                while time.monotonic()<deadline:
+                    received=get('/v1/events')['events']
+                    if received:break
+                    time.sleep(.05)
+                else:self.fail('Stream did not wake history polling')
+                self.assertEqual(received[0]['content'],'from committed history')
+                health=get('/v1/health')
+                self.assertEqual(health['stream_listeners'][0]['accepted_hints'],1)
+                self.assertGreater(health['poll_scheduler']['stream_hint_cycles'],hint_cycles)
+                self.assertEqual(health['poll_scheduler']['last_trigger'],'stream_hint')
             finally:
                 child.send_signal(signal.SIGTERM)
                 try:code=child.wait(timeout=8)

@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-11",
+  "observer": "Codex native CUA; veil client, liev DWS --as user",
+  "local_evidence_directory": "local/stream-integration-20261111",
+  "observations": [
+    {
+      "local_file": "live-group-sent.png",
+      "sha256": "54063b8201dcdc2da9eaebabda9b69f0320c315750c41334e3c27ee14047b51b",
+      "observation": "veil在原群UI发送普通消息，未触发Agent"
+    },
+    {
+      "local_file": "live-dm-sent.png",
+      "sha256": "e58811dedbed9276909c065cebd1722c73fc8c67b6562a5604ee886045907c12",
+      "observation": "veil在私聊UI发送实时任务"
+    },
+    {
+      "local_file": "live-dm-reply.png",
+      "sha256": "4d53881a5fc9f481e687203c2d5695c7e254e94d7e873d4ff446b02e8df7b0cd",
+      "observation": "liev私聊显示实时私聊已收到"
+    },
+    {
+      "local_file": "offline-dm-sent.png",
+      "sha256": "547c483d124af767842a75014ef7edd026fa2cc1f8aa6cd66c110643923ac81b",
+      "observation": "bridge确认停机期间，veil私聊发送任务"
+    },
+    {
+      "local_file": "offline-group-sent.png",
+      "sha256": "62f171e8a34c5f9ea078e26fa6b894284390a9570fae3c0dbb014904fc7e8d70",
+      "observation": "bridge仍停机，veil在原群UI发送/agent任务"
+    },
+    {
+      "local_file": "offline-group-reply.png",
+      "sha256": "3e3daf042d3d81838b82d3dc75f69ff847b5735a15f5edabc6353cce1ab6ea0c",
+      "observation": "重启后liev群回复离线群聊已补回"
+    },
+    {
+      "local_file": "offline-dm-reply.png",
+      "sha256": "2654523ad9fd6d9a48df91963e2a3ae55706918cc2465fbb6c688256a48f9d0e",
+      "observation": "重启后liev私聊回复离线私聊已补回"
+    },
+    {
+      "local_file": "reconnect-group-sent.png",
+      "sha256": "7fdb5564387314608255df46b7604a7ddd4a49e4078c13d3bca29228f3c07bc5",
+      "observation": "受控终止群订阅子进程，自动重连后veil群UI发送普通消息"
+    }
+  ],
+  "limitations": [
+    "Screenshots and AX include private sidebar and are excluded from Git",
+    "UI observations and ledger checks are separate evidence layers",
+    "Both offline tasks were sent once; no retry/replay/resend to obtain success"
+  ]
+}

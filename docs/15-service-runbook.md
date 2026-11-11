@@ -1,6 +1,6 @@
 # 实验适配服务：启动、接入与恢复
 
-2026-11-11。代码位于 `dingtalk_bridge/`，仅使用 Python 标准库；当前liev账号的原群及veil私聊已真实UI联调。它是可运行的 DWS 历史轮询适配服务，本轮双账号入站已通过，长期可靠性仍未完成的实验 bridge。
+2026-11-11。代码位于 `dingtalk_bridge/`，仅使用 Python 标准库；当前liev账号的原群及veil私聊已真实UI联调。它使用官方DWS事件提示唤醒历史同步，15秒定时补读兜底；双账号入站、短停机补漏与订阅进程重连已通过，长期可靠性仍未完成的实验 bridge。
 
 ## 当前交付
 
@@ -73,7 +73,7 @@ with urlopen(req) as response:
 |---|---|---|
 | GET /v1/conversations | 无 | 当前配置的账号/会话路由，不暴露认证profile |
 | GET /v1/discovery | account_id、cursor、limit | 只读会话元数据与分页；不激活路由 |
-| GET /v1/health | 无 | 最近同步、事件数、轮询异常、明确未验收项 |
+| GET /v1/health | 无 | 最近同步、事件数、poll_scheduler触发/次数、Stream状态/业务hint、明确未验收项 |
 | GET /v1/events?after=0&limit=100 | 持久化 seq 游标；limit 1–200，wait_seconds 0–30 | events、next_cursor；消费成功后由 Agent 保存游标 |
 | POST /v1/sync | `{}` | 立即补读；与后台同步串行化；complete=false 时不推进水位 |
 | POST /v1/send | idempotency_key + text/file/image 三选一 | key/state/task_id/message_id；confirmed 返回 200，未确认返回 202 |
@@ -107,7 +107,7 @@ with urlopen(req) as response:
 ## 已知边界
 
 - 首次读最近24小时；后续普通水位前5分钟补读，并每30分钟进行24小时深扫描。超过深扫描窗口或读取上限仍可能漏；尚未完成长期稳定性验收。
-- 常驻配置仍为历史轮询；可选receiveMode=stream_hint接收限定会话的事件提示并唤醒历史同步，带退避重连。12秒生命周期通过，业务投递未验收；不是独立于历史索引的完整Stream接收。细节见docs/23。
+- 当前两路已启用receiveMode=stream_hint。真实UI业务消息唤醒history、服务停机时群/私聊任务重启补漏、订阅子进程自动重连已验证，见[docs/29](29-stream-service-and-offline-recovery.md)。15秒定时补读保留；不是独立于历史索引的完整Stream接收。网络分区/授权过期/24h另验。
 - 事件消费是游标式可重放交付，不承诺 exactly-once。发送已确认仅代表 API 投递状态，不代表另一人已读。
 - 原生音视频在v1.0.67源码和本机dry-run均确认为file路线（见docs/23），当前用户发送入口不支持原生语音条/视频；图片 v1.0.67 已获 mediaId、下载原图，并在本轮核对多图客户端内联显示。本轮TXT/CSV对端已验收，其余媒体对端仍需专项验收。
 - 多账号和group/direct路由已实现、确定性测试通过；指定veil↔liev私聊和原两人群已验收；外部群未验收。没有自动群管理、完整多租户权限管理或AX后端。
@@ -119,6 +119,6 @@ with urlopen(req) as response:
 python3 -m unittest discover -s tests -v
 ```
 
-当前73个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
+当前76个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
 
 真实 HTTP 验收证据见 `evidence/2026-11-11/service-acceptance.json` 和 `service-restart-acceptance.json`，仅含脱敏结果。

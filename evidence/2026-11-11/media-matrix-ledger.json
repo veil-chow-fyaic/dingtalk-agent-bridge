@@ -175,6 +175,7 @@
     "ordinary_group_event_not_executed": true,
     "pure_native_image_retest_completed_with_verified_alias": true,
     "pure_native_image_retest_correct_answer": true,
+    "group_client_download_matches_pdf": true,
     "direct_client_download_matches_pdf": true
   },
   "ok": true
