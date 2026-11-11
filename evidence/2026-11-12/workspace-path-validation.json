@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E051",
+  "checks": {
+    "six_entrypoints_from_unicode_space_venv_and_workspace": true,
+    "help_did_not_create_workspace_state": true,
+    "installed_nineteen_modules_match_current_and_E048": true,
+    "unicode_space_site_packages_import": true,
+    "unicode_space_tempdir_honored": true,
+    "offline_doctor_handles_unicode_config_and_binary_paths": true,
+    "offline_doctor_did_not_change_synthetic_workspace": true,
+    "five_suites_in_unicode_workspace_and_tempdir": true,
+    "isolated_suite_excludes_product_and_private_data": true,
+    "same_three_managed_processes_running": true,
+    "real_runtime_process_suite_in_unicode_space_workspace": true
+  },
+  "entrypoints": {
+    "dab": true,
+    "dab-bridge": true,
+    "dab-agent": true,
+    "dab-consume": true,
+    "dab-doctor": true,
+    "dab-service": true
+  },
+  "regressions": {
+    "test_stream_http.py": {
+      "tests": 3,
+      "ok": true
+    },
+    "test_rejection.py": {
+      "tests": 8,
+      "ok": true
+    },
+    "test_continuation.py": {
+      "tests": 9,
+      "ok": true
+    },
+    "test_routing_consumer.py": {
+      "tests": 13,
+      "ok": true
+    },
+    "test_doctor.py": {
+      "tests": 11,
+      "ok": true
+    },
+    "test_agent_runtime_process.py": {
+      "tests": 20,
+      "ok": true
+    }
+  },
+  "totalRegressionTests": 64,
+  "python": "3.11.15",
+  "testSetup": "Public tests/scripts/fixtures under Unicode and space workspace; TMPDIR also Unicode and space. Six suites import E048 installed wheel. Separate same-wheel Unicode/space venv validates entrypoints and offline doctor. No live account data or live IM calls.",
+  "productChanged": false,
+  "newUIAcceptance": false,
+  "newMessages": 0,
+  "ok": true,
+  "preservationChecks": {
+    "group_jobs": true,
+    "group_outbox": true,
+    "group_meta": true,
+    "group_deliveries": true,
+    "group_events": true,
+    "group_runtimeFiles": true,
+    "direct_jobs": true,
+    "direct_outbox": true,
+    "direct_meta": true,
+    "direct_deliveries": true,
+    "direct_events": true,
+    "direct_runtimeFiles": true
+  },
+  "observation": {
+    "samples": 1373,
+    "elapsedHours": 11.444,
+    "unavailableSamples": 6,
+    "historicalPollErrorSamples": 3,
+    "complete24h": false
+  }
+}

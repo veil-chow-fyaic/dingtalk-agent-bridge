@@ -135,3 +135,8 @@
 - docs/67；运行手册/通用工具重写为现态，两份旧全文与aaa5cf2逐字节归档；OpenAPI补已实现的rejection_evidence、413/500与202解释，旧安装页标明历史检查点。
 - 隔离3.11已安装wheel：18帮助、33既有HTTP/拒绝/迁移/路由测试通过；13核验与12账本保持检查通过，handoff-contract-validation.json。JSON语法及实现对照，不冒称完整第三方OpenAPI规范认证。
 - 19产品模块/三进程/所有旧记录不变，无新消息或UI；原观察1358样本11.319h/6不可达、原3poll_error保持，未满24h。私有local/handoff-contract-20261112；下一独立工作目录路径边界，原群/UI入口loop guard保持。
+
+## E051 — 中文/空格安装与工作目录
+- docs/68；公开tests/scripts/fixtures移到中文/空格工作目录，TMPDIR同样包含中文空格，六组64既有测试通过，包含实际HTTP和runtime子进程；用原E048已安装wheel，不含源码包或账号数据。
+- 另在中文/空格venv离线安装同wheel，六入口及合成中文配置/二进制路径doctor通过，19模块一致；11核验及12现场保持通过，workspace-path-validation.json。64测试与新中文venv入口测试范围分列，不称新增64测试或新UI通过。
+- 产品、三进程和旧记录不变。原观察1373样本11.444h/6不可达，历史3poll_error保留；下一段仅对具体剩余MUST找新可证分支，既有UI/菜单不重复。私有local/workspace-paths-20261112。

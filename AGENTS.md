@@ -4,7 +4,7 @@
 
 只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。
 
-每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–67。
+每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–68。
 
 交付通用普通账号IM工具＋真实本地Agent接入：群聊/私聊交办、文件原件、实际工具执行、多轮上下文及同会话交付。CLI/HTTP/consumer不绑定组织或runtime。至少一个本地执行器即可；Kimi真实Read/Write/Bash已满足，Codex请求超时单独跟踪，不额外制造双runtime门槛。
 
@@ -31,7 +31,7 @@ E048有限正数时限校验、E047超时提示和E046父进程守护已加载�
 
 原24h观察`run=reliability-20261111`起点11月11日19:36:08，PID97881；必须核对进程命令/新鲜采样，不能删除、重启覆盖原样本。最早11月12日19:36后评估，终检用`review_service_observations.py --require-complete`。E031完整性审计已实现，但未满24h；6不可达/3poll_error及维护窗口保留，不能宣称同版本零中断。E028只证明自然access预刷新和后续同步，不代表失效refresh恢复；禁止复制/改写token、改时钟或撤真实授权来造故障。
 
-E046新真实私聊已验证仅SIGKILL gateway后独立守护自动清理CLI/同组工具，控制器对后代零信号；204秒后无晚写，重启后只读任务和完整UI回复通过，原任务interrupted不重做。42审计5负向，详见docs/63；E045原工具遗留失败保持。不是OS沙箱，不覆盖守护自身被SIGKILL或恶意脱组。E047进一步验证真实90秒runtime超时自动收尾、155秒无晚写、同gateway下一只读任务及UI回复；临时限制已按整份配置摘要恢复原600秒，42审计5负向。E048启动前拒绝无效时限，20项部署/不变核验通过，无新UI发送。E049已修五个历史UI审计版本混比，冻结源码/wheel/安装包完整匹配，10负向与双Python各3专项通过，旧报告不改。E050已按字节归档两份旧运行/工具说明并修正当前文档/HTTP契约，隔离安装18帮助、33既有测试与25项核验通过，产品/部署/旧记录不变。下一段仅在具体新问题或明确新UI入口出现时推进；原24h到真实时长后终检。
+E046新真实私聊已验证仅SIGKILL gateway后独立守护自动清理CLI/同组工具，控制器对后代零信号；204秒后无晚写，重启后只读任务和完整UI回复通过，原任务interrupted不重做。42审计5负向，详见docs/63；E045原工具遗留失败保持。不是OS沙箱，不覆盖守护自身被SIGKILL或恶意脱组。E047进一步验证真实90秒runtime超时自动收尾、155秒无晚写、同gateway下一只读任务及UI回复；临时限制已按整份配置摘要恢复原600秒，42审计5负向。E048启动前拒绝无效时限，20项部署/不变核验通过，无新UI发送。E049已修五个历史UI审计版本混比，冻结源码/wheel/安装包完整匹配，10负向与双Python各3专项通过，旧报告不改。E050已按字节归档两份旧运行/工具说明并修正当前文档/HTTP契约，隔离安装18帮助、33既有测试与25项核验通过，产品/部署/旧记录不变。E051另验中文/空格工作目录与TMPDIR的64项既有测试，新同wheel中文安装六入口/doctor通过，23核验通过，无产品或现场改变。下一段仅在具体新问题或明确新UI入口出现时推进；原24h到真实时长后终检。
 
 ## 验收与推进规则
 
