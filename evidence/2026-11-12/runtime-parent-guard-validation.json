@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "tests": {
+    "python314_full": 164,
+    "python314_runtime_process": 18,
+    "python312_runtime_process": 18
+  },
+  "logSha256": {
+    "full-tests.log": "f8ccb138639bdb1c0b2b3f4d377631781caa6bf4a0f65543f2f63709ca34011f",
+    "runtime-tests.log": "51dced96979de67c1e9b64e9b43ddd04f67b1091c21cabf54e7a7178ebbbefc0",
+    "py312-tests.log": "9f3769a3bc0b54062f9e766a4704c07f2efc847888f2abac750a40a72a217928"
+  },
+  "liveDoctorOk": true,
+  "automaticCleanupSecondsAfterGatewayCrash": 0.3647010326385498,
+  "noLateWriteObservedSecondsAfterStart": 204.16039395332336,
+  "testSideDescendantSignals": 0,
+  "scope": "Ordinary owned CLI process group after gateway death; no OS sandbox, malicious detached process or guard SIGKILL claim."
+}

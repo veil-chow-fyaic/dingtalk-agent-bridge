@@ -110,3 +110,8 @@
 - docs/62；隔离真实Gateway/LocalRuntime实证parent death后工具写入，先失败回归后修正误称停止；163全量与新wheel六入口18模块通过，crash-notice-validation/install。
 - veil单次真实任务，确认Python/Shell/Kimi/gateway归属后只SIGKILL私聊gateway；75.105秒后实际late文件存在。明确身份清理所有原进程后恢复，原任务interrupted不重做、新提示UI可见；新只读核验实际工具/完整回复通过、文件mtime与字节保持。43审计5负向，crash-recovery-ui-ledger/audit-negative；自动父进程丢失清理仍缺。
 - DM57/143/152/210，群及旧账本保持；两gateway加载提示修复，传输/原观察保持，1261样本10.510h仍未满24h。私有local/crash-recovery-20261112。另核官方语音手册仅列手机步骤，无新Mac入口。
+
+## E046 — 通用父进程守护与真实gateway崩溃自动清理
+- docs/63；LocalRuntime pipe生命周期＋独立守护持有CLI直至同组清理，正常完成/取消/超时继续；164全量、双Python运行器各18项、新wheel六入口19模块通过。
+- 新veil原生任务确认五进程父子链后仅SIGKILL私聊gateway，0.365秒后自动全部退出，测试控制器对后代零信号；204秒无晚写，原interrupted/no result不重做。新只读Python及完整liev回复UI可见。
+- 42审计5负向；runtime-parent-guard-validation/install/ui-ledger/audit-negative.json。DM59/147/156/216，群3/7/12/76与旧记录/日志保持；两gateway已加载，transport/原观察保持。1290样本10.752h仍未满24h；非OS沙箱，不覆盖守护自身SIGKILL。私有local/runtime-parent-guard-20261112。

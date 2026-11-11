@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "wrong_parent_rejected": true,
+    "manual_cleanup_rejected": true,
+    "early_deadline_rejected": true,
+    "late_write_rejected": true,
+    "cleanup_after_restart_rejected": true
+  },
+  "scope": "In-memory audit mutations only; no messages, process crashes or tools replayed."
+}

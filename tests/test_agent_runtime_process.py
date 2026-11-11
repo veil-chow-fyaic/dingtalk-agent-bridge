@@ -112,7 +112,9 @@ while not Path('child-ready').exists(): time.sleep(.01)
 
     def test_exited_leader_cannot_leave_a_writing_tool_after_timeout(self):
         body=self.forked_tool()+'os._exit(0)\n'
-        with self.assertRaisesRegex(RuntimeStopped,'timeout'):
+        # The supervisor now observes the CLI exit and closes inherited tool
+        # stdout promptly; failure no longer needs to wait for the deadline.
+        with self.assertRaisesRegex(RuntimeError,'did not complete'):
             self.run_provider(self.runtime(body,timeout=2))
         self.assert_tool_stopped()
 
@@ -131,7 +133,7 @@ while not Path('child-ready').exists(): time.sleep(.01)
         canceller=threading.Thread(target=cancel_ready);canceller.start()
         try:
             with self.assertRaisesRegex(RuntimeStopped,'cancelled'):
-                self.run_provider(self.runtime(self.forked_tool()+'os._exit(0)\n'))
+                self.run_provider(self.runtime(self.forked_tool()+'time.sleep(30)\n'))
             self.assert_tool_stopped()
             self.assertIsNone(unrelated.poll())
         finally:
@@ -147,3 +149,36 @@ os._exit(0)
 """
         self.assertEqual(self.run_provider(self.runtime(body,kind='codex'))['text'],'fixture')
         self.assert_tool_stopped()
+
+    def test_gateway_death_supervisor_cleans_cli_and_tool_without_replay(self):
+        import subprocess,time,signal
+        from dingtalk_bridge.service_manager import process_identity
+        runtime=self.runtime(self.forked_tool()+'''import json
+Path('owned.json').write_text(json.dumps({'cli':os.getpid(),'guard':os.getppid()}))
+time.sleep(30)
+''')
+        driver='''import json,sys,threading
+from pathlib import Path
+sys.path.insert(0,sys.argv[1])
+from dingtalk_bridge.agent_runtime import LocalRuntime
+LocalRuntime(json.loads(sys.argv[2])).run('synthetic',Path(sys.argv[3]),Path(sys.argv[4]),None,threading.Event(),lambda _:None)
+'''
+        errors=(self.root/'driver-error').open('wb')
+        parent=subprocess.Popen([sys.executable,'-c',driver,str(Path(__file__).resolve().parents[1]),
+            json.dumps(runtime.settings),str(self.workspace),str(self.root/'run')],stdout=errors,stderr=errors)
+        owned={}
+        try:
+            deadline=time.monotonic()+10
+            while not (self.workspace/'owned.json').exists():
+                self.assertIsNone(parent.poll());self.assertLess(time.monotonic(),deadline);time.sleep(.02)
+            owned=json.loads((self.workspace/'owned.json').read_text())
+            self.assertNotEqual(owned['guard'],parent.pid)
+            parent.kill();parent.wait(timeout=5)
+            deadline=time.monotonic()+10
+            while any(process_identity(pid) is not None for pid in owned.values()):
+                self.assertLess(time.monotonic(),deadline);time.sleep(.02)
+            self.assert_tool_stopped()
+            self.assertIn('gateway_pipe_closed',(self.root/'run/stderr.log').read_text())
+        finally:
+            if parent.poll() is None:parent.kill();parent.wait()
+            errors.close()

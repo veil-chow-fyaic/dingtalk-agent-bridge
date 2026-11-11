@@ -5,6 +5,7 @@ from pathlib import Path
 import selectors
 import signal
 import subprocess
+import sys
 import time
 
 
@@ -90,8 +91,17 @@ class LocalRuntime:
         deadline=time.monotonic()+self.settings.get('timeoutSeconds',600)
         final_text=None;completed=False;observed_session=session_id;buffer=b'';terminal_error=False
         with (run_dir/'events.jsonl').open('wb') as log,(run_dir/'stderr.log').open('wb') as errors:
-            process=subprocess.Popen(args,cwd=workspace,stdin=subprocess.PIPE if self.kind=='codex' else subprocess.DEVNULL,
-                stdout=subprocess.PIPE,stderr=errors,start_new_session=True)
+            lifetime_read,lifetime_write=os.pipe()
+            try:
+                guard=[sys.executable,str(Path(__file__).with_name('runtime_guard.py')),
+                    '--lifetime-fd',str(lifetime_read),'--',*args]
+                process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind=='codex' else subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,))
+            except BaseException:
+                os.close(lifetime_write)
+                raise
+            finally:
+                os.close(lifetime_read)
             sel=selectors.DefaultSelector()
             def consume(line):
                 nonlocal observed_session,completed,terminal_error,final_text
@@ -153,4 +163,8 @@ class LocalRuntime:
             finally:
                 sel.close();process.stdout.close()
                 if process.stdin and not process.stdin.closed:process.stdin.close()
-                stop_owned_group(process)
+                # The supervisor owns the actual CLI and retains its PID through
+                # cleanup. Closing this pipe also works when the gateway dies.
+                os.close(lifetime_write)
+                try:wait_unreaped(process,15)
+                finally:stop_owned_group(process)

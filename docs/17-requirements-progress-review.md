@@ -1,8 +1,8 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E045之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E046之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
-最新现场为[崩溃不确定结果与真实UI](62-crash-recovery-uncertainty.md)：gateway被SIGKILL后工具继续写入，已修准确提示且不自动重做，43审计/5负向通过；自动清理仍缺。此前[合成语音听记分析与报告交付](61-official-minutes-ui.md)，51审计/5负向通过；此前[个人钉盘真实IM交付](60-official-drive-and-conference.md)：一次上传、按ID下载、57B原件与客户端下载打开相同，39审计/4负向通过；固定版conference明确下线；听记已由E044单列验证。此前[运行中停止与恢复](59-active-gateway-stop-ui.md)：实际Python等待工具启动后，仅停止私聊gateway；子进程退出、一次取消反馈UI可见、越过等待期无晚写，恢复后新只读任务实际执行并回复703。41审计/4负向通过。[原始附件名与Unicode CSV](58-attachment-metadata-unicode-csv.md)已完成真实解析、原名保留及CSV/JSON客户端下载打开；48审计/4负向通过。原错误和未验格子保持。
+最新现场为[gateway崩溃后自动清理与真实UI](63-runtime-parent-death-guard.md)：独立守护自动清理CLI/工具，测试控制器不清理后代，204秒后无晚写；恢复后实际只读工具与完整UI回复通过，42审计/5负向。此前E045工具遗留失败原样保留。此前[合成语音听记分析与报告交付](61-official-minutes-ui.md)，51审计/5负向通过；此前[个人钉盘真实IM交付](60-official-drive-and-conference.md)：一次上传、按ID下载、57B原件与客户端下载打开相同，39审计/4负向通过；固定版conference明确下线；听记已由E044单列验证。此前[运行中停止与恢复](59-active-gateway-stop-ui.md)：实际Python等待工具启动后，仅停止私聊gateway；子进程退出、一次取消反馈UI可见、越过等待期无晚写，恢复后新只读任务实际执行并回复703。41审计/4负向通过。[原始附件名与Unicode CSV](58-attachment-metadata-unicode-csv.md)已完成真实解析、原名保留及CSV/JSON客户端下载打开；48审计/4负向通过。原错误和未验格子保持。
 
 ## 当前交付状态
 
@@ -13,11 +13,11 @@
 | 附件与媒体 | PDF/DOCX/XLSX/ZIP四方向；私聊TXT/CSV、原生PNG/JPEG、WAV/MP4 file、下载打开和实际工具 | 群TXT入站/CSV双向等仍缺；语音条/独立video不由文件替代；详见四方向矩阵 |
 | 长文、引用、组合 | UTF-16分段、完整长气泡UI、私聊出站引用、单条双PNG、分条多文件后续合并 | 私聊入站/群引用、其他单条多附件、群长文未过 |
 | 控制与失败 | 私聊status/cancel/new、实际取消、拒绝对账、模型错误保留、超限提示及新压缩任务 | 群控制等仍缺；未知先对账、从不静默重做 |
-| 运行与恢复 | manager、只读doctor、新venv六入口/18模块；E041全量163项、3.12 gateway34项通过；manager私有诊断已补，历史关闭错误根因未解；短停机、history/Stream限定故障、自然access预刷新 | 真实失效refresh与完整24h未过；E027原during-shutdown诊断问题保留 |
+| 运行与恢复 | manager、只读doctor、新venv六入口/19模块；E046全量164项、3.12运行器18项通过；manager私有诊断已补，历史关闭错误根因未解；短停机、history/Stream限定故障、自然access预刷新 | 真实失效refresh与完整24h未过；E027原during-shutdown诊断问题保留 |
 | 官方办公 | 绑定liev的doc/todo/calendar/未发送draft、个人钉盘上传下载及合成语音听记真实任务与IM文件 | 独立会议、密送独立读证、外部场景按SHOULD保留 |
 | 文档与Git | 官方/补充边界、研究引用、合成fixture、只读审计、manifest/隐私门、分段本地提交 | 最终自检、封版和完成标签未做；未远程发布 |
 
-运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E045快照DM57任务/143outbox（142确认1旧拒绝）/152传输/210事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，06:06附近约10.510小时；累计6不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
+运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E046快照DM59任务/147outbox（146确认1旧拒绝）/156传输/216事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，06:21附近约10.752小时；累计6不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
 
 ## 用户从一开始要解决的问题
 
