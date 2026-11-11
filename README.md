@@ -34,6 +34,8 @@ E053：[异常消息隔离](docs/70-malformed-message-isolation.md)，防止坏�
 
 最新修复：[附件缓存清单完整性](docs/71-download-cache-integrity.md)，六种合成损坏拒绝及显式repair通过，48份既有缓存/55资源只读验证、双Python已安装包各180项通过，无新消息。
 
+最新真实UI：[附件下载故障恢复](docs/72-attachment-download-outage-ui.md)。私聊下载HTTP故障115.987秒，状态命令可用；原附件无需重发/重启完成真实Python处理，192B JSON客户端下载打开，52审计/8负向通过。
+
 ## 运行与复核
 
 现行步骤已与已安装命令及HTTP实现逐项核对，见[交接契约复核](docs/67-current-handoff-contract.md)：18帮助/33既有测试通过；旧运行/工具说明已单独存档。[中文与空格路径验证](docs/68-unicode-workspace-install-validation.md)另通过64项既有测试、新同wheel安装六入口及只读doctor。

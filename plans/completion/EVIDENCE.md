@@ -155,3 +155,8 @@
 - docs/71；缓存补核成功/完整标志、预期资源集合及准确字节数，损坏要求显式repair到新attempt目录，保留旧原件；旧1方法6失败保留。修复后6场景/重启/repair/再次命中通过，源码及双Python已安装包各180项。
 - accept_download_cache.py 22审计；download-cache-install/validation.json。48现场清单55资源只读验证、网络调用0、清单不改；无真实损坏注入、重新下载或新UI。
 - 三进程空闲加载、配置/旧记录/session不变，DM62/154/163/226、群3/7/12/76保持。原观察1442样本12.020h未满24h，6不可达/历史3poll_error保持；私有local/download-cache-20261112。
+
+## E055 — 真实附件下载故障与原任务恢复
+- docs/72；仅私聊官方mget子进程代理网络隔离115.987秒，14次原始官方io_timeout/request_timeout失败；history/Stream保持，原CSV waiting_media且未运行，status完整UI可见。
+- 原消息恢复后一次成功下载/一次真实Python csv+Decimal+SHA，192B JSON客户端下载Quick Look全文打开；输入3份/输出4份原件相等。accept_attachment_outage_ui.py 52审计8负向，attachment-outage-ui-ledger/audit-negative.json。
+- 3新任务6确认，DM65/160/169/235、群3/7/12/76及旧记录/session保持；设置/撤除有维护，恢复不重启或重发，配置精确恢复，product仍E054/180项。原观察1477样本12.312h、7不可达（维护增1）及旧3poll_error保留，未满24h。私有local/attachment-outage-20261112。

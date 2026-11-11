@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E054之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E055之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E055：真实私聊mget下载HTTP故障115.987秒，等待附件时status完整回复；原消息自动恢复，一次Python处理/192B JSON客户端下载打开。52审计8负向通过，原配置精确恢复，产品沿用E054。[证据](72-attachment-download-outage-ui.md)
 
 - E054：缓存命中完整性，6种损坏拒绝/显式repair保留旧件；双Python已安装包各180项、48现场缓存55资源只读核验和22审计通过；三进程空闲加载，无新消息。[证据](71-download-cache-integrity.md)
 
@@ -26,7 +28,7 @@
 
 - E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
 
-E054 Python3.14/3.11隔离wheel各180项及六入口19模块通过；E039两次manager历史错误保持；三进程已加载E054，私聊600秒保持，原24h观察器未重启。DM62/154/163/226，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+E054 Python3.14/3.11隔离wheel各180项及六入口19模块通过；E039两次manager历史错误保持；三进程已加载E054，私聊600秒保持，原24h观察器未重启。DM65/160/169/235，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 

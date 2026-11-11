@@ -1,8 +1,8 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E054之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E055之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
-最新修复为[附件缓存清单完整性](71-download-cache-integrity.md)：6种损坏拒绝及显式repair通过，48现场缓存/55资源只读核验，双Python已安装包各180项和22审计通过；三进程空闲加载，无新消息。此前[异常消息隔离](70-malformed-message-isolation.md)：18形状隔离且后续合法任务继续，双Python各179项、302条旧官方事件投影相等及25审计通过；两gateway空闲加载，传输和原观察保持，无新UI。此前[并发对账终态保护](69-monotonic-reconciliation-and-ui.md)：旧线程8/旧安装HTTP4失败保留；修复后Python3.14与最低3.11隔离wheel各177项，三进程已加载。新的veil原生私聊由Kimi实际计算平方并回传145B JSON，liev完整回复、客户端下载及Quick Look打开通过，36审计7负向；原任务/会话/日志保持。此前[中文路径验证](68-unicode-workspace-install-validation.md)、[交接契约](67-current-handoff-contract.md)、[冻结历史审计](66-frozen-install-audit-boundary.md)与[真实超时](64-runtime-timeout-and-installed-wheel.md)各按当时版本保留，旧失败和未验格子不改绿。
+最新真实UI为[附件下载故障恢复](72-attachment-download-outage-ui.md)：私聊mget故障115.987秒，状态命令不被等待附件堵住；无需重发或重启，原CSV实际处理/192B JSON客户端下载打开，52审计8负向。配置已恢复，产品仍E054。此前[附件缓存清单完整性](71-download-cache-integrity.md)：6种损坏拒绝及显式repair通过，48现场缓存/55资源只读核验，双Python已安装包各180项和22审计通过；三进程空闲加载，无新消息。此前[异常消息隔离](70-malformed-message-isolation.md)：18形状隔离且后续合法任务继续，双Python各179项、302条旧官方事件投影相等及25审计通过；两gateway空闲加载，传输和原观察保持，无新UI。此前[并发对账终态保护](69-monotonic-reconciliation-and-ui.md)：旧线程8/旧安装HTTP4失败保留；修复后Python3.14与最低3.11隔离wheel各177项，三进程已加载。新的veil原生私聊由Kimi实际计算平方并回传145B JSON，liev完整回复、客户端下载及Quick Look打开通过，36审计7负向；原任务/会话/日志保持。此前[中文路径验证](68-unicode-workspace-install-validation.md)、[交接契约](67-current-handoff-contract.md)、[冻结历史审计](66-frozen-install-audit-boundary.md)与[真实超时](64-runtime-timeout-and-installed-wheel.md)各按当时版本保留，旧失败和未验格子不改绿。
 
 ## 当前交付状态
 
@@ -17,7 +17,7 @@
 | 官方办公 | 绑定liev的doc/todo/calendar/未发送draft、个人钉盘上传下载及合成语音听记真实任务与IM文件 | 独立会议、密送独立读证、外部场景按SHOULD保留 |
 | 文档与Git | 官方/补充边界、研究引用、合成fixture、只读审计、manifest/隐私门、分段本地提交 | 最终自检、封版和完成标签未做；未远程发布 |
 
-运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E052快照DM62任务/154outbox（153确认1旧拒绝）/163传输/226事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，07:37附近约12.020小时；累计6不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
+运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E055快照DM65任务/160outbox（159确认1旧拒绝）/169传输/235事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，07:54附近约12.312小时；累计7不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
 
 ## 用户从一开始要解决的问题
 
