@@ -49,7 +49,7 @@
 
 07/14/16保留当时的日期、软件版本和数量；当前结论以17/13为准。每条能力区分官方契约、上游报告、本机API、原件、客户端呈现、对端实收，不从单人结果外推全钉钉覆盖。
 
-安装与诊断：[可安装包、五个入口与只读doctor](docs/35-install-and-doctor.md)。干净导出/新venv验证，93项回归通过；后台统一管理仍待完善。
+安装与运行：[统一后台管理与真实重启验收](docs/40-service-manager-and-restart-ui.md)提供六个入口、传输＋可选多gateway启动/停止；119项回归和新wheel验证通过，真实私聊任务结果已客户端下载打开。[只读doctor](docs/35-install-and-doctor.md)保留独立诊断语义。
 
 ## 当前环境与可运行内容
 
@@ -59,9 +59,7 @@
 
 ```bash
 python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
-python3 scripts/service_ctl.py status
-python3 scripts/agent_ctl.py status
-python3 scripts/agent_ctl.py --config local/agent-direct-config.json status
+python3 -m dingtalk_bridge.service_manager status
 python3 scripts/accept_media_matrix.py
 python3 -m unittest discover -s tests -v
 python3 scripts/verify_handoff.py
@@ -71,10 +69,10 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：39份当前/历史分明的知识文档。
+- `docs/`：40份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
-- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和108项回归。
+- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和119项回归。
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
 已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。

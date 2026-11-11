@@ -17,35 +17,21 @@
 
 ## 启动与停止
 
-从 `/Users/veil/Projects/dingtalk-agent-bridge` 执行：
+当前由统一管理器拥有传输及两个gateway；旧PID文件只保留历史。详细配置、进程归属和回退见[统一管理器](40-service-manager-and-restart-ui.md)。从项目工作目录执行：
 
 ```bash
-python3 scripts/service_ctl.py status
-python3 scripts/service_ctl.py start
-python3 scripts/service_ctl.py stop
+python3 -m dingtalk_bridge.service_manager status
+python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
+# 以下会停止/启动服务；维护前确认没有进行中的任务
+python3 -m dingtalk_bridge.service_manager stop
+python3 -m dingtalk_bridge.service_manager --agent-config local/agent-config.json --agent-config local/agent-direct-config.json start
 ```
 
-需要前台诊断时，先 stop，再执行：
+管理器先启动传输再启动gateway，停止顺序相反；重复启动复用同PID，只向归属匹配的进程发SIGTERM，不强杀共享DWS bus。状态位于 `local/runtime/managed-processes.json`，日志为 `managed-transport.log`、`managed-agent-N.log`。不要用旧service_ctl.py/agent_ctl.py操作当前进程。
 
-```bash
-python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15
-```
+群配置为 `local/agent-config.json`，私聊为 `local/agent-direct-config.json`。启动gateway会实际响应已授权任务；Kimi自动工具执行与提示词规则不是OS沙箱。管理器不绑定runtime，也可只启动传输；status只是归属/存活，实际可用性还要doctor和UI任务验证。
 
-`service_ctl.py` 保存并核对本项目进程 PID；停止只发送 SIGTERM，不强杀共享 DWS bus。日志是 `local/runtime/service.log`。SQLite 进程锁阻止两个服务同时操作同一状态目录。重启会将遗留 executing 标为 outcome_unknown。
-
-## 本地 Agent 进程
-
-```bash
-python3 scripts/agent_ctl.py status
-python3 scripts/agent_ctl.py --config local/agent-direct-config.json status
-# start/stop 也分别作用于所选配置；默认群，不会自动操作私聊worker。
-python3 scripts/agent_ctl.py start
-python3 scripts/agent_ctl.py --config local/agent-direct-config.json start
-python3 scripts/agent_ctl.py stop
-python3 scripts/agent_ctl.py --config local/agent-direct-config.json stop
-```
-
-群配置为 `local/agent-config.json`，私聊为 `local/agent-direct-config.json`；启动前先确保传输服务运行。启动会响应已配置身份和会话中的任务，不是只读观察。Kimi非交互模式自动执行工具，当前只允许veil触发liev所绑定的任务；提示词的工作区规则不等于OS沙箱。会话命令、日志、失败恢复和真实验收见[docs/24](24-local-agent-product-and-acceptance.md)。
+需要前台诊断时先用管理器stop，再运行 `python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15`；前台结束后才恢复受管启动。不得并行启动另一个管理方式。
 
 ## 配置和秘密
 

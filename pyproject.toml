@@ -16,6 +16,7 @@ dab-bridge = "dingtalk_bridge.__main__:main"
 dab-agent = "dingtalk_bridge.agent_gateway:main"
 dab-consume = "dingtalk_bridge.consume:main"
 dab-doctor = "dingtalk_bridge.doctor:main"
+dab-service = "dingtalk_bridge.service_manager:main"
 
 [tool.setuptools]
 packages = ["dingtalk_bridge"]

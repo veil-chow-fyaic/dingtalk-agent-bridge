@@ -1,5 +1,7 @@
 # 全部需求回顾、文档交付与真实进度
 
+最新运行交付：[E020统一后台管理](40-service-manager-and-restart-ui.md)已部署，六入口新wheel、119回归、39只读审计与真实私聊生成文件/客户端下载打开通过。重复start不增进程，受控stop/restart沿用旧账本和native会话。原24h观察继续，下一步官方办公闭环及余下UI/故障项。
+
 最新处置：[E019拒绝审计与UI反馈](39-rejection-reconciliation-and-feedback.md)已完成。原unknown按绑定官方日志变为rejected，原快照/证据保留，原正文未重发；客户端状态未确认0/拒绝1，108回归。下一段统一后台管理，引用/长气泡UI与办公继续。
 
 当前增量：[长文超限修复](38-long-text-limit-and-regression.md)。按含前缀UTF-16≤5120分段、发送前校验，99回归及新任务确认/客户端下载打开通过；原未知拒绝记录、首段末尾LF裁剪和完整长气泡UI未验均保留，见E018。

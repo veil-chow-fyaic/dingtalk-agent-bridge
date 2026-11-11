@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "six_installed_entrypoints": true,
+    "site_packages_import": true,
+    "wheel_modules_match_workspace": true,
+    "wheel_only_package_metadata": true,
+    "empty_config_rejected": true,
+    "no_state_on_preflight_failure": true,
+    "clean_export_without_account_state": true
+  },
+  "entrypoints": {
+    "dab": true,
+    "dab-bridge": true,
+    "dab-agent": true,
+    "dab-consume": true,
+    "dab-doctor": true,
+    "dab-service": true
+  },
+  "wheelSha256": "0dd235b7e439214d4396f768c99faf5290d1b1c2508a6fc5dde061e514dbeb3f",
+  "wheelBytes": 50897,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "df4f2e304f6188b052dbb4b6ae2b03e8a4e02dd6e86e6c79b8a3cdbcb967d831",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "agent_runtime.py": "779989c3d90a72931175bd41ca6ba6da28a59038c9338688f41fd37240421f82",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "7dc9995c72a57000ccd91c570c3fabf95f4410dfb0d491b1768623019406b851",
+    "agent_gateway.py": "96ffd17c6f1d53f68200b8d471865f78c7e94890a38f5d49f2c5bf71aa1b753f",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "92b3e90424fa21941bf03b038a50e9e8d7a9db96586def001957f4bed97f8d6c",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "84db108afcd631e1965769b90d03b7f5f4eb51c4e4157821e59d831481db8a3b",
+    "cli.py": "6e5c3334ddae8b114b60c768723beb9bb88271c51cff85677980a06fe96dcf84",
+    "consumer.py": "60c0e81f6b9e84316681d6d6bed0733a26a5e74678100bf6a4eff992cab62e44",
+    "routing.py": "361597872a3c87461471115e972355592c244372d1f2a848cdd9991b00e0c764",
+    "doctor.py": "c5c70b0aa329d0db8d83b2874f635cae85a44160e4b3f16b5eecffcadfc6e522",
+    "__main__.py": "3111f36c3f58a64ecfa33459679cf6d8e94238b539a5eb7e1500f81dc213ba69",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "pythonVersion": "3.14.6",
+  "ok": true,
+  "date": "2026-11-11",
+  "limits": [
+    "Clean wheel/install verified; current workspace modules are byte-identical",
+    "Managed child python -m resolves source from workspace when a checkout exists",
+    "No account state copied into clean export or wheel",
+    "macOS Python 3.14.6 tested; other environments remain unverified"
+  ]
+}

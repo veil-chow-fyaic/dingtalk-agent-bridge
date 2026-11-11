@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-11",
+  "baselinePassed": true,
+  "checks": 39,
+  "negativeCases": {
+    "missingConfirmedReplyRejected": true,
+    "corruptedClientDownloadRejected": true
+  },
+  "method": "In-memory mocks only; no runtime database/evidence edits"
+}

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-11",
+  "inputIdentity": "veil native DingTalk UI",
+  "replyIdentity": "liev bound DWS user, not bot",
+  "observations": [
+    "After managed stop/restart, veil sent one new multiplication/file task in the direct chat",
+    "liev result file card showed 35 B and AI-send attribution",
+    "Downloaded with native Save dialog into private evidence directory",
+    "Finder Quick Look displayed DAB-MANAGER-20261111 and 19 * 31 = 589 on two lines",
+    "Downloaded bytes equal Kimi-generated staged artifact"
+  ],
+  "textBubbleSeparatelyObserved": false,
+  "newRuntimeTasks": 1,
+  "newConfirmedReplies": 3,
+  "clientFileBytes": 35,
+  "clientFileSha256": "62d9d769a93774b961d895e1442c14f768ebecb55e39fe9aaa4ed27089fc14df",
+  "rawEvidence": "Private local/service-manager-20261111 native AX/screenshots, ledger snapshots and process records"
+}

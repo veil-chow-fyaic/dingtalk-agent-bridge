@@ -71,3 +71,7 @@ Finder多选两份合成TXT/CSV一次粘贴，钉钉拆成两消息/两任务，
 
 ## 2026-11-11 E019 拒绝终态与用户提示
 原长文首段现为rejected：显式导入绑定原uuid/目标/执行编号/唯一时间窗的官方长度拒绝日志，完整原unknown行和证据存入rejection_audit；原正文未重发（官方请求计数仍1）。后续明确invalid_request+PARAM_ERROR在发送阶段分为拒绝，有taskId的查询拒绝不误判。gateway原子记录终态+稳定key失败通知。真实UI可见部分回复未送达；veil status显示未确认0/拒绝1，旧blocked/cancelled保留。108回归、34只读审计及2负向检查通过，docs/39/E019。当前DM32任务/74outbox（73确认1拒绝），本段新增1状态任务/2确认回复/0runtime；两个gateway和传输已维护重启。E018冻结证据不改，审计只允许有原行摘要证明的终态转换。下一步C04统一后台管理/配置引导，C01引用/长气泡UI，C05办公；原24h观察器继续、不重置。
+
+## 2026-11-11 E020 统一管理器已迁移
+当前传输/群gateway/私聊gateway由dingtalk_bridge.service_manager拥有，local/runtime/managed-processes.json记录归属；旧scripts/*_ctl.py与旧PID文件不再管理当前进程。查看用python3 -m dingtalk_bridge.service_manager status；start必须显式带两个--agent-config，stop无需配置列表。无开机自启/自动监督，SIGTERM超时不强杀。详见docs/40。
+11项真实子进程测试及119全量通过；干净新wheel/venv六入口、17模块摘要相同。现场重复start同PID、逆序stop、重新start新PID；旧35任务/81outbox/94传输/83运行文件保持。veil原生私聊一个新任务→Kimi Write 19×31=589→liev3确认回复，35B文件客户端下载Quick Look打开且字节一致，39只读检查及2负向检查通过。当前DM33任务/77outbox（76确认1拒绝），旧blocked/cancelled保留。原24h观察不重置，511样本约4.25h/累计3不可用，迁移维护已记；未满24h。下一步C05 liev官方办公闭环，C01引用/长气泡新UI路径；原群范围问题仍待答复，不重复坐标失败路径。

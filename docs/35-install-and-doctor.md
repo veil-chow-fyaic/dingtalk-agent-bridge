@@ -29,7 +29,7 @@ python3 -m venv .venv
 .venv/bin/dab-agent --config local/agent-config.json
 ```
 
-当前客户端/gateway/consumer默认连接127.0.0.1:18768。后台控制仍是检出目录内的service_ctl.py/agent_ctl.py，管理选中的单进程；统一多worker启动/停止尚未交付。安装包验证不意味着开机自启、后台管理和全部产品验收完成。
+当前客户端/gateway/consumer默认连接127.0.0.1:18768。本页E015记录当时五入口安装检查点；后续E020已交付第六入口dab-service及多worker后台管理，现部署与运行步骤见[docs/40](40-service-manager-and-restart-ui.md)。无开机自启，完整产品验收仍未完成。
 
 ## doctor语义
 

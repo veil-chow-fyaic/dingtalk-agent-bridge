@@ -1,9 +1,9 @@
 {
   "date": "2026-11-11",
   "ok": true,
-  "tests": 108,
-  "seconds": 10.187,
-  "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
+  "tests": 119,
+  "seconds": 21.713,
+  "scope": "Local unit/integration and real controlled subprocesses; no remote business calls",
   "results": [
     {
       "test": "test_agent_gateway.AgentGatewayTests.test_artifact_outside_exports_and_symlink_rejected",
@@ -423,6 +423,50 @@
     },
     {
       "test": "test_routing_consumer.Tests.test_unknown_media_and_cross_scope_quote_fail_closed",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_changed_pid_identity_never_signals_foreign_process",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_concurrent_lifecycle_operation_is_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_config_drift_requires_stop_and_stop_does_not_need_current_config",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_duplicate_agent_scopes_and_mismatched_bridge_config_are_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_initial_startup_failure_rolls_back_transport_and_prior_new_agents",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_preflight_failure_creates_no_runtime_files",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_real_process_start_is_idempotent_and_stop_uses_persisted_ownership",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_startup_failure_rolls_back_only_new_children",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_status_stop_and_plan_are_read_only_without_existing_state",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_transient_pre_exec_identity_is_not_persisted",
+      "result": "passed"
+    },
+    {
+      "test": "test_service_manager.ServiceManagerTests.test_unmanaged_port_is_not_adopted_or_signalled",
       "result": "passed"
     },
     {
