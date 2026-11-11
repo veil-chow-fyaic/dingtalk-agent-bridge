@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-12",
+  "method": "in-memory evidence mutation; raw evidence and services unchanged",
+  "baselinePassed": true,
+  "baselineChecks": 50,
+  "negativeCases": {
+    "missing_socket_cut": {
+      "rejected": true,
+      "failedChecks": [
+        "established_websocket_tunnel_actually_cut"
+      ]
+    },
+    "failed_job_marked_completed": {
+      "rejected": true,
+      "failedChecks": [
+        "no_stream_hints_while_history_task_executed",
+        "A_job_and_replies_preserved",
+        "A_invalid_response_kept_failed_not_delivered"
+      ]
+    },
+    "corrupt_download": {
+      "rejected": true,
+      "failedChecks": [
+        "B_download_matches_expected_generated_and_digest",
+        "B_native_card_download_and_open"
+      ]
+    },
+    "missing_recovered_hints": {
+      "rejected": true,
+      "failedChecks": [
+        "seven_hints_received_after_recovery"
+      ]
+    }
+  },
+  "ok": true
+}

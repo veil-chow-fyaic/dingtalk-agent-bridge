@@ -26,3 +26,5 @@
 
 | E022 | L5只读补验 | 旧E018两段4892/1967字符完整聊天AX匹配，7个首尾/边界视口核对，零新消息/任务；22审计/2负向检查 | docs/42；long-bubble-ui-ledger.json；long-bubble-audit-validation.json | 不逐行像素验收；引用菜单仍未成功，AI搜索摘要不作证据 |
 | E023 | L4/L5 | 私聊history子进程HTTP实际故障78.310秒、5次官方超时；veilUI一次任务，恢复自动补收/Kimi Python1591/3确认回复/36B客户端下载Quick Look打开；42审计/3负向检查，配置已恢复 | docs/43；history-network-recovery-ledger.json；history-network-audit-validation.json | 非完整Stream/整机断网、非授权过期；短文字气泡未独立观察；24h原观察5.57h/669样本/4不可用继续 |
+
+| E024 | L3/L4/L5 | 已建立Stream WebSocket实际切断89.446秒，同一bus/consumer恢复7提示，history兜底无重复；2真实UI/Kimi任务，A格式错误failed及提示保留，B3127/37B客户端下载打开；131回归/50审计/4负向检查，装置已撤 | docs/44；stream-network-recovery-ledger.json；stream-network-audit-validation.json；stream-network-test-validation.json | A未成功交付；未逐条保存原始Stream载荷，非同时整机断网/失效凭据；24h原观察6.01h/5不可用继续 |

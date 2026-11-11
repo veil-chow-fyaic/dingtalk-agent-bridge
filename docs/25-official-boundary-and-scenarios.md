@@ -22,7 +22,7 @@ DWS 已有 `dws dev connect`：使用机器人凭证连接本地 Codex 等渠道
 |---|---|---|---|
 | 认证、刷新、组织账号 | DWS auth/profile、系统凭据存储 | 精确选择已授权 profile，报错与运维 | 不复制凭据，不自行实现 OAuth，不用群名猜账号 |
 | 群/私聊历史和发现 | chat +chat-list、+conversation-info、+chat-messages | 配置允许路由、游标、去重、补读和完整性判断 | 历史索引延迟属于平台约束，不能宣称实时全收 |
-| 实时事件 | event +listen-im / consume、官方 Stream | 重连、限定订阅、事件到任务的持久消费及补全 | 独立业务事件与常驻提示已过E005/E007；E023仅history HTTP断网恢复，完整Stream分区未验 |
+| 实时事件 | event +listen-im / consume、官方 Stream | 重连、限定订阅、事件到任务的持久消费及补全 | 独立业务事件与常驻提示已过E005/E007；E023 history HTTP、E024已建立Stream隧道断连及恢复已验；真实失效凭据/24h仍待验 |
 | 文本、图片、文件、引用 | chat +messages-send / reply | 稳定回复目标、持久发送键、丢失回包对账 | 用户身份与 bot 身份分别验收，未知结果不切后端重发 |
 | 下载、资源读取 | chat +messages-mget --download-resources 等 | 有序 parts/引用、缓存哈希、任务输入隔离、失败重试 | 图片/文件内容解析由 Agent/工具做，不能只给路径就称理解通过 |
 | 流式文本卡片 | chat +messages-send-card / update-card | 绑定任务与 bizId、限频更新、结果校验 | 本轮官方 API 接受创建/更新；无独立内容验证，尚未接进 gateway |

@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-12",
+  "tests": 131,
+  "result": "passed",
+  "newProxyTests": 4,
+  "newPartialRuntimeFailureTest": 1,
+  "runtimeModulesUnchangedFromE021": 18,
+  "runtimeCodeUnchanged": true,
+  "newHarnessSha256": "226379fd37f93f8b86865c26dd288bf094c5f29625d5447f868eb6676bd8b423",
+  "testLogSha256": "973a46d9dee6813ac2dfab456b922918c46b305280d83632ddff61e4ff615321",
+  "scope": "Real local subprocess/socket tests and existing regressions; native UI evidence separate",
+  "ok": true
+}

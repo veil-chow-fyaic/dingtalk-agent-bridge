@@ -46,6 +46,18 @@ class RuntimeProcessTests(unittest.TestCase):
         finally:timer.join()
     def test_invalid_structured_answer_is_rejected(self):
         with self.assertRaises(ValueError):self.run_provider(self.runtime(self.terminal('this is not JSON')))
+    def test_partial_artifact_and_prompt_echo_are_not_retried_or_accepted(self):
+        body='''from pathlib import Path
+Path('exports').mkdir()
+Path('exports/partial.txt').write_text('computed once')
+with Path('attempts').open('a') as f: f.write('one\n')
+'''.replace("'one\n'", "'one\\n'") + self.terminal('User task: imaginary next instruction; return {"text":"example","files":[]}.')
+        with self.assertRaises(json.JSONDecodeError):
+            self.run_provider(self.runtime(body))
+        self.assertEqual((self.workspace/'attempts').read_text(),'one\n')
+        self.assertEqual((self.workspace/'exports/partial.txt').read_text(),'computed once')
+        self.assertTrue((self.root/'run/events.jsonl').is_file())
+        self.assertFalse((self.root/'run/validated-response.json').exists())
     def test_too_many_artifacts_is_rejected(self):
         with self.assertRaisesRegex(ValueError,'artifact'):
             self.run_provider(self.runtime(self.terminal(json.dumps({'text':'x','files':['exports/x']*11}))))

@@ -1,8 +1,8 @@
 # 当前执行清单与闭环状态
 
-最新检查点（2026-11-12）：[E022两段长回复原生UI](42-long-bubble-native-ui.md)与[E023私聊历史HTTP断网恢复](43-history-network-outage-recovery.md)已通过限定范围验收。旧长文只读浏览，完整AX正文匹配并核对7个首尾/边界视口；真实断网78.310秒期间veil发一次任务，恢复后自动补收，Kimi实际计算1591，36B文件客户端下载Quick Look打开且原件一致。没有重发、故障恢复期间无需重启。22/42项审计和5项负向检查通过，产品代码沿用E021的126回归/18模块版本。
+最新检查点（2026-11-12）：[E024真实Stream断连](44-stream-network-recovery-and-runtime-failure.md)已完成限定范围验收。切断已建立WebSocket89.446秒，history仍接收veil任务；恢复后同一daemon/consumer/bridge进程收7条有效提示，没有重复任务。A工具计算1927但模型最终输出违约，failed及用户侧提示保留，不自动重试；B不同新任务3127完成，37B客户端下载Quick Look打开且原件一致。50项审计、4项负向检查与131回归通过，18个产品模块保持E021版本。
 
-当前三个进程由[E020管理器](40-service-manager-and-restart-ui.md)管理，临时故障装置已撤除，服务配置精确恢复、DM官方上下文恢复原binary。原24h观察器继续，冻结检查点669样本约5.57小时/累计4不可用，维护单列，不标24h。引用与单消息多附件、完整Stream网络/真实凭据失效恢复尚缺；原群第三人范围问题待答复，私聊独立继续。活动下一步以[关键路径](../plans/completion/CRITICAL_PATH.md)为准。
+当前临时代理和配置均已恢复，三进程由manager正常管理。原24h观察器冻结722样本约6.01h/累计5不可用，维护单列，不标24h。[E022长文原生UI](42-long-bubble-native-ui.md)、[E023历史HTTP断网恢复](43-history-network-outage-recovery.md)保持。引用、单消息多附件、真实失效凭据及余下矩阵继续；群第三人范围问题待答复。下一步以[关键路径](../plans/completion/CRITICAL_PATH.md)为准。
 
 [E021官方办公](41-official-office-agent-ui.md)四类对象、三次Kimi任务/九回复/三报告下载打开及缺失密送字段更正保持；69项只读复核仍通过，工具上下文不是权限沙箱。
 

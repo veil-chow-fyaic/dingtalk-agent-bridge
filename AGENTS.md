@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md及当前状态文件、docs/43（history网络恢复）、42（长气泡UI）、41（官方办公接入及真实私聊任务）、40（当前进程管理器）、17（总状态）、13（摘要）、25（官方边界）、15（运维）；其他阶段文档按任务索引读取。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md及当前状态文件、docs/44（Stream断连与模型失败）、43（history网络恢复）、42（长气泡UI）、41（官方办公接入及真实私聊任务）、40（当前进程管理器）、17（总状态）、13（摘要）、25（官方边界）、15（运维）；其他阶段文档按任务索引读取。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -20,7 +20,7 @@
 
 固定实验DWS v1.0.67在local/bin/v1.0.67，保留全局v1.0.61。官方优先：DWS负责身份/权限/profile、聊天/历史/资源、办公API；自研补普通账号任务队列、会话、白名单、文件、幂等和恢复。官方已有dev connect机器人到本地Agent、OpenClaw Connector，不再声称bot接入全须自研。没有创建bot。
 
-普通账号覆盖外部业务的动机保留；bot类型需独立调查，不照搬企微规则。官方契约、源码、上游报告、服务端实测、UI、独立对端分层。Stream ready不等于业务入站，file不等于原生音视频，用户读取不等于标记已读。当前未通过：Codex实际执行、原生音视频、完整Stream网络中断/授权过期恢复（history HTTP故障补漏已过E023）、bot/外部客户UI、完整办公接入、24/72h可靠性、恶意隔离。
+普通账号覆盖外部业务的动机保留；bot类型需独立调查，不照搬企微规则。官方契约、源码、上游报告、服务端实测、UI、独立对端分层。Stream ready不等于业务入站，file不等于原生音视频，用户读取不等于标记已读。当前未通过：Codex实际执行、原生音视频、真实授权过期恢复（history HTTP故障E023、Stream断连恢复E024已过）、bot/外部客户UI、完整办公接入、24/72h可靠性、恶意隔离。
 
 ## 持续工作规则
 
@@ -85,4 +85,9 @@ E018旧两段长回复已在主聊天完整AX逐字比对并核对7张首尾/边
 私聊history HTTP子进程实际断网78.310秒（官方5次io_timeout），veilUI发一次任务；恢复自动补收，Kimi Python计算1591，三确认回复、36B客户端下载Quick Look打开通过，42审计/3负向检查；docs/43。非完整Stream/整机断网或凭据过期。测试launcher已撤除，local/service-config.json精确恢复，DM生成上下文回到原官方binary；三个manager进程当前健康，setup/cleanup维护已记，恢复期间无重启/重发。
 当前DM37任务/89outbox（88确认1拒绝），群3任务/7outbox不变，旧blocked/cancelled保持。原观察run/PID/起点不变，冻结669样本约5.57h/累计4不可用（清理维护新增1），未满24h。只读复核accept_long_bubble_ui.py和accept_history_network_recovery.py，不重复新旧实验。下一段先查可隔离的官方Stream连接/凭据失效机制或引用有效新入口，不能撤真实授权/改整机网络；无法安全隔离就具体记阻塞，转最终MUST/矩阵/边界缺口自检与独立实现。原群范围仍待答复。
 
-01:25只读补查：官方event status显示两consumer共享账号级personal bus，父PID均属当前bridge，idle/inferred不是新实收证据。SDK代理/共享daemon的限定断连方案仍需验证，见docs/43。官方另有dingtalk-tag connect已发布数字员工路线（独立员工profile/设备绑定），本机Help/固定源码已确认并补docs/25；没有发布/绑定员工，不将其混为liev真人路线。
+01:18:37（status取证时刻）只读补查：官方event status显示两consumer共享账号级personal bus，父PID均属当前bridge，idle/inferred不是新实收证据。SDK代理/共享daemon的限定断连方案仍需验证，见docs/43。官方另有dingtalk-tag connect已发布数字员工路线（独立员工profile/设备绑定），本机Help/固定源码已确认并补docs/25；没有发布/绑定员工，不将其混为liev真人路线。
+
+## 2026-11-12 E024 Stream实际断连与失败保留
+只对本bridge两consumer共享bus设置loopback CONNECT隧道，实际切断既有WebSocket89.446秒并阻止重连，history保持直连；同一bus/consumer/bridge进程恢复后收7提示，无重复任务。A原生UI任务实际Kimi算1927，但最终输出续写虚构下一任务而非JSON，gateway正确拒绝，failed/JSONDecodeError和局部文件/日志保持，仅ack＋失败提示，不重试/不交付局部文件；B不同新UI任务实际3127、三确认回复、37B客户端下载Quick Look打开。不是解析器误判，不放宽解析或把A改成功。
+50审计/4负向检查、131回归（新增4代理socket测试＋1局部产物后格式错误回归）；18产品模块仍与E021相同。工具scripts/network_fault_proxy.py仅测试，不是新传输后端，不解密TLS/记录载荷。setup/cleanup维护已记，临时wrapper/bus/proxy全部撤除，配置精确恢复、DM官方上下文恢复、manager/live doctor健康。只读复核accept_stream_network_recovery.py，docs/44。
+当前DM39任务/94outbox（93确认1拒绝），其中新增A failed保留；群3任务/7outbox无变化。原观察run/PID/起点保持，冻结722样本6.01h/5不可用，未满24h。下一段C01引用必须新入口（菜单/明确快捷键），不重复失败右键；并推进MUST/四方向验收矩阵与安全可行的凭据恢复方案，不撤真实授权。

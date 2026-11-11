@@ -32,4 +32,8 @@
 | 2026-11-12 00:43 C01/C02续跑开始 | 优先以原生菜单/AX动作寻找引用和长气泡有效新路径；失败路径留证后转进程级网络隔离与恢复，不重发旧实验 | local/quote-ui-20261112 | 原24h观察继续，账号/群范围不扩大 |
 
 | 2026-11-12 01:18 E022/E023闭环 | 原生搜索定位＋文本选择补两段完整长气泡AX和7个首尾边界视口；真实78.310秒私聊history HTTP故障中veil只发一次，恢复无重启自动补漏，Kimi Python1591/三回复/36B客户端保存打开，22/42审计＋5负向检查通过；测试装置与配置已恢复 | E022/E023；docs/42–43 | 引用右键无菜单触发loop guard；完整Stream/凭据失效仍未验。旧办公69/管理器39复核通过；原观察669样本5.57h/4不可用，清理维护另记，未标24h |
-| 2026-11-12 01:25隔离与官方边界补查 | 官方status只读成功：一bus/两订阅/两consumer，父PID均为当前bridge传输；源码确认账号级复用、consumer代理不重配旧bus，idle为推断空闲。补发现dingtalk-tag connect官方已发布数字员工接入路线，Help/源码留摘要，未绑定或改身份 | docs/25、43；stream-isolation-and-official-route-review.json | 下一轮先核SDK代理/限定daemon故障方案；数字员工不是liev真人替换，MUST矩阵自检继续；未增消息/任务 |
+| 2026-11-12 01:18:37（status取证时刻）隔离与官方边界补查 | 官方status只读成功：一bus/两订阅/两consumer，父PID均为当前bridge传输；源码确认账号级复用、consumer代理不重配旧bus，idle为推断空闲。补发现dingtalk-tag connect官方已发布数字员工接入路线，Help/源码留摘要，未绑定或改身份 | docs/25、43；stream-isolation-and-official-route-review.json | 下一轮先核SDK代理/限定daemon故障方案；数字员工不是liev真人替换，MUST矩阵自检继续；未增消息/任务 |
+
+| 2026-11-12 01:23 C02续跑开始 | 固定源码已确认personal Stream采用默认WebSocket Dialer，支持进程代理；准备仅本bridge拥有的共享bus限定故障与回退，先验证本地隧道工具再实机 | 待E024 | 不改整机网络/权限/身份，未知投递不重发，原24h观察继续 |
+
+| 2026-11-12 01:43 E024闭环 | 新增限定CONNECT故障工具及socket回归，真实切断Stream89.446秒；A通过history进入Kimi但模型最终违约、failed与UI提示保留；恢复同一进程收到7提示、B3127成功/37B下载打开、无重复。50审计/4负向检查/131回归通过，装置/配置已恢复 | E024；docs/44 | 原观察722样本6.01h/累计5不可用，维护单列；接着引用有效新入口、MUST矩阵与真实凭据边界，不重试A |

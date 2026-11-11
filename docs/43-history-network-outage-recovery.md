@@ -38,6 +38,6 @@ python3 scripts/accept_long_bubble_ui.py
 
 ## 后续Stream隔离只读检查
 
-01:20后官方 `event status --profile … --format json` 成功读到一个personal bus、两个订阅和两个consumer。逐个核对consumer父PID，两个均属于当前bridge传输进程。固定源码的Identity.Key按账号/client/source生成，不含会话；Discover先连接既有IPC，只有连接失败才spawn。因此两个会话复用同一个上游bus，不能把新consumer的代理环境当成旧WebSocket已经断网。
+01:18:37官方 `event status --profile … --format json` 成功读到一个personal bus、两个订阅和两个consumer。逐个核对consumer父PID，两个均属于当前bridge传输进程。固定源码的Identity.Key按账号/client/source生成，不含会话；Discover先连接既有IPC，只有连接失败才spawn。因此两个会话复用同一个上游bus，不能把新consumer的代理环境当成旧WebSocket已经断网。
 
 本次状态是 `idle`、来源 `inferred`。源码把60秒无新事件后的连接标为空闲，这是推断而非新的实收/连接探针。`DWS_CONFIG_DIR`改变整个配置命名空间，不是已验证的仅event隔离开关；没有为此复制凭据、改profile或停止daemon。共享证据见[隔离与官方路线补查](../evidence/2026-11-12/stream-isolation-and-official-route-review.json)。下一步需验证SDK WebSocket的代理路径与daemon仅有本项目consumer的条件，再设计有界断连/恢复；不将这次只读检查计为网络验收通过。
