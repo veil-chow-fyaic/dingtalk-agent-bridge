@@ -415,15 +415,28 @@ class Bridge:
             row = self.db.execute('SELECT body FROM events WHERE message_id=?', (message_id,)).fetchone()
         if not row:
             raise ValueError('Only a message already read from the bound group may be downloaded')
+        expected={(r.get('resourceIdType') or r.get('type'),r.get('resourceId')) for r in json.loads(row[0]).get('attachments',[])}
         folder = str(self.local.relative_to(self.root) / 'downloads' / hashlib.sha256(message_id.encode()).hexdigest())
         manifest = self.root / folder / 'manifest.json'
         if manifest.exists() and not repair:
-            cached = json.loads(manifest.read_text())
-            for entry in cached.get('downloads', []):
+            try:
+                cached = json.loads(manifest.read_text())
+                downloads = cached.get('downloads') if isinstance(cached, dict) else None
+                if (not isinstance(downloads, list) or cached.get('ok') is not True or
+                        cached.get('partial') or cached.get('failedCount') or
+                        any(not isinstance(entry, dict) for entry in downloads)):
+                    raise ValueError('incomplete manifest')
+                actual={(entry.get('resourceType'),entry.get('resourceId')) for entry in downloads}
+                if expected-actual:raise ValueError('missing expected resources')
+            except (ValueError, TypeError) as exc:
+                raise BridgeError('Cached attachment manifest is invalid or incomplete; repair local cache explicitly') from exc
+            for entry in downloads:
                 p = (self.root / entry['localPath']).resolve()
                 if not p.is_relative_to((self.root / folder).resolve()) or not p.is_file():
                     raise BridgeError('Cached attachment is missing; repair local cache explicitly')
-                if hashlib.sha256(p.read_bytes()).hexdigest() != entry.get('sha256'):
+                data = p.read_bytes()
+                if (hashlib.sha256(data).hexdigest() != entry.get('sha256') or
+                        type(entry.get('sizeBytes')) is not int or len(data) != entry['sizeBytes']):
                     raise BridgeError('Cached attachment integrity mismatch')
             return cached
         attempt_folder = folder + '/attempt-' + uuid.uuid4().hex
@@ -438,7 +451,6 @@ class Bridge:
             if not p.is_relative_to((self.root / folder).resolve()):
                 raise BridgeError('Unexpected download destination')
             entry['sha256'] = hashlib.sha256(p.read_bytes()).hexdigest()
-        expected={(r.get('resourceIdType') or r.get('type'),r.get('resourceId')) for r in json.loads(row[0]).get('attachments',[])}
         actual={(r.get('resourceType'),r.get('resourceId')) for r in ledger.get('downloads',[])}
         if expected-actual:
             ledger={**ledger,'ok':False,'partial':True,'bridgeError':'missing_expected_resources'}

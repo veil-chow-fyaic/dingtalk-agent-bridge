@@ -150,3 +150,8 @@
 - docs/70；显式raw/list/ref对象校验转既有quarantined，不扩大程序错误捕获；旧2方法2失败15错误保留。18合成形状及后续合法任务/重启不重放通过，双Python179全量、新wheel六入口19模块。
 - accept_message_shape.py 25审计通过，message-shape-install/validation.json；302条旧官方事件（含7引用）新旧投影相等，原件只读。没有新增引用UI或异常平台返回的声明。
 - 仅两gateway空闲重载，transport和原观察保持；DM62/154/163/226、群3/7/12/76及旧日志/config/session不变。原观察1424样本11.870h仍未满24h，6不可达/历史3poll_error保持；私有local/message-shape-20261112。
+
+## E054 — 附件缓存清单完整性
+- docs/71；缓存补核成功/完整标志、预期资源集合及准确字节数，损坏要求显式repair到新attempt目录，保留旧原件；旧1方法6失败保留。修复后6场景/重启/repair/再次命中通过，源码及双Python已安装包各180项。
+- accept_download_cache.py 22审计；download-cache-install/validation.json。48现场清单55资源只读验证、网络调用0、清单不改；无真实损坏注入、重新下载或新UI。
+- 三进程空闲加载、配置/旧记录/session不变，DM62/154/163/226、群3/7/12/76保持。原观察1442样本12.020h未满24h，6不可达/历史3poll_error保持；私有local/download-cache-20261112。
