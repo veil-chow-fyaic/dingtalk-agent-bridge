@@ -4,7 +4,7 @@
 
 ## 最近实质结果
 
-- E053：异常raw/资源引用隔离，18形状及后续合法任务/重启不重放通过；双Python179全量，新wheel/双gateway空闲加载，302旧官方事件投影不变，24审计。[证据](70-malformed-message-isolation.md)
+- E053：异常raw/资源引用隔离，18形状及后续合法任务/重启不重放通过；双Python179全量，新wheel/双gateway空闲加载，302旧官方事件投影不变，25审计。[证据](70-malformed-message-isolation.md)
 
 - E052：并发对账终态保护；双Python各177全量、新wheel/重载通过，新私聊实际Python计算、145B JSON回传客户端下载Quick Look，36审计7负向。[证据](69-monotonic-reconciliation-and-ui.md)
 

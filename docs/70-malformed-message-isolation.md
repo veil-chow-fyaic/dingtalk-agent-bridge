@@ -8,9 +8,9 @@
 
 [新增回归](../tests/test_message_shape.py)覆盖18种形状：4种非对象raw，7种异常resourceRefs分别出现在外层和引用。逐例验证前后正常消息、隔离原件、游标推进和重启保持；另将18条异常与一条合法授权任务混合交给Gateway，只有合法任务执行和产生三条合成投递，重启后不重放。旧实现2方法产生2失败和15错误，日志保留；修复后通过。
 
-Python3.14全量179项、最低Python3.11.15隔离已安装wheel全量179项通过。新wheel六入口/19模块与冻结源码、安装包一致，测试目录没有产品源码包或账号数据。[安装报告](../evidence/2026-11-12/message-shape-install.json)
+Python3.14源码全量179项通过；Python3.14与最低Python3.11.15另在同一无源码包/账号数据目录使用各自新venv的已安装wheel，全量各179项通过。新wheel六入口/19模块与冻结源码、安装包一致，测试目录没有产品源码包或账号数据。[安装报告](../evidence/2026-11-12/message-shape-install.json)
 
-另对既有两路全部302条官方事件离线回放，其中7条带引用；新旧完整规范化模型逐条相等。原件只读，没有发送或改写旧聊天、任务和会话。[审计](../scripts/accept_message_shape.py)24项通过，[验证报告](../evidence/2026-11-12/message-shape-validation.json)明确保留范围：异常形状来自合成测试，并未声称钉钉实际返回过这些值；旧引用离线回放也不算新入站引用UI通过。
+另对既有两路全部302条官方事件离线回放，其中7条带引用；新旧完整规范化模型逐条相等。原件只读，没有发送或改写旧聊天、任务和会话。[审计](../scripts/accept_message_shape.py)25项通过，[验证报告](../evidence/2026-11-12/message-shape-validation.json)明确保留范围：异常形状来自合成测试，并未声称钉钉实际返回过这些值；旧引用离线回放也不算新入站引用UI通过。
 
 两路空闲后通过manager身份检查正常停启gateway，transport保持原进程，live doctor通过。账号配置字节、全部旧jobs/outbox/meta/deliveries/events及runtime日志不变。DM62/154/163/226、群3/7/12/76保持，无新消息或UI实验。原观察器PID和起点保持，1424样本、11.870小时、6不可达，历史3poll_error及维护保留，尚未满24h。原始数据、失败/安装/部署日志及302条投影仅保存在local/message-shape-20261112。
 

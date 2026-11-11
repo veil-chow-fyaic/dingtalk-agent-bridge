@@ -6,6 +6,7 @@
     "old_implementation_reproduces_shape_failures": true,
     "fixed_isolation_and_gateway_tests": true,
     "python314_full_179": true,
+    "installed_python314_full_179": true,
     "installed_python311_full_179": true,
     "fixed_frozen_install": true,
     "prior_frozen_install": true,
@@ -44,6 +45,7 @@
     "before-fix.log": "6473362554472b893c83a29f2329857d27b4e2ddd0a9cff1690ee2ad8c581632",
     "after-fix.log": "2778c104a63d53da9a416eb06bdc7b3d33f532ef5875587d72d3efb1e6c44d8a",
     "full-py314.log": "1c3f42737e4a91a4bcd33b00c5e47958945d3d89f9b2590d12afaeca17aa5050",
+    "installed-py314-tests.log": "79ee1eea2848dda0fc8b40c95b9ec06d5bbba10618001610a13d9518b0eff3a6",
     "installed-py311-tests.log": "6110d0ccb604933abbd147fb344a92654332f76eb3c3b3540a6ce3a3030186dd"
   }
 }

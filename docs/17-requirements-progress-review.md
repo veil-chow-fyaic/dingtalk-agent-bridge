@@ -2,7 +2,7 @@
 
 2026-11-12，E053之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
-最新修复为[异常消息隔离](70-malformed-message-isolation.md)：18形状隔离且后续合法任务继续，双Python各179项、302条旧官方事件投影相等及24审计通过；两gateway空闲加载，传输和原观察保持，无新UI。此前[并发对账终态保护](69-monotonic-reconciliation-and-ui.md)：旧线程8/旧安装HTTP4失败保留；修复后Python3.14与最低3.11隔离wheel各177项，三进程已加载。新的veil原生私聊由Kimi实际计算平方并回传145B JSON，liev完整回复、客户端下载及Quick Look打开通过，36审计7负向；原任务/会话/日志保持。此前[中文路径验证](68-unicode-workspace-install-validation.md)、[交接契约](67-current-handoff-contract.md)、[冻结历史审计](66-frozen-install-audit-boundary.md)与[真实超时](64-runtime-timeout-and-installed-wheel.md)各按当时版本保留，旧失败和未验格子不改绿。
+最新修复为[异常消息隔离](70-malformed-message-isolation.md)：18形状隔离且后续合法任务继续，双Python各179项、302条旧官方事件投影相等及25审计通过；两gateway空闲加载，传输和原观察保持，无新UI。此前[并发对账终态保护](69-monotonic-reconciliation-and-ui.md)：旧线程8/旧安装HTTP4失败保留；修复后Python3.14与最低3.11隔离wheel各177项，三进程已加载。新的veil原生私聊由Kimi实际计算平方并回传145B JSON，liev完整回复、客户端下载及Quick Look打开通过，36审计7负向；原任务/会话/日志保持。此前[中文路径验证](68-unicode-workspace-install-validation.md)、[交接契约](67-current-handoff-contract.md)、[冻结历史审计](66-frozen-install-audit-boundary.md)与[真实超时](64-runtime-timeout-and-installed-wheel.md)各按当时版本保留，旧失败和未验格子不改绿。
 
 ## 当前交付状态
 

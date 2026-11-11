@@ -37,6 +37,7 @@ def audit():
             old_log.rstrip().endswith('FAILED (failures=2, errors=15)'),
         'fixed_isolation_and_gateway_tests': passed_log(folder, 'after-fix.log', 2),
         'python314_full_179': passed_log(folder, 'full-py314.log', 179),
+        'installed_python314_full_179': passed_log(folder, 'installed-py314-tests.log', 179),
         'installed_python311_full_179': passed_log(folder, 'installed-py311-tests.log', 179),
         'fixed_frozen_install': frozen_install_matches(install, folder),
         'prior_frozen_install': frozen_install_matches(prior_install, prior_folder),
@@ -83,7 +84,7 @@ def audit():
                        'Quarantined payloads are retained locally and never execute; following authorized messages proceed',
                        'Transport, original observation run and all historical records retained'],
             'logSha256': {n: digest((folder / n).read_bytes()) for n in
-                          ('before-fix.log', 'after-fix.log', 'full-py314.log', 'installed-py311-tests.log')}}
+                          ('before-fix.log', 'after-fix.log', 'full-py314.log', 'installed-py314-tests.log', 'installed-py311-tests.log')}}
 
 
 if __name__ == '__main__':
