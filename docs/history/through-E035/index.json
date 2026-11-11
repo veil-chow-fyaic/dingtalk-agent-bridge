@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "2bb85305fe399be8c51262634511a214a2e04390",
+  "files": {
+    "AGENTS.md": {
+      "archive": "docs/history/through-E035/AGENTS.md.txt",
+      "sha256": "006cafdeca1a283a4565b1787bc1bffb50ccc64959873effd34ac2a4b77456a5",
+      "bytes": 28950
+    },
+    "README.md": {
+      "archive": "docs/history/through-E035/README.md.txt",
+      "sha256": "60113e454ea8fbb2436204984b4c07be19741d3d9d355e4fafc94bcc152dc1d5",
+      "bytes": 11332
+    },
+    "plans/completion/PREFLIGHT.md": {
+      "archive": "docs/history/through-E035/PREFLIGHT.md.txt",
+      "sha256": "2e204076c237e1267902e9466a4622493c4610bcf680970f8dc6a29eba781895",
+      "bytes": 6593
+    },
+    "docs/13-roadmap-and-backlog.md": {
+      "archive": "docs/history/through-E035/13-roadmap-and-backlog.md.txt",
+      "sha256": "9ff4f1b81c60e8b1357dd0ce5b92fcca3804c38dd392b6bf698d1015d93b8468",
+      "bytes": 14777
+    },
+    "docs/17-requirements-progress-review.md": {
+      "archive": "docs/history/through-E035/17-requirements-progress-review.md.txt",
+      "sha256": "13101468eb5e18ddc925952dea1e2fbc579ffd2af301c716e308bb3bb5bc86a6",
+      "bytes": 18350
+    }
+  }
+}

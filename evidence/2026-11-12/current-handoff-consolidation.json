@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-12",
+  "sourceCommit": "2bb85305fe399be8c51262634511a214a2e04390",
+  "checks": {
+    "AGENTS.md": true,
+    "README.md": true,
+    "plans/completion/PREFLIGHT.md": true,
+    "docs/13-roadmap-and-backlog.md": true,
+    "docs/17-requirements-progress-review.md": true,
+    "mission_unchanged": true,
+    "prd_ids_levels_criteria_unchanged": true,
+    "no_product_change_after_E035": true
+  },
+  "passed": true,
+  "currentEntryBytesBefore": 80002,
+  "currentEntryBytesAfter": 23987,
+  "limits": [
+    "Documentation consolidation only; no new UI/transport success",
+    "Original mission and PRD requirements preserved; project remains incomplete"
+  ]
+}

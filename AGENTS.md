@@ -1,131 +1,40 @@
-# 项目工作约定
+# 钉钉 bridge 工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md及当前状态文件、docs/54（输出超限与压缩恢复）、53（引用来源字段保留）、52（SHA更正与原失败保留）、51（大PNG文件交付与短SHA错误）、50（长期样本复核）、49（管理器退出竞态）、48（JPEG实际旋转）、47（官方自然凭据轮换）、46（通用引用回复与当前部署）、45（单消息双图）、44（Stream断连与模型失败）、43（history网络恢复）、42（长气泡UI）、41（官方办公接入及真实私聊任务）、40（当前进程管理器）、17（总状态）、13（摘要）、25（官方边界）、15（运维）；其他阶段文档按任务索引读取。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+## 续作入口与目标
 
-## 最新授权与真实部署（2026-11-11）
+只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。
 
-用户明确将DWS授权改为liev，客户端登录veil（当前组织显示周威），授权用veil向liev发私聊和原群任务、查看liev回复。旧“单人群/跳过私聊与多人”限制已被这次明确授权替代；仍仅限这两个指定账号、原群及其私聊，不扩成全组织/任意业务联系人。用户自己添加liev和群成员，助手未邀请/审批。
+每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–54。
 
-当前发送主体liev真人账号，DWS --as user，非bot。[Agent]仅文字前缀，客户端左侧显示liev回复和“通过AI发送”。DWS默认profile切换不会覆盖bridge显式绑定；不能静默跟随默认账号。两个活跃路由均精确指定liev profile，selfSenderId/允许veil的sender ID按当前上下文重新解析并以实际收发核验。
+交付通用普通账号IM工具＋真实本地Agent接入：群聊/私聊交办、文件原件、实际工具执行、多轮上下文及同会话交付。CLI/HTTP/consumer不绑定组织或runtime。至少一个本地执行器即可；Kimi真实Read/Write/Bash已满足，Codex请求超时单独跟踪，不额外制造双runtime门槛。
 
-本轮通过真实UI输入/发文件：群667与TXT；私聊697与TXT、多轮蓝鲸482；CSV上传后合计54及TXT。三个TXT均客户端下载、TextEdit打开且SHA-256与生成件一致；群普通消息不执行、回复无循环、群私聊原生session分开。5任务（群1/私聊4）、14确认投递、70事件快照；只上传附件会单独触发任务，后续文字另一个任务。UI有些任务已回复但原消息仍未读，不能将DWS读取当已读回执。73项自动测试与UI证据分层。
+## 授权与当前范围
 
-真实配置local/service-config.json含两个liev路由，各自新状态目录。原周威单群配置备份local/ui-two-account-20261111/previous-*.json，旧legacy账本原位保留且不再激活；禁止将旧stateStorage=legacy迁到新profile。新gateway initialCursor仅初始化全新consumer一次（群49/私聊1），重启持久cursor优先，不回放旧任务。
+- 用户已明确授权DWS的liev行为与原生钉钉客户端veil行为，可合成文字、文件、任务、恢复实验并下载打开。liev是**真人普通账号**，DWS `--as user`；`[Agent]`是文本前缀，客户端显示liev和“通过AI发送”，没有创建bot。
+- 仅原测试群和veil/liev两人私聊。11月11日20:53发现原群由2人增至3人，范围确认问题已发但未答；新增群实验暂挂，继续私聊及独立工作。不是缺第二账号，不重复索取已授权私聊权限。未授权第三人、全组织监听、成员/权限变更、新bot或远程发布。
+- 两路精确绑定liev profile，selfSenderId及veil白名单由现场身份核对；不跟随DWS默认profile静默切换。组织/profile是配置，不是产品固定租户；旧周威/legacy账本原位保留，不迁到新身份。群普通消息不执行、群任务需`/agent`，私聊文字/附件可交办；liev自身回复不触发。
+- 只在当前本地任务工作区运行。Kimi提示词及官方工具上下文不是OS沙箱，不宣称对任意不可信联系人安全。
 
-127.0.0.1:18768传输服务，两路已启用stream_hint唤醒history，15秒定时补读兜底（docs/29）。群gateway local/agent-config.json；私聊gateway local/agent-direct-config.json。当前三个进程由dingtalk_bridge.service_manager管理，status只读；start须显式选入两个--agent-config，旧*_ctl.py/PID文件不再管理当前进程（docs/40）。均仅允许veil且allowSelfCommands=false。无开机自启。实际runtime是已登录Kimi；Codex CLI已登录但真实请求超时，adapter保留。Kimi工作区提示词不是OS沙箱，不能开放任意成员执行。E021仅私聊启用officialDwsTools，群仍关闭；上下文不授予额外写权限。
+## 官方与自研边界
 
-## 证据、身份和资料边界
+固定官方DWS v1.0.67在`local/bin/v1.0.67`，全局旧v1.0.61保留。官方负责身份/权限/profile、聊天/历史/资源和办公API；bridge补路由、白名单、任务/会话、幂等投递、文件及恢复。没有必要时不重造官方能力。
 
-必须从钉钉客户端UI发任务、看可见回复、下载打开文件。API成功、历史回读、单元测试不能冒充用户侧验收。当前双账号UI证据见docs/27，原单账号UI历史见docs/26。local/ui-two-account-20261111和local/ui-acceptance-20261111的原始截图含私人侧栏，仅本机保存，不纳入共享manifest。令牌、OAuth、账号配置、签名URL、未筛选业务消息也只放local/。
+原生image需本地CHAT_IMAGE上传的明确缺口：隔离补充叶子复用固定官方源码上传/鉴权，原版binary不改，PNG/JPEG ≤2MiB；更大图片作为file交付。输出单文件20MiB是bridge策略，超限failed并提示压缩/拆分，不自动改写产物。WAV/MP4 file原件可传，MP4客户端可播放，均不能外推语音条/独立video协议。
 
-固定实验DWS v1.0.67在local/bin/v1.0.67，保留全局v1.0.61。官方优先：DWS负责身份/权限/profile、聊天/历史/资源、办公API；自研补普通账号任务队列、会话、白名单、文件、幂等和恢复。官方已有dev connect机器人到本地Agent、OpenClaw Connector，不再声称bot接入全须自研。没有创建bot。
+官方已有bot的dev connect/OpenClaw及数字员工路线，与liev普通账号路线分开。会议/钉盘/外部/bot未实测项保留；不创建新身份代替验收。DM仅显式启用officialDwsTools，群关闭；上下文不授予额外权限。官方契约、源码、API、原件、UI和独立对端证据分别陈述。
 
-普通账号覆盖外部业务的动机保留；bot类型需独立调查，不照搬企微规则。官方契约、源码、上游报告、服务端实测、UI、独立对端分层。Stream ready不等于业务入站，file不等于原生音视频，用户读取不等于标记已读。当前未通过：Codex实际执行、原生音视频、真实授权过期恢复（history HTTP故障E023、Stream断连恢复E024已过）、bot/外部客户UI、完整办公接入、24/72h可靠性、恶意隔离。
+## 运行、状态与恢复
 
-## 持续工作规则
+当前HTTP为127.0.0.1:18768，两路stream_hint唤醒history，15秒补读兜底。三个进程由`python3 -m dingtalk_bridge.service_manager`管理；status只读，start须显式选入两个`--agent-config`。旧`*_ctl.py`及PID文件不管理当前进程，无开机自启。当前配置/私有归属均在local，不从历史PID猜控制目标。
 
-在本项目修改代码资料，不修改参考/Users/veil/Projects/wecom-bridge或复制其他项目账号数据。本地Git已初始化，分支codex/complete-bridge，基线166b11b/tag baseline/ui-2026-11-11；未发布远程。pre-commit运行暂存内容隐私检查和handoff核验。活动执行计划只有plans/completion，docs/13为摘要。
+E035版本已加载两gateway；156回归、干净wheel六入口/18模块摘要通过。当前快照DM46任务114outbox（113确认1旧拒绝）123传输170事件；群3/7/12/76。数字只代表E035快照，续作先只读对账。E034增加quote来源元数据，缺失senderId保持null，显示名不成为身份或执行授权；旧模型不重写。
 
-实测用DAB标记和稳定幂等键；未知先对账，不换key或切AX重发。已完成写入实验不重放，复核优先scripts/accept_media_matrix.py（只读）；accept_two_account_ui.py是此前基线的全量任务审计，新发现保留的blocked会令其all_jobs_completed为false，不能删除失败来变绿。共享交接scripts/verify_handoff.py；更新后显式--write-manifest并再次核验。单元回归和UI验收都需真实结果，不用文件数量或测试数量代替完成。
+原24h观察`run=reliability-20261111`起点11月11日19:36:08，PID97881；必须核对进程命令/新鲜采样，不能删除、重启覆盖原样本。最早11月12日19:36后评估，终检用`review_service_observations.py --require-complete`。E031完整性审计已实现，但未满24h；6不可达/3poll_error及维护窗口保留，不能宣称同版本零中断。E028只证明自然access预刷新和后续同步，不代表失效refresh恢复；禁止复制/改写token、改时钟或撤真实授权来造故障。
 
-继续独立推进，不把阶段汇报当停工理由。不要重新索取已经授予的这两个账号测试权限；真实外部依赖如实记录，不能称全项目或所有情形均完成。
+## 验收与推进规则
 
-## 2026-11-11 19:05续跑检查点
-PNG/PDF群/私聊双向8案例、10资源摘要一致；私聊PDF客户端下载并Quick Look打开。真实有限Stream捕获群5/私聊11事件，全部匹配history、无重复，退出码0；这不是常驻服务已启用Stream（当前仍history）。真人PNG的双资源别名曾使一条DM任务blocked；已以下载SHA相同证明别名再合并语义，未知/不同内容仍拒绝。新DM图在前/群图在后任务均完成320×180并UI核对；原blocked保留审计，不静默重跑。完整复核scripts/accept_media_matrix.py；docs/28。76项自动测试。长期任务heartbeat id=bridge，每30分钟附着当前聊天，机器/Codex在线时续跑；无新结果保持安静。
-
-## 2026-11-11 常驻事件与恢复检查点
-当前以docs/29覆盖上段19:05的部署描述：两路stream_hint已启用，保留15秒history补读。veil真实UI 5条消息→3任务6回复，短停机时群/私聊任务补回且UI可见；受控终止一个服务拥有的群订阅子进程后自动重连，新消息正常。12旧任务、28旧投递、33旧执行日志与session保持，不重放历史。群PDF已客户端下载打开，摘要一致。只读复核scripts/accept_stream_integration.py；网络分区/过期凭据/24h仍未完成。
-
-## 2026-11-11 19:52续跑检查点
-DOCX群/私聊×双向4案例通过，四资源＋两份客户端下载原件字节一致；两份DOCX在TextEdit打开，私聊Kimi提取TXT也客户端下载打开并校验。证据docs/30、scripts/accept_office_files.py，只读复核；不要重发固定key。XLSX/ZIP仍只有历史API证据，本轮probe只是预览。
-24h只读观察于19:36:08启动，run=reliability-20261111，30秒采样，预计次日19:36后才可能达时长；不能标通过。续跑先核对local/service-observations该run的status更新时间、PID所属命令及日志，不删除/重启覆盖中断。下一步C01 XLSX/ZIP、原生媒体等；服务/gateway持续运行、未扩大授权。
-
-## 2026-11-11 20:20 XLSX/ZIP检查点
-XLSX/ZIP八格传输、8资源完整，四份客户端下载原件分别在Numbers打开/系统解包后TextEdit打开；两个DM实际Kimi任务、6确认投递、两份提取TXT客户端下载打开通过。群普通文件和liev自身文件不触发。只读脚本scripts/accept_extended_office_files.py：73项案例检查＋精确覆盖，通过缺资源/损坏客户端负向注入。docs/31与E010。下一步出站PNG客户端下载、音视频及引用多附件；不得重发这些固定实验。24h观察连续89样本/约44分钟/0不可用，仅短期进展。
-
-## 2026-11-11 20:36原生图片检查点
-旧Markdown出站PNG可见但当前私聊客户端不能打开查看器/保存，真人原生PNG可打开作为对照。官方Shortcut已有--msg-type image --media-id，新的独立类型实验DAB-NATIVE-PNG-20261111-direct-001已经SUCCESS，UI下载原件Quick Look打开与fixture一致；脚本accept_native_image.py只读。docs/32/E011，私密intent/send/status及截图在local/native-png-20261111。bridge仍使用Markdown，未修改发送代码；下一步优先查官方本地上传取mediaId、持久化分阶段状态和失败对账，再接入群/私聊验证。不得将原生实验当作旧Markdown已客户端下载。
-
-## 2026-11-11 21:10 原生图片实现检查点
-已实现本地图片上传→独立image发送，原版DWS仍v1.0.67；imageUploadBinary指向隔离的本地补充入口（非官方发布命令），源码固定v1.0.67，只增加叶子/注册并复用官方CHAT_IMAGE上传和鉴权。上传/投递分阶段持久化，未知不重试，旧Markdown key不重放。PNG/JPEG原生上限2MiB、不压缩；新image无配置明确拒绝，不降级Markdown。私聊bridge fixture＋veil UI交办Kimi实际生成96×64蓝色PNG均完成独立图片查看器、客户端下载、Quick Look打开、字节一致。84回归、6 Go叶子用例/schema完整性、22项只读检查通过；docs/33/E012。
-20:53发现原群现有3人（既有两账号外新增成员），没有在群发本轮图片，已发异步范围确认问题；这是新变化，不是缺第二账号。保持两账号白名单，不扩大执行人；未获答复继续私聊音视频/引用多附件和独立代码工作。群gateway尚未重启加载新图片artifact选择，私聊gateway已加载；传输两路已加载。
-20:54部署重启传输，私聊gateway随后重启；24h观察run不变，maintenance.ndjson记录维护，不冒充零中断/同一版本24h。原51条bridge投递、私聊14旧任务34旧投递保持。原始证据local/native-image-bridge-20261111，只读复核scripts/accept_native_image_bridge.py。下一步C01私聊音视频原件与原生类型，原群范围确认后补原生图；心跳继续。
-
-## 2026-11-11 21:20 下一段WAV检查点
-原生图片实现已提交c090085。随后完成liev→veil私聊WAV文件：固定key DAB-MATRIX-20261111-direct-wav已confirmed，UI文件卡片下载，32044B客户端下载与原件一致，Finder Quick Look音频播放器显示1秒；8项只读检查通过。docs/34，scripts/accept_wav_direct.py。不是原生语音条。WAV/MP4探针已新增；MP4仅预览未发送。下一步veil UI上传WAV到liev私聊并核验实际任务，再做MP4私聊双向；原群3人范围问题仍待回复，不重发已确认WAV，不等待群确认停止其他工作。
-
-## 2026-11-11 21:42 音视频私聊闭环
-WAV/MP4私聊双向四格、4资源原件、2个真实Kimi分析任务6回复、2份报告客户端下载Quick Look打开通过；54项只读审计及缺资源/损坏下载负向检查通过，旧账本逐行保持。docs/34/E014，scripts/accept_audio_video_direct.py。MP4虽官方按file发送，UI实际为可播放视频卡片，客户端播放/保存/系统打开均通过；不能笼统再说视频无播放能力，也不能推成独立video协议/语音条通过。原群4格待范围答复，下一步私聊引用、多附件与任务控制。观察run不变，约2小时，未满24h。
-
-## 2026-11-11 22:03 安装与诊断检查点
-已交付pyproject安装包0.1.0与五个入口，CLI默认token路径修为工作目录；doctor离线只读、live只GET本机health，脱敏检查配置/身份绑定/构建摘要/账本/最近完整同步，不发消息/修复/续授权。干净暂存树导出不含账号状态，新venv安装与入口/模块摘要通过；93项回归通过，现场31检查保留1个历史blocked警告。docs/35/E015。统一多worker后台管理尚未交付，未重启运行服务/gateway。引用附件UI菜单因CUA坐标windowNotFound受阻，AX右键无菜单；未发引用消息，窗口已恢复原显示器，证据quote-ui-attempt.json。下一步优先真实UI文本命令status/cancel/new与多附件，另以已验证键盘动作或修复坐标处理引用；不要重复无效坐标点击。24h原观察器仍在，约2小时28分，不重置/不标通过。
-
-## 2026-11-11 22:24 任务控制检查点
-真实UI发现status空闲误报queued1，已改先完成自身再统计，中文状态回复；两次后续查询验证空闲0/0和实际执行1/排队1。Kimi真实Bash/Python sleep120被veil cancel停止，已观察子进程结束、超过120秒无取消输出，队列下一任务437正常。seed/new/check验证generation仅+1、native session先解除再换新、UI不携带旧口令。9请求14确认回复4次runtime、100只读检查/负向检查、95回归通过；docs/36/E016。旧20任务/50agent投递/63传输投递保持。两个gateway均空闲维护重启，群现在也加载原生图结果选择；传输/24h观察器不重启，维护有记录。当前DM会话generation1，旧generation0及session证据保留。下一段多附件与统一管理，引用坐标路径不盲重试。
-
-## 2026-11-11 22:39 多文件后续任务检查点
-Finder多选两份合成TXT/CSV一次粘贴，钉钉拆成两消息/两任务，各真实Read；后续合并任务沿用同native会话，Write报告17+23=40，客户端文件卡片下载、Quick Look打开、摘要相同。3任务7回复、50只读检查及2负向检查通过，docs/37/E017。不是单消息多附件、无自动合批，join没有重读原件。旧29任务/64Agent投递/77传输投递保持，无部署重启。24h原观察器约3小时、采样新鲜，不标通过。下一段C04统一后台管理/配置引导，C01长文与有证据的引用入口；原群仍待范围答复。
-
-## 2026-11-11 长文修复检查点（E018）
-6942字符UI粘贴触发转文档提示，已取消未发送。3588字符输入完整入站，Kimi6825字符回复首段6008字符/6220 UTF-16被官方PARAM_ERROR明确拒绝，上限5120；旧unknown无taskId保留、不重发。已改含前缀UTF-16分段+新发送前校验，99回归通过；空闲维护重启传输/两gateway，原24h观察器不变。不同内容的新任务3592字符→两段5063/2037 UTF-16全confirmed，两份8039B文件均客户端下载Quick Look打开。官方Str会TrimSpace，固定第一段末尾LF少1，文件原件不变；完整长气泡UI未逐段观察。docs/38和56项只读审计，旧失败未改绿。当前DM31任务/72outbox（71确认1原unknown），历史blocked/cancelled保持。下一步优先补明确拒绝分类/证据化终态对账与失败反馈，不换key重投；再统一后台管理及引用/长文UI。观察约3h27、415样本1不可用（维护有记），不能称24h通过。
-
-## 2026-11-11 E019 拒绝终态与用户提示
-原长文首段现为rejected：显式导入绑定原uuid/目标/执行编号/唯一时间窗的官方长度拒绝日志，完整原unknown行和证据存入rejection_audit；原正文未重发（官方请求计数仍1）。后续明确invalid_request+PARAM_ERROR在发送阶段分为拒绝，有taskId的查询拒绝不误判。gateway原子记录终态+稳定key失败通知。真实UI可见部分回复未送达；veil status显示未确认0/拒绝1，旧blocked/cancelled保留。108回归、34只读审计及2负向检查通过，docs/39/E019。当前DM32任务/74outbox（73确认1拒绝），本段新增1状态任务/2确认回复/0runtime；两个gateway和传输已维护重启。E018冻结证据不改，审计只允许有原行摘要证明的终态转换。下一步C04统一后台管理/配置引导，C01引用/长气泡UI，C05办公；原24h观察器继续、不重置。
-
-## 2026-11-11 E020 统一管理器已迁移
-当前传输/群gateway/私聊gateway由dingtalk_bridge.service_manager拥有，local/runtime/managed-processes.json记录归属；旧scripts/*_ctl.py与旧PID文件不再管理当前进程。查看用python3 -m dingtalk_bridge.service_manager status；start必须显式带两个--agent-config，stop无需配置列表。无开机自启/自动监督，SIGTERM超时不强杀。详见docs/40。
-11项真实子进程测试及119全量通过；干净新wheel/venv六入口、17模块摘要相同。现场重复start同PID、逆序stop、重新start新PID；旧35任务/81outbox/94传输/83运行文件保持。veil原生私聊一个新任务→Kimi Write 19×31=589→liev3确认回复，35B文件客户端下载Quick Look打开且字节一致，39只读检查及2负向检查通过。当前DM33任务/77outbox（76确认1拒绝），旧blocked/cancelled保留。原24h观察不重置，511样本约4.25h/累计3不可用，迁移维护已记；未满24h。下一步C05 liev官方办公闭环，C01引用/长气泡新UI路径；原群范围问题仍待答复，不重复坐标失败路径。
-
-## 2026-11-12 E021官方办公接入检查点
-仅DM启用officialDwsTools，群关闭；新增上下文固定路由binary/profile，无令牌，默认关闭，不是OS沙箱/强制CLI白名单。Kimi用官方doc/todo/calendar/mail完成四类合成对象，veil原生UI三个任务→9确认回复，760B/1243B/2020B三报告均客户端下载Quick Look打开且原件一致。B密送表述过度推断已由只读C更正，原报告/失败只读命令保留，草稿箱另有读证；日程默认提醒/会议字段已报告。69只读检查/3负向检查，最终干净126回归、六入口/18模块同摘要通过，docs/41。复核accept_official_office_agent.py，不重发A/B/C、不重新创建四对象。
-当前DM36任务/86outbox（85确认1拒绝），群3任务/7outbox不变；旧blocked/cancelled及全部日志保持。两次空闲manager stop/start已记录维护，原24h观察run/PID/起点未变，604样本约5.03h/累计3不可用，尚未满时长。下一段C01引用/完整长气泡有效新UI路径（旧坐标/PageUp不重复），C02实际网络/凭据恢复与最终交接；原群第三人范围问题仍待答复，独立私聊继续。
-
-## 2026-11-12 E022/E023长文与网络恢复检查点
-E018旧两段长回复已在主聊天完整AX逐字比对并核对7张首尾/边界视口，无新消息，22审计/2负向检查；docs/42。原生会话搜索→点击结果→selectText可定位正文；右键仍无引用菜单，Command+Up会切侧栏会话，禁止盲重试，不把AI搜索摘要当消息正文。
-私聊history HTTP子进程实际断网78.310秒（官方5次io_timeout），veilUI发一次任务；恢复自动补收，Kimi Python计算1591，三确认回复、36B客户端下载Quick Look打开通过，42审计/3负向检查；docs/43。非完整Stream/整机断网或凭据过期。测试launcher已撤除，local/service-config.json精确恢复，DM生成上下文回到原官方binary；三个manager进程当前健康，setup/cleanup维护已记，恢复期间无重启/重发。
-当前DM37任务/89outbox（88确认1拒绝），群3任务/7outbox不变，旧blocked/cancelled保持。原观察run/PID/起点不变，冻结669样本约5.57h/累计4不可用（清理维护新增1），未满24h。只读复核accept_long_bubble_ui.py和accept_history_network_recovery.py，不重复新旧实验。下一段先查可隔离的官方Stream连接/凭据失效机制或引用有效新入口，不能撤真实授权/改整机网络；无法安全隔离就具体记阻塞，转最终MUST/矩阵/边界缺口自检与独立实现。原群范围仍待答复。
-
-01:18:37（status取证时刻）只读补查：官方event status显示两consumer共享账号级personal bus，父PID均属当前bridge，idle/inferred不是新实收证据。SDK代理/共享daemon的限定断连方案仍需验证，见docs/43。官方另有dingtalk-tag connect已发布数字员工路线（独立员工profile/设备绑定），本机Help/固定源码已确认并补docs/25；没有发布/绑定员工，不将其混为liev真人路线。
-
-## 2026-11-12 E024 Stream实际断连与失败保留
-只对本bridge两consumer共享bus设置loopback CONNECT隧道，实际切断既有WebSocket89.446秒并阻止重连，history保持直连；同一bus/consumer/bridge进程恢复后收7提示，无重复任务。A原生UI任务实际Kimi算1927，但最终输出续写虚构下一任务而非JSON，gateway正确拒绝，failed/JSONDecodeError和局部文件/日志保持，仅ack＋失败提示，不重试/不交付局部文件；B不同新UI任务实际3127、三确认回复、37B客户端下载Quick Look打开。不是解析器误判，不放宽解析或把A改成功。
-50审计/4负向检查、131回归（新增4代理socket测试＋1局部产物后格式错误回归）；18产品模块仍与E021相同。工具scripts/network_fault_proxy.py仅测试，不是新传输后端，不解密TLS/记录载荷。setup/cleanup维护已记，临时wrapper/bus/proxy全部撤除，配置精确恢复、DM官方上下文恢复、manager/live doctor健康。只读复核accept_stream_network_recovery.py，docs/44。
-当前DM39任务/94outbox（93确认1拒绝），其中新增A failed保留；群3任务/7outbox无变化。原观察run/PID/起点保持，冻结722样本6.01h/5不可用，未满24h。下一段C01引用必须新入口（菜单/明确快捷键），不重复失败右键；并推进MUST/四方向验收矩阵与安全可行的凭据恢复方案，不撤真实授权。
-
-## 2026-11-12 E025 CSV补验与逐格自检
-原E001私聊CSV从既有聊天文件搜索定位并下载，79B Quick Look实际表格可见36/18/TOTAL54，原件SHA一致；零新消息/任务，群/私聊全部jobs/outbox/deliveries逐行保持。22只读检查及2负向检查通过，复核accept_csv_client_open.py，docs/27补节；产品代码不改、131回归版本保持。原生修改/帮助菜单无明确引用入口，未发送引用，不重试旧右键/坐标路径。
-ACCEPTANCE_MATRIX.md明确四方向与R01–R14逐项状态，群TXT入站/CSV双向、群长文/控制、群新媒体、引用、单消息多附件、原生类型、真实失效凭据和24h仍缺；不因已有测试量标完成。原观察冻结758样本6.31h/5不可用，run/PID/起点不变，未满24h。下一步沿CRITICAL_PATH从官方明确入口/凭据条件查证后推进可行私聊项，群范围答复未到不扩展。
-
-## 2026-11-12 E026单消息双图
-E026：veil原生私聊单条文字＋两PNG→一个Kimi任务、三确认回复；两次ReadMediaFile收到原件字节，Bash实际量尺寸/像素，420B报告客户端下载Quick Look打开，顺序为橙色矩形31、蓝色圆形46、合计77。38只读检查与3负向检查通过；两次初始Read图片错误保留。仅单消息双PNG通过，不外推任意多文件、出站多附件或群。当前DM40任务97outbox（96确认1拒绝）105传输146事件，群3/7/12/76保持。无产品/配置/部署变更，131回归版本保持；原观察799样本6.66h/5不可用，未满24h。只读复核accept_multi_image_ui.py，docs/45；固定实验不重发。引用入站菜单/设置快捷键入口未成功，不再盲重试；下一步接官方messages-reply通用出站，官方凭据自然刷新只读观察继续，不等于失效恢复。
-
-## 2026-11-12 E027引用出站
-E027：通用CLI/HTTP新增可选reply_to纯文本引用，官方DWS负责原消息/收件人复核，bridge补当前路由已观察源校验与持久幂等。137回归、干净wheel六入口/18模块同摘要、30只读审计/2负向检查通过。liev→veil一次真实私聊引用confirmed，原生UI可见原双图任务、来源发送者、回复及AI标识；未新增runtime任务或Agent outbox。DM40任务97outbox106传输147事件，群3/7/12/76保持。新版三进程已加载、doctor健康；停机曾触发PID保护错误，后独立确认旧进程全部停止再正常启动，原错误保留。原观察823样本6.86h/6不可用，维护已记，未满24h。复核accept_quote_reply_ui.py；引用入站、群引用、跳原消息仍未通过。旧实验只读不重发。新增reply_to是通用可选参数，不自动改所有Agent回复。管理器PID保护未放宽，后续补诊断需独立测试。
-
-## 2026-11-12 E028自然凭据轮换
-E028：59次readonly元数据采样观察到官方access到期时间由02:44:32延长至04:39:40，02:40:06首次观测，距旧到期265.918秒；轮换后双路完整history同步继续。19只读审计/3负向检查通过，采样期间部署造成1次本机health URLError原样保留，不算全程零故障。没有复制/改写令牌、撤销授权或改系统时间；不等于失效refresh凭据恢复。原24h观察冻结849样本7.07h/6不可用，起点/PID保持；DM40/97/106/147、群3/7/12/76均未新增。复核accept_auth_rollover.py；原24h未完成、心跳继续。Codex只读原日志确认sampling流超时，根因未知；manager两轮合成进程未复现保护错误，均按loop guard不重复。下一段保持具体缺口，不撤真实授权来制造过期。
-
-
-## 2026-11-12 E029 JPEG闭环
-E029：原生veil单条JPEG任务→Kimi实际ReadMediaFile/Pillow顺时针旋转→liev原生JPEG＋TXT；两件客户端下载Quick Look打开，8234B JPEG及295B报告与生成/官方资源同字节。43只读审计/3负向通过，客户端强制追加.png但内容仍JPEG已记。DM41/101/110/152、群3/7/12/76，旧账本/日志/session保持；无产品或部署变更，137回归版本保持。原观察897样本7.47h/6不可用，未满24h。复核scripts/accept_jpeg_ui.py，docs/48。下一段继续具体MUST缺口，原群范围答复未到不新增群测试。
-
-
-## 2026-11-12 E030停机边界
-E030修复发信号前原进程退出被误报身份变化的窄竞态；真实合成子进程先失败复现、后修复通过，第二次身份变成别的活进程仍拒绝信号。13管理器/139全量回归、干净wheel六入口/18模块同摘要通过。仅CLI管理器改动，现网三PID/双路账本/日志不变，无重启或新消息。E027 during-shutdown原错误仍未定位，不混为已修；docs/49。
-
-
-## 2026-11-12 E031长期样本复核
-E031新增长期样本只读终检：917样本7.640h、122事件与冻结本地账本逐条一致，无捕获重复；6不可达/3poll_error/14维护均保留。13完整性检查、11新增工具测试及真实--require-complete退出2通过；24h未完成，不推成上游无漏或零故障。docs/50，原观察不重置、产品模块保持E030。
-
-
-## 2026-11-12 E032大PNG文件边界
-E032：真实UI任务生成3147861B PNG，超2MiB按官方file交付；客户端带文件标识的图片可查看、下载、Quick Look打开，像素/字节与生成及资源一致，198B报告正确。28文件审计/2负向通过；模型短回复截断SHA前缀错误保留，task_fully_correct=false，尚未发更正。DM42/105/114/157、群3/7/12/76；无部署变更。docs/51。
-
-## 2026-11-12 E033只读更正
-E032原错误短SHA保留。第一只读任务实际重算正确SHA却误说无需更正，语义失败保留；第二任务给出原错误全文，实际Python前缀比较false、报告一致，liev明确更正在veil原生UI完整可见。2任务4确认文字回复、无文件生成/回传，15既有exports内容/mtime保持；37只读审计/2负向通过。docs/52，accept_sha_correction_ui.py。DM44/109/118/163、群3/7/12/76，无部署修改。继续入站引用明确新入口与其他独立项，原24h保持。
-
-## 2026-11-12 E034引用来源字段
-project新增quote.id/conversationId/senderId/senderName，缺失senderId不由显示名猜测，引用者不影响外层执行白名单。154回归、干净wheel六入口18模块、7条既有官方引用离线持久回放/23审计/负向篡改通过。两gateway已空闲维护加载，传输25113/原观察不重启；DM44/109/118/163、群保持，无新消息。docs/53。新消息侧按钮一个无变化一个编辑历史，关闭后loop guard；入站引用UI仍缺。
-
-## 2026-11-12 E035输出超限闭环
-结果超过20MiB现显示明确限额/无文件投递/压缩拆分建议。veil真实21MiB任务failed保留，随后显式新压缩任务完成，21550B ZIP客户端下载/Finder系统解包，原21MiB字节及mtime保持。38审计/2负向、156回归、干净wheel六入口18模块通过。两gateway已加载（74948/74952），传输25113/原观察97881不重启；DM46/114/123/170、群3/7/12/76。docs/54。不重跑本样本；继续余下MUST及最终交接，24h未完成。
+1. 原生UI交办、实际runtime工具、liev可见回复、客户端下载并打开/解包，分别取证。API成功、历史回读、测试数量或文档数量不能替代UI通过；未知/不支持/阻塞不改绿。
+2. 合成实验用DAB标记和稳定幂等键；未知先对账，禁止换key或切UI补发。已确认实验只读复核，不重跑。旧blocked/cancelled/failed/rejected及错误结论不删除：E032/E033的错误SHA及首次误判、E024模型违约、E035原超限failed均保持。
+3. 代码修复有相应回归/验证；按功能/验收小步本地提交，更新当前状态、证据与manifest。共享核验`verify_handoff.py --write-manifest`后再次只读核验；`verify_privacy.py`扫描暂存blob。私密账号ID、令牌、OAuth、签名URL、原始聊天、AX及截图只留local，绝不入Git/公开上传；合成fixture可共享。
+4. 每轮约45分钟目标上限，实际推进代码/工具/真实UI，不只巡检或重制定计划；完成一段继续无依赖项。相同路径两轮无新证据触发loop guard。入站引用旧右键/坐标/Command+Up/设置/侧按钮路径已无新结果；只有明确新入口再试。E027 during-shutdown身份保护错误仍未定位，E030只修pre-signal退出竞态，不混称已修。
+5. 单Agent，不自行派子Agent。正常未变化时安静；仅实质里程碑、失败、完成或必要用户动作汇报。MUST、完整自检与真实24h全部满足才标完成并停用heartbeat；当前未完成。SHOULD缺口保留原级别。

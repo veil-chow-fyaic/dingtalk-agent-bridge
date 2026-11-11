@@ -60,3 +60,8 @@
 - docs/54；scripts/accept_output_limit_ui.py，38审计/2负向；156全量回归，新venv六入口18模块一致。
 - output-limit-ui-ledger.json、output-limit-install.json、output-limit-audit-negative.json；私有local/output-limit-ui-20261112。
 - 原生veil两次不同任务：21MiB生成后failed并明确提示，后续只压缩旧源，新ZIP客户端下载/系统解包与原件相同；2任务5确认回复、源mtime保持。DM46/114/123/170、群保持。只重启两gateway，传输/原观察保持。
+
+## E036 — 当前交接入口与历史原文分开
+- README/AGENTS/PREFLIGHT/docs13/docs17改为当前状态；原全文保存docs/history/through-E035，与2bb8530版本逐字节/SHA一致。
+- current-handoff-consolidation.json确认原CURRENT_MISSION、PRD编号/等级/验收正文及18产品模块不变；仅更新当前证据列，不降低门槛，不新增UI通过。
+- 下一独立项是带EXIF方向JPEG的私聊输入/原件/实际处理；群、入站引用、失效refresh及24h缺口保持。
