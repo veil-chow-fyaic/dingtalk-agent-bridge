@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_old_logs_preserved": true,
+    "immutable_completed_job": true,
+    "exact_authorized_input": true,
+    "actual_python_tool_and_log_preserved": true,
+    "over_2mib_file_boundary": true,
+    "exact_generated_pixels": true,
+    "two_files_not_native_image_upload": true,
+    "artifact_0_export_stage_client_exact": true,
+    "artifact_0_official_resource_exact": true,
+    "artifact_1_export_stage_client_exact": true,
+    "artifact_1_official_resource_exact": true,
+    "report_metadata_correct": true,
+    "four_confirmed_replies": true,
+    "bound_self_replies_no_echo": true,
+    "one_new_task_four_outbox": true,
+    "same_native_session": true,
+    "reviewed_ui_frames_intact": true,
+    "report_opened_ui": true,
+    "png_opened_ui": true,
+    "one_ui_send_attempt": true
+  },
+  "file_delivery_passed": true,
+  "task_fully_correct": false,
+  "model_short_sha_correct": false,
+  "model_short_sha_error_preserved": true,
+  "clientPng": {
+    "bytes": 3147861,
+    "sha256": "b83c6fc39b318b21d2d0d3253efe25f3b182253e23ca15ec036623f4b6132d6a",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  },
+  "clientReport": {
+    "bytes": 198,
+    "sha256": "3c40ae39d4ffe9a0766f017f251e7d36a8eacb92894c84c552569faa90ce93b5"
+  },
+  "limits": [
+    "Original model short response contains incorrect truncated SHA; full downloaded report is correct",
+    "File protocol with client image preview; not >2MiB native image protocol support",
+    "Direct outbound sample only; no group or upload claim"
+  ]
+}

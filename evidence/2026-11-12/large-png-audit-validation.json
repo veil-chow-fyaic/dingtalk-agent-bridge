@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-12",
+  "fileChecks": 28,
+  "fileChecksPassed": true,
+  "negativeChecks": {
+    "missing_official_resource_rejected": true,
+    "corrupt_client_bytes_rejected": true
+  },
+  "taskFullyCorrect": false,
+  "modelShortShaErrorPreserved": true
+}
