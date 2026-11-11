@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-12",
+  "sourceSha256": "16f0f1fd9d2bc0287768e9c37225c0fe974d4e0ba483e840381029f4eb32a95f",
+  "initialFullSuite": {
+    "tests": 160,
+    "errors": 0
+  },
+  "finalFullSuite": {
+    "tests": 160,
+    "errors": 2,
+    "failedTests": [
+      "test_changed_pid_identity_never_signals_foreign_process",
+      "test_real_process_start_is_idempotent_and_stop_uses_persisted_ownership"
+    ],
+    "error": "PID changed during shutdown; no further signal sent",
+    "resolved": false
+  },
+  "macosPython312ProcessSuite": {
+    "tests": 17,
+    "errors": 0
+  },
+  "boundedManagerDiagnostic": {
+    "tests": 6,
+    "errors": 0,
+    "psObservations": 187,
+    "reproduced": false
+  },
+  "privateLogSha256": {
+    "before-tests.log": "c4047f92516913f336c505a234b74e29224cc62e5c9665f7d9e3c89eca86da09",
+    "after-process-tests.log": "c264b033d26405595b07e749621817958ee82e27fa3aac6ed279068e50c4e60e",
+    "full-tests.log": "750290b9a4d11d403dd670a95f657a16c672de0d969f13b77353691260e72aac",
+    "python312-process-tests.log": "aea7436a04335c84fab16109d533dc1d815b6f5190b4954eb398c745278aac5d",
+    "full-tests-final.log": "80e38f5cf79f29f5897336b2d66ad8bd3571ad4b3e583b7723aaa796b57d4d0c",
+    "manager-traced-tests.log": "e551a4f0368d32049294f2bae01e9036256e633459eb5fd3f9a79cbfbf73fe52",
+    "manager-ps-trace.json": "0ff5974d22c2750a401d1d4db34f8bdb470a2d104ad6da790d388b83d539094b"
+  },
+  "observer": {
+    "samples": 1107,
+    "elapsedHours": 9.225,
+    "unavailableSamples": 6,
+    "complete24h": false
+  },
+  "doctorExit": 0
+}

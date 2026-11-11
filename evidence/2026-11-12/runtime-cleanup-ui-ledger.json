@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "immutable_completed_job": true,
+    "exact_one_native_text_input": true,
+    "authorized_native_input": true,
+    "one_send_attempt": true,
+    "runtime_log_preserved": true,
+    "actual_python_calculation_and_file_write": true,
+    "correct_requested_response": true,
+    "client_export_staged_exact": true,
+    "official_resource_exact": true,
+    "three_confirmed_replies": true,
+    "bound_liev_reply_identity": true,
+    "no_self_echo_task": true,
+    "exact_one_new_task": true,
+    "exact_three_new_outbox": true,
+    "native_session_unchanged": true,
+    "full_reply_visible": true,
+    "client_download_completed": true,
+    "download_opened_full_text": true,
+    "reviewed_frames_preserved": true,
+    "only_agents_reloaded": true,
+    "observer_same_original_run": true,
+    "tested_installed_modules_match": true
+  },
+  "ok": true,
+  "clientBytes": 16,
+  "clientSha256": "6fe4a2c08ebad156d1b01e33d8f18adbc53f9a9a51f223407f889d8e73656bfc",
+  "latestFullSuite": {
+    "tests": 160,
+    "errors": 2,
+    "area": "Existing manager during-shutdown identity protection; unresolved"
+  },
+  "scope": "Real native DM after initial cleanup reload. Later macOS Python <3.13 compatibility path tested with 17 real-process tests and redeployed; no repeated UI task. No live fault injection or OS sandbox claim.",
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 48,
+      "outbox": 121,
+      "deliveries": 130,
+      "events": 179
+    }
+  }
+}

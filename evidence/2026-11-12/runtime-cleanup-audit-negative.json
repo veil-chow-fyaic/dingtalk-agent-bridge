@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-12",
+  "positiveChecks": 33,
+  "negativeChecks": {
+    "missing_resource_rejected": true,
+    "wrong_short_reply_rejected": true
+  },
+  "method": "In-memory read injection; no actual rows, logs, files or UI altered",
+  "ok": true
+}

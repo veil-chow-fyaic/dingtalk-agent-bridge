@@ -134,3 +134,9 @@ E019补充：官方错误的invalid_request+PARAM_ERROR可在首次发送阶段�
 官方已有messages-reply个人引用（群/私聊），本轮无需新增官方叶子。bridge只补可选reply_to的本路由源校验、幂等持久化及回执差异兼容；DWS负责源/peer校验、引用协议和状态。私聊原生UI实际气泡已过，群及入站引用未过，见[docs/46](46-quoted-text-reply.md)。
 
 2026-11-12底层入口补核：固定官方`chat message send`机器schema仍将audio/video列为类型，但file参数明示按file发送，不能由enum存在推成语音条。`dws api`帮助要求完整应用Client ID/Secret pair，默认MCP加密用户凭据不能直接用于Raw OpenAPI；不能拿当前liev用户授权推成另有应用权限。`mcp published`是已发布MCP工具入口，本轮没有发现额外个人原生语音契约、未发布服务或发送试探消息。结果与源码摘要见[native-type-boundary-review.json](../evidence/2026-11-12/native-type-boundary-review.json)；阻塞定位到官方个人发送契约，WAV/MP4文件实测不受影响。
+
+### E038：本机原生语音入口没有新增通过证据
+
+2026-11-12，当前Mac客户端9.0.5（59563623）。原生UI查看输入框扩展控件：截图坐标及对应AX加号均未展开可识别菜单；另一控件只打开格式工具栏，已关闭并恢复空白输入框。没有录音、上传、发送或更改权限；群/私聊账本和native session均不变。不能据按钮未响应断言整个Mac客户端不支持语音。该路径触发loop guard，找到明确新入口前不重复。
+
+固定[v1.0.67源码](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go)仍明确将audio/video映射file，file输入是单个路径。普通多文件一次多选被客户端拆条的E017证据保持；该发送叶子未提供任意附件数组，也不能推导平台所有接口均不支持。公开[语音识别介绍](https://www.dingtalk.com/qidian/page-0SgQkFLi.html)仅给出泛化麦克风操作，未指定本Mac版本，不能代替现场入口。`evidence/2026-11-12/native-entry-review.json`记录版本/契约/零新消息；原始UI留local。原生语音及普通单消息多附件仍未过，不把重复查文档改称突破。

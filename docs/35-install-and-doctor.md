@@ -12,7 +12,7 @@ python3 -m venv .venv
 .venv/bin/dab-doctor --help
 ```
 
-运行时只有Python标准库；构建使用PyPI的setuptools。要求Python≥3.11和POSIX（使用fcntl）；本轮实际测试的是macOS arm64/Python3.14.6，其他Python版本与Linux尚未实机认证，Windows不能由wheel名称推断支持。DWS及图片上传补充不捆绑进包，分别按官方固定版本与[图片补充构建说明](../integrations/dws_image_upload/README.md)配置。
+运行时只有Python标准库；构建使用PyPI的setuptools。要求Python≥3.11和POSIX（使用fcntl）；本轮实际测试的是macOS arm64/Python3.14.6，E039另在本机Python3.12验证运行器17项（不代表全套环境认证），Python3.11与Linux尚未实机认证，Windows不能由wheel名称推断支持。DWS及图片上传补充不捆绑进包，分别按官方固定版本与[图片补充构建说明](../integrations/dws_image_upload/README.md)配置。
 
 服务、gateway、consumer以启动时工作目录为数据根。安装后的 `dab` 默认同样从当前目录读取 `local/runtime/http-token`，已修复原先会找进site-packages目录的问题；需要从其他位置调用时显式传 `--token-file`。不要复制别人的local目录作配置。
 

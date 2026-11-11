@@ -89,3 +89,61 @@ print(json.dumps({'type':'turn.completed'}),flush=True)
         body=self.terminal()+'import time\ntime.sleep(30)\n'
         with patch('dingtalk_bridge.agent_runtime.os.killpg',side_effect=PermissionError):
             self.assertEqual(self.run_provider(self.runtime(body))['text'],'完成')
+
+    def forked_tool(self):
+        return """import os,signal,time
+from pathlib import Path
+if os.fork() == 0:
+    signal.signal(signal.SIGTERM, signal.SIG_IGN)
+    Path('child-ready').touch()
+    end=time.monotonic()+6
+    while not Path('release-child').exists() and time.monotonic()<end: time.sleep(.01)
+    if Path('release-child').exists(): Path('late-artifact').write_text('must not run after return')
+    os._exit(0)
+while not Path('child-ready').exists(): time.sleep(.01)
+"""
+
+    def assert_tool_stopped(self):
+        import time
+        self.assertTrue((self.workspace/'child-ready').exists())
+        (self.workspace/'release-child').touch()
+        time.sleep(.3)
+        self.assertFalse((self.workspace/'late-artifact').exists())
+
+    def test_exited_leader_cannot_leave_a_writing_tool_after_timeout(self):
+        body=self.forked_tool()+'os._exit(0)\n'
+        with self.assertRaisesRegex(RuntimeStopped,'timeout'):
+            self.run_provider(self.runtime(body,timeout=2))
+        self.assert_tool_stopped()
+
+    def test_completed_runtime_cleans_term_ignoring_tool_before_return(self):
+        body=self.forked_tool()+self.terminal()+'time.sleep(30)\n'
+        self.assertEqual(self.run_provider(self.runtime(body))['text'],'完成')
+        self.assert_tool_stopped()
+
+    def test_cancel_cleans_tool_and_leaves_unrelated_process_alive(self):
+        import subprocess,time
+        unrelated=subprocess.Popen([sys.executable,'-c','import time; time.sleep(30)'],start_new_session=True)
+        def cancel_ready():
+            deadline=time.monotonic()+4
+            while not (self.workspace/'child-ready').exists() and time.monotonic()<deadline:time.sleep(.01)
+            self.cancel.set()
+        canceller=threading.Thread(target=cancel_ready);canceller.start()
+        try:
+            with self.assertRaisesRegex(RuntimeStopped,'cancelled'):
+                self.run_provider(self.runtime(self.forked_tool()+'os._exit(0)\n'))
+            self.assert_tool_stopped()
+            self.assertIsNone(unrelated.poll())
+        finally:
+            canceller.join();unrelated.terminate();unrelated.wait()
+
+    def test_codex_completed_exit_retains_group_identity_until_cleanup(self):
+        body=self.forked_tool()+"""import sys,json
+sys.stdin.read()
+Path(sys.argv[sys.argv.index('-o')+1]).write_text(json.dumps({'text':'fixture','files':[]}))
+print(json.dumps({'type':'thread.started','thread_id':'fixture-session'}),flush=True)
+print(json.dumps({'type':'turn.completed'}),flush=True)
+os._exit(0)
+"""
+        self.assertEqual(self.run_provider(self.runtime(body,kind='codex'))['text'],'fixture')
+        self.assert_tool_stopped()

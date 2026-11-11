@@ -15,6 +15,50 @@ RESPONSE_SCHEMA={'type':'object','properties':{'text':{'type':'string'},
 class RuntimeStopped(Exception):pass
 
 
+def wait_unreaped(process,timeout):
+    """Observe exit while retaining the owned leader's PID/process-group identity."""
+    deadline=time.monotonic()+timeout
+    while True:
+        if hasattr(os,'waitid'):
+            exited=os.waitid(os.P_PID,process.pid,os.WEXITED|os.WNOHANG|os.WNOWAIT) is not None
+        else:
+            # macOS Python <3.13 has no waitid. Like the service manager, use
+            # POSIX ps; an unreaped owned child keeps its PID reserved. Never
+            # substitute Popen.poll(), which would release that identity.
+            status=subprocess.run(['ps','-p',str(process.pid),'-o','stat='],
+                capture_output=True,text=True,timeout=5)
+            if status.returncode or not status.stdout.strip():
+                raise ChildProcessError('Owned process status unavailable; refusing group signal')
+            exited=status.stdout.strip().startswith('Z')
+        if exited:return
+        if time.monotonic()>=deadline:raise subprocess.TimeoutExpired(process.args,timeout)
+        time.sleep(.02)
+
+
+def stop_owned_group(process):
+    # Never poll/wait first: reaping the leader can both hide surviving tools
+    # and release its PID for reuse. WNOWAIT keeps that identity reserved until
+    # the final group signal, even when the CLI has already exited.
+    if process.returncode is not None:return
+    try:
+        try:os.killpg(process.pid,signal.SIGTERM)
+        except ProcessLookupError:pass
+        except PermissionError:
+            # Popen.terminate()/kill() internally poll (and reap) first.
+            try:os.kill(process.pid,signal.SIGTERM)
+            except ProcessLookupError:pass
+        try:wait_unreaped(process,5)
+        except subprocess.TimeoutExpired:pass
+        # The leader may exit promptly while a tool ignores SIGTERM. Finish
+        # the same owned group before returning, then reap the leader once.
+        try:os.killpg(process.pid,signal.SIGKILL)
+        except ProcessLookupError:pass
+        except PermissionError:
+            try:os.kill(process.pid,signal.SIGKILL)
+            except ProcessLookupError:pass
+    finally:process.wait()
+
+
 class LocalRuntime:
     def __init__(self,settings):
         self.settings=settings;self.kind=settings['kind']
@@ -94,7 +138,7 @@ class LocalRuntime:
                 if not completed or terminal_error or not observed_session:raise RuntimeError('Runtime did not complete; inspect private run log')
                 if self.kind=='codex':
                     # The CLI writes -o while finishing the completed turn.
-                    process.wait(timeout=10)
+                    wait_unreaped(process,10)
                     final_text=(run_dir/'response.json').read_text()
                 if not final_text:raise ValueError('Missing final response')
                 text=final_text.strip()
@@ -109,16 +153,4 @@ class LocalRuntime:
             finally:
                 sel.close();process.stdout.close()
                 if process.stdin and not process.stdin.closed:process.stdin.close()
-                if process.poll() is None:
-                    try:os.killpg(process.pid,signal.SIGTERM)
-                    except (ProcessLookupError,PermissionError):
-                        # macOS can reject signalling a process group that is already exiting.
-                        # Reap first; if it is still live, fall back to this exact owned child.
-                        try:process.wait(timeout=.2)
-                        except subprocess.TimeoutExpired:process.terminate()
-                    try:process.wait(timeout=5)
-                    except subprocess.TimeoutExpired:
-                        try:os.killpg(process.pid,signal.SIGKILL)
-                        except (ProcessLookupError,PermissionError):
-                            if process.poll() is None:process.kill()
-                        process.wait()
+                stop_owned_group(process)

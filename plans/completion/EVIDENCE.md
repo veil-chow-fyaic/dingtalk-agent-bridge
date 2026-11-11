@@ -70,3 +70,13 @@
 - docs/55；scripts/accept_exif_ui.py，47只读检查及4负向通过；exif-ui-ledger.json、exif-audit-validation.json。
 - 原生veil单条图文、原件23810B/Orientation=6保持、Kimi真实读图/Bash归正，30666B PNG与462B报告客户端下载Quick Look打开；完整短回复正确可见。
 - 一任务四确认，DM47/118/127/175、群保持；同native session，无部署变更。仅方向6样本、不外推镜像/动画/群；入站图片独立查看器未开。私有local/exif-ui-20261112。
+
+## E038 — 原生入口补核，仍阻塞
+- docs/25补节、native-entry-review.json，Mac9.0.5/59563623；输入框加号没有展开可识别菜单，格式工具栏误入口已恢复，零消息/录音/权限变更。
+- 两路任务/outbox/传输/events/meta均不变；不是“客户端不支持语音”的证明。DWS audio/video仍为file，普通单消息多文件无新增契约。停止同一路径，转做独立运行边界。
+
+## E039 — 同组后代清理、兼容等待与真实交付
+- docs/56；scripts/accept_runtime_cleanup_ui.py：33审计/2负向；runtime-group-install、runtime-cleanup-validation、runtime-cleanup-ui-ledger、runtime-cleanup-audit-negative.json。
+- 旧实现两条真实进程复现会在返回后继续写；修复保留leader身份直到同组清理，新增4项，Python3.12的17运行器测试通过。初始160全绿，最终兼容补丁全量160有2个既有manager关闭身份错误，未解决；187观察/6次带诊断执行未复现，不覆盖失败。
+- 一次veil原生交办，真实Python计算/写文件，liev完整回复及16B TXT客户端下载Quick Look打开；DM48/121/130/179、群保持。UI在兼容补丁前；补丁后新安装/空闲重载/doctor单列，不重发冒充UI。
+- 原观察1107样本9.225h/6不可达，未满24h；私有local/runtime-orphan-20261112。下一段补manager失败私有诊断，原缺口保持。

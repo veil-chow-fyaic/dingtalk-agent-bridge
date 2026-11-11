@@ -4,7 +4,7 @@
 
 只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。
 
-每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–55。
+每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–56。
 
 交付通用普通账号IM工具＋真实本地Agent接入：群聊/私聊交办、文件原件、实际工具执行、多轮上下文及同会话交付。CLI/HTTP/consumer不绑定组织或runtime。至少一个本地执行器即可；Kimi真实Read/Write/Bash已满足，Codex请求超时单独跟踪，不额外制造双runtime门槛。
 
@@ -27,7 +27,7 @@
 
 当前HTTP为127.0.0.1:18768，两路stream_hint唤醒history，15秒补读兜底。三个进程由`python3 -m dingtalk_bridge.service_manager`管理；status只读，start须显式选入两个`--agent-config`。旧`*_ctl.py`及PID文件不管理当前进程，无开机自启。当前配置/私有归属均在local，不从历史PID猜控制目标。
 
-E035版本已加载两gateway；156回归、干净wheel六入口/18模块摘要通过。E037快照DM47任务118outbox（117确认1旧拒绝）127传输175事件；群3/7/12/76。数字只代表E037快照，续作先只读对账。E034增加quote来源元数据，缺失senderId保持null，显示名不成为身份或执行授权；旧模型不重写。
+E039运行器修复及Python3.12兼容分支已加载两gateway；运行器17项通过、新wheel六入口/18模块通过。最终全量160项有2个既有manager关闭身份错误，根因未解，详见docs/56。E039快照DM48任务121outbox（120确认1旧拒绝）130传输179事件；群3/7/12/76。数字只代表E039快照，续作先只读对账。E034增加quote来源元数据，缺失senderId保持null，显示名不成为身份或执行授权；旧模型不重写。
 
 原24h观察`run=reliability-20261111`起点11月11日19:36:08，PID97881；必须核对进程命令/新鲜采样，不能删除、重启覆盖原样本。最早11月12日19:36后评估，终检用`review_service_observations.py --require-complete`。E031完整性审计已实现，但未满24h；6不可达/3poll_error及维护窗口保留，不能宣称同版本零中断。E028只证明自然access预刷新和后续同步，不代表失效refresh恢复；禁止复制/改写token、改时钟或撤真实授权来造故障。
 

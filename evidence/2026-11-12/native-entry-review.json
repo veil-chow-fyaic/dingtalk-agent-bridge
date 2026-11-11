@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-12",
+  "clientVersion": "9.0.5",
+  "clientBuild": "59563623",
+  "checks": {
+    "direct": true,
+    "group": true,
+    "empty_composer_restored": true
+  },
+  "newMessages": 0,
+  "recordings": 0,
+  "newNativeCapabilityVerified": false,
+  "observed": "Composer plus: coordinate and matching AX produced no expanded menu; a different AX control expanded formatting, restored closed. No native voice entry verified.",
+  "officialDwsVersion": "1.0.67",
+  "officialSource": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go",
+  "contract": "audio/video alias file; one file path per send, no native-voice leaf established",
+  "sourceSha256": "22b6ae62087dad8cdc6a889be6c763ed7bfec9f8bf8e785f6565f6db113523ed",
+  "limits": [
+    "No menu opening does not prove client lacks voice",
+    "Public generic microphone guidance did not specify this desktop version",
+    "Stop this menu path until a concrete new entry exists"
+  ]
+}
