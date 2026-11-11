@@ -16,6 +16,7 @@ from .agent_runtime import LocalRuntime,RuntimeStopped
 from .consumer import Inbox,HydrationPending
 from .message_model import media_parts
 from .routing import route_configs
+from .text_limits import reply_chunks
 
 
 def command_for(model,settings):
@@ -224,8 +225,8 @@ class Gateway:
             outputs=stage_outputs(self.root,workspace,job['id'],result)
             with self.lock,self.db:
                 text=result['text'].replace('![','[')
-                for index in range(0,max(len(text),1),6000):
-                    self.emit(job['id'],'text-'+str(index),{'text':'[Agent] '+(text[index:index+6000] or '任务已完成。')})
+                for index,chunk in reply_chunks(text):
+                    self.emit(job['id'],'text-'+str(index),{'text':chunk})
                 for index,item in enumerate(outputs):
                     path=self.root/item['file']
                     native_image=(self.route.get('imageUploadBinary') and

@@ -9,6 +9,7 @@ import threading
 import time
 import uuid
 from datetime import datetime, timedelta, timezone
+from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
 
 
 class BridgeError(Exception):
@@ -236,6 +237,9 @@ class Bridge:
                 if row[0] != fingerprint:
                     raise ValueError('Idempotency key already belongs to another payload')
                 return {**self.delivery(key), 'replayed': True}
+            # Replay lookup precedes validation so old payloads stay immutable.
+            if text is not None and utf16_units(text) > PERSONAL_TEXT_UNITS:
+                raise ValueError('Personal text exceeds 5120 UTF-16 units; split it or send a file')
             if image is not None:
                 if not self.config.get('imageUploadBinary'):
                     raise ValueError('Native image upload requires imageUploadBinary; no Markdown fallback')

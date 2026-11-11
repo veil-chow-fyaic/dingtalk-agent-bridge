@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-11",
+  "phases": [
+    {
+      "date": "2026-11-11",
+      "checks": {
+        "group_jobs_preserved": true,
+        "group_outbox_preserved": true,
+        "group_deliveries_preserved": true,
+        "group_unchanged_during_experiment": true,
+        "direct_jobs_preserved": true,
+        "direct_outbox_preserved": true,
+        "direct_deliveries_preserved": true,
+        "completed_job_unchanged": true,
+        "input_full_text_preserved": true,
+        "authorized_nonself_input": true,
+        "oversized_paste_not_sent": true,
+        "no_input_projection_issue": true,
+        "frozen_replies": true,
+        "bound_confirmed_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_log_preserved": true,
+        "computed_summary_correct": true,
+        "requested_two_full_copies": true,
+        "two_chunks_reconstruct_runtime_response": true,
+        "original_oversized_failure_preserved": true,
+        "official_server_rejected_length": true,
+        "history_matches_except_known_terminal_lf_trim": true,
+        "one_result_file": true,
+        "artifact_exact_original": true,
+        "client_download_exact_original": true,
+        "one_new_task_only": true,
+        "four_new_replies_only": true,
+        "same_native_session": true
+      },
+      "inputCharacters": 3588,
+      "phase": "original_failure",
+      "allTextSendReceiptsConfirmed": false,
+      "historyProjectionByteExact": true,
+      "terminalLfTrimCount": 0,
+      "sourceCharacters": 3359,
+      "sourceBytes": 8039,
+      "sourceSha256": "691e5de986337e37e3e6ca959cc7ee6675faa3015a5a11d9a90c19419e839fc0",
+      "runtimeResponseCharacters": 6825,
+      "replyChunkCharacters": [
+        6008,
+        833
+      ],
+      "replyChunkUtf16Units": [
+        6220,
+        861
+      ],
+      "limits": [
+        "6942-character native paste prompted document conversion and was cancelled",
+        "This is not a measured universal client/API size limit",
+        "Original first chunk was rejected; only confirmed chunks compared with history",
+        "Official CLI trims a terminal LF on the fixed first chunk; file preserves every byte",
+        "Both full chat text bubbles not visually inspected; UI evidence covers inputs and downloaded/opened files",
+        "Direct chat only; no new group send"
+      ],
+      "ok": true
+    },
+    {
+      "date": "2026-11-11",
+      "checks": {
+        "group_jobs_preserved": true,
+        "group_outbox_preserved": true,
+        "group_deliveries_preserved": true,
+        "group_unchanged_during_experiment": true,
+        "direct_jobs_preserved": true,
+        "direct_outbox_preserved": true,
+        "direct_deliveries_preserved": true,
+        "completed_job_unchanged": true,
+        "input_full_text_preserved": true,
+        "authorized_nonself_input": true,
+        "oversized_paste_not_sent": true,
+        "no_input_projection_issue": true,
+        "frozen_replies": true,
+        "bound_confirmed_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_log_preserved": true,
+        "computed_summary_correct": true,
+        "requested_two_full_copies": true,
+        "two_chunks_reconstruct_runtime_response": true,
+        "every_reply_confirmed": true,
+        "chunks_within_server_utf16_limit": true,
+        "history_matches_except_known_terminal_lf_trim": true,
+        "one_result_file": true,
+        "artifact_exact_original": true,
+        "client_download_exact_original": true,
+        "one_new_task_only": true,
+        "four_new_replies_only": true,
+        "same_native_session": true
+      },
+      "inputCharacters": 3592,
+      "phase": "fixed",
+      "allTextSendReceiptsConfirmed": true,
+      "historyProjectionByteExact": false,
+      "terminalLfTrimCount": 1,
+      "sourceCharacters": 3359,
+      "sourceBytes": 8039,
+      "sourceSha256": "5e32e2982f02e1e8250e5011c1c6c5db5bdc939b37de8eb4beb423081ae6e2c9",
+      "runtimeResponseCharacters": 6844,
+      "replyChunkCharacters": [
+        4893,
+        1967
+      ],
+      "replyChunkUtf16Units": [
+        5063,
+        2037
+      ],
+      "limits": [
+        "6942-character native paste prompted document conversion and was cancelled",
+        "This is not a measured universal client/API size limit",
+        "Original first chunk was rejected; only confirmed chunks compared with history",
+        "Official CLI trims a terminal LF on the fixed first chunk; file preserves every byte",
+        "Both full chat text bubbles not visually inspected; UI evidence covers inputs and downloaded/opened files",
+        "Direct chat only; no new group send"
+      ],
+      "ok": true
+    }
+  ],
+  "historicalUnknownPolicy": "Original rejected delivery retained, not resent or rewritten as success",
+  "ok": true
+}

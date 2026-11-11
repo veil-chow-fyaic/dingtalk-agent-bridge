@@ -57,6 +57,22 @@ class Tests(unittest.TestCase):
         self.assertEqual(self.b.send('k', text='hello')['state'], 'outcome_unknown')
         self.b.send('k', text='hello')
         self.assertEqual(self.fake.sent, 1)
+    def test_personal_text_limit_counts_utf16_before_any_send_or_reservation(self):
+        self.assertEqual(self.b.send('edge',text='🙂'*2560)['state'],'confirmed')
+        for text in ('a'*5121, '🙂'*2560+'a', '中'*5121):
+            with self.assertRaisesRegex(ValueError,'5120 UTF-16'):
+                self.b.send('oversize',text=text)
+        self.assertEqual(self.fake.sent,1)
+        self.assertIsNone(self.b.delivery('oversize'))
+
+    def test_historical_oversized_unknown_is_not_rechunked_or_resent(self):
+        payload=json.dumps({'kind':'text','text':'🙂'*3000},sort_keys=True,ensure_ascii=False)
+        self.b.db.execute('INSERT INTO deliveries(key,fingerprint,payload,state,error) VALUES (?,?,?,?,?)',
+            ('old',hashlib.sha256(payload.encode()).hexdigest(),payload,'outcome_unknown','PARAM_ERROR'))
+        self.b.db.commit()
+        receipt=self.b.send('old',text='🙂'*3000)
+        self.assertTrue(receipt['replayed']);self.assertEqual(receipt['state'],'outcome_unknown')
+        self.assertEqual(self.fake.sent,0)
     def test_crashed_reservation_is_unknown(self):
         self.b.db.execute('INSERT INTO deliveries(key,fingerprint,payload,state) VALUES (?,?,?,?)', ('k','fp','{}','executing'))
         self.b.db.commit()

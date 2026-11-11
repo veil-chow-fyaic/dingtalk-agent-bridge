@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-11",
+  "inputIdentity": "veil native DingTalk UI",
+  "replyIdentity": "liev bound DWS user profile; not bot",
+  "oversizedPaste": {
+    "characters": 6942,
+    "promptedDocumentConversion": true,
+    "cancelledWithoutSend": true
+  },
+  "actualRequests": [
+    3588,
+    3592
+  ],
+  "clientDownloads": [
+    {
+      "name": "0-dab-long-roundtrip.txt",
+      "bytes": 8039
+    },
+    {
+      "name": "0-dab-long-fixed.txt",
+      "bytes": 8039
+    }
+  ],
+  "uiVerified": [
+    "Native text composition and send",
+    "Task acknowledgement and liev result file cards",
+    "Client Save dialogs and download completion",
+    "Both actual downloads opened in Quick Look with source lines and emoji"
+  ],
+  "notVerified": [
+    "Both full long reply bubbles in chat viewport",
+    "Group long text",
+    "Universal client paste threshold"
+  ],
+  "rawEvidence": "Private local/long-text-ui-20261111; no raw chats or screenshots committed",
+  "knownFailure": "Original first long reply rejected; original outcome_unknown retained, never resent",
+  "knownProjectionDifference": "Official CLI trims one terminal LF on fixed first reply; downloaded originals byte exact"
+}

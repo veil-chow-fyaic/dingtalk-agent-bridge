@@ -7,6 +7,7 @@ from dingtalk_bridge.agent_gateway import Gateway,command_for,stage_outputs,stat
 from dingtalk_bridge.agent_runtime import LocalRuntime
 from dingtalk_bridge.message_model import normalize
 from test_routing_consumer import CFG,event
+from dingtalk_bridge.text_limits import reply_chunks,utf16_units,AGENT_PREFIX
 
 SETTINGS={'allowedSenderIds':['self','other'],'allowSelfCommands':True,'prefix':'/agent','runtime':{'kind':'kimi','binary':'kimi'}}
 
@@ -84,6 +85,32 @@ class AgentGatewayTests(unittest.TestCase):
     def test_response_lost_keeps_same_key_and_payload(self):
         self.api.events=[event(text='/agent 问题',sender='self')];self.g.intake()
         self.api.fail_once=True;self.g.flush();self.g.flush();self.assertEqual(len(self.api.sends),1)
+
+    def test_unicode_reply_chunks_preserve_content_and_include_prefix_in_limit(self):
+        for text in ('x'*5112, 'x'*5111+'🙂', '🙂'*3000, '中文🙂🚀\r\n'*1000, 'x'*12000):
+            with self.subTest(length=len(text)):
+                chunks=list(reply_chunks(text))
+                self.assertEqual(''.join(c[len(AGENT_PREFIX):] for _,c in chunks),text)
+                offset=0
+                for index,chunk in chunks:
+                    self.assertEqual(index,offset);offset+=len(chunk)-len(AGENT_PREFIX)
+                    self.assertLessEqual(utf16_units(chunk),5120)
+        self.assertEqual(list(reply_chunks('')),[(0,'[Agent] 任务已完成。')])
+        self.assertTrue(list(reply_chunks('行🙂\n'*2000))[0][1].endswith('\n'))
+
+    def test_long_runtime_response_delivers_unicode_safe_chunks_without_reexecution(self):
+        text=('中文🙂🚀\n'*1100)+'结束'
+        self.runtime.run=lambda *args: {'text':text,'files':[]}
+        self.api.events=[event(text='/agent 长文',sender='other')]
+        self.g.intake();self.g.execute_one();self.g.flush()
+        sent=[r['text'] for r in self.api.sends.values() if not r['text'].startswith('[Agent] 已接收任务')]
+        self.assertGreater(len(sent),1)
+        self.assertEqual(''.join(t[len(AGENT_PREFIX):] for t in sent),text)
+        self.assertTrue(all(utf16_units(t)<=5120 for t in sent))
+        total=len(self.api.sends)
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        self.g.intake();self.assertFalse(self.g.execute_one());self.g.flush()
+        self.assertEqual(len(self.api.sends),total)
 
     def test_generated_images_use_native_delivery_only_when_supported_and_small(self):
         for seq, enabled, size, field in [(1,True,20,'image'),(2,False,20,'file'),(3,True,2*1024*1024+1,'file')]:

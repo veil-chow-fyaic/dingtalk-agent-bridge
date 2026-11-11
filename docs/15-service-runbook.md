@@ -134,3 +134,5 @@ python3 -m unittest discover -s tests -v
 状态查询现以中文展示快照；自身先标完成再统计，避免空闲误报排队。实际取消和新会话UI证据见[docs/36](36-task-control-ui.md)。群和私聊gateway已一并加载该修复与原生图片结果选择，群图片新UI案例仍受原群范围待答复限制。
 
 2026-11-11 22:39 多文件验收复核：`python3 scripts/accept_multi_attachment_ui.py`只读；已完成三请求不重发。附件独立消息各自执行，后续文字沿用同会话；文件来源/金额/结果客户端下载证据见docs/37。当前私聊generation1，旧generation0保留，本段不重启。
+
+E018长文维护：传输和两个gateway已空闲重启加载UTF-16分段（含前缀≤5120）和新发送校验；`accept_long_text_ui.py`只读审计保留旧拒绝。当前DM有1条outcome_unknown，官方日志明确长度拒绝但无taskId，禁止换key/重投；后续补带证据的终态处置。原观察器未重置，有维护不可用采样1次。官方CLI会TrimSpace，文本尾空白不保证无损，精确内容用文件。

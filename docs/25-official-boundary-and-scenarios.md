@@ -109,3 +109,5 @@ python3 scripts/verify_handoff.py
 ```
 
 以上不向钉钉发送新消息。`agent_scenario_probe.py <case> --execute` 是显式写入探针，原始结果和请求指纹保存在 local/；禁止为了查看结果重发旧任务。不要给官方卡片创建伪造不存在的幂等参数：它由本地 intent 阻止重复提交，返回不明必须保留未知。
+
+E018现场边界：官方普通账号text服务端拒绝超过5120 UTF-16单位（含前缀）；隔离v1.0.67官方Str读取参数还会TrimSpace。自研只补正确分段与调用前长度校验，不改官方鉴权或另造发消息API。新的长文两段确认与文件UI证据见docs/38；原首段拒绝/无taskId/unknown保留，不冒充已投递。
