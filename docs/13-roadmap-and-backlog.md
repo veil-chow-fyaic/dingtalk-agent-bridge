@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E052之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E053之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E053：异常raw/资源引用隔离，18形状及后续合法任务/重启不重放通过；双Python179全量，新wheel/双gateway空闲加载，302旧官方事件投影不变，24审计。[证据](70-malformed-message-isolation.md)
 
 - E052：并发对账终态保护；双Python各177全量、新wheel/重载通过，新私聊实际Python计算、145B JSON回传客户端下载Quick Look，36审计7负向。[证据](69-monotonic-reconciliation-and-ui.md)
 
@@ -22,7 +24,7 @@
 
 - E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
 
-E052 Python3.14/3.11隔离wheel各177项及六入口19模块通过；E039两次manager历史错误保持；三进程已加载E052，私聊600秒保持，原24h观察器未重启。DM62/154/163/226，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+E053 Python3.14/3.11隔离wheel各179项及六入口19模块通过；E039两次manager历史错误保持；传输保持E052、两gateway已加载E053，私聊600秒保持，原24h观察器未重启。DM62/154/163/226，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 

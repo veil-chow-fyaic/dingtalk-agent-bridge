@@ -145,3 +145,8 @@
 - docs/69；core对账/晚错误更新增加终态条件，旧线程8失败及旧E048安装HTTP4失败原样保留。新增5测试方法，Python3.14与最低3.11隔离已安装wheel各177项通过，新wheel六入口19模块，22核验通过。
 - 新veil原生私聊一次交办，Kimi真实Python算平方/总和写145B JSON，liev完整回复及文件卡片可见；客户端下载Quick Look打开，四份原件同SHA。accept_reconcile_race_ui.py 36审计、7内存负向通过；reconcile-race-{validation,install,ui-ledger,audit-negative}.json。
 - 三进程已空闲重载，配置字节不变；DM62/154/163/226、群3/7/12/76，旧记录/日志/session保持。原观察1402样本11.686h/6不可达，历史3poll_error及维护保留，未满24h。并发故障为隔离验证，不冒称真实失效凭据恢复；私有local/reconcile-race-20261112。
+
+## E053 — 异常消息隔离与后续任务继续
+- docs/70；显式raw/list/ref对象校验转既有quarantined，不扩大程序错误捕获；旧2方法2失败15错误保留。18合成形状及后续合法任务/重启不重放通过，双Python179全量、新wheel六入口19模块。
+- accept_message_shape.py 24审计通过，message-shape-install/validation.json；302条旧官方事件（含7引用）新旧投影相等，原件只读。没有新增引用UI或异常平台返回的声明。
+- 仅两gateway空闲重载，transport和原观察保持；DM62/154/163/226、群3/7/12/76及旧日志/config/session不变。原观察1424样本11.870h仍未满24h，6不可达/历史3poll_error保持；私有local/message-shape-20261112。

@@ -4,7 +4,7 @@
 
 当前使用普通真人账号：veil在钉钉客户端交办，liev经DWS `--as user`回复，界面显示liev和“通过AI发送”。没有创建bot。原两账号群和私聊的基础双向路径已验；原群后来增加第三人，新增群实验等待范围答复，私聊继续。
 
-**项目尚未完整验收。** E048 Python3.14及最低3.11隔离wheel各169项及新venv六入口/19模块通过；E039两次manager关闭错误仍待真实故障证据定位，不能代替未完成的UI格子。E046已补通用父进程守护，真实私聊SIGKILL gateway后自动清理工具、越过期限无晚写、只读核验完整回复UI通过；原中断任务不自动重做。原24h观察于11月11日19:36:08启动，最早11月12日19:36后评估，历史故障和维护保留。
+**项目尚未完整验收。** E053 Python3.14及最低3.11隔离wheel各179项及新venv六入口/19模块通过；E039两次manager关闭错误仍待真实故障证据定位，不能代替未完成的UI格子。E046已补通用父进程守护，真实私聊SIGKILL gateway后自动清理工具、越过期限无晚写、只读核验完整回复UI通过；原中断任务不自动重做。原24h观察于11月11日19:36:08启动，最早11月12日19:36后评估，历史故障和维护保留。
 
 ## 当前入口
 
@@ -28,7 +28,9 @@
 
 [官方办公接入](docs/41-official-office-agent-ui.md)已完成doc/todo/calendar/未发送draft代表性任务；只对DM显式启用、默认关闭，不是权限沙箱。WeCom/Slack/Telegram参考及适用范围见[WeCom对照](docs/03-wecom-reference.md)、[runtime边界](docs/21-existing-runtime-integration.md)、[本地接入](docs/24-local-agent-product-and-acceptance.md)；开通见[经验手册](docs/11-onboarding-lessons.md)。
 
-最新修复：[并发对账终态保护与真实私聊交付](docs/69-monotonic-reconciliation-and-ui.md)。Python3.14/最低3.11隔离wheel各177项；新的145B JSON任务已实际执行、回复可见、客户端下载并打开。
+E052真实UI：[并发对账终态保护与真实私聊交付](docs/69-monotonic-reconciliation-and-ui.md)。Python3.14/最低3.11隔离wheel各177项；新的145B JSON任务已实际执行、回复可见、客户端下载并打开。
+
+最新修复：[异常消息隔离](docs/70-malformed-message-isolation.md)，防止坏引用/附件结构阻塞整批入站。双Python各179项及302条旧官方事件等价回放通过；无新UI发送。
 
 ## 运行与复核
 

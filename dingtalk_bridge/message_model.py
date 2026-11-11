@@ -10,11 +10,18 @@ FILE = re.compile(r'^\[文件\]\s*(.*?)\s+fileId:\s*(\S+)\s*$')
 
 
 def ref_key(ref):
+    if not isinstance(ref,dict):raise ValueError('invalid_resource_reference')
     kind=ref.get('resourceIdType') or ref.get('type') or ref.get('resourceType')
     rid=ref.get('resourceId')
     if kind not in {'fileId','mediaId'} or not isinstance(rid,str) or not rid:
         raise ValueError('unsupported_resource_reference')
     return kind,rid
+
+
+def resource_refs(raw):
+    refs=raw.get('resourceRefs',[])
+    if not isinstance(refs,list):raise ValueError('invalid_resource_references')
+    return {ref_key(r):r for r in refs}
 
 
 def project(raw, group, depth=0):
@@ -23,7 +30,7 @@ def project(raw, group, depth=0):
     if raw.get('conversationId')!=group:raise ValueError('cross_conversation_message')
     text=raw.get('text')
     if not isinstance(text,str):raise ValueError('missing_text_projection')
-    refs={ref_key(r):r for r in raw.get('resourceRefs',[])}
+    refs=resource_refs(raw)
     quote_raw=raw.get('quotedMessage')
     quote=None
     quoted_keys=set()
@@ -37,7 +44,7 @@ def project(raw, group, depth=0):
             value=quote_raw.get(source)
             quote[target]=value if isinstance(value,str) and value.strip() else None
         issues.extend('quote:'+i for i in quote['issues'])
-        quoted_keys={ref_key(r) for r in quote_raw.get('resourceRefs',[])}
+        quoted_keys=set(resource_refs(quote_raw))
     parts=[];used=set()
     def media(kind,rid,media_type,name=None):
         key=(kind,rid)
@@ -83,6 +90,7 @@ def normalize(event,config):
     if event.get('account_id',config.get('accountId','default'))!=config.get('accountId','default'):
         raise ValueError('unexpected_account')
     raw=event.get('raw',{})
+    if not isinstance(raw,dict):raise ValueError('invalid_message_payload')
     if raw.get('messageId')!=event.get('message_id'):raise ValueError('message_identity_mismatch')
     sender=raw.get('senderId')
     own=config.get('selfSenderId')

@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E053",
+  "ok": true,
+  "checks": {
+    "old_implementation_reproduces_shape_failures": true,
+    "fixed_isolation_and_gateway_tests": true,
+    "python314_full_179": true,
+    "installed_python311_full_179": true,
+    "fixed_frozen_install": true,
+    "prior_frozen_install": true,
+    "doctor_live_passed": true,
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_session_and_logs_preserved": true,
+    "group_all_frozen_events_project_identically": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_session_and_logs_preserved": true,
+    "direct_all_frozen_events_project_identically": true,
+    "transport_identity_preserved": true,
+    "agents_reloaded_and_running": true,
+    "loaded_source_matches_tested_install": true,
+    "config_bytes_preserved": true,
+    "original_observer_preserved": true
+  },
+  "malformedShapes": 18,
+  "newTestMethods": 2,
+  "fullTestCount": 179,
+  "existingOfficialEventsReplayed": 302,
+  "existingQuoteSamples": 7,
+  "newNativeUITest": false,
+  "limits": [
+    "Synthetic malformed payloads only; no claim these shapes occurred on DingTalk",
+    "Existing official events replayed offline, not new incoming quote UI acceptance",
+    "Quarantined payloads are retained locally and never execute; following authorized messages proceed",
+    "Transport, original observation run and all historical records retained"
+  ],
+  "logSha256": {
+    "before-fix.log": "6473362554472b893c83a29f2329857d27b4e2ddd0a9cff1690ee2ad8c581632",
+    "after-fix.log": "2778c104a63d53da9a416eb06bdc7b3d33f532ef5875587d72d3efb1e6c44d8a",
+    "full-py314.log": "1c3f42737e4a91a4bcd33b00c5e47958945d3d89f9b2590d12afaeca17aa5050",
+    "installed-py311-tests.log": "6110d0ccb604933abbd147fb344a92654332f76eb3c3b3540a6ce3a3030186dd"
+  }
+}

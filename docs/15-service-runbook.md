@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-2026-11-12，E050核对、E052更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E050核对、E053更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 安装与工作目录
 
@@ -80,7 +80,7 @@ poll_error出现时保留账本，检查日志、官方授权及选定会话只�
 
 ## 验证与共享边界
 
-E052当前产品在Python3.14及最低3.11隔离已安装wheel各177项、六入口/19模块通过；包括并发对账测试及既有历史审计工具测试。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
+E053当前产品在Python3.14及最低3.11隔离已安装wheel各179项、六入口/19模块通过；包括并发对账、异常消息隔离及既有历史审计工具测试。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
 
 ```bash
 python3 -m unittest discover -s tests
@@ -90,3 +90,5 @@ python3 scripts/verify_handoff.py
 单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
 
 产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；没有通用任意命令代理或新增bot。
+
+异常raw或资源引用结构保存在consumer的quarantined状态，游标可继续处理后续合法消息；不为无法规范化的输入创建Agent任务或猜身份。原始事件留本地inbox，只读排查后再明确用户意图，不能自动重放。见[异常消息隔离](70-malformed-message-isolation.md)。
