@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-12",
+  "baselinePassed": true,
+  "negativeChecks": {
+    "wrong_generated_result": true,
+    "changed_download_bytes": true,
+    "missing_client_original": true,
+    "wrong_actual_tool_output": true,
+    "missing_full_native_reply": true,
+    "unfinished_quick_look": true,
+    "forged_input_sender": true
+  },
+  "rawArtifactsMutated": false,
+  "newMessages": 0,
+  "ok": true
+}

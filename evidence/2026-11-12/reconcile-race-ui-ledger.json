@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_runtime_logs_preserved": true,
+    "group_native_session_unchanged": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_runtime_logs_preserved": true,
+    "direct_native_session_unchanged": true,
+    "exactly_one_new_completed_task": true,
+    "authorized_native_input_matches_intent": true,
+    "exact_three_new_confirmed_outbox": true,
+    "exact_three_new_confirmed_deliveries": true,
+    "replies_bound_to_liev_and_same_route": true,
+    "receipts_match_delivery_rows_and_history": true,
+    "no_reply_echo_or_task_replay": true,
+    "runtime_log_preserved": true,
+    "official_download_complete": true,
+    "artifact_and_resource_digests_match_bytes": true,
+    "file_payload_matches_runtime_artifact": true,
+    "actual_python_computation_and_write": true,
+    "generated_staged_official_client_bytes_equal": true,
+    "all_four_json_contents_correct": true,
+    "one_expected_runtime_artifact": true,
+    "complete_reply_visible_in_native_ui": true,
+    "client_file_fully_opened_in_quick_look": true,
+    "single_native_send_attempt": true,
+    "native_client_download_complete": true,
+    "reviewed_ui_frames_preserved": true,
+    "same_loaded_processes_through_ui_task": true,
+    "frozen_tested_install_matches": true,
+    "observer_start_and_identity_preserved": true
+  },
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 62,
+      "outbox": 154,
+      "deliveries": 163,
+      "events": 226
+    }
+  },
+  "clientBytes": 145,
+  "fileSha256": "85544b2a5c69f5ac46fa2c378e64ea64269cf52434bd9fd51fbc4e506243482a",
+  "scope": "New native veil-to-liev DM deployment task, real Python calculation/write, visible reply, client download and Quick Look open. Concurrent race and authorization errors were isolated synthetic tests, not a live DingTalk fault or expired credential test."
+}

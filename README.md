@@ -28,6 +28,8 @@
 
 [官方办公接入](docs/41-official-office-agent-ui.md)已完成doc/todo/calendar/未发送draft代表性任务；只对DM显式启用、默认关闭，不是权限沙箱。WeCom/Slack/Telegram参考及适用范围见[WeCom对照](docs/03-wecom-reference.md)、[runtime边界](docs/21-existing-runtime-integration.md)、[本地接入](docs/24-local-agent-product-and-acceptance.md)；开通见[经验手册](docs/11-onboarding-lessons.md)。
 
+最新修复：[并发对账终态保护与真实私聊交付](docs/69-monotonic-reconciliation-and-ui.md)。Python3.14/最低3.11隔离wheel各177项；新的145B JSON任务已实际执行、回复可见、客户端下载并打开。
+
 ## 运行与复核
 
 现行步骤已与已安装命令及HTTP实现逐项核对，见[交接契约复核](docs/67-current-handoff-contract.md)：18帮助/33既有测试通过；旧运行/工具说明已单独存档。[中文与空格路径验证](docs/68-unicode-workspace-install-validation.md)另通过64项既有测试、新同wheel安装六入口及只读doctor。

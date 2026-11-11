@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-2026-11-12，E050核对。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E050核对、E052更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 安装与工作目录
 
@@ -62,7 +62,7 @@ python3 -m dingtalk_bridge.cli conversations
 
 多路由会话级GET在query、POST在JSON同时提供`account_id`/`conversation_id`；仅单路时兼容省略。discovery按账号选择；health/conversations为整体视图。具体参数及状态码见[OpenAPI](../api/openapi.json)。POST正文上限1MiB，文件内容不内嵌JSON；服务器读取本地允许路径。
 
-send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0并不代表发送成功**；重复调用可能读到旧rejected。confirmed也不证明对方已读。`reply_to`只支持本路由已观察且发送者已知的原消息，来源纳入幂等摘要，由官方再核原消息及收件人。
+send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0并不代表发送成功**；重复调用可能读到旧rejected。confirmed也不证明对方已读。E052保证并发对账的晚结果/错误不覆盖已提交终态，原key/task/message保持；矛盾终态需另行核查。`reply_to`只支持本路由已观察且发送者已知的原消息，来源纳入幂等摘要，由官方再核原消息及收件人。
 
 ## 文件、任务和恢复
 
@@ -80,7 +80,7 @@ poll_error出现时保留账本，检查日志、官方授权及选定会话只�
 
 ## 验证与共享边界
 
-E048产品在Python3.14及最低3.11隔离已安装wheel各169项、六入口/19模块通过；E049另增双Python各3个历史审计工具测试，未据此宣称再次全量172通过。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
+E052当前产品在Python3.14及最低3.11隔离已安装wheel各177项、六入口/19模块通过；包括并发对账测试及既有历史审计工具测试。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
 
 ```bash
 python3 -m unittest discover -s tests

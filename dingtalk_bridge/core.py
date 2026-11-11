@@ -220,6 +220,14 @@ class Bridge:
             self.db.execute('UPDATE deliveries SET state="rejected",error="PARAM_ERROR" WHERE key=?', (key,))
         return self.delivery(key)
 
+    def _record_unknown(self, key, error):
+        # Another HTTP request may have confirmed this task while our status
+        # query was still in flight. A late error must not undo a terminal row.
+        with self.lock, self.db:
+            self.db.execute('UPDATE deliveries SET state="outcome_unknown",error=? WHERE key=? '
+                            'AND state NOT IN ("confirmed","failed","rejected")', (str(error), key))
+        return self.delivery(key)
+
     def send(self, key, text=None, file=None, image=None, reply_to=None):
         if not isinstance(key, str) or not key or len(key) > 128:
             raise ValueError('A stable idempotency key is required (1-128 chars)')
@@ -354,14 +362,9 @@ class Bridge:
             if not self.delivery(key)['task_id']:
                 raw = json.dumps(e.diagnostic, sort_keys=True).encode()
                 return self._record_rejection(key, raw, hashlib.sha256(raw).hexdigest(), 'official_error_response')
-            with self.lock, self.db:
-                self.db.execute('UPDATE deliveries SET state="outcome_unknown",error=? WHERE key=?', (str(e), key))
-            return self.delivery(key)
+            return self._record_unknown(key, e)
         except Exception as e:
-            with self.lock:
-                self.db.execute('UPDATE deliveries SET state="outcome_unknown",error=? WHERE key=?', (str(e), key))
-                self.db.commit()
-            return self.delivery(key)
+            return self._record_unknown(key, e)
 
     def reconcile(self, key, rejection_evidence=None):
         if rejection_evidence is not None:
@@ -395,7 +398,10 @@ class Bridge:
         if state == 'confirmed' and (ref.get('openConversationId') != self.config['group'] or not ref.get('openMessageId')):
             raise BridgeError('Delivery result identity mismatch')
         with self.lock:
-            self.db.execute('UPDATE deliveries SET state=?,message_id=?,error=NULL WHERE key=?',
+            # Status calls run outside the lock. Preserve the first committed
+            # terminal result when an older pending/conflicting reply arrives.
+            self.db.execute('UPDATE deliveries SET state=?,message_id=?,error=NULL WHERE key=? '
+                            'AND state NOT IN ("confirmed","failed","rejected")',
                             (state, ref.get('openMessageId'), key))
             self.db.commit()
         return self.delivery(key)

@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E052",
+  "checks": {
+    "old_thread_reproduction_eight_failures": true,
+    "old_installed_http_four_failures": true,
+    "fixed_four_thread_tests": true,
+    "fixed_http_four_variants": true,
+    "python314_full_177": true,
+    "installed_python311_full_177": true,
+    "fresh_install": true,
+    "loaded_code_matches_tested_wheel": true,
+    "configuration_bytes_unchanged": true,
+    "reload_preserved_group_jobs": true,
+    "reload_preserved_group_outbox": true,
+    "reload_preserved_group_meta": true,
+    "reload_preserved_group_deliveries": true,
+    "reload_preserved_group_events": true,
+    "reload_preserved_group_runtimeFiles": true,
+    "reload_preserved_direct_jobs": true,
+    "reload_preserved_direct_outbox": true,
+    "reload_preserved_direct_meta": true,
+    "reload_preserved_direct_deliveries": true,
+    "reload_preserved_direct_events": true,
+    "reload_preserved_direct_runtimeFiles": true,
+    "observer_start_and_pid_preserved": true
+  },
+  "scope": "Monotonic delivery terminal states under overlapping status queries and late errors. Deterministic thread and synthetic CLI/HTTP tests, not live expired-credential recovery. Native task/UI acceptance is recorded separately.",
+  "newTests": 5,
+  "fullTestCount": 177,
+  "logSha256": {
+    "before-fix.log": "4ad78c2dc3d4b528e99c1daf005aae73b7caddd51f4208243fb6d580c610127c",
+    "after-fix.log": "f58404c19cf3672a02ee7002c2c032316f82cc9abd048d23972423af965da91e",
+    "http-old-installed.log": "4425a966064509140c80e47de3609f3491c7d90d25bb4a847b3ca856b0497d6b",
+    "http-after-fix.log": "272d3ef69378dd7f3d613ce288f7d954e29433784306c957dd8320390fb9a8e5",
+    "final-full-py314.log": "8bdf8aa81c177ed45a6e3db589badfed5e0bf0b31f00863625a22ba20890c1df",
+    "installed-py311-tests.log": "1d359a249a00adac11a6fffd13b36effcfc6317d017584e70d309d2fcad3b2db"
+  },
+  "ok": true
+}

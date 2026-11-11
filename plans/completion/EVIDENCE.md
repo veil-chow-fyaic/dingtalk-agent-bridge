@@ -140,3 +140,8 @@
 - docs/68；公开tests/scripts/fixtures移到中文/空格工作目录，TMPDIR同样包含中文空格，六组64既有测试通过，包含实际HTTP和runtime子进程；用原E048已安装wheel，不含源码包或账号数据。
 - 另在中文/空格venv离线安装同wheel，六入口及合成中文配置/二进制路径doctor通过，19模块一致；11核验及12现场保持通过，workspace-path-validation.json。64测试与新中文venv入口测试范围分列，不称新增64测试或新UI通过。
 - 产品、三进程和旧记录不变。原观察1373样本11.444h/6不可达，历史3poll_error保留；下一段仅对具体剩余MUST找新可证分支，既有UI/菜单不重复。私有local/workspace-paths-20261112。
+
+## E052 — 并发对账终态保护与真实部署UI
+- docs/69；core对账/晚错误更新增加终态条件，旧线程8失败及旧E048安装HTTP4失败原样保留。新增5测试方法，Python3.14与最低3.11隔离已安装wheel各177项通过，新wheel六入口19模块，22核验通过。
+- 新veil原生私聊一次交办，Kimi真实Python算平方/总和写145B JSON，liev完整回复及文件卡片可见；客户端下载Quick Look打开，四份原件同SHA。accept_reconcile_race_ui.py 36审计、7内存负向通过；reconcile-race-{validation,install,ui-ledger,audit-negative}.json。
+- 三进程已空闲重载，配置字节不变；DM62/154/163/226、群3/7/12/76，旧记录/日志/session保持。原观察1402样本11.686h/6不可达，历史3poll_error及维护保留，未满24h。并发故障为隔离验证，不冒称真实失效凭据恢复；私有local/reconcile-race-20261112。
