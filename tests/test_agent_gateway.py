@@ -49,6 +49,28 @@ class AgentGatewayTests(unittest.TestCase):
         model=normalize(event(text='私聊任务',sender='other'),{**CFG,'conversationType':'direct'})
         self.assertEqual(command_for(model,SETTINGS),'私聊任务')
 
+    def test_opt_in_official_tools_reach_runtime_with_bound_private_context(self):
+        self.g.settings={**self.g.settings,'officialDwsTools':True}
+        binary=self.root/'dws';binary.write_text('never called');binary.chmod(0o700)
+        seen=[];original=self.runtime.run
+        def capture(prompt,*args):
+            seen.append(prompt);return original(prompt,*args)
+        self.runtime.run=capture
+        self.api.events.append(event(text='/agent synthetic official office task'))
+        self.g.intake();self.g.execute_one()
+        self.assertEqual(self.runtime.calls,1)
+        self.assertIn('.dab-official-dws.md',seen[0]);self.assertNotIn(CFG['profile'],seen[0])
+        context=json.loads((self.g.workspace()/'.dab-official-dws.json').read_text())
+        self.assertEqual(context['profile'],CFG['profile']);self.assertEqual(context['binary'],str(binary.resolve()))
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs').fetchone()[0],'completed')
+
+    def test_invalid_official_tool_binary_fails_task_before_runtime(self):
+        self.g.settings={**self.g.settings,'officialDwsTools':True}
+        self.api.events.append(event(text='/agent synthetic office task'))
+        self.g.intake();self.g.execute_one()
+        self.assertEqual(self.runtime.calls,0)
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs').fetchone()[0],'failed')
+
     def test_new_deployment_baseline_skips_old_tasks_and_restart_keeps_cursor(self):
         self.g.close()
         cfg={**CFG,'group':'fresh-route'}

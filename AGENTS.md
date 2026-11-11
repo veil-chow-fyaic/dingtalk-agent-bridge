@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/33（原生图片已接入与Kimi生成图私聊验收）、32（原生图片缺口与官方路径）、31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md及当前状态文件、docs/41（官方办公接入及真实私聊任务）、40（当前进程管理器）、17（总状态）、13（摘要）、25（官方边界）、15（运维）；其他阶段文档按任务索引读取。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -12,7 +12,7 @@
 
 真实配置local/service-config.json含两个liev路由，各自新状态目录。原周威单群配置备份local/ui-two-account-20261111/previous-*.json，旧legacy账本原位保留且不再激活；禁止将旧stateStorage=legacy迁到新profile。新gateway initialCursor仅初始化全新consumer一次（群49/私聊1），重启持久cursor优先，不回放旧任务。
 
-127.0.0.1:18768传输服务，两路已启用stream_hint唤醒history，15秒定时补读兜底（docs/29）。群gateway local/agent-config.json；私聊gateway local/agent-direct-config.json。scripts/agent_ctl.py默认管理群，--config local/agent-direct-config.json管理私聊，各自PID/日志。均仅允许veil且allowSelfCommands=false。无开机自启。实际runtime是已登录Kimi；Codex CLI已登录但真实请求超时，adapter保留。Kimi工作区提示词不是OS沙箱，不能开放任意成员执行。
+127.0.0.1:18768传输服务，两路已启用stream_hint唤醒history，15秒定时补读兜底（docs/29）。群gateway local/agent-config.json；私聊gateway local/agent-direct-config.json。当前三个进程由dingtalk_bridge.service_manager管理，status只读；start须显式选入两个--agent-config，旧*_ctl.py/PID文件不再管理当前进程（docs/40）。均仅允许veil且allowSelfCommands=false。无开机自启。实际runtime是已登录Kimi；Codex CLI已登录但真实请求超时，adapter保留。Kimi工作区提示词不是OS沙箱，不能开放任意成员执行。E021仅私聊启用officialDwsTools，群仍关闭；上下文不授予额外写权限。
 
 ## 证据、身份和资料边界
 
@@ -75,3 +75,7 @@ Finder多选两份合成TXT/CSV一次粘贴，钉钉拆成两消息/两任务，
 ## 2026-11-11 E020 统一管理器已迁移
 当前传输/群gateway/私聊gateway由dingtalk_bridge.service_manager拥有，local/runtime/managed-processes.json记录归属；旧scripts/*_ctl.py与旧PID文件不再管理当前进程。查看用python3 -m dingtalk_bridge.service_manager status；start必须显式带两个--agent-config，stop无需配置列表。无开机自启/自动监督，SIGTERM超时不强杀。详见docs/40。
 11项真实子进程测试及119全量通过；干净新wheel/venv六入口、17模块摘要相同。现场重复start同PID、逆序stop、重新start新PID；旧35任务/81outbox/94传输/83运行文件保持。veil原生私聊一个新任务→Kimi Write 19×31=589→liev3确认回复，35B文件客户端下载Quick Look打开且字节一致，39只读检查及2负向检查通过。当前DM33任务/77outbox（76确认1拒绝），旧blocked/cancelled保留。原24h观察不重置，511样本约4.25h/累计3不可用，迁移维护已记；未满24h。下一步C05 liev官方办公闭环，C01引用/长气泡新UI路径；原群范围问题仍待答复，不重复坐标失败路径。
+
+## 2026-11-12 E021官方办公接入检查点
+仅DM启用officialDwsTools，群关闭；新增上下文固定路由binary/profile，无令牌，默认关闭，不是OS沙箱/强制CLI白名单。Kimi用官方doc/todo/calendar/mail完成四类合成对象，veil原生UI三个任务→9确认回复，760B/1243B/2020B三报告均客户端下载Quick Look打开且原件一致。B密送表述过度推断已由只读C更正，原报告/失败只读命令保留，草稿箱另有读证；日程默认提醒/会议字段已报告。69只读检查/3负向检查，最终干净126回归、六入口/18模块同摘要通过，docs/41。复核accept_official_office_agent.py，不重发A/B/C、不重新创建四对象。
+当前DM36任务/86outbox（85确认1拒绝），群3任务/7outbox不变；旧blocked/cancelled及全部日志保持。两次空闲manager stop/start已记录维护，原24h观察run/PID/起点未变，604样本约5.03h/累计3不可用，尚未满时长。下一段C01引用/完整长气泡有效新UI路径（旧坐标/PageUp不重复），C02实际网络/凭据恢复与最终交接；原群第三人范围问题仍待答复，独立私聊继续。

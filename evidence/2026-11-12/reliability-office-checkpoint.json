@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-12T00:41:15.063072+08:00",
+  "run": "reliability-20261111",
+  "active": true,
+  "sameOriginalRun": true,
+  "samples": 610,
+  "unavailableSamples": 3,
+  "elapsedSeconds": 18285.32,
+  "statusAgeSeconds": 21.86,
+  "complete24h": false,
+  "limits": [
+    "Scheduled maintenance retained separately; samples do not prove zero downtime",
+    "Multiple deployed versions during observation",
+    "No process or counter reset"
+  ]
+}

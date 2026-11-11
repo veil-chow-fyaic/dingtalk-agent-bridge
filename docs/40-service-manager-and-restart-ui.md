@@ -2,6 +2,8 @@
 
 2026-11-11。新增 `dab-service`，统一管理一个本机传输服务和显式选择的多个 gateway。现有群/私聊两个 gateway 已迁入，原账号绑定、账本、游标和 Kimi 会话沿用。管理器属于普通账号 bridge 的本地运行补充；身份、聊天、历史、文件与办公接口仍复用 DWS，没有替代官方鉴权或新增 bot。
 
+11月12日后续：[E021](41-official-office-agent-ui.md)已经该管理器维护部署官方工具上下文。本文119测试/17模块属于E020冻结版本，最新为126测试/18模块；历史审计核对原wheel、原导出与原部署摘要，当前源码不同另行报告，不要求旧wheel等于后来升级的源码。未重写E020原始验收记录。
+
 ## 配置与运行
 
 按[安装说明](35-install-and-doctor.md)安装，包现在有六个入口。复制公共 `config.routes.example.json`、`config.agent.example.json` 到自己工作目录的 `local/`，填经过官方发现及实际消息核对的 profile、会话和发送人标识；不要复制本项目的账号状态。每个 gateway 的 `bridgeConfig` 必须指向同一份服务配置，`accountId`/`conversationId` 必须匹配所选路由，同一会话只能有一个 gateway。身份发现、精确选择和旧账本迁移见[配置操作](23-continuation-and-migration.md)。配置完成后先只读核验：

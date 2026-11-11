@@ -135,6 +135,10 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
             supported = supported and (Path(binary).is_absolute() or '/' not in binary)
             add(scope, 'runtime_executable', 'ok' if supported and executable(root, binary, search_path=True) else 'error')
             add(scope, 'self_commands', 'warning' if settings.get('allowSelfCommands', False) else 'ok')
+            office = settings.get('officialDwsTools', False)
+            add(scope, 'official_dws_context', 'ok' if type(office) is bool else 'error',
+                {'enabled': office if type(office) is bool else None,
+                 'boundary': 'Optional CLI context; no sandbox or implicit write authorization'})
             binding_scope = json.dumps([cfg['accountId'], cfg['profile'], cfg['group'], cfg['conversationType']])
             key = hashlib.sha256(binding_scope.encode()).hexdigest()[:24]
             db = root / 'local/agents' / key / 'tasks.sqlite3'

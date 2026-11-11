@@ -4,6 +4,8 @@
 
 **2026-11-11双账号基础UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
 
+2026-11-12办公接入：[官方工具上下文与真实私聊任务](docs/41-official-office-agent-ui.md)。veil交办、Kimi使用绑定liev身份的官方DWS完成文档/本人待办/本人日程/未发送草稿，三个任务九条确认回复，三份报告均客户端下载打开。新上下文默认关闭，现场只对私聊启用；不另造办公API，也不是强制权限沙箱。原报告的密送字段过度推断已通过只读任务更正，原件保留。最终126项回归、69项只读审计及干净安装通过；整个项目仍待余下UI与真实网络/凭据恢复、24h验收。
+
 图片接入：[原生图片 bridge 与实际 Kimi 结果交付](docs/33-native-image-bridge.md)。本地上传→独立 image 已实现，私聊两份原件客户端下载、Quick Look 打开及字节校验通过；其中一份由 veil UI 交办、Kimi 实际生成。官方 v1.0.67 缺独立上传叶子，以隔离补充命令复用官方上传/鉴权，原版 DWS 不变。原群现为3人，新群图测试待范围确认；JPEG等未由PNG结果外推。
 
 音视频进展：[WAV/MP4私聊双向、实际分析与客户端下载打开](docs/34-audio-video-file-progress.md)，四格与两份Kimi报告通过。MP4按file发送，但客户端呈现可播放视频卡片；WAV语音条和独立video协议仍未证实，群四格待范围确认。
@@ -39,7 +41,7 @@
 | 分类 | 文档 |
 |---|---|
 | 需求与研究 | [01综述](docs/01-research.md) · [02能力](docs/02-capability-matrix.md) · [12需求边界](docs/12-requirements-and-scope.md) · [18身份与外部会话](docs/18-identity-and-conversation-boundaries.md) |
-| 开通与办公 | [06人工清单](docs/06-human-checklist.md) · [11经验库](docs/11-onboarding-lessons.md) · [19办公与权限](docs/19-office-tools-and-permissions.md) |
+| 开通与办公 | [06人工清单](docs/06-human-checklist.md) · [11经验库](docs/11-onboarding-lessons.md) · [19办公与权限](docs/19-office-tools-and-permissions.md) · [41官方办公Agent闭环](docs/41-official-office-agent-ui.md) |
 | 客户端与身份 | [27双账号私聊/群聊与文件验收](docs/27-two-account-ui-acceptance.md) · [26真实UI输入、结果打开及发送身份](docs/26-ui-acceptance-and-sender-identity.md) |
 | 官方与自研边界 | [25官方入口、复用范围与场景验收](docs/25-official-boundary-and-scenarios.md) |
 | 本聊天续作 | [24本地 Agent 使用与验收](docs/24-local-agent-product-and-acceptance.md) · [23迁移、发现、持续接收与版本限制](docs/23-continuation-and-migration.md) |
@@ -69,10 +71,10 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：40份当前/历史分明的知识文档。
+- `docs/`：41份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
-- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和119项回归。
+- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和126项回归。
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
 已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。

@@ -3,6 +3,7 @@
 import argparse
 import json
 from pathlib import Path
+import zipfile
 
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
@@ -81,7 +82,15 @@ def audit():
     checks['restart_preserved_before_ui'] = read(folder / 'post-restart-preservation.json')['ok']
     installed = read(folder / 'install-validation.json')
     checks['installed_wheel_validation'] = installed['ok'] and len(installed['entrypoints']) == 6
-    checks['installed_source_still_matches'] = all(digest((ROOT / 'dingtalk_bridge' / name).read_bytes()) == sha for name, sha in installed['codeSha256'].items())
+    # This is a frozen historical deployment, not a claim about later upgrades.
+    wheel = folder / 'wheels-final/dingtalk_agent_bridge-0.1.0-py3-none-any.whl'
+    with zipfile.ZipFile(wheel) as archive:
+        checks['frozen_wheel_export_and_deployment_source_match'] = (
+            digest(wheel.read_bytes()) == installed['wheelSha256'] and
+            read(folder / 'migration-intent.json')['codeSha256'] == installed['codeSha256'] and
+            all(digest(archive.read('dingtalk_bridge/' + name)) == sha and
+                digest((folder / 'source/dingtalk_bridge' / name).read_bytes()) == sha
+                for name, sha in installed['codeSha256'].items()))
     checks['same_original_observer'] = before['observer']['pid'] == final['observer']['pid'] and before['observer']['startedAt'] == final['observer']['startedAt'] and final['observer']['samples'] > before['observer']['samples']
     checks['ui_input_observed'] = intent['input'] in (folder / '01-task-input.ax.txt').read_text()
     checks['ui_file_card_observed'] = '下载 编辑 0-dab-manager-001.txt 35 B' in (folder / '02-result-visible.ax.txt').read_text()
@@ -89,7 +98,9 @@ def audit():
     checks['client_quicklook_two_line_result_observed'] = all(x in opened for x in ('窗口 快速查看', '0-dab-manager-001.txt', intent['expectedFile']))
     checks['private_ui_captures_present'] = all((folder / n).is_file() and (folder / n).stat().st_size > 1000 for n in
         ('01-task-input.png', '02-result-visible.png', '04-client-open.png'))
+    current_matches = all(digest((ROOT / 'dingtalk_bridge' / name).read_bytes()) == sha for name, sha in installed['codeSha256'].items())
     return {'date': '2026-11-11', 'checks': checks, 'newRuntimeTasks': 1, 'newConfirmedReplies': 3,
+            'currentWorkspaceCodeMatchesTestedWheel': current_matches,
             'limits': ['macOS/Python 3.14 tested; other POSIX environments unverified',
                        'No boot service, automatic supervision, crash-atomic spawn or forced kill',
                        'UI saw file card and downloaded/opened result; text bubble not separately visible',

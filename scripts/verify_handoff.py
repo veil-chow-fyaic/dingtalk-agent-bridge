@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Offline handoff integrity: local links, JSON, and public-file digests. No network/writes by default."""
 import argparse,hashlib,json,re
+from datetime import date
 from pathlib import Path
 from urllib.parse import unquote,urlsplit
 ROOT=Path(__file__).resolve().parents[1]
@@ -27,7 +28,7 @@ def main():
                 if not local.exists():errors.append(f'Broken link: {p.relative_to(ROOT)} -> {target}')
     current={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in all_files}
     if opt.write_manifest and not errors:
-        MANIFEST.write_text(json.dumps({'schemaVersion':1,'date':'2026-11-11','excluded':['local/','__pycache__/','evidence/handoff-manifest.json'],'sha256':current},ensure_ascii=False,indent=2)+'\n')
+        MANIFEST.write_text(json.dumps({'schemaVersion':1,'date':date.today().isoformat(),'excluded':['local/','__pycache__/','evidence/handoff-manifest.json'],'sha256':current},ensure_ascii=False,indent=2)+'\n')
     if MANIFEST.exists():
         expected=json.loads(MANIFEST.read_text())['sha256']
         for name in sorted(set(expected)|set(current)):

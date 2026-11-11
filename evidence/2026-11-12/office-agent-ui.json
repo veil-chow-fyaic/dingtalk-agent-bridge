@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-12",
+  "inputIdentity": "veil native DingTalk direct chat",
+  "replyIdentity": "liev bound DWS user, not bot",
+  "runtimeTasks": 3,
+  "confirmedReplies": 9,
+  "observations": [
+    "A/B/C each sent once through native input",
+    "Three result file cards observed with AI-send attribution",
+    "All three reports saved by native DingTalk Save dialog and opened in Finder Quick Look",
+    "Original B report retained; C explicitly corrects BCC overstatement and reports independent draft-folder evidence"
+  ],
+  "shortTextBubblesSeparatelyObserved": false,
+  "officeObjectsViewedInVeilOfficeUI": false,
+  "files": [
+    {
+      "name": "0-dab-office-a-report.txt",
+      "bytes": 760,
+      "sha256": "35fd867fafc8aea080c0aecf9b885d629677970e6d500af1d27f287c810ab374",
+      "clientSavedAndQuickLookOpened": true
+    },
+    {
+      "name": "0-dab-office-b-report.txt",
+      "bytes": 1243,
+      "sha256": "03518b77632963568468db9c8a6f397ad1da8b0cd0d29cc88fdb25c4e3b1007a",
+      "clientSavedAndQuickLookOpened": true
+    },
+    {
+      "name": "0-dab-office-b-corrected.txt",
+      "bytes": 2020,
+      "sha256": "4f2b96d5dba88774a9dbd859af6b26b2d6e5f5d6e1b1f27d7ec979c4291fdb58",
+      "clientSavedAndQuickLookOpened": true
+    }
+  ],
+  "rawEvidence": "Private local/office-agent-20261111 AX/screenshots, exact object IDs, logs and ledger snapshots"
+}

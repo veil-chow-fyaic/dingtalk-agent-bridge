@@ -4,6 +4,7 @@
   "conversationId": "<configured stable conversation ID>",
   "allowedSenderIds": ["<verified sender ID>"],
   "allowSelfCommands": false,
+  "officialDwsTools": false,
   "prefix": "/agent",
   "runtime": {
     "kind": "kimi",

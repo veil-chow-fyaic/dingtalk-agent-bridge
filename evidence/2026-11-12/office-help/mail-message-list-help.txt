@@ -1,0 +1,57 @@
+列出指定文件夹中的邮件列表（默认为收件箱）。
+
+底层通过 KQL 查询 folderId 实现，返回邮件 ID 及元信息（不含正文）。
+
+常用文件夹 ID：1=已发送, 2=收件箱, 3=垃圾邮件, 5=草稿, 6=已删除
+
+返回字段：
+  messages    邮件列表，每条包含邮件 ID 及元信息（不含正文）
+  total       符合条件的总邮件数
+  nextCursor  下一页游标，传入 --cursor 翻页；值为 "$" 表示已到达列表尾部
+
+错误说明：
+  domain.notFound  该用户的邮箱不是由钉钉邮箱托管，无法完成操作
+
+Usage:
+  dws mail message list [flags]
+
+Examples:
+  dws mail message list --email user@company.com  # 默认列出收件箱邮件
+  dws mail message list --email user@company.com --folder-id 1  # 列出已发送邮件
+  dws mail message list --email user@company.com --folder-id 2 --limit 50
+  dws mail message list --email user@company.com --cursor <nextCursor>
+
+Flags:
+      --cursor string      邮件的起始偏移标识, 其值取自响应中的nextCursor字段
+      --email string       邮件所属邮箱地址 (必填)
+      --folder-id string   文件夹 ID（1=已发送, 2=收件箱, 3=垃圾邮件, 5=草稿, 6=已删除），默认为收件箱 (default "2")
+  -h, --help               help for list
+      --limit string       每页返回数量(最大限制 100, 默认 20) (default "20")
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 浏览某文件夹邮件列表，且没有复杂搜索条件
+
+Avoid when:
+  - 需要主题/发件人/日期等组合条件时用 mail message search
+
+Safety: effect=read  risk=low  confirmation=not_required  idempotency=idempotent
+
+Related skills:
+  - dingtalk-mail
+
+Documentation:
+  - 邮箱深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-mail/references/mail.md

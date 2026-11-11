@@ -1,0 +1,48 @@
+{
+  "checks": {
+    "six_entrypoints": true,
+    "official_context_module_in_site_packages": true,
+    "all_modules_match": true,
+    "wheel_without_account_data": true,
+    "source_without_account_data": true,
+    "installed_and_wheel_modules_match": true
+  },
+  "entrypoints": {
+    "dab": true,
+    "dab-bridge": true,
+    "dab-agent": true,
+    "dab-consume": true,
+    "dab-doctor": true,
+    "dab-service": true
+  },
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "df4f2e304f6188b052dbb4b6ae2b03e8a4e02dd6e86e6c79b8a3cdbcb967d831",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "agent_runtime.py": "779989c3d90a72931175bd41ca6ba6da28a59038c9338688f41fd37240421f82",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "7dc9995c72a57000ccd91c570c3fabf95f4410dfb0d491b1768623019406b851",
+    "agent_gateway.py": "50e4c96f1ff967ce24d39331db5dc17251f4fbcf949725eb65a441da604f1226",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "92b3e90424fa21941bf03b038a50e9e8d7a9db96586def001957f4bed97f8d6c",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "84db108afcd631e1965769b90d03b7f5f4eb51c4e4157821e59d831481db8a3b",
+    "cli.py": "6e5c3334ddae8b114b60c768723beb9bb88271c51cff85677980a06fe96dcf84",
+    "consumer.py": "60c0e81f6b9e84316681d6d6bed0733a26a5e74678100bf6a4eff992cab62e44",
+    "routing.py": "361597872a3c87461471115e972355592c244372d1f2a848cdd9991b00e0c764",
+    "official_tools.py": "58f7af819b5948fd2b0313ddb1e104e5251d132a4fb608aae39346e737982909",
+    "doctor.py": "bee491fb6df9ba373b83318d57446a2f033b7d5c1650c4f89b1c239abda9ec76",
+    "__main__.py": "3111f36c3f58a64ecfa33459679cf6d8e94238b539a5eb7e1500f81dc213ba69",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "pythonVersion": "3.14.6",
+  "wheelSha256": "55c3475331a0c55bb2e033b02fd1c191496237a8f39e03160932ba62f7ef33e2",
+  "ok": true,
+  "finalInstalledAndWheelModulesMatch": true,
+  "date": "2026-11-12",
+  "limits": [
+    "macOS Python3.14.6 tested",
+    "Context is guidance, not OS isolation or forced CLI allowlist",
+    "Clean package contains no account state"
+  ]
+}
