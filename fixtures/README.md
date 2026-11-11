@@ -7,4 +7,4 @@
 - DOCX/XLSX：真实OOXML小型办公附件，DOCX含单段合成标记。
 - ZIP：包含TXT的归档；WAV：1秒440Hz；MP4：1秒蓝色视频。
 
-历史单账号API/摘要证据见evidence/2026-11-11/solo-acceptance.json。当前双账号UI：TXT/CSV见docs/27，PNG/PDF见docs/28–29，DOCX四方向、客户端原件/提取结果打开见docs/30。其他格式继续验收；音视频按文件传输不算原生语音/视频通过。原始聊天/截图仅在local/。
+历史单账号API/摘要证据见evidence/2026-11-11/solo-acceptance.json。当前双账号UI：TXT/CSV见docs/27，PNG/PDF见docs/28–29，DOCX四方向、客户端原件/提取结果打开见docs/30。XLSX/ZIP见docs/31，原生PNG桥接与实际生成图私聊见docs/33；WAV私聊出站文件首格见docs/34，其他音视频方向继续。音视频按文件传输不算原生语音/视频通过。原始聊天/截图仅在local/。

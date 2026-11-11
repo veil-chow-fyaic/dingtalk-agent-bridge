@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-11",
+  "case": "direct-wav-out",
+  "ok": true,
+  "checks": {
+    "confirmed": true,
+    "exact_message": true,
+    "exact_conversation": true,
+    "from_bound_self": true,
+    "file_presentation": true,
+    "resource_original": true,
+    "client_original": true,
+    "one_second_mono": true
+  },
+  "bytes": 32044,
+  "sha256": "6551f09a3e1b384b870b063fe3f6e43f93ec93f6657fa5277b7ccd9754ac08f4",
+  "audio": {
+    "channels": 1,
+    "sampleRate": 16000,
+    "frames": 16000,
+    "durationSeconds": 1.0
+  },
+  "ui": "File card downloaded through DingTalk UI; actual downloaded WAV opened in Finder Quick Look player, duration 0:01 and playback progress visible. No claim about acoustic output quality.",
+  "nativeVoiceBubble": false,
+  "matrixComplete": false,
+  "completedCases": 1,
+  "requiredFileCases": 8
+}

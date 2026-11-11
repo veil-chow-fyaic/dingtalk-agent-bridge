@@ -16,7 +16,11 @@ CASES = {f'{route}-{kind}': (route, field, filename)
              ('pdf', 'file', 'dab-document-001.pdf'),
              ('docx', 'file', 'dab-office-001.docx'),
              ('xlsx', 'file', 'dab-office-001.xlsx'),
-             ('zip', 'file', 'dab-archive-001.zip'))}
+             ('zip', 'file', 'dab-archive-001.zip'),
+             # Official v1.0.67 audio/video send flags are file aliases.
+             # These cases prove original-file transport, never native bubbles.
+             ('wav', 'file', 'dab-audio-001.wav'),
+             ('mp4', 'file', 'dab-video-001.mp4'))}
 
 
 def main():
