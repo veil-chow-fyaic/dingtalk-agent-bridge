@@ -1,128 +1,92 @@
-# 实验适配服务：启动、接入与恢复
+# 运行、接入与恢复
 
-2026-11-11。代码位于 `dingtalk_bridge/`，仅使用 Python 标准库；当前liev账号的原群及veil私聊已真实UI联调。它使用官方DWS事件提示唤醒历史同步，15秒定时补读兜底；双账号入站、短停机补漏与订阅进程重连已通过，长期可靠性仍未完成的实验 bridge。
+2026-11-12，E050核对。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
-## 当前交付
+## 安装与工作目录
 
-- 固定 DWS v1.0.67 项目内二进制；全局 v1.0.61 保留。
-- HTTP 仅监听 127.0.0.1:18768，所有接口要求本机 Bearer token。
-- 支持多个账号/会话路由，每路独立状态；本机启用liev账号原授权测试群和veil私聊。启动按稳定会话ID校验，不写死组织名。配置与公共CLI见docs/22。
-- 每 15 秒拉取两个限定会话历史，消息以原生 ID 去重；提供持久化游标供 Agent 消费。
-- 文本、文件、PNG/JPEG 独立原生图片发送（需配置官方上传补充入口）；SQLite 保存 key、payload 摘要、任务与消息 ID。
-- 已确认结果可重放查询；同 key 改 payload 拒绝。发送中断/返回不明保持 outcome_unknown，不自动重发或切 AX。
-- 附件下载独立于历史轮询锁；落盘后校验摘要，缓存丢失/改变时报错。
-- 文档、待办等办公操作由 Agent 直接调用同一 profile 的官方 DWS；不另造通用任意 CLI 代理。
+需要Python≥3.11及POSIX；运行包仅使用标准库，构建需要setuptools。macOS arm64已有实际验证，Linux未实机认证。DWS及可选图片上传补充分别配置，不捆绑账号数据或二进制。新使用者在自己的项目检出中执行：
 
-传输服务和独立Kimi gateway当前均运行中；群gateway仅响应veil的/agent命令，私聊gateway响应veil的文字/附件，liev自身消息忽略。无全组织订阅、未注册开机自启。原始消息、令牌、数据库、任务 ID 和日志均位于忽略的 local/。此目录不能整包上传公开仓库。
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install .
+.venv/bin/dab-service --help
+```
 
-## 启动与停止
+六个安装入口为`dab`、`dab-bridge`、`dab-agent`、`dab-consume`、`dab-doctor`、`dab-service`，分别对应HTTP客户端、传输、可选执行器、持久消费、诊断及进程管理。下文`python3 -m ...`应使用安装了包的解释器；源码检出也可直接运行。所有服务以**启动工作目录**作为配置、账本、文件及任务根目录，不从site-packages寻找业务数据。
 
-当前由统一管理器拥有传输及两个gateway；旧PID文件只保留历史。详细配置、进程归属和回退见[统一管理器](40-service-manager-and-restart-ui.md)。从项目工作目录执行：
+从[路由模板](../config.routes.example.json)及[执行器模板](../config.agent.example.json)填入独立核实的身份和会话；模板占位符不能直接运行。`accountId`为本地别名，`profile`是官方授权上下文，`selfSenderId`须用本人实际消息字段核对。私聊另需`peerOpenDingTalkId`。多路由及迁移见[通用工具](22-generic-tool-and-consumer.md)。
+
+路由模板默认history轮询；要启用官方事件提示，明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
+
+## 当前本机部署与管理
+
+本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用`--as user`；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。原测试群增至3人后新增群实验暂停，等待范围答复；两人私聊继续有效。
+
+统一管理器拥有传输及两个gateway。以下status/doctor只读；stop/start会改变运行状态，维护前先确认任务空闲：
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status
 python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
-# 以下会停止/启动服务；维护前确认没有进行中的任务
 python3 -m dingtalk_bridge.service_manager stop
 python3 -m dingtalk_bridge.service_manager --agent-config local/agent-config.json --agent-config local/agent-direct-config.json start
 ```
 
-管理器先启动传输再启动gateway，停止顺序相反；重复启动复用同PID，只向归属匹配的进程发SIGTERM，不强杀共享DWS bus。状态位于 `local/runtime/managed-processes.json`，日志为 `managed-transport.log`、`managed-agent-N.log`。不要用旧service_ctl.py/agent_ctl.py操作当前进程。
+启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。详情见[管理器与恢复](40-service-manager-and-restart-ui.md)。
 
-群配置为 `local/agent-config.json`，私聊为 `local/agent-direct-config.json`。启动gateway会实际响应已授权任务；Kimi自动工具执行与提示词规则不是OS沙箱。管理器不绑定runtime，也可只启动传输；status只是归属/存活，实际可用性还要doctor和UI任务验证。
+没有开机自启；机器重启后从同一工作目录按上述显式配置启动。status只说明归属和存活，doctor不证明模型可调用或真实UI成功。现存历史manager关闭身份保护错误尚未定位；若再次发生，先读私有诊断及status，不放宽保护或按旧PID强杀，见[诊断边界](57-manager-identity-diagnostics.md)。
 
-需要前台诊断时先用管理器stop，再运行 `python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15`；前台结束后才恢复受管启动。不得并行启动另一个管理方式。
+前台诊断先停止受管实例，再运行`python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15`；前台退出后才恢复管理器。传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
 
-## 配置和秘密
+## 本机令牌与接口
 
-真实配置为 `local/service-config.json`，已经迁移至v2 routes结构，含profile、conversationId、name、binary、selfSenderId等。原周威stateStorage=legacy账本原位保留但已退出活跃配置，备份见local/ui-two-account-20261111。liev的两个新路由各自使用routed状态，禁止挪用旧账本；模板见 `config.routes.example.json`，迁移与选择命令见[docs/23](23-continuation-and-migration.md)。当前 selfSenderId 来自已确认本人发送消息的历史字段；不能把 profile userId 不经核对直接当消息 senderId。
+HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-HTTP token 首次启动生成，保存在 `local/runtime/http-token`，权限 0600。调用者从文件读取，不打印或写进源码。此令牌只能访问本机服务，不是钉钉 OAuth 凭据。
-
-示例调用（不会发送消息）：
-
-```python
-import json
-from pathlib import Path
-from urllib.request import Request, urlopen
-root = Path('/Users/veil/Projects/dingtalk-agent-bridge')
-token = (root / 'local/runtime/http-token').read_text().strip()
-req = Request('http://127.0.0.1:18768/v1/health',
-              headers={'Authorization': 'Bearer ' + token})
-with urlopen(req) as response:
-    print(json.load(response))
-```
-
-## 接口契约
-
-| 方法与路径 | 输入 | 结果 |
-|---|---|---|
-| GET /v1/conversations | 无 | 当前配置的账号/会话路由，不暴露认证profile |
-| GET /v1/discovery | account_id、cursor、limit | 只读会话元数据与分页；不激活路由 |
-| GET /v1/health | 无 | 最近同步、事件数、poll_scheduler触发/次数、Stream状态/业务hint、明确未验收项 |
-| GET /v1/events?after=0&limit=100 | 持久化 seq 游标；limit 1–200，wait_seconds 0–30 | events、next_cursor；消费成功后由 Agent 保存游标 |
-| POST /v1/sync | `{}` | 立即补读；与后台同步串行化；complete=false 时不推进水位 |
-| POST /v1/send | idempotency_key + text/file/image 三选一 | key/state/task_id/message_id；confirmed 返回 200，未确认返回 202 |
-| GET /v1/deliveries/{key} | URL 编码的 key | 已持久化投递状态，不发送消息 |
-| POST /v1/reconcile | idempotency_key | 查询已有 task；没有 task 时仍保持未知，不猜测成功 |
-| POST /v1/attachments | message_id、可选repair | 仅允许已从绑定群读到的消息；下载台账与摘要 |
-
-多路由时会话级GET在query、POST在JSON传account_id和conversation_id；未指定或错误路由拒绝，单路旧接口兼容。
-
-发送例子：`{"idempotency_key":"业务请求唯一键","text":"需要发送的文本"}`。图片例子用 `image:"fixtures/dab-image-001.png"`，普通附件用 `file`。必须有实际发送意图才调用；不要重放文档中的验收消息当健康探针。
-
-文件只允许项目 `fixtures/` 或 `local/outbox/` 下的安全相对路径，解析符号链接后仍须在范围内；实验上限 20 MiB。发送前复制到按内容摘要命名的 staging。纯文本路径不接受内联图片语法，图片走独立 `image` 参数；防止消息文本意外触发本地文件读取。
-
-事件字段包括 seq、message_id、source、conversation_id、chat、sender、sender_id、content、timestamp、from_self、attachments、raw。source 当前始终 dws_history。附件补全调用与文本消费分开；不要等待大文件下载才保存消息游标。from_self=true 默认不触发回复；未知身份不能擅自推断为他人。
-
-## 任意Agent接入
-
-已参考 WeCom `/messages` 与 `/ws/messages` 的事件/投递模型，但本项目暂未提供它的 WebSocket 或完全相同的请求结构。现已提供独立CLI与durable consumer：有序parts/引用/附件物化，输出仍走send。调用方选择自己的模型和业务策略。不要宣称现有 WeCom runtime 已无改动接上；当前另有本机Kimi通过gateway实际调用该服务并完成两轮任务，见[接入验收](24-local-agent-product-and-acceptance.md)。
-
-通用consumer保持from_self过滤。当前独立gateway已完成veil→liev非自身消息的群/私聊UI闭环，详见docs/27；不对任意第三人开放。办公工具直接使用项目内 DWS 和配置中的 profile；文档/待办的真实对象引用仅存在 `local/office-objects.json`，新增日程/草稿在 `local/probes/20261111-gaps/`。公共工具接口与consumer见 [docs/22](22-generic-tool-and-consumer.md)，无需指定runtime。
-
-## 故障恢复
-
-1. health 的 poll_error 非空：查日志、CLI auth 和限定群只读查询，保持账本，修复后 sync。不要通过换组织或扩大群范围试错。
-2. complete=false：本次最多 20 页/1000 条，不推进水位；需要调整有界补读方案。不要把部分读取当成追平。
-3. outcome_unknown：有 task ID 则 reconcile；没有 task ID 保留未知并按本次合成标记/历史人工对账。不能自动换 key 重发。
-4. 同 key 改正文/文件：400，属于调用方冲突；不能将同一业务重试换成新 key。确实是新消息才分配新 key。
-5. 附件缓存缺失或摘要变化：报错，核对本机缓存后再处理，不静默把不存在的路径返回为成功。
-6. 升级 DWS：隔离二进制、校验官方摘要，复测响应结构、发送、媒体、历史与权限；不要先覆盖可用基线。
-
-## 已知边界
-
-- 首次读最近24小时；后续普通水位前5分钟补读，并每30分钟进行24小时深扫描。超过深扫描窗口或读取上限仍可能漏；尚未完成长期稳定性验收。
-- 当前两路已启用receiveMode=stream_hint。真实UI业务消息唤醒history、服务停机时群/私聊任务重启补漏、订阅子进程自动重连已验证，见[docs/29](29-stream-service-and-offline-recovery.md)。15秒定时补读保留；不是独立于历史索引的完整Stream接收。网络分区/授权过期/24h另验。
-- 事件消费是游标式可重放交付，不承诺 exactly-once。发送已确认仅代表 API 投递状态，不代表另一人已读。
-- 原生音视频在v1.0.67源码和本机dry-run均确认为file路线（见docs/23），独立语音条/video协议尚未证实；MP4通过file入口在客户端实际呈现可播放视频卡片，私聊双向原件与实际分析见docs/34。图片独立原生上传发送见docs/33；DOCX/XLSX/ZIP见docs/30–31。
-- 多账号和group/direct路由已实现、确定性测试通过；指定veil↔liev私聊和原两人群已验收；外部群未验收。没有自动群管理、完整多租户权限管理或AX后端。
-- 不安装自动启动或通知任务；本机重启后需要先启动传输，再分别启动群和私聊gateway。传输进程负责限定会话轮询；独立gateway会执行授权/agent任务并回复，停止自动执行需要分别stop两个gateway配置。
-
-## 验证
+不发送消息的检查：
 
 ```bash
-python3 -m unittest discover -s tests -v
+python3 -m dingtalk_bridge.cli health
+python3 -m dingtalk_bridge.cli conversations
 ```
 
-当前95个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
+| 方法与路径 | 输入及语义 |
+|---|---|
+| GET /v1/health | 同步、poll_error、Stream提示与轮询状态；不是投递验收 |
+| GET /v1/conversations | 当前配置路由；不暴露认证profile |
+| GET /v1/discovery | account_id、cursor、limit；只发现会话，不激活路由 |
+| GET /v1/events | after、limit（1–200）、wait_seconds（0–30）；返回events/next_cursor |
+| POST /v1/sync | 可选deep=true；有界补读，complete=false不推进水位 |
+| POST /v1/send | idempotency_key＋text/file/image三选一；纯文本可加reply_to |
+| GET /v1/deliveries/{key} | 已持久化状态；未找到404，不发送 |
+| POST /v1/reconcile | idempotency_key；可选本机rejection_evidence，见下文 |
+| POST /v1/attachments | message_id、可选repair=true；仅选定路由已观察消息 |
 
-真实 HTTP 验收证据见 `evidence/2026-11-11/service-acceptance.json` 和 `service-restart-acceptance.json`，仅含脱敏结果。
+多路由会话级GET在query、POST在JSON同时提供`account_id`/`conversation_id`；仅单路时兼容省略。discovery按账号选择；health/conversations为整体视图。具体参数及状态码见[OpenAPI](../api/openapi.json)。POST正文上限1MiB，文件内容不内嵌JSON；服务器读取本地允许路径。
 
-## 原生图片（2026-11-11 更新）
+send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0并不代表发送成功**；重复调用可能读到旧rejected。confirmed也不证明对方已读。`reply_to`只支持本路由已观察且发送者已知的原消息，来源纳入幂等摘要，由官方再核原消息及收件人。
 
-路由可选 `imageUploadBinary` 指定[固定源码构建的窄补充](../integrations/dws_image_upload/README.md)，`binary` 继续原版 DWS。新 `image` 只走独立图片，不再走 Markdown；未配置明确拒绝，旧 key 仍只读返回旧回执。PNG/JPEG 原生最多2MiB且不压缩，普通 `file` 保留20MiB上限。配置后传输和对应gateway需重启才能加载。
+## 文件、任务和恢复
 
-发送回执新增 `upload_state`、`image_delivery=native`。`upload_unknown` 表示上传结果未确认且没有调用消息发送；不要换key/自动重传，官方暂无上传任务对账接口。`outcome_unknown` 表示发送阶段可能已执行，仍沿用有task ID只查询、无task ID按历史对账的规则。不要把二者都当“消息已丢失”。gateway有上传配置时，把≤2MiB PNG/JPEG结果自动作为image，其它结果作为文件。完整现场边界见[docs/33](33-native-image-bridge.md)。
+文件路径只允许工作目录`fixtures/`或`local/outbox/`下的安全相对路径，解析符号链接后仍须在范围内。发送前按内容摘要staging。单文件上限20MiB是bridge策略；原生image仅PNG/JPEG且≤2MiB、不自动压缩，较大图片使用file。gateway超限任务failed并给出压缩/拆分建议，不自动重新生成或投递。官方CLI会TrimSpace，精确尾空白等内容应以文件交付。
 
-安装包及只读doctor的准确语义、退出码、干净导出验证见[docs/35](35-install-and-doctor.md)。旧service_ctl/agent_ctl仍管理当前检出，不等于统一多worker管理已完成。
+`upload_unknown`表示图片上传结果不明、尚未调用消息发送；官方没有该上传任务对账接口。`outcome_unknown`表示发送阶段可能执行：有task ID只查询原任务，没有则保留未知并结合原日志/历史核对。**禁止换key、自动重发或切UI补发**。同key改内容拒绝；确为另一项用户意图才用新key。
 
-状态查询现以中文展示快照；自身先标完成再统计，避免空闲误报排队。实际取消和新会话UI证据见[docs/36](36-task-control-ui.md)。群和私聊gateway已一并加载该修复与原生图片结果选择，群图片新UI案例仍受原群范围待答复限制。
+明确长度拒绝可显式提供`rejection_evidence`：它是服务工作目录`local/`下的官方日志JSON路径（解析符号链接后仍须位于local内）；需匹配原uuid/目标/执行窗口/实际长度并核验持久payload摘要，不接受聊天附件自证。有task ID不能仅凭状态查询报错推成发送拒绝。该操作只把符合条件的未知记录审计为rejected，不发消息；细节见[拒绝对账](39-rejection-reconciliation-and-feedback.md)。
 
-2026-11-11 22:39 多文件验收复核：`python3 scripts/accept_multi_attachment_ui.py`只读；已完成三请求不重发。附件独立消息各自执行，后续文字沿用同会话；文件来源/金额/结果客户端下载证据见docs/37。当前私聊generation1，旧generation0保留，本段不重启。
+附件缓存丢失或摘要变化会报错；核对后可显式`attachments --repair`取回原件，新目录/manifest替换缓存指向，旧文件保留。不要删除仍被消费者引用的文件。
 
-E018长文维护：传输和两个gateway已空闲重启加载UTF-16分段（含前缀≤5120）和新发送校验；`accept_long_text_ui.py`只读审计保留旧拒绝。当前DM有1条outcome_unknown，官方日志明确长度拒绝但无taskId，禁止换key/重投；后续补带证据的终态处置。原观察器未重置，有维护不可用采样1次。官方CLI会TrimSpace，文本尾空白不保证无损，精确内容用文件。
+可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash与同会话文件交付；它及提示词、官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
-E019拒绝处置：当前原长文未知已按完整绑定日志记rejected，原行/证据保存在rejection_audit；新增CLI `reconcile --rejection-evidence local/rejection-log.json`仅显式窄对账，无发送动作，不能接受聊天附件自证。无需重跑本次已完成写操作；只读脚本accept_rejection_reconciliation.py。客户端已有部分失败提示，status未知0/拒绝1；doctor33检查保留拒绝和历史blocked两个warning。传输/双gateway维护重启有记，观察器不重置。详见docs/39。
+poll_error出现时保留账本，检查日志、官方授权及选定会话只读请求，修复后补读；不改组织或扩监听范围。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
-输出单文件20MiB上限属于bridge本地策略。超过时任务failed/ArtifactTooLarge，UI说明未发送及压缩拆分建议，不自动重新生成或投递。用户可交办独立压缩任务，实际恢复证据见[docs/54](54-output-limit-and-compressed-recovery.md)。
+## 验证与共享边界
+
+E048产品在Python3.14及最低3.11隔离已安装wheel各169项、六入口/19模块通过；E049另增双Python各3个历史审计工具测试，未据此宣称再次全量172通过。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
+
+```bash
+python3 -m unittest discover -s tests
+python3 scripts/verify_handoff.py
+```
+
+单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
+
+产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；没有通用任意命令代理或新增bot。

@@ -30,6 +30,8 @@
 
 ## 运行与复核
 
+现行步骤已与已安装命令及HTTP实现逐项核对，见[交接契约复核](docs/67-current-handoff-contract.md)：18帮助/33既有测试通过；旧运行/工具说明已单独存档。
+
 使用当前checkout。传输监听127.0.0.1:18768，两路官方Stream提示唤醒history、15秒补读，群/私聊各一个Kimi gateway，仅允许已配置发送者。无开机自启；Kimi没有OS级沙箱。现有三个进程由service_manager管理，旧ctl/PID文件不再控制当前部署。
 
 ```bash

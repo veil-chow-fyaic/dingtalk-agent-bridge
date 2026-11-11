@@ -3,7 +3,7 @@
   "info": {
     "title": "DingTalk Bridge — Runtime-neutral IM tools",
     "version": "0.3.0-experimental",
-    "description": "Account/conversation routed IM. Native UI evidence covers the authorized test group and direct pair; see the acceptance matrix for untested scope."
+    "description": "Account/conversation routed IM. Native UI evidence covers the authorized test group and direct pair; see the acceptance matrix for untested scope. Bundled CLI/gateway/consumer use loopback port 18768. POST JSON bodies are limited to 1 MiB; file/image fields reference permitted server-workspace paths, not inline uploads."
   },
   "servers": [
     {
@@ -47,6 +47,9 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
           }
         }
       }
@@ -74,6 +77,9 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
           }
         }
       }
@@ -101,6 +107,9 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
           }
         },
         "parameters": [
@@ -180,7 +189,7 @@
             "description": "Upstream error"
           },
           "202": {
-            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "description": "Persisted delivery state is not confirmed, including replayed rejected state. Inspect state; do not assume success or automatically resend.",
             "content": {
               "application/json": {
                 "schema": {
@@ -189,6 +198,12 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
+          },
+          "413": {
+            "description": "JSON body Content-Length is negative or exceeds 1 MiB."
           }
         },
         "requestBody": {
@@ -325,6 +340,9 @@
           },
           "404": {
             "description": "No delivery for this key in selected route"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
           }
         },
         "parameters": [
@@ -380,6 +398,12 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
+          },
+          "413": {
+            "description": "JSON body Content-Length is negative or exceeds 1 MiB."
           }
         },
         "requestBody": {
@@ -397,6 +421,10 @@
                   },
                   "idempotency_key": {
                     "type": "string"
+                  },
+                  "rejection_evidence": {
+                    "type": "string",
+                    "description": "Optional server-workspace local/ JSON path containing original official length-rejection logs. Explicitly audits an outcome_unknown delivery with no task ID as rejected only after original key, target, command window, text length and persisted payload fingerprint checks. Does not resend; chat attachments cannot certify rejection. See docs/39-rejection-reconciliation-and-feedback.md."
                   }
                 },
                 "required": [
@@ -431,6 +459,12 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
+          },
+          "413": {
+            "description": "JSON body Content-Length is negative or exceeds 1 MiB."
           }
         },
         "requestBody": {
@@ -486,6 +520,12 @@
           },
           "502": {
             "description": "Upstream error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
+          },
+          "413": {
+            "description": "JSON body Content-Length is negative or exceeds 1 MiB."
           }
         },
         "requestBody": {
@@ -558,6 +598,9 @@
           },
           "502": {
             "description": "Upstream discovery error"
+          },
+          "500": {
+            "description": "Unexpected internal error; response body does not expose internal exception details."
           }
         }
       }

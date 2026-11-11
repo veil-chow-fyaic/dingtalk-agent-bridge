@@ -130,3 +130,8 @@
 - docs/66；五个审计旧安装与当前源码混比导致唯一失败，现分别核冻结源码/安装目录/wheel总摘要及模块集合摘要，当前版本差异独立展示false。
 - E039/E041/E045/E046/E047完整只读审计通过，旧报告SHA不变；实际报告10内存负向和Python3.14/3.11各3专项通过。frozen-install-audit-validation.json。
 - 无产品修改、构建、重启或新消息；两路旧账本/日志12项不变。原观察1338样本11.152h未满24h，下一C11运行文档/CLI帮助/HTTP契约/配置例子一致性核对；私有local/frozen-install-audit-20261112。
+
+## E050 — 当前运行/CLI/HTTP/模板交接核对
+- docs/67；运行手册/通用工具重写为现态，两份旧全文与aaa5cf2逐字节归档；OpenAPI补已实现的rejection_evidence、413/500与202解释，旧安装页标明历史检查点。
+- 隔离3.11已安装wheel：18帮助、33既有HTTP/拒绝/迁移/路由测试通过；13核验与12账本保持检查通过，handoff-contract-validation.json。JSON语法及实现对照，不冒称完整第三方OpenAPI规范认证。
+- 19产品模块/三进程/所有旧记录不变，无新消息或UI；原观察1358样本11.319h/6不可达、原3poll_error保持，未满24h。私有local/handoff-contract-20261112；下一独立工作目录路径边界，原群/UI入口loop guard保持。

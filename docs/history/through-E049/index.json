@@ -1,0 +1,17 @@
+{
+  "sourceCommit": "aaa5cf2368f55838c742d9a9d3eabc92f285cbd5",
+  "files": [
+    {
+      "source": "docs/15-service-runbook.md",
+      "archive": "15-service-runbook.md.txt",
+      "bytes": 13922,
+      "sha256": "73ea46ad4ea8855745a02637bcb6b909f0b027e3fbbae213c312eb6a93381343"
+    },
+    {
+      "source": "docs/22-generic-tool-and-consumer.md",
+      "archive": "22-generic-tool-and-consumer.md.txt",
+      "bytes": 6981,
+      "sha256": "92c188ba90a5dbcf872f893b33cb35b23e10a17e6a8850035fe7eee2ced06354"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 安装包与只读 doctor
 
-2026-11-11。项目现在可以安装为 `dingtalk-agent-bridge==0.1.0`，提供五个入口：`dab`（HTTP工具）、`dab-bridge`（传输）、`dab-agent`（可选本地执行器）、`dab-consume`（持久消费）、`dab-doctor`（只读诊断）。传输和通用工具不依赖 Kimi/Codex。
+本文主体为2026-11-11 E015历史安装检查点；当前六入口及操作步骤见[运行手册](15-service-runbook.md)。当时项目可以安装为 `dingtalk-agent-bridge==0.1.0`，提供五个入口：`dab`（HTTP工具）、`dab-bridge`（传输）、`dab-agent`（可选本地执行器）、`dab-consume`（持久消费）、`dab-doctor`（只读诊断）。传输和通用工具不依赖 Kimi/Codex。
 
 ## 安装与工作目录
 
@@ -29,7 +29,7 @@ python3 -m venv .venv
 .venv/bin/dab-agent --config local/agent-config.json
 ```
 
-当前客户端/gateway/consumer默认连接127.0.0.1:18768。本页E015记录当时五入口安装检查点；后续E020已交付第六入口dab-service及多worker后台管理，现部署与运行步骤见[docs/40](40-service-manager-and-restart-ui.md)。无开机自启，完整产品验收仍未完成。
+当前客户端/gateway/consumer固定连接127.0.0.1:18768。本页E015记录当时五入口安装检查点；后续E020已交付第六入口dab-service及多worker后台管理，现部署与运行步骤见[docs/40](40-service-manager-and-restart-ui.md)。无开机自启，完整产品验收仍未完成。
 
 ## doctor语义
 

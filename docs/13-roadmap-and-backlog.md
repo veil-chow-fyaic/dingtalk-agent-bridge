@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E049之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E050之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E050：当前运行/工具文档及HTTP契约核对修正；旧原文按字节归档，隔离安装18帮助/33既有测试与25核验通过，无产品/部署/消息变更。[证据](67-current-handoff-contract.md)
 
 - E049：五个历史UI审计改核冻结源码/wheel/安装包，全部只读复核通过；10负向、双Python各3专项，旧报告不改、当前版本差异独立展示。[证据](66-frozen-install-audit-boundary.md)
 

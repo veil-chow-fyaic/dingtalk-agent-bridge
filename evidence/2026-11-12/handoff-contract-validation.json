@@ -1,0 +1,155 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E050",
+  "purpose": "Current runbook/CLI/HTTP/config handoff consistency",
+  "checks": {
+    "eighteen_installed_help_commands": true,
+    "help_did_not_initialize_workspace": true,
+    "nineteen_product_modules_unchanged": true,
+    "imports_installed_package": true,
+    "two_archives_equal_git_bytes": true,
+    "openapi_json_parses": true,
+    "reconcile_optional_log_path_documented": true,
+    "post_body_limit_and_internal_error_documented": true,
+    "public_template_shapes_parse_offline": true,
+    "four_existing_installed_wheel_suites_pass": true,
+    "manager_status_exits_zero": true,
+    "original_observer_identity_and_fresh_sample": true,
+    "same_managed_processes_running": true
+  },
+  "installedHelp": {
+    "dab": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-bridge": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-agent": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-consume": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-doctor": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-service": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-health": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-conversations": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-discovery": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-events": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-send": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-status": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-reconcile": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-attachments": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "dab-sync": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "configure": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "configure-migrate": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    },
+    "configure-select": {
+      "exitCode": 0,
+      "documentedFlagsPresent": true
+    }
+  },
+  "regressions": {
+    "http": {
+      "tests": 3,
+      "ok": true
+    },
+    "rejection": {
+      "tests": 8,
+      "ok": true
+    },
+    "continuation": {
+      "tests": 9,
+      "ok": true
+    },
+    "routing-consumer": {
+      "tests": 13,
+      "ok": true
+    }
+  },
+  "python": "3.11.15",
+  "productChanged": false,
+  "rebuildOrReload": false,
+  "newMessages": 0,
+  "newUIAcceptance": false,
+  "openapiValidation": "JSON syntax and reviewed implemented parameters/status codes; not full third-party OpenAPI conformance validation",
+  "oldArchivesSourceCommit": "aaa5cf2368f55838c742d9a9d3eabc92f285cbd5",
+  "ok": true,
+  "preservationChecks": {
+    "group_jobs": true,
+    "group_outbox": true,
+    "group_meta": true,
+    "group_deliveries": true,
+    "group_events": true,
+    "group_runtimeFiles": true,
+    "direct_jobs": true,
+    "direct_outbox": true,
+    "direct_meta": true,
+    "direct_deliveries": true,
+    "direct_events": true,
+    "direct_runtimeFiles": true
+  },
+  "routeCounts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 61,
+      "outbox": 151,
+      "deliveries": 160,
+      "events": 222
+    }
+  },
+  "observation": {
+    "samples": 1358,
+    "elapsedHours": 11.319,
+    "unavailableSamples": 6,
+    "complete24h": false,
+    "historicalPollErrorSamples": 3
+  }
+}
