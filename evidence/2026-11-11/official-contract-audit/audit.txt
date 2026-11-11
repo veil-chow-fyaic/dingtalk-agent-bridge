@@ -1,0 +1,35 @@
+查看、导出和校验本地操作审计日志。
+
+Usage:
+  dws audit [flags]
+  dws audit [command]
+
+Available Commands:
+  export      导出审计日志
+  tail        查看最近的审计记录
+  verify      校验审计日志哈希链完整性
+
+Flags:
+  -h, --help   help for audit
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws audit [command] --help" for more information about a command.
+
+Related skills:
+  - dingtalk-shared
+
+Documentation:
+  - DWS 运行契约: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-shared/references/runtime-contract.md

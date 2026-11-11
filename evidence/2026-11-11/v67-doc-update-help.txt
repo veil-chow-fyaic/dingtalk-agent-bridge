@@ -1,0 +1,61 @@
+当用户要修改已有在线文字文档时使用；支持整篇 append/overwrite、在参考 block 前后插入段落或标题、block 替换/删除，以及受限的唯一纯文本 str_replace，所有模式统一经过静态确认门禁。
+
+参数约束：
+  - 仅block_copy_insert_after可用的逗号分隔源ID；与block-id同时提供须相同
+  - 依 command 校验，所需文本或 block 参数不能为空
+
+Usage:
+  dws doc +update [flags]
+
+Examples:
+  dws doc +update --node <DOC_ID> --command append --content "补充说明"
+  dws doc +update --node <DOC_ID> --command block_insert_before --before-block-id <BLOCK_ID> --content "发布说明" --heading-level 1
+
+Flags:
+      --after-block-id string    插入位置参考 block ID；相关动作要求时不能为空
+      --before-block-id string   向前插入时的位置参考 block ID；block_insert_before 要求不能为空
+      --block-id string          目标或源 block ID；相关动作要求时不能为空；block_delete 支持逗号分隔批量 ID，单次最多 50 个；block_copy_insert_after支持同文档顶层有序多源ID，最多20个，不支持含资源引用的块
+      --command string           更新动作；不能为空（可选值: append, overwrite, block_insert_before, block_insert_after, block_replace, block_delete, str_replace, block_copy_insert_after）
+      --content string           内容字面量、@工作目录相对文件或 - 表示 stdin；相关动作要求时不能为空
+      --doc string               文档 ID 或 URL（必填） (alias)
+      --doc-format string        内容格式（可选值: markdown, jsonml） (default "markdown")
+      --end-block-id string      block_delete/block_replace顶层范围终点（含）；使用真实块 UUID
+      --expected-revision int    仅 overwrite+jsonml：沿服务端既有路径校验 revision 条件
+      --force                    允许全文覆盖使本人待处理建议失效；独立于 --yes
+      --heading-level int        将插入内容写为指定级别标题（1-6）；仅支持 Markdown block_insert_before/block_insert_after
+  -h, --help                     help for +update
+      --new string               str_replace 新文字；--old 不能为空，新值可为空但参数必须显式提供
+      --node string              文档 ID 或 URL（必填）
+      --old string               str_replace 原文字，不能为空
+      --src-block-ids string     仅block_copy_insert_after可用的逗号分隔源ID；与block-id同时提供须相同
+      --start-block-id string    block_delete/block_replace顶层范围起点；与end-block-id成对
+      --text string              内容字面量、@工作目录相对文件或 - 表示 stdin；相关动作要求时不能为空 (alias)
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当用户要修改已有在线文字文档时使用；支持整篇 append/overwrite、在参考 block 前后插入段落或标题、block 替换/删除，以及受限的唯一纯文本 str_replace，所有模式统一经过静态确认门禁。
+
+Avoid when:
+  - 需要文件树移动、复制或普通钉盘文件操作时改用 drive；非文字文档按对象类型路由到 sheet、aitable、slides 或 wiki
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-doc
+
+Documentation:
+  - 钉钉文档深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-doc/references/doc.md

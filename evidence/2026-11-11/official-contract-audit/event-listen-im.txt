@@ -1,0 +1,47 @@
+把 @我、指定发送人、指定群、全部单聊或全部群聊等用户意图确定性编译为个人 EventKey，自然姓名/群名会先唯一解析，再复用 event consume 的订阅、ready marker、NDJSON、取消、回滚和清理生命周期；本命令只处理 IM，不接收 OA 审批事件。
+
+Usage:
+  dws event +listen-im [flags]
+
+Flags:
+      --chat-id string            指定群 openConversationId
+      --chat-query string         按群名唯一解析指定群
+      --dry-run                   解析目标并打印订阅计划，不创建订阅或连接 bus
+      --duration duration         运行时长上限 (Go duration，如 30s/5m；0 = 不限)
+      --events strings            事件种类: message,reaction,read,recall (default [message])
+  -h, --help                      help for +listen-im
+      --kind string               监听意图: at-me|sender|group|all-direct|all-group (default "at-me")
+      --max-events int            收到 N 条后退出 (0 = 不限)
+      --open-dingtalk-id string   指定发送人/单聊对端 openDingTalkId
+      --query string              消息文本关键词过滤，逗号分隔；仅 message 事件
+      --user string               指定发送人/单聊对端 userId
+      --user-query string         按姓名/花名唯一解析指定发送人
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 已知要监听 @我、指定发送人、指定群、全部单聊或全部群聊的 message/reaction/read/recall 事件时使用；姓名用 --user-query、群名用 --chat-query，CLI 会唯一解析目标并把多个兼容事件合并到一个消费生命周期。
+
+Avoid when:
+  - OA 审批事件、群标题/成员/解散等生命周期事件、显式 EventKey、复用 subscribe_id、Filter DSL、原始 transport envelope 或其它底层控制使用 event consume；只查历史消息使用 chat 查询入口
+
+Safety: effect=write  risk=medium  confirmation=not_required  idempotency=non_idempotent
+
+Related skills:
+  - dingtalk-event
+
+Documentation:
+  - 事件订阅深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-im.md
+  - 互动卡片回调事件: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-card.md
+  - 日历个人事件: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-calendar.md

@@ -1,0 +1,42 @@
+当你发消息后拿到 openTaskId、想确认投递结果，或后续 edit/recall/read-status 需要取得 openMessageId 和 openConversationId 时使用；openTaskId 不是消息 ID。结果会保留下层响应，并追加版本化 messageRef 与结构化 nextActions。
+
+Usage:
+  dws chat +messages-query-send-status [flags]
+
+Aliases:
+  +messages-query-send-status, +messages-send-status
+
+Examples:
+  dws chat +messages-query-send-status --open-task-id <openTaskId>
+
+Flags:
+  -h, --help                  help for +messages-query-send-status
+      --open-task-id string   发送消息时返回的 openTaskId（必填）
+
+Global Flags:
+      --client-id string       Override OAuth client ID (DingTalk AppKey)
+      --client-secret string   Override OAuth client secret (DingTalk AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求超时时间 (秒) (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当你发消息后拿到 openTaskId、想确认投递结果，或后续 edit/recall/read-status 需要取得 openMessageId 和 openConversationId 时使用；openTaskId 不是消息 ID。结果会保留下层响应，并追加版本化 messageRef 与结构化 nextActions。
+
+Avoid when:
+  - 没有 openTaskId、已经有消息 ID，或只需查历史消息内容时不要使用
+
+Safety: effect=read  risk=low  confirmation=not_required  idempotency=idempotent
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

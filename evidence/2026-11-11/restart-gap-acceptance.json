@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "version": "v1.0.67",
+  "serviceStoppedBeforeSend": true,
+  "sendDelivered": true,
+  "restarted": true,
+  "historyRecoveredMessage": true,
+  "duplicateEvents": 0,
+  "fromSelfPreserved": true,
+  "eventsBefore": 17,
+  "eventsAfter": 18,
+  "elapsedSeconds": 8.6,
+  "limits": "one self message, bounded short outage; not Stream or long soak",
+  "initialAttempt": {
+    "exit": 3,
+    "reason": "ambiguous_flag",
+    "flag": "--content",
+    "sideEffect": "rejected by CLI argument validation before task",
+    "correction": "--text; same idempotency key retained"
+  }
+}

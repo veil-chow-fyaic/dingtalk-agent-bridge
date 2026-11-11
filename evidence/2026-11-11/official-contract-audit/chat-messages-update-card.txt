@@ -1,0 +1,46 @@
+当你要向已发送的流式文本卡片持续追加/更新内容时使用；会实际更新卡片，需传 send-card 返回的 bizId、新内容及 flowStatus 1-5（最后一次应为 3 表示完成）。当前不支持 Card JSON 组件或 action callback。
+
+参数约束：
+  - --flow-status 必须在 1-5 之间
+
+Usage:
+  dws chat +messages-update-card [flags]
+
+Examples:
+  dws chat +messages-update-card --biz-id <bizId> --content "内容" --flow-status 3
+
+Flags:
+      --biz-id string     send-card 返回的卡片业务 ID（必填）
+      --content string    卡片消息内容（必填）
+      --flow-status int   流式状态 1处理中/2输入中/3完成/4执行中/5错误；--flow-status 必须在 1-5 之间（必填）
+  -h, --help              help for +messages-update-card
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当你要向已发送的流式文本卡片持续追加/更新内容时使用；会实际更新卡片，需传 send-card 返回的 bizId、新内容及 flowStatus 1-5（最后一次应为 3 表示完成）。当前不支持 Card JSON 组件或 action callback。
+
+Avoid when:
+  - 需要底层原始响应、未公开参数，或由调用方自行管理确认与更新节奏时，改用 chat message update-card
+  - 更新 A2UI 卡片时使用 chat message update-a2ui-card
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

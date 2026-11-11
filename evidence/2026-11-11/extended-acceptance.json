@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-11",
+  "cli": "v1.0.67",
+  "image": {
+    "sendStatus": "SUCCESS",
+    "resourceTypes": [
+      "mediaId"
+    ],
+    "downloadCount": 1,
+    "sameBytes": true,
+    "uiRenderingVerified": false
+  },
+  "document": {
+    "created": true,
+    "updated": true,
+    "bothMarkersReadback": true,
+    "sharedWithOthers": false
+  },
+  "todo": {
+    "created": true,
+    "isDone": true,
+    "executorCount": 1,
+    "participantCount": 1
+  },
+  "quote": {
+    "deliveryStatus": "delivered"
+  },
+  "pagination": {
+    "count": 10,
+    "pagesFetched": 6,
+    "complete": true,
+    "failedCount": 0
+  },
+  "cleanup": "Test document retained; own todo completed; test messages retained; no shared objects modified"
+}

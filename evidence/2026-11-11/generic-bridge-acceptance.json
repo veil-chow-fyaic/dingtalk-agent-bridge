@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-11",
+  "newRemoteMessages": 0,
+  "remoteOfficeWrites": 0,
+  "cliConversationsPassed": true,
+  "explicitRouteHTTPPassed": true,
+  "wrongAccountRejected": true,
+  "deepScan": {
+    "complete": true,
+    "inserted": 0
+  },
+  "cacheRepair": {
+    "newAttemptDirectory": true,
+    "originalSha256Unchanged": true
+  },
+  "shadow": {
+    "fetched": 0,
+    "hydration": {
+      "completed": 0,
+      "failed": 0
+    },
+    "cursor": 192,
+    "states": {
+      "normalized": 18
+    },
+    "messages": 18,
+    "readyForRuntime": 0,
+    "selfFiltered": 18,
+    "unknownSender": 0,
+    "withIssues": 0,
+    "quotes": 2,
+    "mediaParts": 13,
+    "autoReply": false
+  },
+  "consumerRestartNoDuplicates": true,
+  "runtimeRequired": false,
+  "limits": [
+    "live read-only verification uses existing one-person test route",
+    "multi-account and direct send are deterministic tests, not remote acceptance"
+  ],
+  "firstShadowPass": {
+    "fetched": 18,
+    "mediaMessagesHydrated": 12,
+    "mediaFailures": 0,
+    "normalized": 18,
+    "quotes": 2,
+    "mediaParts": 13,
+    "selfFiltered": 18,
+    "runtimeCalls": 0
+  }
+}

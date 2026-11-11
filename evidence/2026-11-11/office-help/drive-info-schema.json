@@ -1,0 +1,44 @@
+{
+  "agent_summary": "获取钉盘文件/文件夹元数据",
+  "availability": "available",
+  "avoid_when": [
+    "需要该 Shortcut 未公开的底层参数、原始响应或不同执行语义时，改用对应原子命令"
+  ],
+  "canonical_path": "drive.shortcut_info",
+  "cli_path": "drive +info",
+  "confirmation": "not_required",
+  "description": "当你已经知道某个节点的 dentryUuid、想查看它的详细信息（名称、大小、类型、创建/修改时间、所属空间等）而不是仅列表概览时使用；输入 node（节点 ID），返回该单个文件或文件夹的完整元数据。",
+  "effect": "read",
+  "examples": [
+    "dws drive +info --node <dentryUuid>"
+  ],
+  "idempotency": "idempotent",
+  "interface_mode": "composite",
+  "interface_reason": "Reviewed built-in shortcut adapter: the executable CLI owns validation, optional multi-step orchestration, output projection, and confirmation; the complete command contract is not represented by one pinned MCP interface_ref.",
+  "parameters": {
+    "node": {
+      "description": "节点 ID (dentryUuid)（必填）",
+      "required": true,
+      "type": "string"
+    },
+    "space-id": {
+      "description": "节点所属空间 ID",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "result": {
+    "data_schema": {
+      "additionalProperties": true,
+      "description": "钉盘节点元数据",
+      "type": "object"
+    },
+    "outcomes": [
+      "success"
+    ]
+  },
+  "risk": "low",
+  "use_when": [
+    "当你已经知道某个节点的 dentryUuid、想查看它的详细信息（名称、大小、类型、创建/修改时间、所属空间等）而不是仅列表概览时使用；输入 node（节点 ID），返回该单个文件或文件夹的完整元数据。"
+  ]
+}

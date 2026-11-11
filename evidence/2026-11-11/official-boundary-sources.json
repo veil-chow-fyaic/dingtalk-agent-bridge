@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-11",
+  "dws": "v1.0.67",
+  "sources": [
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/README_zh.md",
+      "blobSha": "1c8dbd8e058ac6849cf314e38a8691a4268868e6",
+      "ref": "v1.0.67"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/docs/robot-quickstart.md",
+      "blobSha": "033fd91251cd77de859fbc69fc3e3aa6d37b8d93",
+      "ref": "v1.0.67"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/skills/multi/dingtalk-event/references/event-im-output.md",
+      "blobSha": "5325c02982364e0c95eff6bafd7efb7b33907a64"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-openclaw-connector/blob/main/README.md",
+      "blobSha": "16d5bc64109a111fa8bb04ac60e651c2c81c16ae",
+      "commitObserved": "88df00ee594072e9941ef3f71da90a37f3291ad3"
+    }
+  ]
+}

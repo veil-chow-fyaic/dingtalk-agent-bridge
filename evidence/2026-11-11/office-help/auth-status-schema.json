@@ -1,0 +1,7 @@
+{
+  "error": {
+    "category": "validation",
+    "code": 3,
+    "message": "unknown runtime schema path \"auth status\""
+  }
+}

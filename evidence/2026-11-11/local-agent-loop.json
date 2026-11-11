@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-11",
+  "scope": "original authorized single-member group; explicit owner /agent commands",
+  "runtime": "kimi",
+  "runtimeVersion": "2.1.1",
+  "completedTasks": 2,
+  "confirmedAgentDeliveries": 5,
+  "observedBridgeEvents": 25,
+  "bridgePollError": null,
+  "checks": {
+    "quotedAttachmentDownloaded": true,
+    "inputCopyHashMatches": true,
+    "realGeneratedReportHasSourceSummary": true,
+    "returnedFileDownloadedAndHashMatches": true,
+    "sameNativeSessionAcrossTurns": true,
+    "followupRecallsCodeWithoutTools": true,
+    "restartNoTaskReplayOrResend": true
+  },
+  "outputSha256": "18aec18b35e200e1b4d500e9346d9ea9603d5c41dff67e258c837503432d11fd",
+  "skipped": [
+    "independent sender",
+    "direct conversation live test",
+    "multi-member group",
+    "external conversation"
+  ],
+  "limits": [
+    "DWS history polling",
+    "Kimi prompt auto permission is not an OS sandbox",
+    "Codex model request timed out"
+  ],
+  "verificationDoesNotSendMessages": true
+}

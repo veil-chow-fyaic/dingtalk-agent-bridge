@@ -1,0 +1,64 @@
+当你要以当前用户身份对一条已有消息发送纯文本引用回复时使用；传原消息 ID，CLI 会只读定位会话和发送者；可显式传会话或 --ref-sender，所有模式均核对源消息身份。可用 --as bot 选择 Bot 群引用，--open-dingtalk-id 选择个人单聊，--reply-in-thread 追加到已核实的 Thread；所有模式先检查源消息 ID/会话归属；个人普通引用的 markdown/content 仍按纯文本解释，群聊可显式 @成员或 @所有人。成功结果在保留下层响应的同时增量返回 messageId（下层提供时）、conversationId、threadId（适用时）、deliveryStatus、idempotencyKey 和 referencedMessage 来源上下文。
+
+参数约束：
+  - Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+  - 省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId
+  - --ref-msg-id、--message-id 必须且只能指定一个
+  - --uuid、--idempotency-key 互斥，最多指定一个
+
+Usage:
+  dws chat +messages-reply [flags]
+
+Examples:
+  dws chat +messages-reply --group <openConversationId> --message-id <openMessageId> --content "收到" --idempotency-key <key>
+
+Flags:
+      --ai-tag                         消息是否带 AI 发送角标（默认 true） (default true)
+      --as string                      回复身份，Bot 仅普通群文本/Markdown引用；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致（可选值: user, bot） (default "user")
+      --at-all                         群回复中 @所有人；省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId
+      --at-open-dingtalk-ids strings   群回复中 @ 的 openDingTalkId 列表；自动补齐缺少的提及占位符；省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId (default [])
+      --body-stdin                     从 stdin 读取最多 256 KiB 正文；选中的正文参数必须为 -，不改变默认字面量行为
+      --content string                 回复正文；普通引用中 content/markdown 均按纯文本解释，Bot群引用及已有Thread追加为Markdown；@仅群聊，可用 <@openDingTalkId> 定位提及（必填）
+      --create-thread                  与reply-in-thread一起：仅源消息尚无Thread时先转换，再追加；转换后失败保留恢复ID
+      --employee-context string        已绑定宿主的 JSON 元数据（agentUuid/channel/bindingRevision）；发送前校验绑定，私聊仅限固定主管；必须配合 body-stdin、wait-delivery 和幂等键，仍须用户确认
+      --group string                   可选会话 openConversationId；省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId
+  -h, --help                           help for +messages-reply
+      --idempotency-key string         --uuid 的 lark-cli 对齐别名；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+      --message-id string              --ref-msg-id 的 lark-cli 对齐别名
+      --open-dingtalk-id string        个人单聊接收者；可省略 --group，自动读取源消息会话核实；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致；省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId
+      --ref-msg-id string              被引用消息 openMessageId
+      --ref-sender string              原消息发送者 openDingTalkId/userId（userId 通过通讯录搜索精确匹配；不传则自动读取）；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致；省略会话时从源消息只读定位；显式会话/发送者必须匹配，所有模式均校验源消息；@仅群聊，成员使用openDingTalkId
+      --reply-in-thread                直接追加到源消息所属 Thread，不生成引用消息；仅 user；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+      --robot-code string              Bot 回复所用 robotCode；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+      --thread-id string               可选 openConvThreadId，必须与源消息返回值一致；仅 reply-in-thread；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+      --uuid string                    幂等键（可选）；Bot 仅普通群引用且必须有 robot-code；Thread 仅 user，与单聊和 ref-sender 互斥；thread-id 必须与源消息一致
+      --wait-delivery                  仅个人文本/Markdown 发送或普通引用回复：查询发送回执并输出标准回执字段；未知状态不得重发
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当你要以当前用户身份对一条已有消息发送纯文本引用回复时使用；传原消息 ID，CLI 会只读定位会话和发送者；可显式传会话或 --ref-sender，所有模式均核对源消息身份。可用 --as bot 选择 Bot 群引用，--open-dingtalk-id 选择个人单聊，--reply-in-thread 追加到已核实的 Thread；所有模式先检查源消息 ID/会话归属；个人普通引用的 markdown/content 仍按纯文本解释，群聊可显式 @成员或 @所有人。成功结果在保留下层响应的同时增量返回 messageId（下层提供时）、conversationId、threadId（适用时）、deliveryStatus、idempotencyKey 和 referencedMessage 来源上下文。
+
+Avoid when:
+  - 需要该 Shortcut 未公开的底层参数、原始响应或不同执行语义时，改用对应原子命令
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

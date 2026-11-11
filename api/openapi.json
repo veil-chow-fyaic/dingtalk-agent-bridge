@@ -1,0 +1,554 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DingTalk Bridge — Runtime-neutral IM tools",
+    "version": "0.3.0-experimental",
+    "description": "Account/conversation routed IM. Current live evidence is one test group; multi-route/direct behavior has deterministic tests. Not a claim of all DingTalk scope support."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:18768"
+    }
+  ],
+  "security": [
+    {
+      "localBearer": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "localBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "summary": "Bridge status; no runtime required",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        }
+      }
+    },
+    "/v1/conversations": {
+      "get": {
+        "summary": "Configured routes; no provider credential profiles",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        }
+      }
+    },
+    "/v1/events": {
+      "get": {
+        "summary": "Replay events from one route; cursor is route-specific",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "description": "Both route fields required when more than one route is configured.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "conversation_id",
+            "in": "query",
+            "required": false,
+            "description": "Both route fields required when more than one route is configured.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 100
+            }
+          },
+          {
+            "name": "wait_seconds",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 30,
+              "default": 0
+            },
+            "description": "Bounded wait for committed local events; cursor survives reconnect. Does not imply upstream realtime delivery."
+          }
+        ]
+      }
+    },
+    "/v1/send": {
+      "post": {
+        "summary": "Send to one route; one of text, file or image; stable key required",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "202": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string"
+                  },
+                  "conversation_id": {
+                    "type": "string"
+                  },
+                  "idempotency_key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "idempotency_key"
+                ],
+                "oneOf": [
+                  {
+                    "required": [
+                      "text"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "file"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "image"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "file"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "text"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "image"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "image"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "text"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "file"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/deliveries/{key}": {
+      "get": {
+        "summary": "Read persisted delivery, no new send",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          },
+          "404": {
+            "description": "No delivery for this key in selected route"
+          }
+        },
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "description": "Both route fields required when more than one route is configured.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "conversation_id",
+            "in": "query",
+            "required": false,
+            "description": "Both route fields required when more than one route is configured.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/reconcile": {
+      "post": {
+        "summary": "Query original upstream task, never resend",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string"
+                  },
+                  "conversation_id": {
+                    "type": "string"
+                  },
+                  "idempotency_key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "idempotency_key"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/attachments": {
+      "post": {
+        "summary": "Download originals from an observed message; repair creates a new cache attempt",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string"
+                  },
+                  "conversation_id": {
+                    "type": "string"
+                  },
+                  "message_id": {
+                    "type": "string"
+                  },
+                  "repair": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "message_id"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sync": {
+      "post": {
+        "summary": "Bounded history sync; deep rescans recent 24 hours",
+        "responses": {
+          "200": {
+            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or unknown route/input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_id": {
+                    "type": "string"
+                  },
+                  "conversation_id": {
+                    "type": "string"
+                  },
+                  "deep": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/discovery": {
+      "get": {
+        "summary": "Read one page of visible conversation metadata; does not activate routes",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required if multiple accounts are configured."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Candidates plus completeness and next_cursor; direct candidates still require an independently resolved peer ID."
+          },
+          "400": {
+            "description": "Unknown account or invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "502": {
+            "description": "Upstream discovery error"
+          }
+        }
+      }
+    }
+  }
+}

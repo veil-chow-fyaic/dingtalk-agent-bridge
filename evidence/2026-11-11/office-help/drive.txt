@@ -1,0 +1,91 @@
+钉盘：列出文件/文件夹、获取元数据和统计信息、创建快捷方式、下载、上传及管理文件。
+
+Usage:
+  dws drive [flags]
+  dws drive [command]
+
+Available Commands:
+  +copy             复制在线文档到指定位置并读回验证
+  +cover            读取节点封面或缩略图地址
+  +create-folder    创建钉盘文件夹并读回验证
+  +create-shortcut  为已有节点创建快捷方式并验证新节点
+  +delete           将已确认节点移入回收站
+  +download         安全下载钉盘文件到工作目录
+  +find-file        按名称关键词搜索钉盘文件并投影关键字段（只读）
+  +info             获取钉盘文件/文件夹元数据
+  +inspect          聚合检查节点元数据及可选统计、公开状态和封面
+  +list             严格分页列出钉盘文件和文件夹
+  +move             移动文件/文档到指定位置
+  +publish-get      查询文件互联网公开状态
+  +publish-unset    关闭文件互联网公开发布
+  +recent           获取最近访问/编辑的文档列表
+  +recycle-list     严格分页列出钉盘回收站
+  +recycle-restore  恢复已确认的回收站条目并读回节点
+  +rename           重命名文件或文件夹并读回验证
+  +search           搜索钉盘文件
+  +search-docs      搜索文档空间文档
+  +star-add         收藏指定节点
+  +star-list        严格分页列出当前用户收藏
+  +star-remove      取消收藏指定节点
+  +stats            读取节点访问和协作统计
+  +upload           从工作目录上传普通文件到钉盘或文档空间并读回验证
+  +version-download 安全下载普通文件指定历史版本
+  +version-get      按版本号精确读取普通文件版本元数据
+  +version-history  严格分页列出普通文件历史版本
+  +version-revert   预检并回滚普通文件到指定历史版本
+  comment           普通文件评论管理
+  commit            提交文件上传
+  copy              复制文件/文档到指定位置
+  cover             获取节点封面地址
+  delete            删除文件/文件夹到回收站
+  download          下载钉盘文件到本地
+  download-version  下载文件历史版本到本地
+  export            导出通用文档 (docx / xlsx / markdown / pdf / pptx)
+  info              获取文件元数据信息
+  list              获取文件/文件夹列表（统一入口）
+  list-spaces       获取钉盘空间列表 (deprecated → dws wiki space list --type orgSpace/mySpace)
+  mkdir             创建文件夹
+  move              移动文件/文档到指定位置
+  permission        文档节点权限管理
+  publish           文件互联网公开发布管理
+  pull              把钉盘文件夹单向镜像到本地（Drive → 本地）
+  push              把本地文件夹单向镜像到钉盘（本地 → Drive）
+  quota             查询企业存储容量
+  recent            获取最近访问/编辑的文档列表
+  recycle           钉盘回收站管理
+  rename            重命名文件/文档
+  revert            [危险] 回滚文件到指定历史版本
+  search            搜索文件（聚合钉盘+文档空间）
+  shortcut          为节点创建快捷方式
+  star              文档收藏管理
+  stats             获取节点统计信息
+  status            比较本地文件夹与钉盘文件夹的差异
+  sync              本地文件夹与钉盘文件夹双向同步（本地 ⇄ Drive）
+  task              异步任务状态查询（统一入口）
+  upload            上传本地文件到钉盘或文档空间
+  upload-info       获取文件上传信息
+
+Flags:
+  -h, --help   help for drive
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws drive [command] --help" for more information about a command.
+
+Related skills:
+  - dingtalk-drive
+
+Documentation:
+  - 钉盘深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-drive/references/drive.md

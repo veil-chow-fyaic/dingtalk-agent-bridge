@@ -1,0 +1,25 @@
+{
+  "observed_date": "2026-11-10",
+  "timezone": "Asia/Shanghai",
+  "user_report": {
+    "organization_label": "深圳市弗忧智能科技",
+    "target_group": "深圳市弗忧智能科技有限公司",
+    "user_is_admin": true,
+    "admin_manually_enabled_cli_access": true,
+    "exact_admin_ui_independently_checked": false
+  },
+  "local_observation": {
+    "auth_status_exit_code": 0,
+    "authenticated": true,
+    "current_corp_name": "深圳市弗忧智能科技有限公司",
+    "current_user_name": "周威",
+    "is_current": true,
+    "is_org_current": true
+  },
+  "not_verified": [
+    "new_group_id",
+    "new_group_members",
+    "new_group_event_delivery",
+    "new_group_media_round_trip"
+  ]
+}

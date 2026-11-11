@@ -1,0 +1,26 @@
+{
+  "health": {
+    "mode": "experimental",
+    "transport": "dws_history_poll",
+    "events": 13,
+    "last_sync": {
+      "at": "2026-11-11T02:40:09.406490+00:00",
+      "complete": true,
+      "inserted": 0
+    },
+    "native_audio_video": false,
+    "other_member_inbound": "skipped_by_user",
+    "poll_error": null
+  },
+  "unauthorizedStatus": 401,
+  "cachedAttachmentVerified": true,
+  "confirmedDeliveryPersisted": true,
+  "documentationLinksValid": true,
+  "unitTestsPassed": 11,
+  "desktopAX": {
+    "targetGroupMatches": true,
+    "memberCount": 1,
+    "networkDisconnectedBanner": true,
+    "newImageUIVerified": false
+  }
+}

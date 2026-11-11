@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-11",
+  "type": "requirements_progress_audit",
+  "documentDeliverables": 10,
+  "closedDocumentDeliverables": 5,
+  "partialDocumentDeliverables": 5,
+  "countingNote": "Completion of documented deliverables within stated scope, not whole-product percentage",
+  "serviceObservation": {
+    "mode": "experimental",
+    "transport": "dws_history_poll",
+    "events": 13,
+    "last_sync": {
+      "at": "2026-11-11T03:02:14.954520+00:00",
+      "complete": true,
+      "inserted": 0
+    },
+    "native_audio_video": false,
+    "other_member_inbound": "skipped_by_user",
+    "poll_error": null
+  },
+  "newMessagesSent": 0
+}

@@ -1,0 +1,77 @@
+{
+  "binaryVersion": "1.0.67",
+  "kind": "local help only; not remote permission test",
+  "commands": [
+    {
+      "command": "dev connect",
+      "exit": 0,
+      "evidence": "dev-connect.txt"
+    },
+    {
+      "command": "chat +messages-send",
+      "exit": 0,
+      "evidence": "chat-messages-send.txt"
+    },
+    {
+      "command": "chat +messages-reply",
+      "exit": 0,
+      "evidence": "chat-messages-reply.txt"
+    },
+    {
+      "command": "chat +messages-mget",
+      "exit": 0,
+      "evidence": "chat-messages-mget.txt"
+    },
+    {
+      "command": "chat +chat-messages",
+      "exit": 0,
+      "evidence": "chat-chat-messages.txt"
+    },
+    {
+      "command": "chat +messages-send-card",
+      "exit": 0,
+      "evidence": "chat-messages-send-card.txt"
+    },
+    {
+      "command": "event subscribe",
+      "exit": 3,
+      "evidence": "event-subscribe.txt"
+    },
+    {
+      "command": "event consume",
+      "exit": 0,
+      "evidence": "event-consume.txt"
+    },
+    {
+      "command": "api",
+      "exit": 0,
+      "evidence": "api.txt"
+    },
+    {
+      "command": "mcp",
+      "exit": 0,
+      "evidence": "mcp.txt"
+    },
+    {
+      "command": "schema",
+      "exit": 0,
+      "evidence": "schema.txt"
+    },
+    {
+      "command": "audit",
+      "exit": 0,
+      "evidence": "audit.txt"
+    },
+    {
+      "command": "event +listen-im",
+      "exit": 0,
+      "evidence": "event-listen-im.txt"
+    },
+    {
+      "command": "chat +messages-update-card",
+      "exit": 0,
+      "evidence": "chat-messages-update-card.txt"
+    }
+  ],
+  "note": "event subscribe is intentionally recorded as rejected; use consume or +listen-im"
+}

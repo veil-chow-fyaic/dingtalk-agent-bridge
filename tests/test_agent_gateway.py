@@ -1,0 +1,236 @@
+import json
+from pathlib import Path
+import tempfile
+import threading
+import unittest
+from dingtalk_bridge.agent_gateway import Gateway,command_for,stage_outputs
+from dingtalk_bridge.agent_runtime import LocalRuntime
+from dingtalk_bridge.message_model import normalize
+from test_routing_consumer import CFG,event
+
+SETTINGS={'allowedSenderIds':['self','other'],'allowSelfCommands':True,'prefix':'/agent','runtime':{'kind':'kimi','binary':'kimi'}}
+
+
+class FakeAPI:
+    def __init__(self):self.events=[];self.sends={};self.fail_once=False
+    def __call__(self,path,data=None):
+        if path.startswith('/v1/events'):
+            from urllib.parse import urlparse,parse_qs
+            cursor=int(parse_qs(urlparse(path).query)['after'][0]);events=[e for e in self.events if e['seq']>cursor]
+            return {'events':events,'next_cursor':events[-1]['seq'] if events else cursor}
+        if path=='/v1/send':
+            self.sends.setdefault(data['idempotency_key'],data)
+            if self.fail_once:self.fail_once=False;raise OSError('response lost after commit')
+            return {'state':'confirmed','message_id':data['idempotency_key']}
+        raise AssertionError(path)
+
+
+class FakeRuntime:
+    def __init__(self):self.sessions=[];self.calls=0
+    def run(self,prompt,workspace,run_dir,session,cancel,remember,images):
+        self.calls+=1;self.sessions.append(session);remember('native-session')
+        (workspace/'exports/report.txt').write_text('task result')
+        return {'text':'完成','files':['exports/report.txt']}
+
+
+class AgentGatewayTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.api=FakeAPI();self.runtime=FakeRuntime()
+        self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+    def tearDown(self):self.g.close();self.temp.cleanup()
+
+    def test_owner_commands_and_echo_filter(self):
+        for sender,text,expected in [('self','/agent 生成报告','生成报告'),('self','普通聊天',None),
+                                      ('self','[Agent] /agent reply',None),('stranger','/agent hello',None),
+                                      ('other','群聊普通话',None),('other','/agent hello','hello')]:
+            model=normalize(event(text=text,sender=sender),CFG)
+            self.assertEqual(command_for(model,SETTINGS),expected)
+        model=normalize(event(text='私聊任务',sender='other'),{**CFG,'conversationType':'direct'})
+        self.assertEqual(command_for(model,SETTINGS),'私聊任务')
+
+    def test_new_deployment_baseline_skips_old_tasks_and_restart_keeps_cursor(self):
+        self.g.close()
+        cfg={**CFG,'group':'fresh-route'}
+        settings={**SETTINGS,'initialCursor':5}
+        self.g=Gateway(self.root,cfg,None,settings,self.api,self.runtime)
+        for seq in [4,5,6]:
+            msg=event(seq,text='/agent task',sender='other')
+            msg['conversation_id']='fresh-route';msg['raw']['conversationId']='fresh-route'
+            self.api.events.append(msg)
+        self.g.intake()
+        self.assertEqual([r[0] for r in self.g.db.execute('SELECT seq FROM jobs')],[6])
+        self.g.close()
+        self.g=Gateway(self.root,cfg,None,{**settings,'initialCursor':99},self.api,self.runtime)
+        self.assertEqual(self.g.inbox.cursor,6)
+        msg=event(7,text='/agent next',sender='other')
+        msg['conversation_id']='fresh-route';msg['raw']['conversationId']='fresh-route';self.api.events.append(msg)
+        self.g.intake();self.assertEqual([r[0] for r in self.g.db.execute('SELECT seq FROM jobs ORDER BY seq')],[6,7])
+
+    def test_invalid_initial_cursor_is_rejected(self):
+        for value in [-1,True,'5',None]:
+            with self.assertRaises(ValueError):Gateway(self.root,CFG,None,{**SETTINGS,'initialCursor':value},self.api,self.runtime)
+
+    def test_task_session_file_reply_and_restart_no_reexecution(self):
+        self.api.events=[event(1,text='/agent 报告',sender='self')]
+        self.g.intake();self.g.intake();self.assertTrue(self.g.execute_one());self.g.flush()
+        self.assertEqual(self.runtime.calls,1);self.assertEqual(len(self.api.sends),3)
+        file=next(x['file'] for x in self.api.sends.values() if 'file' in x)
+        self.assertEqual((self.root/file).read_text(),'task result')
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        self.g.intake();self.assertFalse(self.g.execute_one());self.g.flush();self.assertEqual(len(self.api.sends),3)
+        self.api.events.append(event(2,text='/agent 继续',sender='self'));self.g.intake();self.g.execute_one()
+        self.assertEqual(self.runtime.sessions,[None,'native-session'])
+
+    def test_response_lost_keeps_same_key_and_payload(self):
+        self.api.events=[event(text='/agent 问题',sender='self')];self.g.intake()
+        self.api.fail_once=True;self.g.flush();self.g.flush();self.assertEqual(len(self.api.sends),1)
+
+    def test_crashed_execution_is_not_replayed(self):
+        self.api.events=[event(text='/agent 工作',sender='self')];self.g.intake()
+        with self.g.db:self.g.db.execute('UPDATE jobs SET state="running"')
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        self.assertFalse(self.g.execute_one());self.assertEqual(self.g.summary()['jobs']['interrupted'],1)
+
+    def test_artifact_outside_exports_and_symlink_rejected(self):
+        workspace=self.g.workspace();(workspace/'private.txt').write_text('not an artifact')
+        for path in ['private.txt','../private.txt']:
+            with self.assertRaises(ValueError):stage_outputs(self.root,workspace,'j',{'files':[path]})
+        (workspace/'exports/link.txt').symlink_to(workspace/'private.txt')
+        with self.assertRaises(ValueError):stage_outputs(self.root,workspace,'j',{'files':['exports/link.txt']})
+
+    def test_reset_session_does_not_mix_previous_context(self):
+        self.api.events=[event(1,text='/agent hello',sender='self'),event(2,text='/agent new',sender='self'),event(3,text='/agent next',sender='self')]
+        self.g.intake()
+        while self.g.execute_one():pass
+        self.assertEqual(self.runtime.sessions,[None,None])
+
+    def test_runtime_cli_contract(self):
+        run=self.root/'run';run.mkdir()
+        codex=LocalRuntime({'kind':'codex','binary':'codex'})
+        c=codex.command(self.root,run,'exact-session')
+        self.assertEqual(c[1:4],['exec','resume','exact-session']);self.assertNotIn('--last',c)
+        self.assertIn('sandbox_mode="workspace-write"',c);self.assertNotIn('--dangerously-bypass-approvals-and-sandbox',c)
+        kimi=LocalRuntime({'kind':'kimi','binary':'kimi'}).command(self.root,run,'exact-session')
+        self.assertIn('--session',kimi);self.assertNotIn('--yolo',kimi)
+
+    def test_wrong_runtime_cannot_take_over_existing_sessions(self):
+        self.g.close()
+        settings={**SETTINGS,'runtime':{'kind':'codex','binary':'codex'}}
+        with self.assertRaises(ValueError):Gateway(self.root,CFG,None,settings,self.api,self.runtime)
+        self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+
+    def test_cancel_releases_queue_blocked_by_attachment(self):
+        self.api.events=[event(1,text='/agent 文件任务',sender='self')];self.g.intake()
+        with self.g.db:self.g.db.execute('UPDATE jobs SET state="waiting_media"')
+        self.api.events.append(event(2,text='/agent cancel',sender='self'));self.g.intake()
+        self.assertEqual(self.g.summary()['jobs'],{'cancelled':1,'completed':1})
+        self.assertFalse(self.g.execute_one());self.assertEqual(self.runtime.calls,0)
+
+    def test_exports_directory_symlink_escape_rejected(self):
+        workspace=self.g.workspace();(workspace/'exports').rmdir()
+        outside=self.root/'elsewhere';outside.mkdir();(outside/'secret.txt').write_text('private')
+        (workspace/'exports').symlink_to(outside)
+        with self.assertRaises(ValueError):stage_outputs(self.root,workspace,'j',{'files':['exports/secret.txt']})
+
+    def test_workspace_preparation_error_is_a_recorded_failure(self):
+        self.api.events=[event(text='/agent task',sender='self')];self.g.intake()
+        def fail():raise OSError('disk failure')
+        self.g.workspace=fail
+        self.assertTrue(self.g.execute_one());self.assertEqual(self.g.summary()['jobs'],{'failed':1})
+
+    def test_direct_task_and_group_have_separate_native_sessions(self):
+        cfg={**CFG,'group':'dm','conversationType':'direct','peerOpenDingTalkId':'peer'}
+        api=FakeAPI();runtime=FakeRuntime();dm=Gateway(self.root,cfg,'dm-state',SETTINGS,api,runtime)
+        try:
+            message=event(text='请生成报告',sender='other')
+            message['conversation_id']='dm';message['raw']['conversationId']='dm';api.events=[message]
+            dm.intake();self.assertTrue(dm.execute_one());dm.flush()
+            self.assertEqual(len(api.sends),3);self.assertEqual(runtime.sessions,[None])
+            self.assertNotEqual(dm.key,self.g.key)
+            self.assertIsNone(self.g.db.execute('SELECT value FROM meta WHERE key="session_id"').fetchone())
+        finally:dm.close()
+
+    def test_unauthorized_and_echo_attachments_are_not_downloaded(self):
+        from test_routing_consumer import ref
+        self.api.events=[event(1,text='/agent [文件] x.txt fileId: f',sender='stranger',refs=[ref('fileId','f')]),
+            event(2,text='[文件] x.txt fileId: f',sender='self',refs=[ref('fileId','f')])]
+        self.g.intake();self.assertEqual(self.g.summary()['jobs'],{})
+        self.assertEqual(self.g.inbox.db.execute('SELECT sum(attempts) FROM inbox').fetchone()[0],0)
+
+    def test_runtime_failure_does_not_block_next_job(self):
+        original=self.runtime.run
+        def fail_once(*args):
+            self.runtime.run=original;raise RuntimeError('provider unavailable')
+        self.runtime.run=fail_once
+        self.api.events=[event(1,text='/agent first',sender='self'),event(2,text='/agent second',sender='self')]
+        self.g.intake();self.g.execute_one();self.g.execute_one()
+        self.assertEqual(self.g.summary()['jobs'],{'completed':1,'failed':1})
+
+    def test_running_task_cancel_command_reaches_runtime(self):
+        from dingtalk_bridge.agent_runtime import RuntimeStopped
+        started=threading.Event()
+        def slow(prompt,workspace,run_dir,session,cancel,remember,images):
+            started.set()
+            if not cancel.wait(3):raise AssertionError('cancel never arrived')
+            raise RuntimeStopped('cancelled')
+        self.runtime.run=slow;self.api.events=[event(1,text='/agent slow',sender='self')];self.g.intake()
+        thread=threading.Thread(target=self.g.execute_one);thread.start();self.assertTrue(started.wait(2))
+        self.api.events.append(event(2,text='/agent cancel',sender='self'));self.g.intake();thread.join(4)
+        self.assertFalse(thread.is_alive());self.assertEqual(self.g.summary()['jobs'],{'cancelled':1,'completed':1})
+        self.assertFalse(any('file' in json.loads(r[0]) for r in self.g.db.execute('SELECT payload FROM outbox')))
+
+    def test_unknown_delivery_is_reconciled_without_new_key(self):
+        calls=[]
+        def api(path,data=None):
+            calls.append((path,data))
+            return {'state':'outcome_unknown' if path=='/v1/send' else 'confirmed'}
+        self.g.api=api
+        with self.g.db:self.g.emit('job','result',{'text':'result'})
+        self.g.flush();self.g.flush()
+        self.assertEqual([p for p,_ in calls],['/v1/send','/v1/reconcile'])
+        self.assertEqual(calls[0][1]['idempotency_key'],calls[1][1]['idempotency_key'])
+
+    def test_poll_error_does_not_move_cursor_or_create_job(self):
+        def offline(*args):raise OSError('offline')
+        self.g.api=offline
+        with self.assertRaises(OSError):self.g.intake()
+        self.assertEqual(self.g.inbox.cursor,0);self.assertEqual(self.g.summary()['jobs'],{})
+
+    def test_missing_and_oversized_output_are_rejected(self):
+        workspace=self.g.workspace()
+        with self.assertRaises(ValueError):stage_outputs(self.root,workspace,'j',{'files':['exports/missing']})
+        large=workspace/'exports/large.bin'
+        with large.open('wb') as f:f.truncate(20*1024*1024+1)
+        with self.assertRaisesRegex(ValueError,'limit'):stage_outputs(self.root,workspace,'j',{'files':['exports/large.bin']})
+
+    def test_stalled_download_does_not_block_status_or_cancel(self):
+        import time
+        from test_routing_consumer import ref
+        entered=threading.Event();release=threading.Event();original=self.api
+        def api(path,data=None):
+            if path=='/v1/attachments':
+                entered.set();release.wait(4);return {'ok':False}
+            return original(path,data)
+        self.g.api=api;self.api.events=[event(1,text='/agent 处理引用附件',sender='self',refs=[ref('fileId','f')],quote={'conversationId':'g','messageId':'q','text':'[文件] x.txt fileId: f','resourceRefs':[ref('fileId','f')]})]
+        try:
+            start=time.monotonic();self.g.intake();self.assertLess(time.monotonic()-start,1)
+            self.assertTrue(entered.wait(1))
+            self.api.events.extend([event(2,text='/agent status',sender='self'),event(3,text='/agent cancel',sender='self')])
+            self.g.intake();self.assertEqual(self.g.summary()['jobs'],{'cancelled':1,'completed':2})
+            self.assertFalse(self.g.execute_one())
+        finally:
+            slot=self.g.media_slot;release.set();self.assertTrue(slot['done'].wait(2))
+
+    def test_async_attachment_finishes_before_runtime_execution(self):
+        import time,hashlib
+        from test_routing_consumer import ref
+        path=self.g.inbox.cache_root/'test'/'x.txt';path.parent.mkdir(parents=True);path.write_bytes(b'fixture')
+        original=self.api
+        def api(route,data=None):
+            if route=='/v1/attachments':return {'ok':True,'downloads':[{'resourceType':'fileId','resourceId':'f',
+                'localPath':str(path.relative_to(self.root.resolve())),'sha256':hashlib.sha256(b'fixture').hexdigest(),'sizeBytes':7}]}
+            return original(route,data)
+        self.g.api=api;self.api.events=[event(1,text='/agent 处理引用附件',sender='self',refs=[ref('fileId','f')],quote={'conversationId':'g','messageId':'q','text':'[文件] x.txt fileId: f','resourceRefs':[ref('fileId','f')]})]
+        self.g.intake();self.assertFalse(self.g.execute_one())
+        self.assertTrue(self.g.media_slot['done'].wait(2));self.g.intake()
+        self.assertTrue(self.g.execute_one());self.assertEqual(self.runtime.calls,1)

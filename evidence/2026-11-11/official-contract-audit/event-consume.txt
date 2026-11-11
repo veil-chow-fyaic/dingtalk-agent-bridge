@@ -1,0 +1,112 @@
+订阅 DingTalk 个人事件并将每条事件以 NDJSON 输出到 stdout。
+
+输出格式（事件流默认 ndjson；显式 -f json/pretty/raw 可覆盖；-f table/csv 对
+事件流无意义会 fallback 到 ndjson）：
+  ndjson  (默认)  一行一对象，适合 jq / 管道处理
+  json            每事件多行美化 JSON（必须配 --max-events 或 --duration）
+  pretty          同 json，未来加颜色
+  raw             仅 SDK 原始 payload，无外层封装
+  compact         单行紧凑 JSON；不传 --flatten 时沿用原 compact processor
+
+数据结构：
+  ndjson/json/pretty 默认保持 transport envelope（type/event_type/data/headers）
+  --flatten          结构化格式输出稳定的顶层业务字段，适合 Agent / 脚本直接消费
+
+默认使用当前 OAuth 登录态自动创建/复用个人订阅并建立个人长连接；非默认组织加
+--profile。连上后 stderr 打就绪行 [event] ready，等它出现再读 stdout；停机用
+SIGTERM、关 stdin，或先用 dws event stop <subscribe_id> --dry-run 预览、确认后加
+--yes，绝不要 kill -9。
+
+可提供多个 event_key。多事件会各自创建订阅和本地 consumer，但共享同一 bus、
+远程连接、输出和 duration/max-events。用户类事件必须共享一个 --user 或
+--open-dingtalk-id，群类事件必须共享一个 --group；用户类与群类不能混用。
+全部 consumer 就绪后 stderr 输出 [event] ready event_count=<n> bus_pid=<pid>。
+--event-types/--filter 只影响本地 bus → consume 这一段投递；普通个人事件消费
+通常不需要设置。
+
+互动卡片操作使用 event_key user_card_action_triggered 和 --flatten。回答、问题、
+操作者、业务与会话上下文位于 payload.body；优先读取结构化的
+payload.body.actionData.context，完整字段先用 event schema 查看。
+
+日历使用 user_calendar_event_changed；--calendar-ids primary 订阅主日历，
+--change-types 接受 eventCreated、eventUpdated、eventCancelled（逗号分隔）。
+省略任一维度表示通配；显式空值表示空数组（不匹配）；* 不可与具体值混用。
+主日历支持创建及新增参与、修改和取消；取消日程不会取消订阅。
+
+Usage:
+  dws event consume [event_key...] [flags]
+
+Examples:
+  dws event consume user_card_action_triggered --flatten -f ndjson
+  dws event consume user_im_group_member_added --group cid-example --flatten --max-events 1 -f ndjson
+
+Flags:
+      --calendar-ids strings             日历事件的 OpenAPI 日历本 ID（逗号分隔）；primary 为主日历；省略通配，显式空值不匹配
+      --change-types strings             日历变化类型：eventCreated,eventUpdated,eventCancelled 或 *（不可混用）；省略通配，显式空值不匹配
+      --compact                          提示 bus 客户端期望 compact 渲染（语义透传，bus 仍按原 payload 投递）
+      --debug-raw-events                 个人事件联调：绕过本地 event type/subscribe_id 过滤，输出当前 personal stream bus 收到的所有事件
+      --dry-run                          仅打印解析后的配置；不创建订阅、不连接 bus；复用 --subscribe-id 时会只读查询控制面
+      --duration duration                运行时长上限 (Go duration 如 30s/5m)；事件流专用，不复用全局 --timeout
+      --ephemeral                        强制退出时取消个人订阅。默认已按归属清理：本次新建的订阅退出即取消，用 --subscribe-id 复用的订阅保留。优雅停可用 SIGTERM、关闭 stdin，或从外部先用 dws event stop <subscribe_id> --dry-run 预览、确认后加 --yes（会一并退订）；请勿 kill -9（会跳过退订、泄漏服务端订阅）
+      --event-types strings              逗号分隔事件类型；省略时按 event_key 过滤
+      --filter string                    客户端正则过滤事件类型 (下推到 bus 减少 IPC 投递量)
+      --filter-json string               个人事件 Filter DSL JSON
+      --flatten                          将个人事件 transport envelope 投影为稳定的顶层业务字段
+      --force                            仅 --foreground 模式生效：跳过单实例锁 (慎用：会让云事件被随机切分)
+      --foreground                       当前进程直接跑 bus 服务、不 fork、不打印事件（给 systemd/k8s 托管用）；读事件不要用它
+  -f, --format string                    输出格式 (ndjson/json/pretty/raw/compact)；事件流默认 ndjson (default "ndjson")
+      --group string                     group 规则：openConversationId
+  -h, --help                             help for consume
+      --max-events int                   收到 N 条后退出 (0 = 不限)
+      --name string                      个人事件订阅名称
+      --open-dingtalk-id string          单聊对端或指定发送人的 openDingtalkId（与 --user 二选一）
+      --output-dir string                每事件写一个文件到该目录 ({type}_{id}_{ts}.json)；与 stdout 互斥
+      --personal-event-base-url string   个人事件控制面 base URL；默认由 MCP base 派生 /dws
+      --query string                     按消息文本关键词过滤，逗号分隔
+      --quiet                            抑制 stderr 状态信息
+      --role-types strings               待办事件角色范围：creator,executor,participant；省略时订阅全部三种角色
+      --route stringArray                按 regex 路由事件到目录：'<regex>=dir:<path>'，可重复；未命中走 stdout/--output-dir
+      --rule string                      个人事件规则类型；默认根据 event_key 推断
+      --stream-source-id string          个人 Stream sourceId；开源版默认 open，可由 edition 覆盖
+      --stream-ticket-mode string        个人 Stream 建联模式；默认 normal
+      --stream-ticket-url string         个人 Stream 取票 URL；默认由 MCP base 派生 /stream/connections/ticket
+      --subscribe-id string              个人事件订阅 ID；传入后复用已有订阅
+      --ttl duration                     个人订阅 TTL (Go duration，如 24h；0 表示不过期)
+      --user string                      单聊对端或指定发送人的 userId（与 --open-dingtalk-id 二选一）
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 需要监听七个公开 OA 审批任务/实例 EventKey 中的一个或多个事件
+  - 需要按 creator、executor 或 participant 角色监听待办创建、更新或删除事件
+  - 需要监听主日历日程创建/新增参与、修改或取消事件，用 user_calendar_event_changed 和 calendar-ids/change-types 指定范围
+  - 需要监听互动卡片提交或操作回调，并读取回答、问题、操作者及业务上下文
+  - 需要监听指定群的标题变更、成员进退群或群解散事件
+  - 需要监听听记创建（user_minutes_task_created）或纪要首次生成（user_minutes_summary_generated）事件
+  - 用户显式给出原始 EventKey、Filter DSL、subscribe_id，要求原始 transport envelope，或需要普通 IM facade 不提供的高级多事件控制
+
+Avoid when:
+  - 普通 @我、指定发送人/群、全部单聊/群聊及 message/reaction/read/recall 监听优先使用 event +listen-im
+  - 只查历史聊天记录时用 chat 查询命令
+  - 查询、同意、拒绝、转交、撤销或发起审批时用 oa；配置应用事件回调时用 dev app event
+  - 只看事件目录/字段时用 event list / event schema
+
+Safety: effect=write  risk=medium  confirmation=not_required  idempotency=non_idempotent
+
+Related skills:
+  - dingtalk-event
+
+Documentation:
+  - 事件订阅深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-im.md
+  - 互动卡片回调事件: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-card.md
+  - 日历个人事件: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-event/references/event-calendar.md

@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-11",
+  "observationOnly": true,
+  "health": {
+    "mode": "experimental",
+    "transport": "dws_history_poll",
+    "events": 18,
+    "last_sync": {
+      "at": "2026-11-11T03:29:31.945528+00:00",
+      "complete": true,
+      "inserted": 0
+    },
+    "native_audio_video": false,
+    "other_member_inbound": "skipped_by_user",
+    "poll_error": null
+  }
+}

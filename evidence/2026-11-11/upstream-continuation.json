@@ -1,0 +1,21 @@
+{
+  "checkedDate": "2026-11-11",
+  "release": {
+    "tag": "v1.0.67",
+    "published": "2026-11-04T08:45:41Z",
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.67"
+  },
+  "tree": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "nativeMedia": {
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/shortcut/chat/unified_send.go#L778",
+    "function": "executeMessagesSendUserFile",
+    "finding": "User file/audio/video converge on file upload and send_personal_message(msgType=file); not native voice/video.",
+    "lines": [
+      818,
+      838,
+      854
+    ]
+  },
+  "eventKeys": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/skills/multi/dingtalk-event/references/event-im-keys.md",
+  "eventContent": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/skills/multi/dingtalk-event/references/event-im-output.md"
+}

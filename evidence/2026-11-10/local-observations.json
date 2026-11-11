@@ -1,0 +1,27 @@
+{
+  "observed_date": "2026-11-10",
+  "timezone": "Asia/Shanghai",
+  "auth": {
+    "command": "dws auth status --format json",
+    "exit_code": 0,
+    "authenticated": false
+  },
+  "ax": {
+    "desktop_logged_in": true,
+    "test_chat": "aic测试群",
+    "chat_type": "internal",
+    "organization_alias": "恒泰进",
+    "test_id": "DAB-AX-001",
+    "composer_write": "observed",
+    "local_bubble_after_send": "observed",
+    "composer_cleared": true,
+    "sidebar_preview_updated": true,
+    "recipient_delivery": "unverified",
+    "continuous_monitor": "unverified",
+    "media_round_trip": "unverified"
+  },
+  "fixture": {
+    "path": "fixtures/dab-file-001.txt",
+    "sha256": "2a8b7c4c27f363abacb703c7f1acce24bf5c348e80f738845c558e2738a3f322"
+  }
+}

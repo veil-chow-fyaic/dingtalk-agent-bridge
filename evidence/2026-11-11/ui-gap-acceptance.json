@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-11",
+  "method": "native DingTalk via CUA AX and screenshot, read-only",
+  "scope": "authorized single-member internal test group",
+  "observed": {
+    "groupOrganizationMatched": true,
+    "memberCount": 1,
+    "multiImageFirstLabel": "DAB MEDIA TEST 20261111",
+    "multiImageSecondLabel": "DAB SECOND IMAGE",
+    "twoImagesRenderedInline": true,
+    "docxCardBytes": 926,
+    "xlsxCardDisplay": "1.6 KB",
+    "fileQuoteTarget": "dab-office-001.xlsx",
+    "fileQuoteMarker": "DAB-FILE-QUOTE-001",
+    "sentThroughAILabelVisible": true
+  },
+  "limits": [
+    "not independent recipient receipt",
+    "all-read indicator in single-member group is not evidence of another reader",
+    "no Office editing/preview tested"
+  ],
+  "privacy": "full screenshots containing unrelated sidebar were not saved to project"
+}

@@ -1,0 +1,37 @@
+管理经过审核并纳入 Schema 的 MCP 服务连接辅助能力，并通过静态 published 子命令查看或调用已发布工具。
+
+Usage:
+  dws mcp [flags]
+  dws mcp [command]
+
+Available Commands:
+  market      钉钉 MCP 市场
+  published   查看和调用已发布的 MCP 工具
+  url         管理 MCP 服务连接地址
+
+Flags:
+  -h, --help   help for mcp
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws mcp [command] --help" for more information about a command.
+
+Related skills:
+  - dingtalk-misc
+  - dingtalk-shared
+
+Documentation:
+  - MCP 开发与动态调用指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-misc/references/dev/mcp.md
+  - Schema 与 MCP 使用指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-shared/references/schema-usage.md

@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-11",
+  "method": "native DingTalk macOS UI through cua_repl; visual and accessibility observation by assistant",
+  "accountArrangement": {
+    "uiUser": "veil / 周威",
+    "dwsUser": "liev",
+    "senderKind": "human account with --as user",
+    "botCreated": false
+  },
+  "checks": {
+    "humanInputRightAndLievRepliesLeft": true,
+    "visibleAITag": true,
+    "dmText697Visible": true,
+    "groupText667Visible": true,
+    "dmFollowupBlueWhale482Visible": true,
+    "groupDidNotKnowDmCode": true,
+    "csvUploadedFromFinderViaDingTalkUI": true,
+    "csvResult54Visible": true,
+    "threeTxtFilesDownloadedViaClient": true,
+    "threeTxtFilesOpenedInTextEdit": true,
+    "someHandledMessagesStillShownUnread": true
+  },
+  "notCovered": [
+    "bot route",
+    "external customer conversations",
+    "native voice/video",
+    "full Stream inbound",
+    "long-run reliability",
+    "adversarial sandbox isolation"
+  ],
+  "privateEvidence": [
+    {
+      "path": "local/ui-two-account-20261111/dm-sent.png",
+      "sha256": "f6b1b6e4ef98d4e2e844d9d120b6fd20ef203615c5d1ee53b5251fac66242d7f"
+    },
+    {
+      "path": "local/ui-two-account-20261111/dm-reply.png",
+      "sha256": "2ee9563a20d5d4368de0935ab60f1fa9fcd71aa7beb55ec2c16d42c636f08806"
+    },
+    {
+      "path": "local/ui-two-account-20261111/dm-file-opened.png",
+      "sha256": "981e73dd73fcf81b763480bd3c24be4ca4b8cc1728d3d95344572f6522d84851"
+    },
+    {
+      "path": "local/ui-two-account-20261111/group-reply.png",
+      "sha256": "01b7793ef28f8850dd93678ea9b27b25202ee6767ff4dc8efe7ef9bfba2a64c2"
+    },
+    {
+      "path": "local/ui-two-account-20261111/group-file-opened.png",
+      "sha256": "1f093bafb8b3f08e27722c29ed13e2aa90ff9afdc79f7d4a0b7f4d12b0656498"
+    },
+    {
+      "path": "local/ui-two-account-20261111/dm-memory.png",
+      "sha256": "bd12b3326b7ae8615b49840547bdb64b6c90f280d8696dc861e044e024477d8b"
+    },
+    {
+      "path": "local/ui-two-account-20261111/dm-upload-input.png",
+      "sha256": "67cc28e4804cf37f3568f6c0bee8751194c661a0ad4605336c6bbb95a8125197"
+    },
+    {
+      "path": "local/ui-two-account-20261111/dm-upload-reply.png",
+      "sha256": "eaf3bc6ebbd422d647bd22082a17d19152b2d88eb6b7e08c4ce6dc202641c7f6"
+    },
+    {
+      "path": "local/ui-two-account-20261111/upload-file-opened.png",
+      "sha256": "87295048e0a69e44b99c42d1debf6a1fe4658791ebda0d109d0fb34b3465f5c2"
+    }
+  ]
+}

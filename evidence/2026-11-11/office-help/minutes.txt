@@ -1,0 +1,74 @@
+管理钉钉AI听记：查询列表、获取详情、摘要、转写、待办、关键字、音频地址、思维导图、发言人管理、文件上传、成员权限、纪要模板、标签、语音备忘，以及修改标题和纪要内容。
+
+Usage:
+  dws minutes [flags]
+  dws minutes [command]
+
+Available Commands:
+  +action-items       读取指定或我最新一条听记中已抽取的行动项
+  +apply-permission   为当前用户申请语义化的听记访问权限
+  +detail             批量聚合听记基础信息、摘要、关键词、完整逐字稿和行动项，支持安全文件输出
+  +download           批量取得听记音视频地址并安全下载到本地
+  +export-pack        把听记文本产物清理签名凭据后写入受控目录并生成清理台账
+  +latest             取我最新的一条妙记（听记）详情
+  +list-all           预览或完整查询我有权限访问的听记列表
+  +list-mine          查询我创建的听记列表
+  +list-shared        查询他人共享给我的听记列表
+  +mindmap            创建听记思维导图并轮询到明确成功、失败或超时
+  +prepare-asr        读取个人热词、只新增缺失项并读回验证
+  +record-pause       暂停听记录音
+  +record-resume      恢复听记录音
+  +record-start       发起听记（开始录音）
+  +record-stop        结束听记录音
+  +record-wrap-up     停止实时录音并有界等待听记产物，失败时保留恢复句柄
+  +replace-batch      预检并批量执行多组听记文字替换，逐项验证且失败必定非零
+  +search             按范围、标题关键词和时间搜索听记，支持安全全量翻页
+  +share              按成员逐项授予一个或多个听记权限，输出可审计的部分写入 ledger
+  +speaker-insights   创建发言人段落总结并轮询结果，保留异步任务恢复句柄
+  +speaker-replace    预检逐字稿中的发言人昵称，替换后重新读回验证
+  +summary            读取当前纪要、校验图片引用、全量覆盖并读回验证
+  +sync-asr           把个人热词精确同步为目标集合，删除多余项后读回验证
+  +transcript         读取指定或我最新一条听记的完整逐字稿，并交付分页完整性证据
+  +unshare            按成员逐项移除一个或多个听记权限，输出可审计的部分写入 ledger
+  +update             读取现状、预览差异、更新听记标题并读回验证
+  +upload             把本地音视频完整上传并创建听记，不发送额外消息
+  +upload-and-analyze 本地音视频直传听记并等待分析产物，可选思维导图和发言人洞察
+  +upload-and-notify  上传本地音视频创建听记，并在生成后推送闪记卡片
+  audio-memo          语音备忘查询
+  get                 获取听记内容
+  hot-word            个人热词管理
+  list                听记列表
+  mind-graph          思维导图管理
+  permission          听记成员权限管理
+  record              控制听记录音
+  replace-text        查找替换段落和纪要中匹配的文字
+  speaker             发言人管理
+  tag                 听记标签/分组管理
+  template            纪要模板管理
+  update              更新听记信息
+  upload              文件上传管理
+
+Flags:
+  -h, --help   help for minutes
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws minutes [command] --help" for more information about a command.
+
+Related skills:
+  - dingtalk-minutes
+
+Documentation:
+  - AI 听记深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-minutes/references/minutes.md

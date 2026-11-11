@@ -1,0 +1,81 @@
+用已建好的机器人凭证把它接到当前本地 agent，不做建号。
+凭证两种来源：① 通过机器人凭证参数直接传入 Client ID 与 Secret；② 传 --unified-app-id（复用 dev app credentials get 自动取凭证）。
+渠道由 --channel 显式指定，或运行时信号自动探测。
+缺凭证请先用 `dws dev app robot submit` 建号（随后 `robot result` 轮询）拿 clientId/clientSecret。
+
+Usage:
+  dws dev connect [flags]
+  dws dev connect [command]
+
+Examples:
+  dws dev connect --channel workbuddy --robot-client-id <id> --robot-client-secret <secret>
+  dws dev connect --unified-app-id <ID> --channel qoderwork
+  dws dev connect --channel claudecode --robot-client-id <id> --robot-client-secret <secret>
+  dws dev connect --agent-cmd "lobster -p" --robot-client-id <id> --robot-client-secret <secret>  # 自研/未支持的 AI 工具
+
+Available Commands:
+  list        列出本机所有连接器及健康状态（healthy/degraded/down）；--json 供脚本消费
+  restart     重启连接器守护进程（通过持久化的 unifiedAppId 重新拉取密钥，无需本地存密钥）
+  status      查看连接器健康状态（healthy/degraded/down，pid、收发活动、日志路径；--json 供外部托管消费）
+  stop        优雅停止后台连接器守护进程（释放单实例锁与 Stream 连接）
+
+Flags:
+      --agent-approval-mode string      agent 审批模式：yolo(默认, 最高权限)|ask(需要确认/受限)，兼容 Gemini/Codex 社区语义；env: DWS_AGENT_APPROVAL_MODE
+      --agent-cmd string                自研/未支持的 AI 工具命令（无头/一次性：问题作为最后一个参数追加，答案打到 stdout）；用来接入内置渠道之外的 AI（如网易有道龙虾 LobsterAI）；等价于 --channel custom + 设 DWS_AGENT_CMD；env: DWS_AGENT_CMD
+      --agent-memory                    按会话续聊：同一群/单聊共享 agent 会话上下文（codex/opencode/pi/qoder/qoderwork/claudecode/codebuddy/workbuddy 支持；--agent-memory=false 关闭） (default true)
+      --agent-model string              覆盖 agent 模型（如 claude 的 sonnet/opus、gemini-2.5-pro；默认用渠道内置模型，求快）；env: DWS_AGENT_MODEL
+      --agent-permission-mode string    agent 权限模式：bypass(默认, 最高权限)|ask(需要确认/受限)；env: DWS_AGENT_PERMISSION_MODE
+      --agent-timeout int               每次 agent 调用的超时时间（秒），0=不限制（默认）；env: DWS_AGENT_TIMEOUT_MS（毫秒）
+      --agent-workdir string            本地 agent 的运行目录（放知识文件可给机器人上下文；默认空白临时目录，求快）；env: DWS_AGENT_WORKDIR
+      --allowed-groups string           群白名单 openConversationId（逗号分隔），配置后仅名单内群可触发；env: DWS_ALLOWED_GROUPS
+      --allowed-users string            用户白名单 staffId（逗号分隔），配置后仅名单内用户可触发；env: DWS_ALLOWED_USERS
+      --alwayson                        常驻模式：worker 崩溃后自动重启（仅 --daemon 生效）
+      --approval-card-template string   确认闸交互卡片模板 ID（带[同意][拒绝]按钮）；与 --owner-user-id 同时配置才开启确认闸；env: DWS_APPROVAL_CARD_TEMPLATE
+      --audit-sheet string              审计在线表格 ID/URL（axls）：确认闸每个操作追加一行到该表格，可在钉钉随时查看；空=仅本地审计文件；env: DWS_AUDIT_SHEET
+      --audit-sheet-tab string          审计表格的工作表 ID/名称（配合 --audit-sheet）；env: DWS_AUDIT_SHEET_TAB (default "Sheet1")
+      --card-template string            AI 卡片模板 ID（开发者后台·本应用·AI 卡片设置里获取；模板按应用授权，强烈建议注册自己应用的模板）；env: DWS_CARD_TEMPLATE
+      --channel string                  渠道：auto(默认,自动探测)|openclaw|qoder|qoderwork|hermes|workbuddy|claudecode|codebuddy|codex|gemini|opencode|pi|custom(自研/未支持的 AI，配 --agent-cmd) (default "auto")
+      --daemon                          守护进程模式：把连接器放到后台运行（脱离终端），父进程打印 pid/日志路径后退出（Windows 暂不支持）
+  -h, --help                            help for connect
+      --knowledge-dir string            答疑知识目录（.md/.txt）：每条消息本地检索 top-k 片段拼进 prompt，agent 仍在空目录跑、不拖慢回复；env: DWS_KNOWLEDGE_DIR
+      --knowledge-source string         答疑知识源：wiki:<spaceId> / doc:<docId> 从钉钉知识库拉取并缓存为本地知识（复用 dws doc 能力）；裸值当作本地目录；与 --knowledge-dir 并存；env: DWS_KNOWLEDGE_SOURCE
+      --notify-staff-id string          状态通知 staffId：机器人启动/停止/崩溃时自动发钉钉消息通知此人；env: DWS_NOTIFY_STAFF_ID
+      --owner-user-id string            数字分身主人 staffId：开启确认闸后，执行类请求先发卡片给主人审批，同意才执行；env: DWS_OWNER_USER_ID
+      --reply-card                      用 AI 卡片回复（思考中→完成状态，同官方渠道体验）；卡片失败自动回退普通消息；--reply-card=false 关闭 (default true)
+      --robot-client-id string          现成机器人 clientId（AppKey）
+      --robot-client-secret string      现成机器人 clientSecret（AppSecret）
+      --role-config string              数字员工角色配置 YAML：用角色的主人/人设/知识源填充未显式给出的选项（显式 flag 优先）；role 的 client_id 必须与本机器人一致；env: DWS_ROLE_CONFIG
+      --unified-app-id string           统一应用 ID：复用 dev app credentials get 自动取凭证（替代手填 robot-client-id/secret）
+      --user-rate-limit int             单用户每分钟消息上限（防刷；每条消息都是一次 LLM 调用），0 关闭；env: DWS_USER_RATE_LIMIT (default 20)
+      --yolo                            最高权限模式短命令；等价于 --agent-permission-mode bypass / --agent-approval-mode yolo
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws dev connect [command] --help" for more information about a command.
+
+When to use:
+  - 需要启动本地机器人 Stream 调试连接
+
+Avoid when:
+  - 创建或发布应用版本时使用 dev app
+
+Safety: effect=write  risk=medium  confirmation=not_required  idempotency=unknown
+
+Related skills:
+  - dingtalk-misc
+
+Documentation:
+  - 开放平台应用深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-misc/references/devapp.md
+  - 轻应用命令参考: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-misc/references/dev/liteapp.md

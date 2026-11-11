@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-11",
+  "command": "python3 -m unittest discover -s tests -v",
+  "passed": 26,
+  "failed": 0,
+  "remoteSends": 0,
+  "coverageAdded": [
+    "multi-account/conversation idempotency isolation",
+    "direct target flag",
+    "atomic inbox/cursor rollback/restart",
+    "self and unknown identity filtering",
+    "ordered image parts and quoted attachment dedup",
+    "missing media/recovery/integrity",
+    "late history deep scan",
+    "partial download attempt isolation and explicit repair"
+  ]
+}

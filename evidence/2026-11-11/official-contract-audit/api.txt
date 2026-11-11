@@ -1,0 +1,78 @@
+直接调用钉钉 OpenAPI，支持 api.dingtalk.com 和 oapi.dingtalk.com 两个域名。
+
+api.dingtalk.com:
+  Token 通过 HTTP Header (x-acs-dingtalk-access-token) 传递。
+  路径格式: /v1.0/xxx 或 /v2.0/xxx
+
+oapi.dingtalk.com:
+  Token 通过 URL 查询参数 (access_token) 传递。
+  路径格式: /topapi/v2/xxx 或完整 URL https://oapi.dingtalk.com/topapi/...
+
+仅限使用自有应用的完整 Client ID/Client Secret pair。凭证优先级为:
+  完整 --client-id/--client-secret > 完整 DWS_CLIENT_ID/DWS_CLIENT_SECRET > 完整 app config。
+同一来源只提供一项会明确失败，绝不会与其他来源拼接。
+单次 flags/env 不持久化 Client Secret；获取到的 App Token 会按 Client ID 独立缓存。
+成功的 dws auth login 会保存其实际使用的完整凭证对；历史 client-secret 槽位会迁移到 appsecret:<clientID>。
+新旧 Client Secret 槽位值冲突时拒绝调用并要求重新登录，不猜测正确值。
+隐藏 --token 仅临时使用调用方提供的 App Token，不持久化、不自动刷新。
+通过 MCP 默认凭证登录获取的加密 token 不支持 raw API 调用。
+
+示例:
+  # === api.dingtalk.com ===
+
+  # 获取企业所有应用列表
+  dws api GET /v1.0/microApp/allApps
+
+  # 搜索用户 (POST + JSON body)
+  dws api POST /v1.0/contact/users/search \
+    --data '{"queryWord":"张三","offset":0,"size":10}'
+
+  # === oapi.dingtalk.com ===
+
+  # 获取用户详情 (使用 --base-url)
+  dws api POST /topapi/v2/user/get \
+    --base-url https://oapi.dingtalk.com \
+    --data '{"userid":"manager123"}'
+
+  # 也可以直接使用完整 URL
+  dws api POST https://oapi.dingtalk.com/topapi/v2/user/get \
+    --data '{"userid":"manager123"}'
+
+  # === 通用功能 ===
+
+  # Dry-run 预览请求
+  dws api GET /v1.0/microApp/allApps --dry-run
+
+  # 上传媒体文件（旧 OAPI multipart；先 dry-run 核对）
+  dws api POST https://oapi.dingtalk.com/media/upload \
+    --data '{"type":"image"}' --file media=./demo.png --dry-run
+
+  # 使用 jq 过滤输出
+  dws api GET /v1.0/microApp/allApps --jq '.appList | length'
+
+Usage:
+  dws api <METHOD> <PATH> [flags]
+
+Flags:
+      --base-url string   覆盖 API 基础 URL (默认 https://api.dingtalk.com)
+      --data string       请求体 JSON (支持 @file 或 - 从 stdin 读取)
+      --file string       multipart 文件 [field=]path 或 [field=]-
+  -h, --help              help for api
+      --page-all          自动遍历所有分页
+      --page-delay int    分页间隔毫秒 (default 200)
+      --page-limit int    最大翻页数 (0=不限, 默认10, 硬上限500) (default 10)
+      --params string     查询参数 JSON (支持 @file 或 - 从 stdin 读取)
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)

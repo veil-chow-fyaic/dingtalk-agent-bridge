@@ -1,0 +1,16 @@
+{
+  "error": {
+    "actions": [
+      "Run 'dws event --help' for the full list"
+    ],
+    "category": "validation",
+    "code": 3,
+    "details": {
+      "input": "subscribe",
+      "suggestions": []
+    },
+    "hint": "Run 'dws event --help' for the full list",
+    "message": "unknown subcommand \"subscribe\" for \"dws event\"",
+    "reason": "unknown_subcommand"
+  }
+}

@@ -1,0 +1,90 @@
+按身份发送消息；user 的 Markdown 可内联本地图片，先上传并以单条富文本发送。bot/webhook 不支持本地 Markdown 图片。
+
+参数约束：
+  - --text、--markdown、--media-id、--file、--file-path、--image-url、--contact-id、--share-chat-id、--a2ui-messages 至少指定一个
+  - --text、--markdown、--media-id、--file、--file-path、--image-url、--contact-id、--share-chat-id、--a2ui-messages 互斥，最多指定一个
+  - --identity、--as 互斥，最多指定一个
+  - --group、--chat-id 互斥，最多指定一个
+  - --user、--open-dingtalk-id 互斥，最多指定一个
+  - --uuid、--idempotency-key 互斥，最多指定一个
+  - 目标、凭据和幂等参数受发送身份能力矩阵约束：user 必须指定一个群聊或单聊目标；bot 必须指定 robot-code 和一类目标，多群最多 100 个并逐项返回 ledger；webhook 必须指定 webhook-token；幂等键仅 user 支持
+
+Usage:
+  dws chat +messages-send [flags]
+
+Examples:
+  dws chat +messages-send --as user --chat-id <openConversationId> --markdown "## 周报" --idempotency-key <key>
+  dws chat +messages-send --as user --user <userId> --msg-type file --file ./report.pdf --idempotency-key <key>
+  dws chat +messages-send --as bot --robot-code <robotCode> --groups <openConversationId1>,<openConversationId2> --text "请提交周报"
+
+Flags:
+      --a2ui-messages string           user 的 A2UI JSON 字符串数组；与正文/媒体互斥，不接受 Lark Card JSON
+      --ai-tag                         消息是否带 AI 发送角标（默认 true） (default true)
+      --as string                      --identity 的 lark-cli 对齐别名；受发送身份能力矩阵约束（可选值: user, bot, webhook）
+      --at-all                         @所有人（user 的 a2ui 卡片须与正文 <a atId="all"> 同时出现）
+      --at-mobiles strings             @ 的手机号（webhook） (default [])
+      --at-open-dingtalk-ids strings   @ 的 openDingTalkId（user/bot 群聊；user 的 a2ui 卡片须与正文 <a atId> 一致） (default [])
+      --at-user-ids strings            @ 的 userId（bot/webhook） (default [])
+      --biz-card-id string             A2UI 业务标识，省略生成；不承诺消息幂等
+      --body-stdin                     从 stdin 读取最多 256 KiB 正文；选中的正文参数必须为 -，不改变默认字面量行为
+      --card-summary string            A2UI 卡片无法渲染时的降级文案；省略时为“互动卡片”，显式空白会被拒绝
+      --chat-id string                 --group 的 lark-cli 对齐别名；受发送身份能力矩阵约束
+      --chat-query string              按群名解析唯一群聊（仅 user 的高级发送场景）；受发送身份能力矩阵约束
+      --contact-id string              user 发送名片的 openDingTalkId
+      --employee-context string        已绑定宿主的 JSON 元数据（agentUuid/channel/bindingRevision）；发送前校验绑定，私聊仅限固定主管；必须配合 body-stdin、wait-delivery 和幂等键，仍须用户确认
+      --expires-seconds int            群邀请有效期秒数，0 为永久；仅 share-chat 使用
+      --file string                    工作目录内安全相对文件路径（user 的 file/audio/video；bot 仅单目标 file）
+      --file-path string               --file 的兼容别名
+      --group string                   群 openConversationId（user/bot 群聊）；受发送身份能力矩阵约束
+      --groups strings                 多个群 openConversationId（仅 bot；受发送身份能力矩阵约束，逐群返回 typed ledger，最多 100 个） (default [])
+      --groups-file string             工作目录内相对文本文件（仅 bot；受发送身份能力矩阵约束），每行或逗号分隔一个群 openConversationId
+  -h, --help                           help for +messages-send
+      --idempotency-key string         --uuid 的 lark-cli 对齐别名（仅 user）；受发送身份能力矩阵约束
+      --identity string                发送身份；目标、凭据和幂等参数受发送身份能力矩阵约束（可选值: user, bot, webhook） (default "user")
+      --image-url string               Bot 图片的 HTTP(S) URL（不接受已有 mediaId）
+      --markdown string                Markdown 正文；user 可用 ![说明](./image.png) 内联本地图片（不支持引用式图片，dry-run 仅脱敏预览）；bot/webhook 不支持本地图片
+      --media-id string                已有图片 mediaId（仅 user 的 image）
+      --msg-type string                内容类型；省略时根据正文、--media-id 或 --file 自动推断（可选值: text, markdown, image, file, audio, video, profile, share-chat, a2ui）
+      --open-dingtalk-id string        单聊接收者 openDingTalkId（user）；受发送身份能力矩阵约束
+      --open-dingtalk-ids strings      批量单聊接收者 openDingTalkId（bot）；受发送身份能力矩阵约束 (default [])
+      --request-id string              A2UI 链路追踪标识，省略生成；不是幂等键
+      --robot-code string              机器人 Code（identity=bot 时使用）；受发送身份能力矩阵约束
+      --share-chat-id string           user 分享的源群 openConversationId；发送群邀请链接，不是 Lark share_chat 对象
+      --support-forward                允许转发 A2UI 卡片，默认 false；仅用于 --a2ui-messages
+      --text string                    纯文本正文
+      --title string                   消息标题（不传则从正文生成）
+      --user string                    单聊接收者 userId（user；包括 --dry-run 也会先通过通讯录搜索精确匹配 openDingTalkId）；受发送身份能力矩阵约束
+      --user-query string              按姓名解析唯一 openDingTalkId（仅 user 的高级发送场景）；受发送身份能力矩阵约束
+      --users strings                  批量单聊接收者 userId（bot）；受发送身份能力矩阵约束 (default [])
+      --uuid string                    幂等键（仅 user）；受发送身份能力矩阵约束
+      --wait-delivery                  仅个人文本/Markdown 发送或普通引用回复：查询发送回执并输出标准回执字段；未知状态不得重发
+      --webhook-token string           自定义机器人 Webhook token（identity=webhook 时使用）；受发送身份能力矩阵约束
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 以 user、bot 或 webhook 身份发送消息；user 的 Markdown 正文需要内联本地图片时先上传并发送单条富文本
+
+Avoid when:
+  - Bot 原生音视频、Webhook 富媒体及任意 Lark Card JSON 未接入；Thread 直接回复使用 +messages-reply --reply-in-thread，A2UI 创建可用 --a2ui-messages，更新仍用 chat message update-a2ui-card
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

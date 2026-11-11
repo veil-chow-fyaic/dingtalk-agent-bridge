@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "accountId": "personal",
+      "profile": "<verified DWS authentication profile>",
+      "conversationId": "<verified group openConversationId>",
+      "conversationType": "group",
+      "name": "<display name only>",
+      "selfSenderId": "<verified own message senderId>",
+      "binary": "local/bin/v1.0.67/dws",
+      "historyTimezone": "Asia/Shanghai"
+    },
+    {
+      "accountId": "personal",
+      "profile": "<verified DWS authentication profile>",
+      "conversationId": "<verified direct openConversationId>",
+      "conversationType": "direct",
+      "peerOpenDingTalkId": "<verified peer openDingTalkId>",
+      "name": "<display name only>",
+      "selfSenderId": "<verified own message senderId>",
+      "binary": "local/bin/v1.0.67/dws",
+      "historyTimezone": "Asia/Shanghai"
+    }
+  ]
+}

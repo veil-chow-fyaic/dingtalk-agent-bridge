@@ -1,0 +1,57 @@
+{
+  "agent_summary": "创建待办并读回验证",
+  "availability": "available",
+  "avoid_when": [
+    "需要底层未公开参数或原始响应时改用对应原子命令"
+  ],
+  "canonical_path": "todo.shortcut_create",
+  "cli_path": "todo +create",
+  "confirmation": "user_required",
+  "description": "创建一条个人待办；只有取得稳定 taskId 且详情读回一致才报告成功。",
+  "dry_run": {
+    "preview_kind": "request"
+  },
+  "effect": "write",
+  "examples": [
+    "dws todo +create --title \"提交报告\" --executors <USER_ID>"
+  ],
+  "idempotency": "non_idempotent",
+  "interface_mode": "composite",
+  "interface_reason": "Reviewed Todo Shortcut composite: the executable CLI owns strict response validation, pagination, write/read-back verification, output projection, and confirmation; no single MCP interface represents the complete command contract.",
+  "parameters": {
+    "due": {
+      "description": "截止时间（ISO8601）",
+      "required": false,
+      "type": "string"
+    },
+    "executors": {
+      "description": "执行人 userId（必填）",
+      "required": true,
+      "type": "array"
+    },
+    "priority": {
+      "description": "优先级；--priority 仅接受 10/20/30/40",
+      "required": false,
+      "type": "integer"
+    },
+    "title": {
+      "description": "待办标题（必填）",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "result": {
+    "data_schema": {
+      "additionalProperties": true,
+      "description": "已验证的新建待办",
+      "type": "object"
+    },
+    "outcomes": [
+      "success"
+    ]
+  },
+  "risk": "medium",
+  "use_when": [
+    "创建一条个人待办；只有取得稳定 taskId 且详情读回一致才报告成功。"
+  ]
+}

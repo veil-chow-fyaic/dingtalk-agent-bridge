@@ -1,0 +1,8 @@
+{
+  "profile": "<verified-corpId>:<verified-userId>",
+  "group": "<verified-openConversationId>",
+  "name": "<verified-test-group-title>",
+  "binary": "local/bin/v1.0.67/dws",
+  "cliVersion": "v1.0.67",
+  "selfSenderId": "<senderId-observed-from-confirmed-own-message>"
+}

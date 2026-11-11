@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-11",
+  "officialCLI": "1.0.67",
+  "scope": "original single-member group",
+  "createAccepted": true,
+  "finishAccepted": true,
+  "contentIndependentlyVerified": false,
+  "referencePairAvailable": false,
+  "verdict": "API accepted; visible content not independently verified; do not repeat update",
+  "gatewayIntegrated": false
+}

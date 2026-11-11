@@ -1,0 +1,145 @@
+{
+  "agent_summary": "预览或完整查询我有权限访问的听记列表",
+  "availability": "available",
+  "avoid_when": [
+    "需要该 Shortcut 未公开的底层参数、原始响应或不同执行语义时，改用对应原子命令"
+  ],
+  "canonical_path": "minutes.shortcut_list_all",
+  "cli_path": "minutes +list-all",
+  "confirmation": "not_required",
+  "constraints": {
+    "mutually_exclusive": [
+      [
+        "cursor",
+        "page-all"
+      ]
+    ]
+  },
+  "description": "当你不确定某条听记是自己创建还是别人共享时使用；默认只返回可续拉预览且不声称 accessible 完整，显式 --page-all 才分别追完「我创建的」和「共享给我的」、按 taskUuid 去重，并在两个范围都耗尽后交付 complete=true。\n\n参数约束：\n  - --limit 和 --page-limit 必须大于 0\n  - --cursor、--page-all 互斥，最多指定一个",
+  "effect": "read",
+  "examples": [
+    "dws minutes +list-all --query \"周会\" --page-all"
+  ],
+  "idempotency": "idempotent",
+  "interface_mode": "composite",
+  "interface_reason": "Reviewed built-in shortcut adapter: the executable CLI owns validation, optional multi-step orchestration, output projection, and confirmation; the complete command contract is not represented by one pinned MCP interface_ref.",
+  "pagination": {
+    "cursor_parameter": "cursor",
+    "endpoint_exhausted_path": "meta.pagination.endpoint_exhausted",
+    "kind": "cursor",
+    "meta_path": "meta.pagination",
+    "next_token_path": "meta.pagination.next_token"
+  },
+  "parameters": {
+    "cursor": {
+      "description": "单端点预览的分页 token；不能与 --page-all 同用",
+      "required": false,
+      "type": "string"
+    },
+    "limit": {
+      "default": "10",
+      "description": "每页数据条数；约束：--limit 和 --page-limit 必须大于 0",
+      "required": false,
+      "type": "integer"
+    },
+    "page-all": {
+      "description": "分别追完 mine/shared 并合并 accessible 全集",
+      "required": false,
+      "type": "boolean"
+    },
+    "page-limit": {
+      "default": "100",
+      "description": "每个范围的自动翻页安全上限；约束：--limit 和 --page-limit 必须大于 0",
+      "required": false,
+      "type": "integer"
+    },
+    "query": {
+      "description": "关键字筛选",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "result": {
+    "data_schema": {
+      "additionalProperties": true,
+      "description": "带范围与完整性证据的听记列表",
+      "properties": {
+        "complete": {
+          "description": "是否已证明目标产品范围完整",
+          "type": "boolean"
+        },
+        "count": {
+          "description": "本次返回的去重听记数量",
+          "type": "integer"
+        },
+        "minutes": {
+          "description": "稳定投影后的听记条目",
+          "items": {
+            "additionalProperties": true,
+            "description": "包含稳定 taskUuid 的听记条目",
+            "properties": {
+              "flashUserInfo": {
+                "additionalProperties": false,
+                "description": "服务端闪记用户显示信息，不等同已验证创建者或所有者",
+                "properties": {
+                  "name": {
+                    "description": "原始 flashUserInfo.name 显示名",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "orgName": {
+                "description": "列表原样提供的组织显示名，不证明资源所有权或当前执行组织",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "nextAction": {
+          "description": "当前结果不完整时的安全继续方式",
+          "type": "string"
+        },
+        "pages": {
+          "description": "本次实际读取的页数",
+          "type": "integer"
+        },
+        "scannedCount": {
+          "description": "标题过滤前扫描到的去重听记数量",
+          "type": "integer"
+        },
+        "scope": {
+          "description": "本次列表的产品范围",
+          "type": "string"
+        },
+        "scopeLedger": {
+          "description": "accessible 聚合时各范围的完整性台账",
+          "items": {
+            "additionalProperties": true,
+            "description": "一个底层范围的分页与结果状态",
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "scope",
+        "count",
+        "minutes",
+        "pages",
+        "complete"
+      ],
+      "type": "object"
+    },
+    "outcomes": [
+      "success",
+      "failure"
+    ]
+  },
+  "risk": "low",
+  "use_when": [
+    "当你不确定某条听记是自己创建还是别人共享时使用；默认只返回可续拉预览且不声称 accessible 完整，显式 --page-all 才分别追完「我创建的」和「共享给我的」、按 taskUuid 去重，并在两个范围都耗尽后交付 complete=true。"
+  ]
+}

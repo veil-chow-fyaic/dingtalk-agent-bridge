@@ -1,0 +1,67 @@
+{
+  "checked_date": "2026-11-10",
+  "timezone": "Asia/Shanghai",
+  "latest_release": {
+    "version": "v1.0.67",
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.67",
+    "published_at": "2026-11-04T08:45:41Z"
+  },
+  "issues": [
+    {
+      "id": 937,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/937",
+      "title": "[Bug] 个人身份无法订阅外部群 IM 事件（registerToEventCenter failed），且 user_im_message_receive_at 会静默丢弃外部群消息",
+      "state": "open",
+      "updated_at": "2026-10-21T08:21:48Z",
+      "comments": 1
+    },
+    {
+      "id": 909,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/909",
+      "title": "DWS personal IM event subscription fails for self-owned appKey with UNIFIED_APP_ID_NOT_FOUND",
+      "state": "open",
+      "updated_at": "2026-08-07T08:21:58Z",
+      "comments": 0
+    },
+    {
+      "id": 1429,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1429",
+      "title": "[Bug] 启用三方加密的组织：纯图片消息在所有读取路径下只返回空壳（content 为空串、text 为 null、无 msgType、无 mediaId），无法识别也无法下载",
+      "state": "open",
+      "updated_at": "2026-09-28T02:43:26Z",
+      "comments": 2
+    },
+    {
+      "id": 1215,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1215",
+      "title": "[Bug] 企业定制版钉钉（SupMate）：仅企业内联系人消息图片下载 HTTP 403，v1.0.60 仍可复现",
+      "state": "open",
+      "updated_at": "2026-09-17T06:32:40Z",
+      "comments": 2
+    },
+    {
+      "id": 1304,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1304",
+      "title": "[接入咨询] 第三方桌面产品在受控组织使用个人 IM 与多用户 OAuth 的正式接入流程",
+      "state": "closed",
+      "updated_at": "2026-09-21T13:45:09Z",
+      "comments": 1
+    },
+    {
+      "id": 866,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/866",
+      "title": "dws 怎么 通过机器人认证",
+      "state": "closed",
+      "updated_at": "2026-09-21T15:04:38Z",
+      "comments": 4
+    },
+    {
+      "id": 890,
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/890",
+      "title": "event consume --group 传逗号分隔多值时静默只订阅第一个，其余会话消息全部丢失且无任何报错",
+      "state": "open",
+      "updated_at": "2026-08-06T04:58:43Z",
+      "comments": 0
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "agent_summary": "创建日程并读回验证",
+  "availability": "available",
+  "avoid_when": [
+    "只需查看日程或尚未确认目标 eventId/影响范围时不要执行写操作"
+  ],
+  "canonical_path": "calendar.shortcut_create",
+  "cli_path": "calendar +create",
+  "confirmation": "user_required",
+  "description": "创建单次日程，可同时传 userId 参会人和 roomId；只有创建响应给出 eventId 且详情读回与标题、起止时间一致时才报告成功。",
+  "effect": "write",
+  "examples": [
+    "dws calendar +create --title \"项目评审\" --start \"2026-03-10T14:00:00+08:00\" --end \"2026-03-10T15:00:00+08:00\" --format json"
+  ],
+  "idempotency": "unknown",
+  "interface_mode": "composite",
+  "interface_reason": "Reviewed Calendar Shortcut composite: the executable CLI owns strict response validation, truthful pagination, optional multi-step writes, read-back verification, and confirmation; no single MCP interface represents the complete command contract.",
+  "parameters": {
+    "attendees": {
+      "description": "参会人 userId，最多 500 个",
+      "required": false,
+      "type": "array"
+    },
+    "calendar-id": {
+      "description": "目标日历 ID（默认 primary）",
+      "required": false,
+      "type": "string"
+    },
+    "desc": {
+      "description": "日程描述，最多 5000 字符",
+      "required": false,
+      "type": "string"
+    },
+    "end": {
+      "description": "结束时间 RFC3339/ISO-8601（必填）",
+      "format": "date-time",
+      "required": true,
+      "type": "string"
+    },
+    "free-busy": {
+      "description": "忙闲状态（可选值: busy, free）",
+      "enum": [
+        "busy",
+        "free"
+      ],
+      "required": false,
+      "type": "string"
+    },
+    "location": {
+      "description": "地点文本",
+      "required": false,
+      "type": "string"
+    },
+    "rooms": {
+      "description": "会议室 roomId",
+      "required": false,
+      "type": "array"
+    },
+    "start": {
+      "description": "开始时间 RFC3339/ISO-8601（必填）",
+      "format": "date-time",
+      "required": true,
+      "type": "string"
+    },
+    "timezone": {
+      "description": "IANA 时区，如 Asia/Shanghai",
+      "required": false,
+      "type": "string"
+    },
+    "title": {
+      "description": "日程标题，最多 2048 字符（必填）",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "result": {
+    "data_schema": {
+      "additionalProperties": true,
+      "description": "创建日程并读回验证",
+      "type": "object"
+    },
+    "outcomes": [
+      "success",
+      "failure"
+    ]
+  },
+  "risk": "medium",
+  "use_when": [
+    "创建单次日程，可同时传 userId 参会人和 roomId；只有创建响应给出 eventId 且详情读回与标题、起止时间一致时才报告成功。"
+  ]
+}

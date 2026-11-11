@@ -1,0 +1,301 @@
+{
+  "date": "2026-11-11",
+  "ok": true,
+  "tests": 73,
+  "seconds": 7.564,
+  "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
+  "results": [
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_artifact_outside_exports_and_symlink_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_async_attachment_finishes_before_runtime_execution",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_cancel_releases_queue_blocked_by_attachment",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_crashed_execution_is_not_replayed",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_direct_task_and_group_have_separate_native_sessions",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_exports_directory_symlink_escape_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_invalid_initial_cursor_is_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_missing_and_oversized_output_are_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_new_deployment_baseline_skips_old_tasks_and_restart_keeps_cursor",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_owner_commands_and_echo_filter",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_poll_error_does_not_move_cursor_or_create_job",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_reset_session_does_not_mix_previous_context",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_response_lost_keeps_same_key_and_payload",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_running_task_cancel_command_reaches_runtime",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_runtime_cli_contract",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_runtime_failure_does_not_block_next_job",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_stalled_download_does_not_block_status_or_cancel",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_task_session_file_reply_and_restart_no_reexecution",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_unauthorized_and_echo_attachments_are_not_downloaded",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_unknown_delivery_is_reconciled_without_new_key",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_workspace_preparation_error_is_a_recorded_failure",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_wrong_runtime_cannot_take_over_existing_sessions",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_cancel_reaps_child",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_codex_completed_schema_file_and_session",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_codex_failed_turn_is_not_success",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_codex_stalled_stdin_is_still_cancellable",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_completed_but_lingering_child_is_reaped",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_completed_terminal_without_final_newline",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_exit_without_terminal_is_not_success",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_group_signal_race_reaps_owned_child",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_invalid_structured_answer_is_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_oversized_event_is_bounded",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_timeout_reaps_child",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_runtime_process.RuntimeProcessTests.test_too_many_artifacts_is_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_config_output_exclusive_and_private",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_direct_route_consumer_model_remains_direct",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_discovery_pagination_and_no_unverified_peer_inference",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_migration_keeps_media_fingerprint_cursor_and_unknown_send",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_missing_history_does_not_mark_scan_complete",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_routes_distinguish_alias_from_auth_identity",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_select_verifies_exact_id_before_preparing_config",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_self_media_never_starves_other_sender",
+      "result": "passed"
+    },
+    {
+      "test": "test_continuation.ContinuationTests.test_wait_wakes_only_after_commit_and_cursor_resumes",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_cli_envelope_and_stderr_error",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_crashed_reservation_is_unknown",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_cross_scope_rolls_back_entire_batch",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_file_boundary_and_content_binding",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_history_dedup_uses_identity_not_text",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_idempotency_survives_restart",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_image_has_separate_payload_identity",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_missing_sender_remains_unknown",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_partial_history_does_not_advance_watermark",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_partial_history_recovers_after_restart",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_single_owner",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_string_false_business_failure",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_unknown_is_never_resent",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_unobserved_attachment_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_probe.ProbeTests.test_business_failure_not_reused",
+      "result": "passed"
+    },
+    {
+      "test": "test_probe.ProbeTests.test_replay_and_payload_binding",
+      "result": "passed"
+    },
+    {
+      "test": "test_probe.ProbeTests.test_unfinished_request_cannot_replay",
+      "result": "passed"
+    },
+    {
+      "test": "test_probe.ProbeTests.test_v2_keeps_probe_fingerprint_and_rejects_ambiguous_routes",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.DownloadRecoveryTests.test_partial_download_retry_uses_new_directory_and_repair",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_consumer_scope_and_owner",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_inbox_transaction_rollback_and_restart",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_inline_order_and_quoted_resource_not_duplicated",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_invalid_batch_never_advances",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_late_index_recovered_by_deep_scan",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_media_failure_recovery_does_not_lose_cursor",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_multiroute_identity_and_idempotency_isolation",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_unknown_media_and_cross_scope_quote_fail_closed",
+      "result": "passed"
+    },
+    {
+      "test": "test_stream_http.HTTPContractTests.test_public_endpoints_auth_discovery_wait_and_shutdown",
+      "result": "passed"
+    },
+    {
+      "test": "test_stream_http.StreamTests.test_child_ready_and_graceful_cancellation",
+      "result": "passed"
+    },
+    {
+      "test": "test_stream_http.StreamTests.test_target_commands_and_scope_filter",
+      "result": "passed"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "captured_at": "2026-11-10T16:20:08.594391+08:00",
+  "scope": "version-and-help-only",
+  "dws_found": true,
+  "commands": [
+    {
+      "command": [
+        "dws",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "dws-version.txt",
+      "sha256": "d74490d9bbb273ef17452d931799fdf09d794346a02558e32152056bb99a9288"
+    },
+    {
+      "command": [
+        "dws",
+        "auth",
+        "login",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "auth-login-help.txt",
+      "sha256": "3c9baeab0f947a4a2f3fcac238e7799b22d4d866f9864ee986bcf18c4f967bca"
+    },
+    {
+      "command": [
+        "dws",
+        "auth",
+        "status",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "auth-status-help.txt",
+      "sha256": "8910a8b3c97f599fc8c23f9e0ee394e8b3dce3198af22a14f9e66b67a209d61d"
+    },
+    {
+      "command": [
+        "dws",
+        "event",
+        "+listen-im",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "listen-im-help.txt",
+      "sha256": "ea026461ad2f4ee42233f6d676f91f3e6ffb8b12a05ea0d19d4686472ff0b598"
+    },
+    {
+      "command": [
+        "dws",
+        "chat",
+        "+messages-send",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "messages-send-help.txt",
+      "sha256": "7cb00c41f339422740f938506afc220ab19ecc88d1cc03307d9d7ea9b28ce00f"
+    },
+    {
+      "command": [
+        "dws",
+        "chat",
+        "+chat-messages",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stderr_present": false,
+      "file": "chat-messages-help.txt",
+      "sha256": "04cecf13646571c9fc913322011dd05a0d013beedd5c8fdc73b06211080390fb"
+    }
+  ],
+  "app": {
+    "CFBundleIdentifier": "com.alibaba.DingTalkMac",
+    "CFBundleShortVersionString": "8.5.5",
+    "CFBundleVersion": "58003328"
+  }
+}

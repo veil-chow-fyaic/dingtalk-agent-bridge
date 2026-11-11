@@ -1,0 +1,3 @@
+DAB-FILE-001
+钉钉 bridge 合成测试文件，不含业务资料。
+Line 3: ASCII and 中文 round-trip check.

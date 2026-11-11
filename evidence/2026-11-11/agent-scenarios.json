@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-11",
+  "scope": "authorized owner commands in original single-member group",
+  "cases": {
+    "status": {
+      "jobState": "completed",
+      "confirmedReplies": 1
+    },
+    "slow": {
+      "jobState": "cancelled",
+      "confirmedReplies": 2
+    },
+    "cancel": {
+      "jobState": "completed",
+      "confirmedReplies": 1
+    },
+    "xlsx": {
+      "jobState": "completed",
+      "confirmedReplies": 4
+    },
+    "new": {
+      "jobState": "completed",
+      "confirmedReplies": 2
+    },
+    "image": {
+      "jobState": "completed",
+      "confirmedReplies": 2
+    }
+  },
+  "checks": {
+    "statusWhileRunning": true,
+    "cancelledRealToolExecution": true,
+    "noDelayedFileAfter90Seconds": true,
+    "xlsxParsedExpectedCells": true,
+    "twoReturnedFilesHashMatched": true,
+    "newCreatedDifferentNativeSession": true,
+    "imageActuallyViewedAndDimensionsMatch": true,
+    "imageAfterAsyncDownloadChange": true
+  },
+  "returnedFileSha256": [
+    "871848dd30c993f27f2bc549f5baad984a5972ed27ab5444c41d8204877a51cb",
+    "4ed0903efe21886fe9782f593791803fe781efe7a17acafb77e81efcb9c146d5"
+  ],
+  "bridgeEvents": 44,
+  "pollError": null,
+  "notVerified": [
+    "real direct peer",
+    "multi-member group",
+    "external conversation",
+    "long duration reliability"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "unauthorized_status": 401,
+  "health": {
+    "mode": "experimental",
+    "transport": "dws_history_poll",
+    "events": 9,
+    "last_sync": {
+      "at": "2026-11-11T02:33:26.009465+00:00",
+      "complete": true,
+      "inserted": 1
+    },
+    "native_audio_video": false,
+    "other_member_inbound": "skipped_by_user",
+    "poll_error": null
+  },
+  "sendState": "confirmed",
+  "replay": true,
+  "changedPayloadStatus": 400,
+  "sync": {
+    "inserted": 1,
+    "complete": true,
+    "count": 3,
+    "source": "history_poll",
+    "inbound_other_member_verified": false
+  },
+  "eventsCount": 10,
+  "allFromSelf": true,
+  "markerCount": 1,
+  "cursorReplayCount": 0,
+  "downloadCount": 1,
+  "downloadHasDigest": true
+}

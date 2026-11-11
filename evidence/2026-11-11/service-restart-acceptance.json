@@ -1,0 +1,23 @@
+{
+  "restartReplay": true,
+  "imageSendState": "confirmed",
+  "sameTextDistinctIds": 2,
+  "originalTextCount": 1,
+  "imageResourceTypes": [
+    "mediaId"
+  ],
+  "imageShaMatches": true,
+  "health": {
+    "mode": "experimental",
+    "transport": "dws_history_poll",
+    "events": 13,
+    "last_sync": {
+      "at": "2026-11-11T02:35:10.559850+00:00",
+      "complete": true,
+      "inserted": 3
+    },
+    "native_audio_video": false,
+    "other_member_inbound": "skipped_by_user",
+    "poll_error": null
+  }
+}

@@ -1,0 +1,78 @@
+当你需要文件、复杂 @、幂等，或选择 current-user、bot、webhook 身份发送消息时使用；current-user 可直接传稳定 ID，也可用 --user-query/--chat-query 在 CLI 内唯一解析自然目标，dry-run 与真实执行使用同一解析链。Bot 可用 --groups/--groups-file 向最多 100 个稳定群 ID 发送文本或 Markdown，去重后返回 im.batch-write.v1 逐目标 ledger；webhook 目标由 token 所在群决定。文件上传和已有 mediaId 图片仅 current-user 支持，bot/webhook 不支持富媒体。
+
+参数约束：
+  - --text、--markdown、--media-id、--file、--file-path 至少指定一个
+  - --text、--markdown、--media-id、--file、--file-path 互斥，最多指定一个
+  - --identity、--as 互斥，最多指定一个
+  - --group、--chat-id 互斥，最多指定一个
+  - --user、--open-dingtalk-id 互斥，最多指定一个
+  - --uuid、--idempotency-key 互斥，最多指定一个
+  - 目标、凭据和幂等参数受发送身份能力矩阵约束：user 必须指定一个群聊或单聊目标；bot 必须指定 robot-code 和一类目标，多群最多 100 个并逐项返回 ledger；webhook 必须指定 webhook-token；幂等键仅 user 支持
+
+Usage:
+  dws chat +messages-send [flags]
+
+Examples:
+  dws chat +messages-send --as user --chat-id <openConversationId> --markdown "## 周报" --idempotency-key <key>
+  dws chat +messages-send --as user --user <userId> --msg-type file --file ./report.pdf --idempotency-key <key>
+  dws chat +messages-send --as bot --robot-code <robotCode> --groups <openConversationId1>,<openConversationId2> --text "请提交周报"
+
+Flags:
+      --ai-tag                         消息是否带 AI 发送角标（默认 true） (default true)
+      --as string                      --identity 的 lark-cli 对齐别名；受发送身份能力矩阵约束（可选值: user, bot, webhook）
+      --at-all                         @所有人
+      --at-mobiles strings             @ 的手机号（webhook）
+      --at-open-dingtalk-ids strings   @ 的 openDingTalkId（user/bot 群聊）
+      --at-user-ids strings            @ 的 userId（bot/webhook）
+      --chat-id string                 --group 的 lark-cli 对齐别名；受发送身份能力矩阵约束
+      --chat-query string              按群名解析唯一群聊（仅 user 的高级发送场景）；受发送身份能力矩阵约束
+      --file string                    工作目录内安全相对文件路径（仅 user 的 file/audio/video）
+      --file-path string               --file 的兼容别名
+      --group string                   群 openConversationId（user/bot 群聊）；受发送身份能力矩阵约束
+      --groups strings                 多个群 openConversationId（仅 bot；受发送身份能力矩阵约束，逐群返回 typed ledger，最多 100 个）
+      --groups-file string             工作目录内相对文本文件（仅 bot；受发送身份能力矩阵约束），每行或逗号分隔一个群 openConversationId
+  -h, --help                           help for +messages-send
+      --idempotency-key string         --uuid 的 lark-cli 对齐别名（仅 user）；受发送身份能力矩阵约束
+      --identity string                发送身份；目标、凭据和幂等参数受发送身份能力矩阵约束（可选值: user, bot, webhook） (default "user")
+      --markdown string                Markdown 正文
+      --media-id string                已有图片 mediaId（仅 user 的 image）
+      --msg-type string                内容类型；省略时根据正文、--media-id 或 --file 自动推断（可选值: text, markdown, image, file, audio, video）
+      --open-dingtalk-id string        单聊接收者 openDingTalkId（user）；受发送身份能力矩阵约束
+      --open-dingtalk-ids strings      批量单聊接收者 openDingTalkId（bot）；受发送身份能力矩阵约束
+      --robot-code string              机器人 Code（identity=bot 时使用）；受发送身份能力矩阵约束
+      --text string                    纯文本正文
+      --title string                   消息标题（不传则从正文生成）
+      --user string                    单聊接收者 userId（user；包括 --dry-run 也会先通过通讯录搜索精确匹配 openDingTalkId）；受发送身份能力矩阵约束
+      --user-query string              按姓名解析唯一 openDingTalkId（仅 user 的高级发送场景）；受发送身份能力矩阵约束
+      --users strings                  批量单聊接收者 userId（bot）；受发送身份能力矩阵约束
+      --uuid string                    幂等键（仅 user）；受发送身份能力矩阵约束
+      --webhook-token string           自定义机器人 Webhook token（identity=webhook 时使用）；受发送身份能力矩阵约束
+
+Global Flags:
+      --client-id string       Override OAuth client ID (DingTalk AppKey)
+      --client-secret string   Override OAuth client secret (DingTalk AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求超时时间 (秒) (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当你需要文件、复杂 @、幂等，或选择 current-user、bot、webhook 身份发送消息时使用；current-user 可直接传稳定 ID，也可用 --user-query/--chat-query 在 CLI 内唯一解析自然目标，dry-run 与真实执行使用同一解析链。Bot 可用 --groups/--groups-file 向最多 100 个稳定群 ID 发送文本或 Markdown，去重后返回 im.batch-write.v1 逐目标 ledger；webhook 目标由 token 所在群决定。文件上传和已有 mediaId 图片仅 current-user 支持，bot/webhook 不支持富媒体。
+
+Avoid when:
+  - 需要 bot/webhook 发送媒体、卡片或 thread 回复时不要假设等价支持；改用真实存在的专用下层命令，缺少下层能力时停止
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

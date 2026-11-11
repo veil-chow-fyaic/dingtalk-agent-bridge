@@ -1,0 +1,55 @@
+{
+  "agent_summary": "从 Markdown 或 JSONML 创建在线文字文档",
+  "availability": "available",
+  "avoid_when": [
+    "需要文件树移动、复制或普通钉盘文件操作时改用 drive；非文字文档按对象类型路由到 sheet、aitable、slides 或 wiki"
+  ],
+  "canonical_path": "doc.shortcut_create",
+  "cli_path": "doc +create",
+  "confirmation": "not_required",
+  "description": "当用户要新建钉钉在线文字文档，并可同时写入 Markdown/JSONML 初始内容、指定文件夹或知识库位置时使用；不会用于普通文件上传或其他在线对象类型。\n\n参数约束：\n  - 兼容别名与主参数同时提供时值必须一致",
+  "effect": "write",
+  "examples": [
+    "dws doc +create --name \"项目周报\" --content \"# 本周进展\"",
+    "dws doc +create --name \"模板\" --content @body.json --doc-format jsonml"
+  ],
+  "idempotency": "unknown",
+  "interface_mode": "composite",
+  "interface_reason": "Reviewed Doc Shortcut composite: the executable CLI owns validation, multi-step orchestration, local I/O, output projection, and confirmation; no single MCP interface represents the complete command contract.",
+  "parameters": {
+    "content": {
+      "description": "内容字面量、@工作目录相对文件或 - 表示 stdin",
+      "required": false,
+      "type": "string"
+    },
+    "doc-format": {
+      "default": "markdown",
+      "description": "内容格式（可选值: markdown, jsonml）",
+      "enum": [
+        "markdown",
+        "jsonml"
+      ],
+      "required": false,
+      "type": "string"
+    },
+    "folder": {
+      "description": "目标文档文件夹 ID",
+      "required": false,
+      "type": "string"
+    },
+    "name": {
+      "description": "新文档名称；省略时从Markdown首个一级标题提取，否则使用未命名文档；兼容别名与主参数同时提供时值必须一致",
+      "required": false,
+      "type": "string"
+    },
+    "workspace": {
+      "description": "目标知识库 ID",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "risk": "medium",
+  "use_when": [
+    "当用户要新建钉钉在线文字文档，并可同时写入 Markdown/JSONML 初始内容、指定文件夹或知识库位置时使用；不会用于普通文件上传或其他在线对象类型。"
+  ]
+}

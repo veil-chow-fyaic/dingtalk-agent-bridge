@@ -1,0 +1,91 @@
+当你要读取或导出一个指定群聊或单聊的消息记录时使用；--sender 是可选的姓名、userId 或 openDingTalkId 混合入口：姓名优先唯一解析，稳定 ID 精确路由；通讯录无法分类时仍按原值 userId 筛选并保留 identity_unverified，可交付精确命中但不能把原值升级为已验证身份或作完整否定结论。--sender-query 只按姓名唯一解析，解析失败会抑制未过滤消息并返回错误。不传发送者条件时原样读取会话且不查询发送者身份。sender 展示名不参与身份比较；群聊的 --group 可传群名或 openConversationId，单聊可传 --user 或 --open-dingtalk-id，所有目标参数互斥且必须选一个。自然群名只在唯一解析后读取，多候选会返回结构化 candidates。省略时间参数时默认从当前时间向前读取最近消息；兼容模式可用 --time/--direction，范围模式可用公开可选的 --start/--end/--order（兼容 --start-time/--end-time/--sort），范围语义为 [start,end)。全量读取用 --page-all，并由 --page-limit/--max-items 保持有界；结果公开 complete、hasMore、nextPage、stopReason、截断和逐页失败，不能把部分结果称为完整。--output 把同一 ledger 原子写为工作目录内 JSON。默认只读；--download-resources 使用工作目录内安全路径、默认不覆盖和原子落盘。
+
+参数约束：
+  - --group、--conversation-id、--id、--open-conversation-id、--chat-query、--user、--user-query、--open-dingtalk-id 必须且只能指定一个
+  - --limit、--size、--page-size 互斥，最多指定一个
+  - --start、--start-time 互斥，最多指定一个
+  - --end、--end-time 互斥，最多指定一个
+  - --order、--sort 互斥，最多指定一个
+  - --time、--start、--start-time 互斥，最多指定一个
+  - --time、--end、--end-time 互斥，最多指定一个
+  - --time、--order、--sort 互斥，最多指定一个
+  - --sender、--sender-query 互斥，最多指定一个
+  - --direction、--start、--start-time 互斥，最多指定一个
+  - --direction、--end、--end-time 互斥，最多指定一个
+  - --direction、--order、--sort 互斥，最多指定一个
+  - --time 必须是 RFC3339、YYYY-MM-DD HH:mm:ss 或 YYYY-MM-DD
+  - asc 必须指定 --start/--start-time
+  - 显式页大小必须大于 0
+  - --page-limit 仅与 --page-all 一起使用且范围 1-500
+  - --max-items 仅与 --page-all 一起使用且不能为负数
+  - --max-results 仅与 --page-all 一起使用且不能为负数
+  - --max-items、--max-results 互斥，最多指定一个
+  - --page-delay 仅与 --page-all 一起使用且不能为负数
+  - --output 必须是工作目录内的相对 JSON 文件；默认不覆盖，--overwrite 仅与 --output 一起使用
+  - --output-dir 必须是工作目录内的相对路径，不允许绝对路径或 .. 逃逸
+
+Usage:
+  dws chat +chat-messages [flags]
+
+Examples:
+  dws chat +chat-messages --group <openconversation_id> --time "2025-03-01 00:00:00"
+  dws chat +chat-messages --group <openconversation_id> --start "2025-03-01T00:00:00+08:00" --end "2025-03-02T00:00:00+08:00" --order asc --page-all
+  dws chat +chat-messages --user <userId> --time "2025-03-01 00:00:00" --page-all --page-limit 50
+  dws chat +chat-messages --group <openconversation_id> --direction older --page-all --output ./exports/messages.json
+  dws chat +chat-messages --group <openconversation_id> --direction older --jq '.messages[] | {messageId, text}'
+
+Flags:
+      --chat-query string         按群名唯一解析目标会话（可选，与其他会话目标参数互斥）
+      --direction string          时间方向 newer/older；省略时为 older，从时间边界向前读取（可选值: newer, older）
+      --download-resources        自动下载消息中的全部可识别 mediaId/fileId 资源
+      --end string                范围结束时间（可选、不包含）；仅传开始时间时默认为当前时间
+      --end-time string           --end 的 lark-cli 对齐别名（可选、不包含）
+      --group string              群名称或 openConversationId，与单聊目标互斥
+  -h, --help                      help for +chat-messages
+      --limit int                 每页拉取的消息条数；显式页大小必须大于 0
+      --max-items int             自动翻页最多返回条数（默认 0 表示不限制）；--max-items 仅与 --page-all 一起使用且不能为负数
+      --max-results int           --max-items 的公开兼容别名；--max-results 仅与 --page-all 一起使用且不能为负数
+      --no-reactions              不输出消息 reaction（默认输出）
+      --open-dingtalk-id string   单聊对方的 openDingTalkId，与 --group/--user 互斥
+      --order string              结果及范围遍历顺序 asc/desc（可选，默认 desc；asc 必须指定 --start/--start-time）（可选值: asc, desc）
+  -o, --output string             把完整结构化 ledger 原子写入工作目录内的相对 JSON 文件
+      --output-dir string         资源输出目录；必须是工作目录内的相对路径，禁止绝对路径和 .. 逃逸 (default "./downloads")
+      --overwrite                 允许覆盖工作目录内已存在的本地输出文件（默认拒绝）
+      --page-all                  沿 typed nextPage.time 自动读取后续页；--page-limit 仅与 --page-all 一起使用且范围 1-500；--max-items 仅与 --page-all 一起使用且不能为负数；--max-results 仅与 --page-all 一起使用且不能为负数；--page-delay 仅与 --page-all 一起使用且不能为负数
+      --page-delay int            自动翻页每页之间等待毫秒数（默认 0 表示不等待）；--page-delay 仅与 --page-all 一起使用且不能为负数
+      --page-limit int            --page-limit 仅与 --page-all 一起使用且范围 1-500 (default 50)
+      --sender strings            单个或多个发送者姓名、userId 或 openDingTalkId；姓名唯一解析，稳定 ID 精确路由，通讯录无法分类时按原值 userId 筛选并保留身份未验证状态
+      --sender-query strings      显式按姓名唯一解析发送者的兼容入口；解析失败时抑制未过滤消息并返回错误（可选，可重复或逗号分隔）
+      --sort string               --order 的 lark-cli 对齐别名（可选；asc 必须指定 --start/--start-time）（可选值: asc, desc）
+      --start string              范围开始时间（可选、包含），支持 RFC3339、YYYY-MM-DD HH:mm:ss 或 YYYY-MM-DD
+      --start-time string         --start 的 lark-cli 对齐别名（可选、包含）
+      --time string               时间边界，如 "2025-03-01 00:00:00"；--time 必须是 RFC3339、YYYY-MM-DD HH:mm:ss 或 YYYY-MM-DD；省略时从当前时间向前读取最近消息
+      --user string               单聊对方的 userId，与 --group 互斥
+
+Global Flags:
+      --client-id string       Override OAuth client ID (DingTalk AppKey)
+      --client-secret string   Override OAuth client secret (DingTalk AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求超时时间 (秒) (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当你要读取或导出一个指定群聊或单聊的消息记录时使用；--sender 是可选的姓名、userId 或 openDingTalkId 混合入口：姓名优先唯一解析，稳定 ID 精确路由；通讯录无法分类时仍按原值 userId 筛选并保留 identity_unverified，可交付精确命中但不能把原值升级为已验证身份或作完整否定结论。--sender-query 只按姓名唯一解析，解析失败会抑制未过滤消息并返回错误。不传发送者条件时原样读取会话且不查询发送者身份。sender 展示名不参与身份比较；群聊的 --group 可传群名或 openConversationId，单聊可传 --user 或 --open-dingtalk-id，所有目标参数互斥且必须选一个。自然群名只在唯一解析后读取，多候选会返回结构化 candidates。省略时间参数时默认从当前时间向前读取最近消息；兼容模式可用 --time/--direction，范围模式可用公开可选的 --start/--end/--order（兼容 --start-time/--end-time/--sort），范围语义为 [start,end)。全量读取用 --page-all，并由 --page-limit/--max-items 保持有界；结果公开 complete、hasMore、nextPage、stopReason、截断和逐页失败，不能把部分结果称为完整。--output 把同一 ledger 原子写为工作目录内 JSON。默认只读；--download-resources 使用工作目录内安全路径、默认不覆盖和原子落盘。
+
+Avoid when:
+  - 以发送者、关键词、@对象或消息类型为主的直接条件检索优先使用 +search-msg；已有一批精确消息 ID 时使用 +messages-mget。已选择会话读取时可在同一次调用附带发送者姓名，不需要再搜索消息
+
+Safety: effect=read  risk=low  confirmation=not_required  idempotency=idempotent
+
+Related skills:
+  - dingtalk-chat
+
+Documentation:
+  - 聊天与消息深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-chat/references/chat.md

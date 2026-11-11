@@ -1,0 +1,22 @@
+{
+  "agent_summary": "列出当前登录用户自己的可用邮箱",
+  "availability": "available",
+  "avoid_when": [
+    "查找他人的邮箱地址不能使用此命令"
+  ],
+  "canonical_path": "mail.list_user_mailboxes",
+  "cli_path": "mail mailbox list",
+  "confirmation": "not_required",
+  "description": "查询当前用户绑定的所有邮箱地址。\n\n返回字段：\n  emailAccounts  邮箱列表，每条包含邮箱地址(email)、账号类型(type)、所属企业(orgName)\n\n错误说明：\n  domain.notFound  该用户的邮箱不是由钉钉邮箱托管，无法完成操作",
+  "effect": "read",
+  "examples": [
+    "dws mail mailbox list"
+  ],
+  "idempotency": "idempotent",
+  "interface_mode": "mcp",
+  "parameters": {},
+  "risk": "low",
+  "use_when": [
+    "需要选择当前用户企业邮箱或个人邮箱时"
+  ]
+}

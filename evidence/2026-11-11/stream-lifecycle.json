@@ -1,0 +1,17 @@
+{
+  "enabled": true,
+  "state": "stopped",
+  "ready": false,
+  "ever_ready": true,
+  "accepted_hints": 0,
+  "rejected_lines": 0,
+  "connections": 1,
+  "exit_code": 0,
+  "duration_requested_seconds": 12,
+  "wake_count": 1,
+  "business_delivery_verified": false,
+  "new_messages_sent": 0,
+  "active_subscriptions_after": 0,
+  "active_consumers_after": 0,
+  "shared_bus_idle_timeout_seconds": 300
+}

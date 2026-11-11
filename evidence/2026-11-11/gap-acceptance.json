@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-11",
+  "cliVersion": "v1.0.67",
+  "scope": "authorized single-member internal test group / own office objects",
+  "tests": {
+    "docx": {
+      "delivered": true,
+      "downloaded": 1,
+      "sha256Matches": true,
+      "bytes": 926
+    },
+    "xlsx": {
+      "delivered": true,
+      "downloaded": 1,
+      "sha256Matches": true,
+      "bytes": 1577
+    },
+    "multiImage": {
+      "downloaded": 2,
+      "bothHashesMatch": true,
+      "resourceTypes": [
+        "mediaId",
+        "mediaId"
+      ]
+    },
+    "fileQuote": {
+      "deliveryStatus": "delivered"
+    },
+    "calendarCreate": {
+      "createdAndReadBack": true,
+      "freeBusy": "FREE",
+      "otherAttendees": 0,
+      "pastEvent": true,
+      "onlineMeetingInfoReturned": true,
+      "defaultReminderReturned": true,
+      "meetingJoined": false
+    },
+    "mailDraftCreate": {
+      "createdAndReadBack": true,
+      "sent": false,
+      "recipients": 0,
+      "bodyMarkerMatches": true
+    }
+  },
+  "additionalChatMessages": 4,
+  "otherMemberInbound": "skipped_by_user",
+  "nativeAudioVideo": "not_verified",
+  "uiPresentation": "local inline multi-image and office attachment/quote verified; remote recipient unverified",
+  "retainedObjects": [
+    "one past free calendar event with generated meeting metadata",
+    "one unsent draft without recipients"
+  ],
+  "rawEvidence": "local/probes/20261111-gaps (private; excluded)",
+  "reproduction": "scripts/gap_acceptance.py; durable records prevent repeat writes"
+}

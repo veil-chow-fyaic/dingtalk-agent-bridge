@@ -1,0 +1,8 @@
+{
+  "date": "2026-11-11",
+  "command": "python3 -m unittest discover -s tests -q",
+  "tests": 51,
+  "result": "OK",
+  "testType": "deterministic local regression; synthetic API/runtime in gateway tests",
+  "liveAcceptance": "local-agent-loop.json"
+}

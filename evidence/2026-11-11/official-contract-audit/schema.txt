@@ -1,0 +1,26 @@
+查看当前可运行命令的 Schema 元数据。
+
+不带参数时列出产品和工具数量；传产品或分组路径逐层展开；传具体工具路径输出扁平参数 Schema（对齐 GWS：parameters 内联 required，键为 CLI flag）。普通 Agent 查询应使用 --compact：它按稳定字段白名单输出选参、约束、安全语义和已评审的返回契约。省略 --compact 的 full leaf 保留参数映射、接口绑定和 provenance，仅用于定向审计；--all 输出全部工具的完整 leaf Schema，用于审计/CI。helper、MCP 与本地 Cobra 命令均须通过 ContractFinal.Identity 声明进入收集的身份集，并从同一声明装配的 ToolSpec 投影；查询不执行服务发现或临时合成第二份 Schema。
+
+Usage:
+  dws schema [path] [flags]
+
+Flags:
+      --all               输出全部工具的完整 leaf Schema（包括参数和约束，用于审计/CI）
+      --cli-path string   按 CLI 命令路径查询
+      --compact           按稳定字段白名单输出 Agent 选参、约束、安全语义和返回契约
+  -h, --help              help for schema
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)

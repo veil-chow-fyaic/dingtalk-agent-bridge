@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-11",
+  "codex": {
+    "version": "0.164.0",
+    "loginStatus": "authenticated with ChatGPT",
+    "attempts": [
+      {
+        "mode": "exec JSON structured response, ignore user config, workspace-write",
+        "timeoutSeconds": 120,
+        "result": "request timeout, no final answer"
+      },
+      {
+        "mode": "exec with configured model explicitly selected",
+        "timeoutSeconds": 90,
+        "result": "request timeout, no final answer"
+      }
+    ],
+    "adapterImplemented": true,
+    "liveExecutionAccepted": false
+  },
+  "kimi": {
+    "version": "2.1.1",
+    "mode": "prompt stream-json",
+    "initialSession": true,
+    "exactSessionResume": true,
+    "realFileCreation": true,
+    "flagCorrection": "--prompt cannot combine with --yolo or --auto; removed conflicting flag",
+    "permission": "prompt uses auto; not an OS sandbox",
+    "liveDingTalkAcceptance": "local-agent-loop.json"
+  },
+  "privateRawLogs": "local/agent-preflight/; excluded from handoff"
+}

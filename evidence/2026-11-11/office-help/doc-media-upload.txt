@@ -1,0 +1,46 @@
+将本地文件上传为绑定到目标 nodeId 的文档媒体资源，但不插入文档正文。
+
+成功输出稳定的 resourceId 和 resourceUrl，可供同一 nodeId 下的白板 Vector/SVG
+等后续写入使用；临时 uploadUrl 不会输出。
+
+Usage:
+  dws doc media upload [flags]
+
+Examples:
+  dws doc media upload --node DOC_ID --file ./icon.svg --mime-type image/svg+xml --format json
+
+Flags:
+      --file string        本地文件路径 (必填)
+  -h, --help               help for upload
+      --mime-type string   文件 MIME 类型 (默认根据扩展名推断)
+      --name string        资源文件名 (默认使用本地文件名)
+      --node string        绑定媒体资源的文档标识，支持传入 URL 或 ID (必填)
+      --yes                确认上传可复用文档媒体资源
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+
+When to use:
+  - 为同一文档内白板的 Vector/SVG 写入准备 resourceId 和 resourceUrl 时
+
+Avoid when:
+  - 需要把附件直接插入文档正文时用 doc media insert；不要跨 nodeId 复用资源
+
+Safety: effect=write  risk=medium  confirmation=user_required  idempotency=unknown
+  Do not use --yes until the user explicitly confirms this operation.
+
+Related skills:
+  - dingtalk-doc
+
+Documentation:
+  - 钉钉文档深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-doc/references/doc.md

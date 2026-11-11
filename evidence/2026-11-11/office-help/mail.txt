@@ -1,0 +1,63 @@
+管理钉钉企业邮箱：查询邮箱地址、搜索邮件、查看邮件、发送邮件、获取会话（thread）、列举文件夹、列举标签。
+
+Usage:
+  dws mail [flags]
+  dws mail [command]
+
+Available Commands:
+  +contact-list    列出指定邮箱的所有邮件联系人
+  +find-mail-user  按关键词搜索邮箱联系人并投影列表（姓名/昵称/邮箱/工号等）
+  +folder-list     列出顶层文件夹或指定父文件夹下的子文件夹
+  +message         读取一封邮件的完整正文与附件元数据
+  +messages        按请求顺序读取多封邮件并逐封验证身份
+  +recent-mail     列出收件箱近期邮件会话并投影列表（主题/发件人/时间/threadId）
+  +search-mail     按 KQL 关键词搜索邮件并投影列表（主题/发件人/时间/messageId）
+  +tag-list        列出指定邮箱下的所有邮件标签
+  +template-list   列出指定邮箱的所有邮件模板
+  +thread          读取完整邮件会话并精确验证 conversationId
+  +thread-list     列出指定邮箱文件夹下的邮件会话（thread）
+  +triage          列出或筛选邮件摘要，自动解析邮箱与收件箱
+  +unread-mail     列出未读邮件并投影列表（主题/发件人/时间/messageId）
+  +user-search     按关键词或工号搜索邮箱用户（仅企业邮箱）
+  allow-list       个人收信白名单管理
+  attachment       邮件附件管理
+  auto-reply       邮件自动回复管理
+  block-list       个人收信黑名单管理
+  calendar         邮箱日历管理
+  calendar-event   邮箱日历日程管理
+  contact          邮件联系人管理
+  draft            草稿管理
+  folder           邮件文件夹管理
+  mailbox          邮箱地址管理
+  message          邮件管理
+  rule             收信规则管理
+  sent-message     已发送邮件管理
+  tag              邮件标签管理
+  template         邮件模板管理
+  thread           邮件会话管理
+  user             邮箱用户管理
+
+Flags:
+  -h, --help   help for mail
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+Use "dws mail [command] --help" for more information about a command.
+
+Related skills:
+  - dingtalk-mail
+
+Documentation:
+  - 邮箱深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-mail/references/mail.md

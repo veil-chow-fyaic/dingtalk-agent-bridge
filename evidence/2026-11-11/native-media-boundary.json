@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-11",
+  "version": "v1.0.67",
+  "identity": "user",
+  "cases": [
+    {
+      "requested": "audio",
+      "effective": "file",
+      "dry_run": true,
+      "sent": false
+    },
+    {
+      "requested": "video",
+      "effective": "file",
+      "dry_run": true,
+      "sent": false
+    }
+  ],
+  "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/shortcut/chat/unified_send.go#L778"
+}

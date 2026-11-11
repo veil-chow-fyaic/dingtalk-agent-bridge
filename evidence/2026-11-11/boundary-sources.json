@@ -1,0 +1,58 @@
+[
+  {
+    "name": "readme",
+    "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/README_zh.md",
+    "sha256": "ff12643e8b7e5afe70126a750768ab087b2cb298c4135520d2ebdf004fe697a5",
+    "retrieved": "2026-11-11",
+    "kind": "official-versioned-source"
+  },
+  {
+    "name": "media",
+    "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/skills/multi/dingtalk-chat/references/chat/message-media.md",
+    "sha256": "f63e29affce5fa9be29bef2cbbf07505d01cdc51a4305047006c7726affd6688",
+    "retrieved": "2026-11-11",
+    "kind": "official-versioned-source"
+  },
+  {
+    "name": "event-keys",
+    "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/skills/multi/dingtalk-event/references/event-im-keys.md",
+    "sha256": "4768da2552ab2e6b2cdc9dc8598efb23ef7cabf853727907f1b540a1132253c2",
+    "retrieved": "2026-11-11",
+    "kind": "official-versioned-source"
+  },
+  {
+    "name": "issue-937",
+    "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/937",
+    "state": "open",
+    "updated_at": "2026-10-21T08:21:48Z",
+    "retrieved": "2026-11-11",
+    "kind": "upstream-report-not-local-proof"
+  },
+  {
+    "name": "issue-1429",
+    "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1429",
+    "state": "open",
+    "updated_at": "2026-09-28T02:43:26Z",
+    "retrieved": "2026-11-11",
+    "kind": "upstream-report-not-local-proof"
+  },
+  {
+    "name": "bot-scope",
+    "source": "https://opensource.dingtalk.com/developerpedia/docs/explore/tutorials/stream/bot/go/test-bot/",
+    "retrieved": "2026-11-11",
+    "kind": "official-guide",
+    "finding": "Tutorial installs app bot in same-organization internal group and requires group mention for receipt"
+  },
+  {
+    "name": "webhook-lifecycle",
+    "source": "https://open-dingtalk.github.io/developerpedia/docs/learn/bot/webhook/overview/",
+    "retrieved": "2026-11-11",
+    "kind": "official-guide",
+    "finding": "Outbound only, no DM, retirement notice exists; exact current retirement date not verified"
+  },
+  {
+    "name": "dws-doc-search",
+    "kind": "local-observation",
+    "finding": "Long Chinese queries returned unrelated titles; not accepted as proof of missing platform capability"
+  }
+]

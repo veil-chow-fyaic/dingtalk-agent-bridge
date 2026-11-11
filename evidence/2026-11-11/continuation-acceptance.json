@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-11",
+  "live_scope": "existing single-person group",
+  "schema_migration": "v1 to v2 preserving legacy state",
+  "events": 18,
+  "deliveries": 4,
+  "ledger_identical": true,
+  "route_count": 1,
+  "long_poll_timeout_seconds": 1.004,
+  "cursor_unchanged": true,
+  "discovery_count": 12,
+  "discovery_complete": true,
+  "new_routes_activated": 0,
+  "new_messages_sent": 0,
+  "office_writes": 0,
+  "consumer_messages": 18,
+  "consumer_fetched_after_restart": 0,
+  "consumer_media_parts": 13,
+  "consumer_self_filtered": 18,
+  "consumer_ready": 0
+}

@@ -1,0 +1,61 @@
+当用户要按 node/URL 直接读取在线文字文档，或只知道唯一标题并希望一次完成解析和读取时使用；支持 outline/range/section/keyword/tags 局部内容用于精确编辑和评论；互联网公开文档（含密码保护）用 --password 提供访问密码，读历史版本用 --version 指定版本号（0 表示初始版本）。
+
+参数约束：
+  - --node 与 --query 必须且只能提供一个
+  - --scope keyword 时 --keyword 不能为空
+  - 兼容别名与主参数同时提供时值必须一致
+
+Usage:
+  dws doc +fetch [flags]
+
+Examples:
+  dws doc +fetch --node <DOC_ID>
+  dws doc +fetch --query "项目周报" --scope keyword --keyword "结论"
+
+Flags:
+      --context-after int       关键词命中后的上下文字符数
+      --context-before int      关键词命中前的上下文字符数
+      --context-unit string     关键词上下文单位；默认保留字符模式，blocks按相邻顶层块（可选值: characters, blocks） (default "characters")
+      --detail string           输出细节（可选值: simple, with-ids, full） (default "simple")
+      --end-block-id string     range 结束块 ID
+  -h, --help                    help for +fetch
+      --include-comments        同时读取全文评论，自动翻页；评论范围始终是整篇文档，最多1000条，超限报不完整
+      --keyword string          keyword 范围搜索词，不能为空，支持 foo|bar
+      --max-depth int           outline/section 最大深度
+      --node string             文档 ID 或 URL；--node 与 --query 必须且只能提供一个；兼容别名与主参数同时提供时值必须一致
+      --password string         互联网公开文档开启密码保护时的访问密码；普通文档无需传入
+      --query string            文档标题或关键词；跨页唯一解析后读取；--node 与 --query 必须且只能提供一个
+      --regex                   keyword+blocks模式使用RE2正则；非法正则在请求前拒绝
+      --revision int            不支持；revision 是文档编辑版本号（JSONML 读取响应返回、供 +update --expected-revision 条件写使用），不是历史版本号
+      --scope string            读取范围；keyword 时 --keyword 不能为空（可选值: full, outline, range, section, keyword, tags, chapter） (default "full")
+      --start-block-id string   range/section 起始块 ID
+      --tags strings            tags 范围的 JSONML tag (default [])
+      --version int             读取指定历史版本(版本号从 doc +version-list 获取, 0 表示初始版本, 需要文档编辑权限)；缺省读最新版
+
+Global Flags:
+      --client-id string       覆盖 OAuth 客户端 ID (钉钉 AppKey)
+      --client-secret string   覆盖 OAuth 客户端密钥 (钉钉 AppSecret)
+      --debug                  显示调试日志
+      --dry-run                预览操作内容，不实际执行
+      --fields string          筛选输出字段 (逗号分隔, 如: name,id,status)
+  -f, --format string          输出格式: json|table|raw|pretty|ndjson|csv (default "json")
+      --jq string              jq 表达式过滤输出 (如: '.items[] | .name')
+      --mock                   使用 Mock 数据 (开发调试用)
+      --profile string         一次性指定组织或账号；支持 corpId/corpName 与 userId/userName 组合，推荐使用 profile list 返回的 corpId:userId；多个按 CSV 逗号分隔
+      --timeout int            HTTP 请求与文件直传超时时间 (秒)；文件直传最低保留 5 分钟 (default 30)
+  -v, --verbose                显示详细日志
+  -y, --yes                    跳过确认提示 (AI Agent 模式)
+
+When to use:
+  - 当用户要按 node/URL 直接读取在线文字文档，或只知道唯一标题并希望一次完成解析和读取时使用；支持 outline/range/section/keyword/tags 局部内容用于精确编辑和评论；互联网公开文档（含密码保护）用 --password 提供访问密码，读历史版本用 --version 指定版本号（0 表示初始版本）。
+
+Avoid when:
+  - 需要文件树移动、复制或普通钉盘文件操作时改用 drive；非文字文档按对象类型路由到 sheet、aitable、slides 或 wiki
+
+Safety: effect=read  risk=low  confirmation=not_required  idempotency=idempotent
+
+Related skills:
+  - dingtalk-doc
+
+Documentation:
+  - 钉钉文档深度指南: https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/skills/multi/dingtalk-doc/references/doc.md

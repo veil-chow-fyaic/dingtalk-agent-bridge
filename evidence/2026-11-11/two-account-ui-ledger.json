@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-11",
+  "scope": "ledger and downloaded bytes; UI observations are separately recorded",
+  "routes": {
+    "group": {
+      "jobs": 1,
+      "confirmed_replies": 3,
+      "checks": {
+        "only_authorized_peer_tasks": true,
+        "all_jobs_completed": true,
+        "all_replies_confirmed": true,
+        "replies_from_bound_account": true,
+        "self_commands_disabled": true,
+        "baseline_not_executed": true,
+        "DAB-UI-GROUP-002_once": true,
+        "group_does_not_contain_dm_code": true,
+        "DAB-UI-GROUP-002_client_download_matches": true,
+        "DAB-UI-GROUP-002_content": true,
+        "ordinary_group_message_received": true,
+        "ordinary_group_message_not_executed": true
+      },
+      "downloaded_files": [
+        {
+          "name": "0-ui-group-peer-check.txt",
+          "bytes": 178,
+          "sha256": "fd7bb7ced5d25cf6e719d9ce4b543e425fb6e434c5ec2f7a76019bae940cebb2"
+        }
+      ]
+    },
+    "direct": {
+      "jobs": 4,
+      "confirmed_replies": 11,
+      "checks": {
+        "only_authorized_peer_tasks": true,
+        "all_jobs_completed": true,
+        "all_replies_confirmed": true,
+        "replies_from_bound_account": true,
+        "self_commands_disabled": true,
+        "baseline_not_executed": true,
+        "DAB-UI-DM-002_once": true,
+        "DAB-UI-DM-002_client_download_matches": true,
+        "DAB-UI-DM-002_content": true,
+        "DAB-UI-DM-003_once": true,
+        "native_followup_memory": true,
+        "DAB-UI-INPUT-004_once": true,
+        "DAB-UI-INPUT-004_client_download_matches": true,
+        "DAB-UI-INPUT-004_content": true,
+        "ui_uploaded_csv_received_intact": true
+      },
+      "downloaded_files": [
+        {
+          "name": "0-ui-dm-check.txt",
+          "bytes": 47,
+          "sha256": "3df7f67a5c3df6cae12384acaf8749246a053c4a8c51a3370d096069778bfea3"
+        },
+        {
+          "name": "0-ui-upload-summary.txt",
+          "bytes": 101,
+          "sha256": "91db102aecadf2fe9735fed26e425fe845ec4c9e1dfc9e6286cb43c54c444a6d"
+        }
+      ]
+    }
+  },
+  "checks": {
+    "group_and_direct_native_sessions_differ": true,
+    "restart_preserved_tasks_outbox_sessions_and_execution_logs": true
+  },
+  "ok": true
+}
