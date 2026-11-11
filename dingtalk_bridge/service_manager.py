@@ -202,8 +202,14 @@ class Manager:
             return
         # Compare again at signal time; never signal by name or process group.
         own_starting_child = self.children.get(record['pid']) if record.get('starting') is True else None
-        if not own_starting_child and process_identity(record['pid']) != record['identity']:
-            raise RuntimeError('PID ownership changed at shutdown')
+        if not own_starting_child:
+            current = process_identity(record['pid'])
+            # The owned process may exit between the liveness and signal checks.
+            # Absence needs no signal; a different live identity still fails closed.
+            if current is None:
+                return
+            if current != record['identity']:
+                raise RuntimeError('PID ownership changed at shutdown')
         try:
             if own_starting_child:
                 own_starting_child.terminate()

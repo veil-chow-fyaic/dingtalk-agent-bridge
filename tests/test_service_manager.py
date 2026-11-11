@@ -109,6 +109,35 @@ class ServiceManagerTests(unittest.TestCase):
         finally:
             self.manager.save(original);foreign.terminate();foreign.wait(timeout=3)
 
+    def test_owned_process_exit_before_signal_is_already_stopped(self):
+        self.manager.agents = []
+        self.manager.start(timeout=3)
+        record = self.manager.read_state()['components'][0]
+        child = self.manager.children[record['pid']]
+        observations = 0
+
+        def exit_between_checks(pid):
+            nonlocal observations
+            observations += 1
+            if observations == 2:
+                child.terminate()
+                child.wait(timeout=3)
+            return process_identity(pid)
+
+        with patch('dingtalk_bridge.service_manager.process_identity', side_effect=exit_between_checks):
+            self.manager.stop_component(record, timeout=1)
+        self.assertEqual(observations, 2)
+        self.assertIsNotNone(child.poll())
+        self.assertEqual(self.manager.component_status(record), 'stopped')
+
+    def test_replaced_identity_at_signal_time_is_still_rejected(self):
+        record = {'name': 'transport', 'pid': 12345, 'identity': 'owned-process'}
+        with patch('dingtalk_bridge.service_manager.process_identity', side_effect=['owned-process', 'different-process']), \
+                patch('dingtalk_bridge.service_manager.os.kill') as kill:
+            with self.assertRaisesRegex(RuntimeError, 'ownership changed at shutdown'):
+                self.manager.stop_component(record, timeout=1)
+        kill.assert_not_called()
+
     def test_config_drift_requires_stop_and_stop_does_not_need_current_config(self):
         self.manager.start(timeout=3)
         (self.root/'agent-a.json').write_text('{"updated":true}')

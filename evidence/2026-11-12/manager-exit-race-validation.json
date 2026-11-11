@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "real_owned_exit_reproduced_before_fix": true,
+    "manager_13_passed": true,
+    "full_139_passed": true,
+    "clean_install_passed": true,
+    "live_ledgers_and_runtime_logs_unchanged": true
+  },
+  "sourceSha256": "7b253061621ae13ca70a6dcead75ae9788ac49c9147b10a8e07ab10e957d0dc6",
+  "testSha256": "cc7c2a1bd43ddab73bfc4e2ee324b1809093c04a54cf1e6c50f7fec109d2d881",
+  "privateLogSha256": {
+    "before-fix.log": "cbed14d39a6b049369705b38c8d8347d2df50e77327d94fa49f1ff37e060ff63",
+    "manager-tests.log": "6d863c18dc6e286b60ff2f490b5d652af6c61cdb076c47d31976cf0604011860",
+    "regression.log": "7386674de139290e87f9436087e7fa3e7e8f88ede1e38ce201b08909a9da2869"
+  },
+  "limits": [
+    "Pre-signal exit race only; E027 during-shutdown identity mismatch remains unexplained",
+    "No new real chat or live restart required; CLI manager reads new code on invocation"
+  ],
+  "ok": true
+}

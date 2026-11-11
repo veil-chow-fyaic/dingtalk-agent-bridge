@@ -38,3 +38,5 @@
 | E028 | L4 | 官方自然access预刷新59只读采样、expiry延长及轮换后双路完整同步，19审计/3负向；账本无新增、原观察器归属保持 | docs/47；auth-rollover-ledger.json；auth-rollover-validation.json | 非失效refresh/重新授权/Stream重鉴权；采样保留1次维护URLError；24h冻结7.07h/6不可用 |
 
 | E029 | L4/L5 | JPEG原件实际读图/旋转，1任务4确认回复；原生图片查看器及图片/报告下载打开，同字节；43审计/3负向 | docs/48；jpeg-ui-ledger.json；jpeg-audit-validation.json | 仅私聊小JPEG；客户端追加.png后缀但内容JPEG；短回复未单独观察，原24h7.47h/6不可用 |
+
+| E030 | L3/L4 | 管理器发信号前退出竞态实际合成进程先失败、窄修复；13管理器/139全量、干净wheel六入口18模块；现场无重启/账本保持 | docs/49；manager-exit-race-validation.json；manager-exit-race-install.json | E027 during-shutdown错误根因仍未知；不作为新UI/24h通过证据 |
