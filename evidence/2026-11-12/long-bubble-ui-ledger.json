@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_unchanged_during_ui": true,
+    "group_jobs_still_preserved": true,
+    "group_outbox_unchanged_during_ui": true,
+    "group_outbox_still_preserved": true,
+    "group_deliveries_unchanged_during_ui": true,
+    "group_deliveries_still_preserved": true,
+    "direct_jobs_unchanged_during_ui": true,
+    "direct_jobs_still_preserved": true,
+    "direct_outbox_unchanged_during_ui": true,
+    "direct_outbox_still_preserved": true,
+    "direct_deliveries_unchanged_during_ui": true,
+    "direct_deliveries_still_preserved": true,
+    "first_native_chat_not_search_summary": true,
+    "first_full_bubble_matches_one_original_reply": true,
+    "first_contains_statistics_and_two_copy_sections": true,
+    "first_ends_at_second_copy_line025": true,
+    "second_native_chat_not_search_summary": true,
+    "second_full_bubble_matches_one_original_reply": true,
+    "second_starts_line026_ends_line060": true,
+    "all_required_viewports_reviewed": true,
+    "reviewed_screenshots_unchanged": true,
+    "quote_not_claimed_as_passed": true
+  },
+  "nativeBubbleCharacters": [
+    4892,
+    1967
+  ],
+  "newMessagesSent": 0,
+  "newRuntimeTasks": 0,
+  "scope": "Complete text from native chat AX, plus reviewed start/boundary/end viewports; not every line separately screenshot-tested",
+  "limits": [
+    "Quote menu not opened; no native quote task sent",
+    "Original first-chunk trailing LF removal remains documented in E018",
+    "Built-in AI search summary is not evidence of delivered message content"
+  ],
+  "ok": true
+}

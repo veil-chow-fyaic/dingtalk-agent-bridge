@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-12",
+  "method": "in-memory evidence mutation; raw files and live services unchanged",
+  "baselinePass": true,
+  "baselineChecks": 22,
+  "negativeCases": {
+    "long_native_bubble_mutated": {
+      "rejected": true,
+      "failedChecks": [
+        "first_full_bubble_matches_one_original_reply"
+      ]
+    },
+    "long_boundary_viewport_missing": {
+      "rejected": true,
+      "failedChecks": [
+        "all_required_viewports_reviewed"
+      ]
+    }
+  },
+  "ok": true
+}

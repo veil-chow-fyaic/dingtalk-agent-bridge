@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-12",
+  "method": "in-memory evidence mutation; raw files and live services unchanged",
+  "baselinePass": true,
+  "baselineChecks": 42,
+  "negativeCases": {
+    "outage_watermark_changed": {
+      "rejected": true,
+      "failedChecks": [
+        "direct_no_ledger_or_watermark_progress_during_outage"
+      ]
+    },
+    "official_network_failure_evidence_missing": {
+      "rejected": true,
+      "failedChecks": [
+        "live_official_history_commands_failed"
+      ]
+    },
+    "download_corrupted": {
+      "rejected": true,
+      "failedChecks": [
+        "client_download_exact_expected_and_generated_bytes",
+        "download_opened_in_native_quicklook"
+      ]
+    }
+  },
+  "ok": true
+}

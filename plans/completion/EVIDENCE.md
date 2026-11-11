@@ -23,3 +23,6 @@
 | E020 | L3/L4/L5 | 统一管理器六入口、新wheel/17模块同摘要、119回归；现网重复start同PID/stop逆序/restart新PID；旧35任务81outbox94传输83运行文件保持，1实际Kimi任务3确认回复、35B结果客户端下载Quick Look打开；39审计/2负向检查 | docs/40；service-manager-ledger.json；service-manager-install-validation.json；service-manager-ui.json；service-manager-audit-validation.json | 无开机自启/自动监督/崩溃原子spawn；仅macOS实机，非网络/凭据失效恢复；短文字气泡未独立观察；24h继续 |
 
 | E021 | L3/L4/L5 | 默认关闭的路由绑定官方CLI上下文；liev四类办公对象、3个实际Kimi任务9确认回复，三报告客户端下载Quick Look打开；126回归/69只读审计/3负向检查/干净wheel六入口18模块 | docs/41；evidence/2026-11-12/office-agent-*.json；historical-manager-audit-validation.json | 非强制权限沙箱/服务端幂等；密送读字段缺失已更正，草稿箱单独读证；办公对象本身未在veil UI打开；24h继续 |
+
+| E022 | L5只读补验 | 旧E018两段4892/1967字符完整聊天AX匹配，7个首尾/边界视口核对，零新消息/任务；22审计/2负向检查 | docs/42；long-bubble-ui-ledger.json；long-bubble-audit-validation.json | 不逐行像素验收；引用菜单仍未成功，AI搜索摘要不作证据 |
+| E023 | L4/L5 | 私聊history子进程HTTP实际故障78.310秒、5次官方超时；veilUI一次任务，恢复自动补收/Kimi Python1591/3确认回复/36B客户端下载Quick Look打开；42审计/3负向检查，配置已恢复 | docs/43；history-network-recovery-ledger.json；history-network-audit-validation.json | 非完整Stream/整机断网、非授权过期；短文字气泡未独立观察；24h原观察5.57h/669样本/4不可用继续 |
