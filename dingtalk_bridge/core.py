@@ -10,10 +10,18 @@ import time
 import uuid
 from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
+from .rejection import read_length_rejection
 
 
 class BridgeError(Exception):
     pass
+
+
+class DWSRequestRejected(BridgeError):
+    """Explicit server invalid-request response, never a timeout inference."""
+    def __init__(self, diagnostic):
+        super().__init__('PARAM_ERROR')
+        self.diagnostic = diagnostic
 
 
 class DWS:
@@ -34,6 +42,8 @@ class DWS:
             raise BridgeError('DWS returned no valid JSON') from e
         if p.returncode or data.get('success') in (False, 'false') or data.get('ok') is False:
             error = data.get('error', {})
+            if error.get('reason') == 'invalid_request' and error.get('server_error_code') == 'PARAM_ERROR':
+                raise DWSRequestRejected({'reason': 'invalid_request', 'server_error_code': 'PARAM_ERROR'})
             raise BridgeError(str(error.get('server_error_code') or error.get('reason') or 'DWS business failure'))
         if 'outcome' in data and isinstance(data.get('data'), dict):
             data = data['data']
@@ -90,6 +100,9 @@ class Bridge:
           CREATE TABLE IF NOT EXISTS deliveries (
             key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, payload TEXT NOT NULL,
             state TEXT NOT NULL, task_id TEXT, message_id TEXT, error TEXT);
+          CREATE TABLE IF NOT EXISTS rejection_audit (
+            key TEXT PRIMARY KEY, before_json TEXT NOT NULL, evidence_json TEXT NOT NULL,
+            evidence_sha256 TEXT NOT NULL, source TEXT NOT NULL, recorded_at REAL NOT NULL);
           CREATE TABLE IF NOT EXISTS image_uploads (
             key TEXT PRIMARY KEY, state TEXT NOT NULL, media_id TEXT, error TEXT);
         ''')
@@ -193,7 +206,19 @@ class Bridge:
         with self.lock:
             row = self.db.execute('SELECT key,state,task_id,message_id,error FROM deliveries WHERE key=?', (key,)).fetchone()
             upload = self.db.execute('SELECT state FROM image_uploads WHERE key=?', (key,)).fetchone()
-        return {**dict(row), **({'upload_state': upload[0], 'image_delivery': 'native'} if upload else {})} if row else None
+            rejection = self.db.execute('SELECT source,evidence_sha256 FROM rejection_audit WHERE key=?', (key,)).fetchone()
+        return {**dict(row), **({'upload_state': upload[0], 'image_delivery': 'native'} if upload else {}),
+                **({'rejection': dict(rejection)} if rejection else {})} if row else None
+
+    def _record_rejection(self, key, raw, sha256, source):
+        with self.lock, self.db:
+            row = self.db.execute('SELECT * FROM deliveries WHERE key=?', (key,)).fetchone()
+            if not row or row['task_id'] or row['message_id'] or row['state'] not in {'executing', 'outcome_unknown'}:
+                raise ValueError('Only an unaccepted send can become rejected')
+            self.db.execute('INSERT INTO rejection_audit VALUES (?,?,?,?,?,?)',
+                (key, json.dumps(dict(row), ensure_ascii=False), raw.decode(), sha256, source, time.time()))
+            self.db.execute('UPDATE deliveries SET state="rejected",error="PARAM_ERROR" WHERE key=?', (key,))
+        return self.delivery(key)
 
     def send(self, key, text=None, file=None, image=None):
         if not isinstance(key, str) or not key or len(key) > 128:
@@ -284,17 +309,44 @@ class Bridge:
                 self.db.execute('UPDATE deliveries SET state="submitted",task_id=? WHERE key=?', (task, key))
                 self.db.commit()
             return self.reconcile(key)
+        except DWSRequestRejected as e:
+            # Rejection of a status query cannot prove rejection of an already
+            # submitted send. Preserve its task ID and uncertainty.
+            if not self.delivery(key)['task_id']:
+                raw = json.dumps(e.diagnostic, sort_keys=True).encode()
+                return self._record_rejection(key, raw, hashlib.sha256(raw).hexdigest(), 'official_error_response')
+            with self.lock, self.db:
+                self.db.execute('UPDATE deliveries SET state="outcome_unknown",error=? WHERE key=?', (str(e), key))
+            return self.delivery(key)
         except Exception as e:
             with self.lock:
                 self.db.execute('UPDATE deliveries SET state="outcome_unknown",error=? WHERE key=?', (str(e), key))
                 self.db.commit()
             return self.delivery(key)
 
-    def reconcile(self, key):
+    def reconcile(self, key, rejection_evidence=None):
+        if rejection_evidence is not None:
+            with self.lock:
+                row = self.db.execute('SELECT * FROM deliveries WHERE key=?', (key,)).fetchone()
+                if not row:
+                    raise KeyError(key)
+                audit = self.db.execute('SELECT * FROM rejection_audit WHERE key=?', (key,)).fetchone()
+                original = json.loads(audit['before_json']) if audit else dict(row)
+                raw, sha256 = read_length_rejection(self.root, rejection_evidence, original, self.config)
+                if audit:
+                    if audit['evidence_sha256'] != sha256:
+                        raise ValueError('A different rejection audit already exists')
+                    return self.delivery(key)
+                if row['state'] != 'outcome_unknown' or row['error'] != 'PARAM_ERROR' or row['task_id'] or row['message_id']:
+                    raise ValueError('Not an unresolved parameter rejection without a task ID')
+                text = json.loads(row['payload'])['text']
+                if self.db.execute('SELECT 1 FROM events WHERE json_extract(body,"$.content")=? LIMIT 1', (text,)).fetchone():
+                    raise ValueError('Matching message history requires manual investigation')
+                return self._record_rejection(key, raw, sha256, 'official_cli_log')
         item = self.delivery(key)
         if not item:
             raise KeyError(key)
-        if not item['task_id'] or item['state'] == 'confirmed':
+        if not item['task_id'] or item['state'] in {'confirmed', 'rejected', 'failed'}:
             return item
         data = self.dws.call(['chat', '+messages-query-send-status', '--open-task-id', item['task_id']])
         result = data.get('result', {})

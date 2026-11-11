@@ -113,7 +113,7 @@ def main():
                     value = bridge.send(data.get('idempotency_key'), data.get('text'), data.get('file'), data.get('image'))
                     return self.respond(200 if value['state'] == 'confirmed' else 202, value)
                 if write and u.path == '/v1/reconcile':
-                    return self.respond(200, bridge.reconcile(data['idempotency_key']))
+                    return self.respond(200, bridge.reconcile(data['idempotency_key'], data.get('rejection_evidence')))
                 if write and u.path == '/v1/attachments':
                     return self.respond(200, bridge.download(data['message_id'],repair=data.get('repair') is True))
                 self.respond(404, {'error': 'not_found'})

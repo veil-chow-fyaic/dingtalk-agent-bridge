@@ -86,6 +86,24 @@ class AgentGatewayTests(unittest.TestCase):
         self.api.events=[event(text='/agent 问题',sender='self')];self.g.intake()
         self.api.fail_once=True;self.g.flush();self.g.flush();self.assertEqual(len(self.api.sends),1)
 
+    def test_terminal_delivery_issue_notifies_once_and_survives_restart(self):
+        original=self.api.__call__
+        calls=[]
+        def api(path,data=None):
+            if path=='/v1/send' and data.get('text')=='[Agent] 完成':
+                calls.append(data['idempotency_key']);return {'state':'rejected','message_id':None}
+            return original(path,data)
+        self.g.api=api
+        self.api.events=[event(text='/agent 工作',sender='other')]
+        self.g.intake();self.g.execute_one();self.g.flush()
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,api,self.runtime)
+        self.g.flush();self.g.flush()
+        notices=[s for s in self.api.sends.values() if '部分回复未送达' in s.get('text','')]
+        self.assertEqual(len(notices),1);self.assertEqual(len(calls),1)
+        self.assertEqual(self.g.summary()['delivery']['rejected'],1)
+        self.assertIn('已拒绝 1',status_text(self.g.summary()))
+        self.assertIn('结果未确认 0',status_text(self.g.summary()))
+
     def test_unicode_reply_chunks_preserve_content_and_include_prefix_in_limit(self):
         for text in ('x'*5112, 'x'*5111+'🙂', '🙂'*3000, '中文🙂🚀\r\n'*1000, 'x'*12000):
             with self.subTest(length=len(text)):

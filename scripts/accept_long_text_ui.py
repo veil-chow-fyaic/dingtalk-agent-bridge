@@ -10,6 +10,40 @@ from dingtalk_bridge.routing import route_configs
 from dingtalk_bridge.text_limits import utf16_units
 
 
+def preserved_or_rejected(current, original, table, deliveries, audits):
+    """Allow only the explicit, append-audited unknown -> rejected transition.
+
+    The original experiment snapshots remain unchanged. No success conversion,
+    payload change, different evidence, or arbitrary receipt edit is accepted.
+    """
+    if current == original:
+        return True
+    key = original.get('key')
+    audit = audits.get(key)
+    if (not current or original.get('state') != 'outcome_unknown' or current.get('state') != 'rejected' or
+            not audit or audit['source'] != 'official_cli_log' or
+            digest(audit['evidence_json'].encode()) != audit['evidence_sha256']):
+        return False
+    before = json.loads(audit['before_json'])
+    delivery = deliveries.get(key)
+    if (before.get('key') != key or before.get('state') != 'outcome_unknown' or before.get('task_id') or
+            before.get('message_id') or delivery != {**before, 'state': 'rejected', 'error': 'PARAM_ERROR'}):
+        return False
+    if table == 'deliveries':
+        return before == original
+    if table != 'outbox':
+        return False
+    if {k: v for k, v in current.items() if k not in {'state', 'receipt'}} != {
+            k: v for k, v in original.items() if k not in {'state', 'receipt'}}:
+        return False
+    receipt = json.loads(current['receipt'])
+    if 'replayed' in receipt and receipt.pop('replayed') is not True:
+        return False
+    expected = {k: delivery[k] for k in ('key', 'state', 'task_id', 'message_id', 'error')}
+    expected['rejection'] = {k: audit[k] for k in ('source', 'evidence_sha256')}
+    return receipt == expected
+
+
 def audit_phase(after=False):
     base = ROOT / 'local/long-text-ui-20261111'
     folder = base / 'postfix' if after else base
@@ -21,18 +55,21 @@ def audit_phase(after=False):
         key = digest(json.dumps([cfg['accountId'], cfg['profile'], cfg['group'], kind]).encode())[:24]
         agent = ROOT / 'local/agents' / key
         transport = ROOT / 'local/runtime/routes' / state / 'bridge.sqlite3'
+        deliveries = {r['key']: r for r in rows(transport, 'deliveries')}
+        audits = {r['key']: r for r in rows(transport, 'rejection_audit')}
         old, end = before['routes'][kind], final['routes'][kind]
         for table, db, identity in [('jobs', agent / 'tasks.sqlite3', 'id'),
                                     ('outbox', agent / 'tasks.sqlite3', 'key'),
                                     ('deliveries', transport, 'key')]:
             current = {r[identity]: r for r in rows(db, table)}
-            checks[kind + '_' + table + '_preserved'] = bool(old[table]) and all(
-                current.get(r[identity]) == r for r in old[table])
+            checks[kind + '_' + table + '_preserved_or_audited_rejection'] = bool(old[table]) and all(
+                preserved_or_rejected(current.get(r[identity]), r, table, deliveries, audits) for r in old[table])
         if kind == 'group':
             checks['group_unchanged_during_experiment'] = all(
                 old[t] == end[t] for t in ('jobs', 'outbox', 'meta', 'deliveries'))
         else:
             direct_cfg = cfg
+            direct_deliveries, direct_audits = deliveries, audits
             jobs, replies = rows(agent / 'tasks.sqlite3', 'jobs'), rows(agent / 'tasks.sqlite3', 'outbox')
             events = {r['message_id']: json.loads(r['body']) for r in rows(transport, 'events')}
     job, event, out, actual = (case[k] for k in ('job', 'event', 'outbox', 'replyEvents'))
@@ -50,7 +87,8 @@ def audit_phase(after=False):
         authorized_nonself_input=event['from_self'] is False and event['sender_id'] in allowed,
         oversized_paste_not_sent=not any(e['content'] == large['text'] for e in events.values()),
         no_input_projection_issue=not json.loads(job['model']).get('issues'),
-        frozen_replies=len(out) == 4 and all(by_key.get(r['key']) == r for r in out),
+        replies_unchanged_or_audited_rejection=len(out) == 4 and all(
+            preserved_or_rejected(by_key.get(r['key']), r, 'outbox', direct_deliveries, direct_audits) for r in out),
         bound_confirmed_reply_identity=len(actual) == len(out) and all(
             (e is None and r['state'] != 'confirmed') or (e and events.get(e['message_id']) == e and
             e['from_self'] is True and e['sender_id'] == direct_cfg['selfSenderId']) for r,e in zip(out,actual)),

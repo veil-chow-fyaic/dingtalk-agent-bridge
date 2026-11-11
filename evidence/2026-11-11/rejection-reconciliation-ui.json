@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-11",
+  "inputIdentity": "veil native DingTalk UI",
+  "replyIdentity": "liev bound DWS user identity, not bot",
+  "observations": [
+    "liev displayed one warning that part of the original task reply was not delivered; result retained and no automatic resend",
+    "veil sent /agent status once",
+    "liev displayed running0/queued0/waiting0, uncertain0/rejected1/failed0; historical blocked and cancelled counts retained"
+  ],
+  "newControlTasks": 1,
+  "newConfirmedReplies": 2,
+  "newRuntimeExecutions": 0,
+  "originalTextResent": false,
+  "rawEvidence": "Private local/rejection-reconciliation-20261111 AX/screenshots/official logs and ledger snapshots"
+}

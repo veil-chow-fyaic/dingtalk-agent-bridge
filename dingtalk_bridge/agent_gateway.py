@@ -42,7 +42,8 @@ def status_text(summary):
             +'已完成 '+str(jobs.get('completed',0))+'，已取消 '+str(jobs.get('cancelled',0))
             +'；需处理的历史记录 '+str(attention)+'。\n'
             +'回复：已确认 '+str(delivery.get('confirmed',0))+'，待发送 '+str(delivery.get('pending',0))
-            +'，结果未确认 '+str(uncertain)+'。')
+            +'，结果未确认 '+str(uncertain)+'，已拒绝 '+str(delivery.get('rejected',0))
+            +'，投递失败 '+str(delivery.get('failed',0))+'。')
 
 
 def stage_outputs(root,workspace,job_id,result):
@@ -250,8 +251,13 @@ class Gateway:
                 receipt=self.api('/v1/send',{'idempotency_key':row['key'],**json.loads(row['payload'])})
                 if receipt['state'] in {'submitted','outcome_unknown'}:
                     receipt=self.api('/v1/reconcile',{'idempotency_key':row['key']})
-                with self.lock,self.db:self.db.execute('UPDATE outbox SET state=?,receipt=?,error=NULL WHERE key=?',
-                    (receipt['state'],json.dumps(receipt),row['key']))
+                with self.lock,self.db:
+                    self.db.execute('UPDATE outbox SET state=?,receipt=?,error=NULL WHERE key=?',
+                        (receipt['state'],json.dumps(receipt),row['key']))
+                    if receipt['state'] in {'rejected','failed'}:
+                        self.emit(row['job_id'],'delivery-issue',{'text':'[Agent] 任务 '+row['job_id'][:8]
+                            +' 的部分回复未送达（发送被拒绝或投递失败）。已保留任务结果；不会自动重发失败内容。'
+                            +'可发送 /agent status 查看状态。'})
             except Exception as exc:
                 with self.lock,self.db:self.db.execute('UPDATE outbox SET error=? WHERE key=?',(type(exc).__name__,row['key']))
 

@@ -136,3 +136,5 @@ python3 -m unittest discover -s tests -v
 2026-11-11 22:39 多文件验收复核：`python3 scripts/accept_multi_attachment_ui.py`只读；已完成三请求不重发。附件独立消息各自执行，后续文字沿用同会话；文件来源/金额/结果客户端下载证据见docs/37。当前私聊generation1，旧generation0保留，本段不重启。
 
 E018长文维护：传输和两个gateway已空闲重启加载UTF-16分段（含前缀≤5120）和新发送校验；`accept_long_text_ui.py`只读审计保留旧拒绝。当前DM有1条outcome_unknown，官方日志明确长度拒绝但无taskId，禁止换key/重投；后续补带证据的终态处置。原观察器未重置，有维护不可用采样1次。官方CLI会TrimSpace，文本尾空白不保证无损，精确内容用文件。
+
+E019拒绝处置：当前原长文未知已按完整绑定日志记rejected，原行/证据保存在rejection_audit；新增CLI `reconcile --rejection-evidence local/rejection-log.json`仅显式窄对账，无发送动作，不能接受聊天附件自证。无需重跑本次已完成写操作；只读脚本accept_rejection_reconciliation.py。客户端已有部分失败提示，status未知0/拒绝1；doctor33检查保留拒绝和历史blocked两个warning。传输/双gateway维护重启有记，观察器不重置。详见docs/39。

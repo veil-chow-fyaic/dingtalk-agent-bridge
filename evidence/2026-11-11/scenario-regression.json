@@ -1,8 +1,8 @@
 {
   "date": "2026-11-11",
   "ok": true,
-  "tests": 99,
-  "seconds": 14.257,
+  "tests": 108,
+  "seconds": 10.187,
   "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
   "results": [
     {
@@ -91,6 +91,10 @@
     },
     {
       "test": "test_agent_gateway.AgentGatewayTests.test_task_session_file_reply_and_restart_no_reexecution",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_terminal_delivery_issue_notifies_once_and_survives_restart",
       "result": "passed"
     },
     {
@@ -347,6 +351,38 @@
     },
     {
       "test": "test_probe.ProbeTests.test_v2_keeps_probe_fingerprint_and_rejects_ambiguous_routes",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_bound_reconciliation_preserves_original_and_never_resends",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_dws_classifies_only_explicit_server_invalid_parameter",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_evidence_must_stay_private_and_previous_audit_cannot_be_replaced",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_explicit_send_rejection_is_terminal_and_audited",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_interleaved_or_missing_execution_identity_is_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_rejected_status_query_does_not_reclassify_accepted_send",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_task_id_or_matching_history_prevents_rejection_reconciliation",
+      "result": "passed"
+    },
+    {
+      "test": "test_rejection.RejectionTests.test_wrong_key_target_length_and_unproven_errors_leave_unknown",
       "result": "passed"
     },
     {

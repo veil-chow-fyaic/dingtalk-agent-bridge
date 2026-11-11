@@ -14,7 +14,9 @@
 
 多文件：[两份文件上传与后续合并任务](docs/37-multiple-files-and-followup.md)。一次多选被客户端拆成两条消息，两个附件任务实际读取；后续同会话合并得到40，TXT客户端下载打开及50项只读检查通过。没有将此标成单条多附件或自动合批。
 
-长文修复：[真实超限失败与UTF-16分段](docs/38-long-text-limit-and-regression.md)。实测发现官方普通账号text上限5120个UTF-16单位，已修复含前缀的分段并新增发送前校验；新任务两段确认、文件客户端下载打开，99回归通过。原失败unknown保留，官方会裁掉末尾换行；完整长气泡UI与可审计拒绝终态继续。
+长文修复：[真实超限失败与UTF-16分段](docs/38-long-text-limit-and-regression.md)。实测发现官方普通账号text上限5120个UTF-16单位，已修复含前缀的分段并新增发送前校验；新任务两段确认、文件客户端下载打开，99回归通过。原失败快照保留，官方会裁掉末尾换行；完整长气泡UI继续。拒绝终态后续已按E019对账。
+
+拒绝处理：[有证据的终态对账与真实UI失败提示](docs/39-rejection-reconciliation-and-feedback.md)。原超限发送现为rejected，原unknown与日志完整存档，未重发；客户端可见部分回复未送达及未确认0/拒绝1，108回归通过。
 
 恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
 
@@ -69,10 +71,10 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：38份当前/历史分明的知识文档。
+- `docs/`：39份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
-- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和99项回归。
+- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和108项回归。
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
 已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。

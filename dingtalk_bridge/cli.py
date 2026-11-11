@@ -20,7 +20,8 @@ def main():
     content=send.add_mutually_exclusive_group(required=True)
     content.add_argument('--text');content.add_argument('--text-stdin',action='store_true');content.add_argument('--file');content.add_argument('--image')
     for action in ['status','reconcile']:
-        sub.add_parser(action).add_argument('--key',required=True)
+        command=sub.add_parser(action);command.add_argument('--key',required=True)
+        if action=='reconcile':command.add_argument('--rejection-evidence',help='Private local official-log JSON; never resends')
     attachment=sub.add_parser('attachments');attachment.add_argument('--message-id',required=True);attachment.add_argument('--repair',action='store_true')
     sync=sub.add_parser('sync');sync.add_argument('--deep',action='store_true')
     a=p.parse_args();selector={}
@@ -33,7 +34,9 @@ def main():
             if getattr(a,field,None) is not None:data[field]=getattr(a,field)
         if a.text_stdin:data['text']=sys.stdin.read(65537)
         path='/v1/send'
-    elif a.action=='reconcile':path='/v1/reconcile';data={**selector,'idempotency_key':a.key}
+    elif a.action=='reconcile':
+        path='/v1/reconcile';data={**selector,'idempotency_key':a.key}
+        if a.rejection_evidence:data['rejection_evidence']=a.rejection_evidence
     elif a.action=='attachments':path='/v1/attachments';data={**selector,'message_id':a.message_id,'repair':a.repair}
     elif a.action=='sync':path='/v1/sync';data={**selector,'deep':a.deep}
     else:

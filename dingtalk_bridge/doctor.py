@@ -110,6 +110,9 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
                 add(scope, 'transport_binding', 'ok' if meta.get('scope') == json.dumps([cfg['profile'], cfg['group']]) else 'error')
                 unknown = sum(counts.get(k, 0) for k in ('upload_unknown', 'outcome_unknown', 'uploading', 'executing'))
                 add(scope, 'unresolved_delivery', 'warning' if unknown else 'ok', {'count': unknown})
+                rejected, failed = counts.get('rejected', 0), counts.get('failed', 0)
+                add(scope, 'terminal_delivery_failure', 'warning' if rejected + failed else 'ok',
+                    {'rejected': rejected, 'failed': failed})
             except (sqlite3.Error, OSError, ValueError):
                 add(scope, 'transport_ledger', 'error', 'unreadable_ledger')
     for index, path in enumerate(agents, 1):
