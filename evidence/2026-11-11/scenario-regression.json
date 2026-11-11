@@ -1,8 +1,8 @@
 {
   "date": "2026-11-11",
   "ok": true,
-  "tests": 76,
-  "seconds": 15.228,
+  "tests": 93,
+  "seconds": 9.434,
   "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
   "results": [
     {
@@ -27,6 +27,10 @@
     },
     {
       "test": "test_agent_gateway.AgentGatewayTests.test_exports_directory_symlink_escape_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_agent_gateway.AgentGatewayTests.test_generated_images_use_native_delivery_only_when_supported_and_small",
       "result": "passed"
     },
     {
@@ -182,11 +186,23 @@
       "result": "passed"
     },
     {
+      "test": "test_core.Tests.test_crash_after_image_upload_preserves_media_and_never_resends",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_crash_during_image_upload_preserves_unknown_and_no_resend",
+      "result": "passed"
+    },
+    {
       "test": "test_core.Tests.test_crashed_reservation_is_unknown",
       "result": "passed"
     },
     {
       "test": "test_core.Tests.test_cross_scope_rolls_back_entire_batch",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_dws_upload_requires_v2_chat_image_without_compression",
       "result": "passed"
     },
     {
@@ -210,7 +226,23 @@
       "result": "passed"
     },
     {
+      "test": "test_core.Tests.test_image_upload_timeout_never_attempts_message",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_image_validation_and_corrupt_stage_fail_before_remote_calls",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_legacy_inline_key_keeps_receipt_without_native_upload",
+      "result": "passed"
+    },
+    {
       "test": "test_core.Tests.test_missing_sender_remains_unknown",
+      "result": "passed"
+    },
+    {
+      "test": "test_core.Tests.test_native_image_restart_does_not_upload_or_send_twice",
       "result": "passed"
     },
     {
@@ -235,6 +267,42 @@
     },
     {
       "test": "test_core.Tests.test_unobserved_attachment_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_agent_allowlist_runtime_and_binding_are_independent_checks",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_authentication_failure_is_redacted",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_build_digest_and_private_token_permissions",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_installed_cli_token_defaults_to_workspace_not_package",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_live_checks_exact_scope_freshness_completeness_and_errors",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_loopback_health_does_not_forward_token_on_redirect",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_missing_or_placeholder_config_fails_without_initialization",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_offline_never_calls_health_or_creates_state",
+      "result": "passed"
+    },
+    {
+      "test": "test_doctor.DoctorTests.test_scope_binding_mismatch_is_detected_without_repair",
       "result": "passed"
     },
     {
@@ -309,6 +377,5 @@
       "test": "test_stream_http.StreamTests.test_target_commands_and_scope_filter",
       "result": "passed"
     }
-  ],
-  "checkpoint": "service Stream business-event wake after ready; 2026-11-11 evening"
+  ]
 }

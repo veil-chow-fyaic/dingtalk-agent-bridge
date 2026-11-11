@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-11",
+  "case": "direct-quoted-analysis-file",
+  "state": "not_sent_ui_blocked",
+  "attempt": 1,
+  "observations": [
+    "Native AX right click produced no message menu",
+    "Coordinate clicks failed windowNotFoundAtPosition on both displays",
+    "Window restored to original built-in display; draft remains empty"
+  ],
+  "next": "Use a verified native keyboard/message action or resolve CUA coordinate targeting before new quote attempt; independent CLI/task controls and runtime delivery continue",
+  "notAcceptance": true
+}

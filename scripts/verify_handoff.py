@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 MANIFEST=ROOT/'evidence/handoff-manifest.json'
 
 def files():
-    chosen=[ROOT/x for x in ['README.md','AGENTS.md','.gitignore','config.example.json','config.routes.example.json','config.agent.example.json']]
+    chosen=[ROOT/x for x in ['README.md','AGENTS.md','.gitignore','pyproject.toml','config.example.json','config.routes.example.json','config.agent.example.json']]
     for folder in ['docs','evidence','scripts','tests','dingtalk_bridge','fixtures','api','plans','.githooks','integrations']:
         chosen.extend(p for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts and p!=MANIFEST)
     return sorted(chosen)

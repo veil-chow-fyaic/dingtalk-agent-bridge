@@ -5,12 +5,12 @@ import sys
 from urllib.parse import urlencode,quote
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
-ROOT=Path(__file__).resolve().parents[1]
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--account-id');p.add_argument('--conversation-id')
-    p.add_argument('--token-file',default=str(ROOT/'local/runtime/http-token'))
+    # Match the service/gateway workspace cwd, including when installed in a venv.
+    p.add_argument('--token-file',default='local/runtime/http-token')
     sub=p.add_subparsers(dest='action',required=True)
     sub.add_parser('health');sub.add_parser('conversations')
     discovery=sub.add_parser('discovery');discovery.add_argument('--cursor',type=int,default=0);discovery.add_argument('--limit',type=int,default=50)

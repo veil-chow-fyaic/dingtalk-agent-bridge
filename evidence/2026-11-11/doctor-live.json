@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "mode": "live_read_only",
+  "ok": true,
+  "warnings": 1,
+  "checks": [
+    {
+      "scope": "transport",
+      "check": "configuration",
+      "status": "ok",
+      "detail": {
+        "routes": 2
+      }
+    },
+    {
+      "scope": "route-1",
+      "check": "explicit_identity",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "dws_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "receive_mode",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "image_upload_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "image_upload_build_digest",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "transport_binding",
+      "status": "ok"
+    },
+    {
+      "scope": "route-1",
+      "check": "unresolved_delivery",
+      "status": "ok",
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "scope": "route-2",
+      "check": "explicit_identity",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "dws_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "receive_mode",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "image_upload_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "image_upload_build_digest",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "transport_binding",
+      "status": "ok"
+    },
+    {
+      "scope": "route-2",
+      "check": "unresolved_delivery",
+      "status": "ok",
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "scope": "agent-1",
+      "check": "explicit_allowlist",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-1",
+      "check": "runtime_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-1",
+      "check": "self_commands",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-1",
+      "check": "runtime_binding",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-1",
+      "check": "retained_task_failures",
+      "status": "ok",
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "scope": "agent-2",
+      "check": "explicit_allowlist",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-2",
+      "check": "runtime_executable",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-2",
+      "check": "self_commands",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-2",
+      "check": "runtime_binding",
+      "status": "ok"
+    },
+    {
+      "scope": "agent-2",
+      "check": "retained_task_failures",
+      "status": "warning",
+      "detail": {
+        "count": 1
+      }
+    },
+    {
+      "scope": "transport",
+      "check": "token_file_permissions",
+      "status": "ok"
+    },
+    {
+      "scope": "transport",
+      "check": "live_route_set",
+      "status": "ok"
+    },
+    {
+      "scope": "live-route-1",
+      "check": "complete_recent_sync",
+      "status": "ok"
+    },
+    {
+      "scope": "live-route-1",
+      "check": "poll_error",
+      "status": "ok"
+    },
+    {
+      "scope": "live-route-2",
+      "check": "complete_recent_sync",
+      "status": "ok"
+    },
+    {
+      "scope": "live-route-2",
+      "check": "poll_error",
+      "status": "ok"
+    }
+  ],
+  "limitations": [
+    "No message delivery or UI acceptance performed",
+    "No runtime request or credential renewal performed",
+    "Does not prove process code version or long-term reliability"
+  ]
+}

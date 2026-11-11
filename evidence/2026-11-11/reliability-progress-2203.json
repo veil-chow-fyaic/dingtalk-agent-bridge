@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-11",
+  "checkpoint": "22:03",
+  "run": "reliability-20261111",
+  "active": true,
+  "samples": 296,
+  "elapsedSeconds": 8857.57,
+  "unavailableSamples": 0,
+  "freshnessSeconds": 8.95,
+  "ownedProcessVerified": true,
+  "maintenanceAlreadyRecorded": true,
+  "newMaintenanceThisCycle": false,
+  "complete24h": false
+}

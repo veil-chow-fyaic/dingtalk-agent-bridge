@@ -8,7 +8,7 @@
 - HTTP 仅监听 127.0.0.1:18768，所有接口要求本机 Bearer token。
 - 支持多个账号/会话路由，每路独立状态；本机启用liev账号原授权测试群和veil私聊。启动按稳定会话ID校验，不写死组织名。配置与公共CLI见docs/22。
 - 每 15 秒拉取两个限定会话历史，消息以原生 ID 去重；提供持久化游标供 Agent 消费。
-- 文本、文件、PNG/JPEG 内联图片发送；SQLite 保存 key、payload 摘要、任务与消息 ID。
+- 文本、文件、PNG/JPEG 独立原生图片发送（需配置官方上传补充入口）；SQLite 保存 key、payload 摘要、任务与消息 ID。
 - 已确认结果可重放查询；同 key 改 payload 拒绝。发送中断/返回不明保持 outcome_unknown，不自动重发或切 AX。
 - 附件下载独立于历史轮询锁；落盘后校验摘要，缓存丢失/改变时报错。
 - 文档、待办等办公操作由 Agent 直接调用同一 profile 的官方 DWS；不另造通用任意 CLI 代理。
@@ -109,7 +109,7 @@ with urlopen(req) as response:
 - 首次读最近24小时；后续普通水位前5分钟补读，并每30分钟进行24小时深扫描。超过深扫描窗口或读取上限仍可能漏；尚未完成长期稳定性验收。
 - 当前两路已启用receiveMode=stream_hint。真实UI业务消息唤醒history、服务停机时群/私聊任务重启补漏、订阅子进程自动重连已验证，见[docs/29](29-stream-service-and-offline-recovery.md)。15秒定时补读保留；不是独立于历史索引的完整Stream接收。网络分区/授权过期/24h另验。
 - 事件消费是游标式可重放交付，不承诺 exactly-once。发送已确认仅代表 API 投递状态，不代表另一人已读。
-- 原生音视频在v1.0.67源码和本机dry-run均确认为file路线（见docs/23），当前用户发送入口不支持原生语音条/视频；图片 v1.0.67 已获 mediaId、下载原图，并在本轮核对多图客户端内联显示。本轮TXT/CSV对端已验收，其余媒体对端仍需专项验收。
+- 原生音视频在v1.0.67源码和本机dry-run均确认为file路线（见docs/23），独立语音条/video协议尚未证实；MP4通过file入口在客户端实际呈现可播放视频卡片，私聊双向原件与实际分析见docs/34。图片独立原生上传发送见docs/33；DOCX/XLSX/ZIP见docs/30–31。
 - 多账号和group/direct路由已实现、确定性测试通过；指定veil↔liev私聊和原两人群已验收；外部群未验收。没有自动群管理、完整多租户权限管理或AX后端。
 - 不安装自动启动或通知任务；本机重启后需要先启动传输，再分别启动群和私聊gateway。传输进程负责限定会话轮询；独立gateway会执行授权/agent任务并回复，停止自动执行需要分别stop两个gateway配置。
 
@@ -119,7 +119,7 @@ with urlopen(req) as response:
 python3 -m unittest discover -s tests -v
 ```
 
-当前76个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
+当前93个测试；新增Agent任务/会话/文件闭环、私聊隔离、取消等待、目录失败、越界和重启恢复；此前覆盖迁移保留账本、会话发现与选择、长轮询、订阅范围/停止、HTTP契约、媒体队列饥饿和旧探针迁移不重放。原有测试覆盖重启幂等、未知状态不重发、崩溃保留、同正文不同 ID、部分历史水位、跨会话回滚、文件边界、图片/文件身份区别、未观测附件拒绝、进程锁、CLI 新响应结构与 stderr 错误，以及缺sender保守识别、字符串false、部分历史恢复和探针请求绑定。
 
 真实 HTTP 验收证据见 `evidence/2026-11-11/service-acceptance.json` 和 `service-restart-acceptance.json`，仅含脱敏结果。
 
@@ -128,3 +128,5 @@ python3 -m unittest discover -s tests -v
 路由可选 `imageUploadBinary` 指定[固定源码构建的窄补充](../integrations/dws_image_upload/README.md)，`binary` 继续原版 DWS。新 `image` 只走独立图片，不再走 Markdown；未配置明确拒绝，旧 key 仍只读返回旧回执。PNG/JPEG 原生最多2MiB且不压缩，普通 `file` 保留20MiB上限。配置后传输和对应gateway需重启才能加载。
 
 发送回执新增 `upload_state`、`image_delivery=native`。`upload_unknown` 表示上传结果未确认且没有调用消息发送；不要换key/自动重传，官方暂无上传任务对账接口。`outcome_unknown` 表示发送阶段可能已执行，仍沿用有task ID只查询、无task ID按历史对账的规则。不要把二者都当“消息已丢失”。gateway有上传配置时，把≤2MiB PNG/JPEG结果自动作为image，其它结果作为文件。完整现场边界见[docs/33](33-native-image-bridge.md)。
+
+安装包及只读doctor的准确语义、退出码、干净导出验证见[docs/35](35-install-and-doctor.md)。旧service_ctl/agent_ctl仍管理当前检出，不等于统一多worker管理已完成。

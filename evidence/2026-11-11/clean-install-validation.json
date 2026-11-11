@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-11",
+  "pythonVersion": "Python 3.14.6",
+  "packageVersion": "0.1.0",
+  "wheelBytes": 41288,
+  "wheelSha256": "ade2a1bd5e7616cca5f4a549ef6efdeb4adfaeab861199ef7ec9697e5df62c4b",
+  "checks": {
+    "all_five_installed_entrypoints": true,
+    "missing_config_fails_without_creating_state": true,
+    "import_from_venv_site_packages": true,
+    "wheel_only_package_and_metadata": true,
+    "wheel_code_matches_workspace": true,
+    "installed_doctor_live_two_routes": true,
+    "retained_historical_warning": true,
+    "clean_source_has_no_account_state": true,
+    "full_clean_regression": true
+  },
+  "entrypoints": {
+    "dab": true,
+    "dab-bridge": true,
+    "dab-agent": true,
+    "dab-consume": true,
+    "dab-doctor": true
+  },
+  "codeSha256": {
+    "message_model.py": "df4f2e304f6188b052dbb4b6ae2b03e8a4e02dd6e86e6c79b8a3cdbcb967d831",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "agent_runtime.py": "779989c3d90a72931175bd41ca6ba6da28a59038c9338688f41fd37240421f82",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "agent_gateway.py": "bf0c83b57df932a635403802ca5e05d793e5021058fcab46e8561a1f1a90478f",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "a8e27e6bda08f4b375beaf957dbed5e95000207c775c6368c9c6865297d89a19",
+    "stream.py": "84db108afcd631e1965769b90d03b7f5f4eb51c4e4157821e59d831481db8a3b",
+    "cli.py": "566ab0ed66d6d3eabc376d806bd0cb81916b2e997bf38d0798bf43dac5695351",
+    "consumer.py": "60c0e81f6b9e84316681d6d6bed0733a26a5e74678100bf6a4eff992cab62e44",
+    "routing.py": "361597872a3c87461471115e972355592c244372d1f2a848cdd9991b00e0c764",
+    "doctor.py": "efde28ca717982ae9de251708a9407bab4e85684fb6f66d70cf6b17a937444de",
+    "__main__.py": "963c2de2a71176302c1ea8df1ea9543e0980577b5fb91c9d0eb6f8d0fcfcb9e9",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "ok": true,
+  "limits": [
+    "macOS arm64 Python 3.14 tested; other supported Python versions/Linux unverified",
+    "foreground package commands verified; unified background manager not yet delivered",
+    "no account data copied into clean export or wheel"
+  ]
+}

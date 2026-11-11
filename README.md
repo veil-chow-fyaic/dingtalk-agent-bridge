@@ -41,6 +41,8 @@
 
 07/14/16保留当时的日期、软件版本和数量；当前结论以17/13为准。每条能力区分官方契约、上游报告、本机API、原件、客户端呈现、对端实收，不从单人结果外推全钉钉覆盖。
 
+安装与诊断：[可安装包、五个入口与只读doctor](docs/35-install-and-doctor.md)。干净导出/新venv验证，93项回归通过；后台统一管理仍待完善。
+
 ## 当前环境与可运行内容
 
 用户已授权：客户端veil（组织名周威），DWS精确绑定liev；只监听原内部群和这两人的私聊。组织/profile是鉴权路由上下文，不是产品固定租户。旧周威账本与配置备份保留。
@@ -48,6 +50,7 @@
 隔离DWS v1.0.67、全局v1.0.61保留。HTTP+SQLite监听127.0.0.1:18768，官方Stream提示唤醒history，另每15秒补读两个指定会话；群和私聊各一个Kimi gateway，仅允许veil发任务，liev自身消息忽略，无开机自启。70事件/5任务/14投递是docs/27的历史基线；新增媒体、事件、恢复任务见docs/28–29，以实时status为准。私聊直接发文字/附件，群以 `/agent` 开头。Kimi没有OS级沙箱，未对任意联系人开放。
 
 ```bash
+python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
 python3 scripts/service_ctl.py status
 python3 scripts/agent_ctl.py status
 python3 scripts/agent_ctl.py --config local/agent-direct-config.json status
@@ -60,10 +63,10 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：34份当前/历史分明的知识文档。
+- `docs/`：35份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
-- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和84项回归。
+- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和93项回归。
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
 已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。
