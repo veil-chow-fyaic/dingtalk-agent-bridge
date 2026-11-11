@@ -6,6 +6,7 @@ from pathlib import Path
 
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
+from frozen_install import frozen_install_matches, module_sources_match
 from dingtalk_bridge.routing import route_configs
 
 
@@ -66,8 +67,8 @@ def audit():
     checks['only_agents_reloaded'] = all(a['component'] == b['component'] and a['status'] == b['status'] == 'running' and ((a['pid'] == b['pid']) == (a['component'] == 'transport')) for a, b in zip(start, deployed)) and len(start) == len(deployed) == 3
     checks['observer_same_original_run'] = before['observer']['pid'] == final['observer']['pid'] == read(folder / 'observer-process.json')['pid'] and before['observer']['startedAt'] == final['observer']['startedAt'] and final['observer']['samples'] > before['observer']['samples']
     install = read(ROOT / 'evidence/2026-11-12/runtime-group-install.json')
-    checks['tested_installed_modules_match'] = install['ok'] and all(digest((ROOT / 'dingtalk_bridge' / n).read_bytes()) == sha for n, sha in install['codeSha256'].items())
-    return {'date': '2026-11-12', 'checks': checks, 'ok': all(checks.values()),
+    checks['frozen_tested_install_matches'] = frozen_install_matches(install, folder / 'compat-install')
+    return {'currentWorkspaceCodeMatchesTestedWheel': module_sources_match(install, ROOT / 'dingtalk_bridge'), 'date': '2026-11-12', 'checks': checks, 'ok': all(checks.values()),
             'clientBytes': len(data), 'clientSha256': digest(data),
             'latestFullSuite': {'tests': 160, 'errors': 2, 'area': 'Existing manager during-shutdown identity protection; unresolved'},
             'scope': 'Real native DM after initial cleanup reload. Later macOS Python <3.13 compatibility path tested with 17 real-process tests and redeployed; no repeated UI task. No live fault injection or OS sandbox claim.',

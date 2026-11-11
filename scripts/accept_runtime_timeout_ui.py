@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
+from frozen_install import frozen_install_matches, module_sources_match
 from dingtalk_bridge.routing import route_configs
 
 
@@ -71,8 +72,8 @@ def audit():
     original_log=ROOT/cases['timeout']['runLog']; guard_log=original_log.with_name('stderr.log')
     checks['guard_observed_parent_pipe_and_cleanup'] = any(e.get('runtime_guard')=='gateway_pipe_closed' and e.get('cleanup_complete') is True for e in (json.loads(line) for line in guard_log.read_text().splitlines() if line.startswith('{')))
     install = read(ROOT / 'evidence/2026-11-12/runtime-timeout-install.json')
-    checks['installed_code_matches'] = install['ok'] and all(digest((ROOT / 'dingtalk_bridge' / n).read_bytes()) == sha for n, sha in install['codeSha256'].items())
-    return {'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
+    checks['frozen_tested_install_matches'] = frozen_install_matches(install, f)
+    return {'currentWorkspaceCodeMatchesTestedWheel': module_sources_match(install, ROOT / 'dingtalk_bridge'), 'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
             'scope': 'Real native DM 90-second runtime timeout during 150-second Python wait; no operator process signals, gateway/session survive, no late write past deadline, actual read-only next task and native replies. Config restored byte-exactly to 600 seconds; not side-effect rollback.'}
 
 

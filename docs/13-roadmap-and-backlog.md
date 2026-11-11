@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E048之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E049之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E049：五个历史UI审计改核冻结源码/wheel/安装包，全部只读复核通过；10负向、双Python各3专项，旧报告不改、当前版本差异独立展示。[证据](66-frozen-install-audit-boundary.md)
 
 - E048：无效时限启动前拒绝，doctor保持只读；Python3.14与最低3.11隔离wheel各169项通过，无新UI发送。[证据](65-finite-runtime-deadlines.md)
 

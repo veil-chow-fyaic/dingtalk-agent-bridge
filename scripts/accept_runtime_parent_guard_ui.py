@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
+from frozen_install import frozen_install_matches, module_sources_match
 from dingtalk_bridge.routing import route_configs
 
 
@@ -71,8 +72,8 @@ def audit():
     original_log=ROOT/cases['interrupted']['runLog']; guard_log=original_log.with_name('stderr.log')
     checks['guard_observed_parent_pipe_and_cleanup'] = any(e.get('runtime_guard')=='gateway_pipe_closed' and e.get('cleanup_complete') is True for e in (json.loads(line) for line in guard_log.read_text().splitlines() if line.startswith('{')))
     install = read(ROOT / 'evidence/2026-11-12/runtime-parent-guard-install.json')
-    checks['installed_code_matches'] = install['ok'] and all(digest((ROOT / 'dingtalk_bridge' / n).read_bytes()) == sha for n, sha in install['codeSha256'].items())
-    return {'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
+    checks['frozen_tested_install_matches'] = frozen_install_matches(install, f)
+    return {'currentWorkspaceCodeMatchesTestedWheel': module_sources_match(install, ROOT / 'dingtalk_bridge'), 'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
             'automatic_descendant_cleanup_after_gateway_sigkill': True,
             'scope': 'One real native DM gateway SIGKILL; independent guard cleans owned CLI/tools with zero test-side descendant signals, no late write beyond deadline; interrupted/no replay, native notice and read-only follow-up. Not OS sandbox or guard SIGKILL coverage.'}
 

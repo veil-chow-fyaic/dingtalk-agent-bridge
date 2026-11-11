@@ -125,3 +125,8 @@
 - docs/65；共享有限正数校验用于LocalRuntime构造/run、Gateway状态创建前及只读doctor。拒绝NaN/无穷/bool/非数字/零负数/巨整型，默认600及正小数保持。
 - 4新增回归；旧doctor参数化11失败保留；Python3.14与最低3.11隔离已安装wheel各169项通过，新wheel六入口19模块一致，20项部署/账本不变核验通过。
 - runtime-timeout-config-validation/install.json；无新消息/旧UI重跑，配置/两路全部旧账本及日志保持，gateway空闲加载。原观察1329样本11.077h未满24h；下一项修历史审计与当前源码混比。私有local/runtime-timeout-config-20261112。
+
+## E049 — 历史UI冻结安装审计
+- docs/66；五个审计旧安装与当前源码混比导致唯一失败，现分别核冻结源码/安装目录/wheel总摘要及模块集合摘要，当前版本差异独立展示false。
+- E039/E041/E045/E046/E047完整只读审计通过，旧报告SHA不变；实际报告10内存负向和Python3.14/3.11各3专项通过。frozen-install-audit-validation.json。
+- 无产品修改、构建、重启或新消息；两路旧账本/日志12项不变。原观察1338样本11.152h未满24h，下一C11运行文档/CLI帮助/HTTP契约/配置例子一致性核对；私有local/frozen-install-audit-20261112。

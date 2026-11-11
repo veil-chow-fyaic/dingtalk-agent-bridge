@@ -9,6 +9,7 @@ from pathlib import Path
 
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
+from frozen_install import frozen_install_matches, module_sources_match
 from dingtalk_bridge.routing import route_configs
 
 
@@ -89,8 +90,8 @@ def audit():
     checks['one_text_and_one_file_attempt'] = all(read(folder / n)['attempts'] == 1 for n in ('text-send-attempt.json', 'file-send-attempt.json'))
     checks['reviewed_frames_preserved'] = len(obs['frames']) == 6 and all(v['reviewed'] and digest((folder / n).read_bytes()) == v['sha256'] for n, v in obs['frames'].items())
     install = read(ROOT / 'evidence/2026-11-12/attachment-metadata-install.json')
-    checks['tested_installed_modules_match'] = install['ok'] and all(digest((ROOT / 'dingtalk_bridge' / n).read_bytes()) == sha for n, sha in install['codeSha256'].items())
-    return {'date': '2026-11-12', 'checks': checks, 'ok': all(checks.values()),
+    checks['frozen_tested_install_matches'] = frozen_install_matches(install, folder)
+    return {'currentWorkspaceCodeMatchesTestedWheel': module_sources_match(install, ROOT / 'dingtalk_bridge'), 'date': '2026-11-12', 'checks': checks, 'ok': all(checks.values()),
             'sourceSha256': digest(data), 'outputs': {k: {'bytes': (folder / obs['client' + k.capitalize()]).stat().st_size, 'sha256': digest((folder / obs['client' + k.capitalize()]).read_bytes())} for k in ('csv', 'json')},
             'scope': 'Two native DM inputs: prepare then one file; original name metadata, CSV data, real tools and two client downloads/openings. No group or single-message multi-file claim.',
             'counts': {k: {t: len(v[t]) for t in ('jobs', 'outbox', 'deliveries', 'events')} for k, v in final['routes'].items()}}

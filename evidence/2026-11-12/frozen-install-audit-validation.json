@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "historicalAudits": {
+    "runtime_cleanup_ui": {
+      "exitCode": 0,
+      "failedChecks": [],
+      "currentCodeMatches": false
+    },
+    "unicode_csv_ui": {
+      "exitCode": 0,
+      "failedChecks": [],
+      "currentCodeMatches": false
+    },
+    "crash_recovery_ui": {
+      "exitCode": 0,
+      "failedChecks": [],
+      "currentCodeMatches": false
+    },
+    "runtime_parent_guard_ui": {
+      "exitCode": 0,
+      "failedChecks": [],
+      "currentCodeMatches": false
+    },
+    "runtime_timeout_ui": {
+      "exitCode": 0,
+      "failedChecks": [],
+      "currentCodeMatches": false
+    }
+  },
+  "negativeChecks": {
+    "E039_wrong_wheel_digest_rejected": true,
+    "E039_wrong_module_digest_rejected": true,
+    "E041_wrong_wheel_digest_rejected": true,
+    "E041_wrong_module_digest_rejected": true,
+    "E045_wrong_wheel_digest_rejected": true,
+    "E045_wrong_module_digest_rejected": true,
+    "E046_wrong_wheel_digest_rejected": true,
+    "E046_wrong_module_digest_rejected": true,
+    "E047_wrong_wheel_digest_rejected": true,
+    "E047_wrong_module_digest_rejected": true
+  },
+  "preservationChecks": {
+    "group_jobs_unchanged": true,
+    "group_outbox_unchanged": true,
+    "group_meta_unchanged": true,
+    "group_deliveries_unchanged": true,
+    "group_events_unchanged": true,
+    "group_runtimeFiles_unchanged": true,
+    "direct_jobs_unchanged": true,
+    "direct_outbox_unchanged": true,
+    "direct_meta_unchanged": true,
+    "direct_deliveries_unchanged": true,
+    "direct_events_unchanged": true,
+    "direct_runtimeFiles_unchanged": true
+  },
+  "originalReportSha256": {
+    "runtime-cleanup-ui-ledger": "281076a53bf9863d266e57fa5a6adce257b2a853b500ca0f4263538221d4279e",
+    "unicode-csv-ui-ledger": "5d798cea401aeaa63bcb79d39a72b44701121dcfab72c8352d6d3046bfe6d08c",
+    "crash-recovery-ui-ledger": "e718f59d042b47070cba6f8242c541b533f7a73d3277a6552547891b8ef76fef",
+    "runtime-parent-guard-ui-ledger": "a0847406adf5959d9b3a5fee6543f86dca7c44a4da866ce2e3844c7f56afd7e5",
+    "runtime-timeout-ui-ledger": "83d2ce87ca48752920921cfc7dc4ec708bac45ab85857bd848a744e62f68faba"
+  },
+  "unitTests": {
+    "python314": 3,
+    "python311": 3
+  },
+  "unitLogSha256": {
+    "unit-tests.log": "98800759b13a22531fa06ec8930cf93cc9988685fc18b9f51f986a3477f8d7e8",
+    "py311-unit-tests.log": "3a315533b81287472852b81ae89b89d0f42abf74b1503c45c2c62712388d3eb1"
+  },
+  "newMessages": 0,
+  "productCodeChanged": false,
+  "processesRestarted": false,
+  "scope": "Re-audit frozen source/wheel/installed modules; current source mismatch informational. Original reports, tasks, raw logs and UI retained; no replay."
+}

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from accept_office_files import ROOT, digest, read
 from accept_task_controls import rows
+from frozen_install import frozen_install_matches, module_sources_match
 from dingtalk_bridge.routing import route_configs
 
 
@@ -72,8 +73,8 @@ def audit():
     checks['original_files_preserved_after_readonly_followup'] = all((workspace / p).read_bytes() and digest((workspace / p).read_bytes()) == v['sha256'] and (workspace / p).stat().st_mtime_ns == v['mtime_ns'] for p, v in read(f / 'artifacts-before-followup.json').items())
     checks['real_reproduction_retained'] = read(f / 'old-reproduction.json')['runtime_reexecutions'] == 0 and 'after gateway crash' in read(f / 'old-reproduction.json')['late_write_after_gateway_death'] and '中断而停止' in read(f / 'old-reproduction.json')['notice'][0]
     install = read(ROOT / 'evidence/2026-11-12/crash-notice-install.json')
-    checks['installed_code_matches'] = install['ok'] and all(digest((ROOT / 'dingtalk_bridge' / n).read_bytes()) == sha for n, sha in install['codeSha256'].items())
-    return {'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
+    checks['frozen_tested_install_matches'] = frozen_install_matches(install, f)
+    return {'currentWorkspaceCodeMatchesTestedWheel': module_sources_match(install, ROOT / 'dingtalk_bridge'), 'date': '2026-11-12', 'ok': all(checks.values()), 'checks': checks, 'counts': {k: {t: len(v[t]) for t in ('jobs','outbox','deliveries','events')} for k,v in final['routes'].items()},
             'automatic_descendant_cleanup_after_gateway_sigkill': False,
             'scope': 'Real native DM task, only owned gateway SIGKILL, surviving tool late effect, explicit identified-process cleanup, interrupted task without replay, honest native notice and read-only follow-up. Parent-death cleanup remains a product gap.'}
 
