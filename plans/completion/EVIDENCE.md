@@ -44,3 +44,9 @@
 | E031 | L3/L4阶段 | 只读时长/计数/序列/归属/缺口工具，11新增测试；917真实样本122事件与冻结账本一致，24h门返回2 | docs/50；reliability-progress-review.json；reliability-review-validation.json | 7.640h非24h；6不可达/3poll_error/14维护保留，不证明上游无漏或同版本零中断 |
 
 | E032 | L4/L5文件通过、文字错误 | 超2MiB PNG走file，3147861B原件/198B报告下载Quick Look打开；28文件审计2负向 | docs/51；large-png-ui-ledger.json；large-png-audit-validation.json | 原模型短SHA错误保留，task_fully_correct=false；未发更正；仅私聊出站file，不扩大image上限 |
+
+## E033 — SHA更正与两次模型错误保持
+- docs/52-sha-correction-ui.md；scripts/accept_sha_correction_ui.py：37检查与2负向注入通过。
+- evidence/2026-11-12/sha-correction-ui-ledger.json、sha-correction-audit-negative.json。
+- 两次原生veil输入/liev完整回复可见；第一结论误判保留，第二实际Python判prefix false并明确更正。2任务4确认回复，无文件输出，既有15exports含mtime保持。
+- local/sha-correction-ui-20261112仅本机；原E032和第一次followup语义验收不改绿，无部署变动。

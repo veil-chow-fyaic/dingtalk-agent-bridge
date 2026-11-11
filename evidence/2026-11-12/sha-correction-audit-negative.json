@@ -1,0 +1,16 @@
+{
+  "bad_final_conclusion": {
+    "rejected": true,
+    "failed_checks": [
+      "case_1_immutable_completed_job",
+      "case_1_complete_reply_in_native_ui",
+      "final_correction_explicit"
+    ]
+  },
+  "changed_runtime_log_digest": {
+    "rejected": true,
+    "failed_checks": [
+      "case_1_actual_hash_tool_and_immutable_log"
+    ]
+  }
+}
