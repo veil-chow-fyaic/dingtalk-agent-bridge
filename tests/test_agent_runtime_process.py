@@ -19,6 +19,21 @@ class RuntimeProcessTests(unittest.TestCase):
     def run_provider(self,r):return r.run('synthetic task',self.workspace,self.root/'run',None,self.cancel,self.sessions.append)
     def terminal(self,text='{"text":"完成","files":[]}',newline=True):
         return 'import json,sys\nprint(json.dumps({"role":"assistant","content":'+repr(text)+'}),flush=True)\nprint(json.dumps({"type":"session.resume_hint","session_id":"test-session"}),end='+repr('\n' if newline else '')+',flush=True)\n'
+    def test_invalid_deadlines_rejected_before_starting_runtime(self):
+        for index,value in enumerate((float('nan'),float('inf'),float('-inf'),0,-1,True,False,None,'90',[],{},10**1000)):
+            with self.subTest(case=index),self.assertRaisesRegex(ValueError,'timeoutSeconds'):
+                LocalRuntime({'kind':'kimi','binary':'never-invoked','timeoutSeconds':value})
+        for value in (.1,90,600.0):
+            LocalRuntime({'kind':'kimi','binary':'never-invoked','timeoutSeconds':value})
+
+    def test_mutated_invalid_deadline_has_no_process_or_run_directory(self):
+        from unittest.mock import patch
+        runtime=LocalRuntime({'kind':'kimi','binary':'never-invoked'})
+        runtime.settings['timeoutSeconds']=float('nan')
+        with patch('dingtalk_bridge.agent_runtime.subprocess.Popen') as spawn:
+            with self.assertRaisesRegex(ValueError,'timeoutSeconds'):self.run_provider(runtime)
+        spawn.assert_not_called();self.assertFalse((self.root/'run').exists())
+
     def test_completed_terminal_without_final_newline(self):
         self.assertEqual(self.run_provider(self.runtime(self.terminal(newline=False)))['text'],'完成')
         self.assertEqual(self.sessions,['test-session'])

@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "group_jobs_unchanged": true,
+    "group_outbox_unchanged": true,
+    "group_meta_unchanged": true,
+    "group_deliveries_unchanged": true,
+    "group_events_unchanged": true,
+    "group_runtimeFiles_unchanged": true,
+    "direct_jobs_unchanged": true,
+    "direct_outbox_unchanged": true,
+    "direct_meta_unchanged": true,
+    "direct_deliveries_unchanged": true,
+    "direct_events_unchanged": true,
+    "direct_runtimeFiles_unchanged": true,
+    "configs_unchanged": true,
+    "all_running": true,
+    "transport_unchanged": true,
+    "original_observer_preserved": true,
+    "live_doctor": true,
+    "installed_current_modules": true,
+    "py311_wheel_full_pass": true,
+    "py314_full_pass": true
+  },
+  "tests": {
+    "python314_full": 169,
+    "python311_installed_wheel_full": 169
+  },
+  "logsSha256": {
+    "before-fix-tests.log": "cc220d71a335dda6ee590a9f7cb12f09e7e653d4098cafb44a5d74568b38bfd7",
+    "target-tests.log": "539339e400898c14299e1bc639116f311205d1db6955cbcdf3e9eab81fd42203",
+    "full-tests.log": "4893c0a4144164d44619bce970f39170936ff657f6e036a1cb699de81d251061",
+    "installed-py311-tests.log": "b3ed8534420eeb5b6b198a504e903b701fc8fc328f2fc7d70a3eb96ba11b0023"
+  },
+  "newMessages": 0,
+  "uiReplayed": false,
+  "scope": "Finite positive runtime config checked before execution/state mutation and by readonly doctor; two idle gateways reloaded with unchanged config, old tasks/logs preserved; no new UI acceptance claimed."
+}

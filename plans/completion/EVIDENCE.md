@@ -120,3 +120,8 @@
 - docs/64；新增准确deadline/未重做/可能已有副作用提示；旧实现回归先失败，3.14全量165、3.12 gateway35通过。最低3.11.15在无源码包/账号数据的测试目录安装同wheel，全量165项通过；六入口19模块摘要保持。
 - veil真实150秒Python等待，runtime90.399秒超时failed，无结果且自动工具清理；155.203秒无晚写，同gateway/session下一只读Python计算703，完整回复UI可见。随后精确恢复原600秒配置，仅空闲重载DM。
 - 42审计5负向，runtime-timeout-validation/install/ui-ledger/audit-negative.json。DM61/151/160/222、群及旧记录保持；原观察1315样本10.960h未满24h；私有local/runtime-timeout-ui-20261112。无新C01入口，不重复菜单/试探发送。
+
+## E048 — 执行时限配置边界
+- docs/65；共享有限正数校验用于LocalRuntime构造/run、Gateway状态创建前及只读doctor。拒绝NaN/无穷/bool/非数字/零负数/巨整型，默认600及正小数保持。
+- 4新增回归；旧doctor参数化11失败保留；Python3.14与最低3.11隔离已安装wheel各169项通过，新wheel六入口19模块一致，20项部署/账本不变核验通过。
+- runtime-timeout-config-validation/install.json；无新消息/旧UI重跑，配置/两路全部旧账本及日志保持，gateway空闲加载。原观察1329样本11.077h未满24h；下一项修历史审计与当前源码混比。私有local/runtime-timeout-config-20261112。

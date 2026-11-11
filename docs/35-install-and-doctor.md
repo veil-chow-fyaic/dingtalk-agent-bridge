@@ -12,7 +12,7 @@ python3 -m venv .venv
 .venv/bin/dab-doctor --help
 ```
 
-运行时只有Python标准库；构建使用PyPI的setuptools。要求Python≥3.11和POSIX（使用fcntl）；本轮实际测试的是macOS arm64/Python3.14.6，E039另在本机Python3.12验证运行器17项（不代表全套环境认证），Python3.11与Linux尚未实机认证，Windows不能由wheel名称推断支持。DWS及图片上传补充不捆绑进包，分别按官方固定版本与[图片补充构建说明](../integrations/dws_image_upload/README.md)配置。
+运行时只有Python标准库；构建使用PyPI的setuptools。要求Python≥3.11和POSIX（使用fcntl）；E048在macOS arm64/Python3.14.6与3.11.15隔离已安装wheel各通过169全量；Python3.12历史专项结果见E047。Linux尚未实机认证，Windows不能由wheel名称推断支持。DWS及图片上传补充不捆绑进包，分别按官方固定版本与[图片补充构建说明](../integrations/dws_image_upload/README.md)配置。
 
 服务、gateway、consumer以启动时工作目录为数据根。安装后的 `dab` 默认同样从当前目录读取 `local/runtime/http-token`，已修复原先会找进site-packages目录的问题；需要从其他位置调用时显式传 `--token-file`。不要复制别人的local目录作配置。
 
@@ -37,7 +37,7 @@ python3 -m venv .venv
 python3 -m dingtalk_bridge.doctor   --agent-config local/agent-config.json   --agent-config local/agent-direct-config.json --live
 ```
 
-默认离线，只读配置/文件和已有SQLite，不实例化会写状态的Bridge/Gateway，也不创建缺失账本。诊断包括显式身份与路由、DWS可执行文件、imageUploadBinary构建摘要、传输scope、未知投递数量、每个可选gateway的白名单/执行器/历史runtime binding、保留失败任务、HTTP token权限。
+默认离线，只读配置/文件和已有SQLite，不实例化会写状态的Bridge/Gateway，也不创建缺失账本。诊断包括显式身份与路由、DWS可执行文件、imageUploadBinary构建摘要、传输scope、未知投递数量、每个可选gateway的白名单/执行器/历史runtime binding、保留失败任务、HTTP token权限。E048另检查runtime.timeoutSeconds为有限正数，默认600；拒绝NaN/无穷/布尔/非数字/零负数，启动前同样校验，不进行自动修正。
 
 `--live`只增加携带本机token的loopback `/v1/health` GET：核对实际路由集合、最近完整同步（默认90秒）和poll_error。禁用环境代理和HTTP重定向，避免把本机token转交其他地址。输出只用route-1/agent-1序号及统计，不打印profile、账号/会话ID、令牌、聊天或服务端错误正文。
 

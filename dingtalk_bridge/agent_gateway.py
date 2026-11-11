@@ -12,7 +12,7 @@ import time
 from urllib.parse import urlencode,quote
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
-from .agent_runtime import LocalRuntime,RuntimeStopped
+from .agent_runtime import LocalRuntime,RuntimeStopped,timeout_seconds
 from .consumer import Inbox,HydrationPending
 from .message_model import media_parts
 from .routing import route_configs
@@ -70,6 +70,7 @@ def stage_outputs(root,workspace,job_id,result):
 
 class Gateway:
     def __init__(self,root,route,state_name,settings,api=None,runtime=None):
+        timeout_seconds(settings['runtime'])
         self.root=Path(root).resolve();self.route=route;self.settings=settings
         official_tools_enabled(settings)
         if not settings.get('allowedSenderIds'):raise ValueError('Configure allowedSenderIds before executing local tasks')

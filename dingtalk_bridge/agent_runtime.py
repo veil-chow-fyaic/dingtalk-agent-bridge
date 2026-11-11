@@ -1,5 +1,6 @@
 """Local CLI adapters with explicit sessions, bounded execution and artifact output."""
 import json
+import math
 import os
 from pathlib import Path
 import selectors
@@ -14,6 +15,16 @@ RESPONSE_SCHEMA={'type':'object','properties':{'text':{'type':'string'},
 
 
 class RuntimeStopped(Exception):pass
+
+
+def timeout_seconds(settings):
+    value=settings.get('timeoutSeconds',600)
+    try:
+        valid=type(value) in (int,float) and math.isfinite(value) and value>0
+    except OverflowError:
+        valid=False
+    if not valid:raise ValueError('timeoutSeconds must be a finite positive number')
+    return value
 
 
 def wait_unreaped(process,timeout):
@@ -64,6 +75,7 @@ class LocalRuntime:
     def __init__(self,settings):
         self.settings=settings;self.kind=settings['kind']
         if self.kind not in {'codex','kimi'}:raise ValueError('Unknown local runtime')
+        timeout_seconds(settings)
 
     def command(self,workspace,run_dir,session_id,images=()):
         executable=self.settings['binary']
@@ -83,12 +95,13 @@ class LocalRuntime:
         return args
 
     def run(self,prompt,workspace,run_dir,session_id,cancel,on_session,images=()):
+        timeout=timeout_seconds(self.settings)
         workspace=Path(workspace);run_dir=Path(run_dir);run_dir.mkdir(parents=True,exist_ok=True,mode=0o700)
         args=self.command(workspace,run_dir,session_id,images)
         if self.kind=='kimi':
             if len(prompt.encode())>65536:raise ValueError('Prompt too large; use file inputs')
             args+=['--prompt',prompt]
-        deadline=time.monotonic()+self.settings.get('timeoutSeconds',600)
+        deadline=time.monotonic()+timeout
         final_text=None;completed=False;observed_session=session_id;buffer=b'';terminal_error=False
         with (run_dir/'events.jsonl').open('wb') as log,(run_dir/'stderr.log').open('wb') as errors:
             lifetime_read,lifetime_write=os.pipe()

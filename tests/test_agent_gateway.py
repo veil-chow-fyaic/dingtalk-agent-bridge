@@ -113,6 +113,14 @@ class AgentGatewayTests(unittest.TestCase):
         for value in [-1,True,'5',None]:
             with self.assertRaises(ValueError):Gateway(self.root,CFG,None,{**SETTINGS,'initialCursor':value},self.api,self.runtime)
 
+    def test_invalid_deadline_rejected_before_state_or_recovery(self):
+        for index,value in enumerate((float('nan'),float('inf'),0,-1,True,'90',None)):
+            fresh=self.root/('invalid-'+str(index))
+            settings={**SETTINGS,'runtime':{**SETTINGS['runtime'],'timeoutSeconds':value}}
+            with self.subTest(case=index),self.assertRaisesRegex(ValueError,'timeoutSeconds'):
+                Gateway(fresh,CFG,None,settings,self.api,self.runtime)
+            self.assertFalse(fresh.exists());self.assertEqual(self.runtime.calls,0)
+
     def test_task_session_file_reply_and_restart_no_reexecution(self):
         self.api.events=[event(1,text='/agent 报告',sender='self')]
         self.g.intake();self.g.intake();self.assertTrue(self.g.execute_one());self.g.flush()

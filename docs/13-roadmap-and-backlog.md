@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E047之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E048之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E048：无效时限启动前拒绝，doctor保持只读；Python3.14与最低3.11隔离wheel各169项通过，无新UI发送。[证据](65-finite-runtime-deadlines.md)
 
 - E047：真实90秒执行超时、工具自动清理、155秒无晚写，同gateway下一只读任务及完整UI回复；最低Python3.11隔离已安装wheel全量165项通过。[证据](64-runtime-timeout-and-installed-wheel.md)
 
@@ -12,7 +14,7 @@
 
 - E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
 
-E047全量165项、3.12 gateway35项、3.11隔离wheel全量165项及六入口19模块通过；E039两次manager历史错误保持；两gateway已加载E047，私聊临时90秒已精确恢复600秒，传输/原24h观察器未重启。DM61/151/160/222，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+E048 Python3.14/3.11隔离wheel各169项及六入口19模块通过；E039两次manager历史错误保持；两gateway已加载E048，私聊临时90秒已精确恢复600秒，传输/原24h观察器未重启。DM61/151/160/222，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 

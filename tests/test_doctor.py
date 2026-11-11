@@ -65,6 +65,23 @@ class DoctorTests(unittest.TestCase):
         (self.root / 'local/service-config.json').write_text('{}')
         self.assertFalse(self.report(live=True, health_reader=lambda *_: self.health())['ok'])
 
+    def test_deadline_configuration_is_finite_positive_and_read_only(self):
+        settings={'accountId':self.route['accountId'],'conversationId':self.route['conversationId'],
+                  'allowedSenderIds':['private-allowed'],'runtime':{'kind':'kimi','binary':str(self.binary)}}
+        path=self.root/'local/agent.json'
+        values=[(float('nan'),False),(float('inf'),False),(float('-inf'),False),(0,False),(-1,False),
+                (True,False),('90',False),(None,False),(10**1000,False),(.1,True),(90,True)]
+        for index,(value,valid) in enumerate(values):
+            with self.subTest(case=index):
+                settings['runtime']['timeoutSeconds']=value;path.write_text(json.dumps(settings))
+                before={str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+                with patch('subprocess.Popen',side_effect=AssertionError('doctor must not execute')):
+                    report=self.report(agents=['local/agent.json'])
+                self.assertEqual(report['ok'],valid)
+                self.assertIn({'scope':'agent-1','check':'runtime_timeout_seconds','status':'ok' if valid else 'error'},report['checks'])
+                self.assertEqual(before,{str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+                self.assertNotIn('private-',json.dumps(report))
+
     def test_live_checks_exact_scope_freshness_completeness_and_errors(self):
         self.assertTrue(self.report(live=True, health_reader=lambda *_: self.health())['ok'])
         variants = []
