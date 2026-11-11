@@ -1,0 +1,15 @@
+{
+  "failure_rewritten_as_success": {
+    "rejected": true,
+    "failed_checks": [
+      "case_0_immutable_job_and_exact_input",
+      "original_terminal_failure_preserved"
+    ]
+  },
+  "missing_official_resource": {
+    "rejected": true,
+    "failed_checks": [
+      "official_resource_exact"
+    ]
+  }
+}

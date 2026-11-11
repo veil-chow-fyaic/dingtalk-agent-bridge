@@ -20,6 +20,10 @@ from .text_limits import reply_chunks
 from .official_tools import enabled as official_tools_enabled, prepare as prepare_official_tools
 
 
+class ArtifactTooLarge(ValueError):
+    """An output exceeds the documented local delivery limit."""
+
+
 def command_for(model,settings):
     if model.get('senderId') not in settings['allowedSenderIds'] or model.get('fromSelf') is None:return None
     text=''.join(p['text'] for p in model['parts'] if p['type']=='text').strip()
@@ -54,7 +58,7 @@ def stage_outputs(root,workspace,job_id,result):
     for i,name in enumerate(result['files']):
         path=(workspace/name).resolve()
         if not path.is_relative_to(exports) or not path.is_file():raise ValueError('Artifact must be an existing file under exports/')
-        if path.stat().st_size>20*1024*1024:raise ValueError('Artifact exceeds bridge file limit')
+        if path.stat().st_size>20*1024*1024:raise ArtifactTooLarge('Artifact exceeds bridge file limit (20 MiB)')
         data=path.read_bytes();digest=hashlib.sha256(data).hexdigest()
         destination=root/'local/outbox/agent'/job_id/(str(i)+'-'+re.sub(r'[^\w.\-]','_',path.name))
         destination.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
@@ -241,9 +245,12 @@ class Gateway:
                     (json.dumps({'response':result,'artifacts':outputs},ensure_ascii=False),job['id']))
         except Exception as exc:
             state='cancelled' if isinstance(exc,RuntimeStopped) and str(exc)=='cancelled' else 'failed'
+            notice=('[Agent] 任务已停止。' if state=='cancelled' else
+                    '[Agent] 结果文件超过20 MiB交付上限，本次任务未完成，未发送结果文件。已保留执行记录；请补充任务要求，将结果压缩或拆分到每个文件不超过20 MiB。' if isinstance(exc,ArtifactTooLarge) else
+                    '[Agent] 本次任务未完成，已保留记录；可以查询状态或补充说明。')
             with self.lock,self.db:
                 self.db.execute('UPDATE jobs SET state=?,error=? WHERE id=?',(state,type(exc).__name__,job['id']))
-                self.emit(job['id'],'error',{'text':'[Agent] 任务已停止。' if state=='cancelled' else '[Agent] 本次任务未完成，已保留记录；可以查询状态或补充说明。'})
+                self.emit(job['id'],'error',{'text':notice})
         return True
 
     def flush(self):

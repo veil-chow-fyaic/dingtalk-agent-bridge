@@ -323,6 +323,32 @@ class AgentGatewayTests(unittest.TestCase):
         with large.open('wb') as f:f.truncate(20*1024*1024+1)
         with self.assertRaisesRegex(ValueError,'limit'):stage_outputs(self.root,workspace,'j',{'files':['exports/large.bin']})
 
+    def test_exact_output_limit_is_allowed(self):
+        workspace=self.g.workspace();path=workspace/'exports/limit.bin'
+        with path.open('wb') as f:f.truncate(20*1024*1024)
+        staged=stage_outputs(self.root,workspace,'boundary',{'files':['exports/limit.bin']})
+        self.assertEqual((self.root/staged[0]['file']).stat().st_size,20*1024*1024)
+
+    def test_oversized_result_has_actionable_error_no_partial_delivery_and_queue_continues(self):
+        original=self.runtime.run
+        def oversized(prompt,workspace,*args):
+            (workspace/'exports/small.txt').write_text('first result')
+            with (workspace/'exports/private-large-name.bin').open('wb') as f:f.truncate(20*1024*1024+1)
+            return {'text':'success','files':['exports/small.txt','exports/private-large-name.bin']}
+        self.runtime.run=oversized
+        self.api.events=[event(1,text='/agent large result',sender='other'),event(2,text='/agent next task',sender='other')]
+        self.g.intake();self.g.execute_one();self.g.flush()
+        failed=self.g.db.execute('SELECT * FROM jobs WHERE seq=1').fetchone()
+        self.assertEqual((failed['state'],failed['error']),('failed','ArtifactTooLarge'))
+        payloads=[json.loads(r[0]) for r in self.g.db.execute('SELECT payload FROM outbox WHERE job_id=?',(failed['id'],))]
+        self.assertTrue(all(set(p)=={'text'} for p in payloads))
+        self.assertFalse(any('success' in p['text'] for p in payloads))
+        notice=next(p['text'] for p in payloads if '20 MiB' in p['text'])
+        self.assertIn('未发送结果文件',notice);self.assertIn('压缩或拆分',notice);self.assertNotIn('private-large-name',notice)
+        self.runtime.run=original;self.assertTrue(self.g.execute_one());self.g.flush()
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs WHERE seq=2').fetchone()[0],'completed')
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs WHERE seq=1').fetchone()[0],'failed')
+
     def test_stalled_download_does_not_block_status_or_cancel(self):
         import time
         from test_routing_consumer import ref

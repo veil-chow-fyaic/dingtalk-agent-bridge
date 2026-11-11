@@ -55,3 +55,8 @@
 - docs/53；scripts/accept_quote_identity.py，23检查及篡改来源ID负向拒绝；154全量回归/干净wheel六入口18模块。
 - quote-identity-{ledger,install,negative}.json；私有local/quote-identity-20261112、quote-side-menu-20261112。
 - 7条既有官方引用离线标准化/持久重开，不修改历史模型或授权；两gateway已加载，传输/原观察不重启，无新任务/消息。原生入站引用仍未过。
+
+## E035 — 输出文件限额及新压缩任务恢复
+- docs/54；scripts/accept_output_limit_ui.py，38审计/2负向；156全量回归，新venv六入口18模块一致。
+- output-limit-ui-ledger.json、output-limit-install.json、output-limit-audit-negative.json；私有local/output-limit-ui-20261112。
+- 原生veil两次不同任务：21MiB生成后failed并明确提示，后续只压缩旧源，新ZIP客户端下载/系统解包与原件相同；2任务5确认回复、源mtime保持。DM46/114/123/170、群保持。只重启两gateway，传输/原观察保持。
