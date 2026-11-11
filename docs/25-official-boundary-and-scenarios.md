@@ -120,3 +120,12 @@ python3 scripts/verify_handoff.py
 E018现场边界：官方普通账号text服务端拒绝超过5120 UTF-16单位（含前缀）；隔离v1.0.67官方Str读取参数还会TrimSpace。自研只补正确分段与调用前长度校验，不改官方鉴权或另造发消息API。新的长文两段确认与文件UI证据见docs/38；原首段拒绝/无taskId/unknown保留，不冒充已投递。
 
 E019补充：官方错误的invalid_request+PARAM_ERROR可在首次发送阶段明确拒绝；已有taskId的查询错误仍属待对账。自研新增带原行/证据摘要的拒绝终态记录、原uuid绑定的官方日志显式导入和一次性用户提示；没有替代官方发送/鉴权，也不将网络超时自动判失败。真实UI和108回归见docs/39。
+
+
+## 2026-11-12：刷新由官方负责，失效恢复不冒充已验
+
+固定v1.0.67源码区分两类命令：`auth status --readonly --profile <精确profile> --format json`只读本地快照，不刷新、迁移、修复或请求认证服务；普通`auth status`可能刷新选中的slot。因此仅巡检时使用readonly，不能把普通status称作纯读取。[官方status实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/app/auth_command.go)、[readonly实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/app/auth_status_readonly.go)。
+
+官方在access有效期前5分钟进入刷新条件，运行请求由OAuthProvider加锁刷新；网络/限流/5xx等临时刷新失败不会直接判凭据失效，终态/未知错误分开处理。运行时显式AuthRefreshRequired标记最多触发一次刷新重试，不泛化到普通403/业务报错；显式token或插件凭据不改无关登录存储。自研bridge不另造OAuth刷新，也不能在官方重试之后对未知写入换key重发。[有效期判定](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/auth/token.go)、[刷新实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/auth/oauth_provider.go)、[运行时重试边界](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/app/auth_refresh_retry.go)。
+
+01:59:49实际readonly命令成功，当前access/refresh均有效，未请求刷新；只保留公开字段与源码摘要的[边界证据](../evidence/2026-11-12/auth-refresh-boundary-review.json)。可在下一次自然access刷新窗口前后观察readonly元数据和服务健康；自然轮换与“真正失效refresh凭据后的重新授权恢复”是两个不同场景。未复制/改写凭据、调整系统时间或撤销授权；目前没有安全独立制造真实失效refresh凭据的现场方案，该项仍未验，不以模拟token错误代替。

@@ -1,5 +1,13 @@
 # veil 发任务、liev 回复：双账号客户端验收
 
+## 2026-11-12 E025：既有CSV客户端补验
+
+原E001已回传CSV，但当时仅下载打开了三份TXT。此次在原私聊原生搜索的“文件”页定位`0-dab-ui-input-summary.csv`（79B），返回原聊天文件卡片下载，保存后用Finder Quick Look实际打开为表格，核对两行小计36、18及TOTAL54。下载件与原Kimi产物SHA-256一致。没有重新发任务、文件或其他聊天消息；群/私聊任务、outbox、投递账本逐行不变。
+
+22项只读检查和损坏下载/缺失打开UI两项负向检查通过；复核`python3 scripts/accept_csv_client_open.py`，结果在[evidence](../evidence/2026-11-12/csv-client-open-ledger.json)和[审计负向验证](../evidence/2026-11-12/csv-client-audit-validation.json)。原AX、截图、下载件在`local/csv-client-open-20261112/`。点击下载时CUA超时，重新观察确认保存窗口已打开后完成保存，没有再次点击下载。
+
+同段引用新入口只读检查：原生“修改”菜单仅编辑命令，“帮助”仅钉钉帮助，没有明确引用/回复命令；未发引用消息。原树在`local/quote-menu-20261112/`。右键等旧失败路径未重试。最新逐格范围见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)；以下保留E001原日期、数量及部署叙述，当前管理命令以docs/40为准。
+
 2026-11-11 17:13–17:28，macOS 钉钉。用户明确授权：客户端登录 veil（当前组织显示周威），DWS 授权 liev，用这两个真人账号做私聊和原测试群验收。两人均由用户安排，助手没有邀请、审批或改组织权限。
 
 ## 结论与身份

@@ -1,0 +1,58 @@
+# 当前验收矩阵
+
+2026-11-12 E025之后；同一[PRD](01-PRD.md)，不是新计划或降低验收标准。表中“通过”仅覆盖所列版本、合成样本和操作。API成功、单元回归、UI可见、客户端下载打开分层；未测项不会用总用例数抵消。
+
+## 四方向文字与文件
+
+入站指veil从原生客户端发送，liev路由实际收取；附件要求下载原件与fixture一致。出站指liev经DWS/bridge发送，veil原生UI可见，文件还要求客户端下载并实际打开。原群历史证据来自当时仅两账号的范围；新增第三人后未补新群实验。
+
+| 类型 | 群 veil→liev | 群 liev→veil | 私聊 veil→liev | 私聊 liev→veil |
+|---|---|---|---|---|
+| 普通文字/任务 | 通过 E001/E007：显式任务，普通消息不执行 | 通过 E001：667及任务反馈可见 | 通过 E001/E016：普通文字及控制命令 | 通过 E001/E016：697、上下文、状态/取消/新会话 |
+| 长文/换行/中文/emoji | blocked：尚缺，等待原群范围答复 | blocked：尚缺，等待原群范围答复 | 通过 E018：3592字符真实输入；更长输入被客户端转文档提示拦下，已取消 | 通过 E018/E022：两段原生AX完整匹配及边界视口，8039B结果文件下载打开；末尾LF差异保留 |
+| TXT原件 | blocked：未找到独立真人群上传TXT证据，群文本任务产生TXT不等于上传TXT | 通过 E001：TXT客户端下载、TextEdit打开 | 通过 E017：多选TXT/CSV被拆成两消息，分别读取 | 通过 E001/E017等：多个TXT下载打开、摘要一致 |
+| CSV原件 | blocked：暂无本双账号范围UI证据 | blocked：暂无本双账号范围下载打开证据 | 通过 E001/E017：53B输入与后续CSV原件 | 通过 E025：原E001的79B CSV下载、Quick Look表格打开、摘要一致 |
+| PDF原件 | 通过 E004 | 通过 E004/E007：群PDF下载打开补证 | 通过 E004，含实际Kimi读取 | 通过 E004：Quick Look打开 |
+| DOCX原件 | 通过 E008 | 通过 E008：TextEdit打开 | 通过 E008，含实际Kimi提取 | 通过 E008：TextEdit打开及提取TXT下载 |
+| XLSX原件 | 通过 E010 | 通过 E010：Numbers打开 | 通过 E010，含实际Kimi提取 | 通过 E010：Numbers打开及提取TXT下载 |
+| ZIP原件 | 通过 E010 | 通过 E010：系统解包、内部TXT打开 | 通过 E010，含实际Kimi读取 | 通过 E010：系统解包、内部TXT打开及报告下载 |
+| PNG内容/原件 | 通过 E004/E006：原生上传、别名校验、图文任务 | 部分/blocked：旧Markdown可见及资源一致；原生image客户端下载尚缺 | 通过 E004/E006：原生图片、读图及别名回归 | 通过 E011/E012：独立image查看器、下载、Quick Look；含Kimi实际生成PNG |
+| WAV作为文件 | blocked：原群范围答复未到 | blocked：原群范围答复未到 | 通过 E014：原件及实际分析 | 通过 E013/E014：下载、Quick Look音频播放器；不声称听觉质量 |
+| MP4作为文件 | blocked：原群范围答复未到 | blocked：原群范围答复未到 | 通过 E014：原件及实际分析 | 通过 E014：客户端视频卡片实际播放/保存/系统打开 |
+| 原生语音条 | blocked：缺真实原生类型输入证据 | blocked：官方当前shortcut按file，尚无独立语音发送闭环 | blocked：缺真实原生类型输入证据 | blocked：WAV文件不能代替语音条 |
+| 独立video协议 | blocked：未验证独立协议类型 | blocked：MP4文件能力不能外推独立协议 | blocked：未验证独立协议类型 | blocked：file协议MP4可播放，但不算独立video协议 |
+| 引用/回复关系 | blocked：尚缺原群UI引用 | blocked：旧单账号API证据不替代双账号UI | blocked：右键/坐标/Command+Up未成功；E025修改/帮助菜单亦无明确命令 | blocked：尚无引用真实闭环，未发任务 |
+| 单消息多附件 | blocked：尚缺 | blocked：尚缺 | blocked：E017客户端拆成两消息；分条上传及后续合并通过 | blocked：多条文件投递不等于一条含多个附件 |
+
+上述音视频样本均约1秒；DOCX为简单段落，XLSX为简单单元格，ZIP仅文本。复杂排版、宏、加密、超大文件、恶意内容不在这些通过结论内。JPEG/动画图片也不能从PNG通过推定。
+
+## MUST逐项核对
+
+| PRD | 当前判定 | 可复核证据 / 仍需完成 |
+|---|---|---|
+| R01 通用接口与路由 | 已覆盖主要判据；交付终检待做 | CLI/HTTP/配置、多路由隔离；E020统一manager；E021新venv六入口与18模块摘要。不是绑定liev组织的产品 |
+| R02 身份与bot边界 | 当前普通账号路线通过 | E001 veil真人输入、liev真人回复、通过AI发送；docs/25分别说明user、bot/dev connect、OpenClaw、数字员工，未创建bot |
+| R03 双向收发与执行策略 | 当前两账号基础路径通过 | E001/E004/E005/E007，群普通消息收取但不执行、自身回复不触发；外部范围未实测 |
+| R04 文本及引用 | 未完成 | E018/E022长文、E016重复status不同消息已过；上表群长文、引用缺口保留 |
+| R05 常用附件 | 未完成 | PDF/DOCX/XLSX/ZIP四方向原件及下载打开通过；E025补私聊CSV；群TXT入站及CSV双向仍缺 |
+| R06 媒体内容/类型/呈现 | 未完成 | PNG私聊原生与WAV/MP4文件私聊通过；群新媒体、原生语音及独立video见上表，不能用文件替代 |
+| R07 附件与真实工具 | 主要路径通过，组合边界未完成 | 多格式Kimi真工具和文件回原会话；E017分条多附件合并；引用/单消息多附件待处置 |
+| R08 会话/队列/控制/失败 | 私聊通过；群控制未完成 | E016真实cancel停止子进程、新session；E019明确拒绝与提示；E024 malformed输出failed原样保留、未交付局部文件。无OS恶意隔离结论 |
+| R09 至少一个本地执行器 | 通过 | Kimi真实Read/Write/Bash多轮与交付；Codex超时独立跟踪，不增加双runtime强制门槛 |
+| R10 官方与自研边界 | 已覆盖当前实现 | docs/25/33/41/43/44：官方DWS身份/通讯/资源/办公，自研队列/路由/恢复；image上传叶子明确为补充。E024代理仅测试装置，非新后端 |
+| R11 WeCom/Slack/Telegram参考 | 已有研究与适用边界 | docs/03/21/24；不复制账号数据、不把平台特性照搬为钉钉能力 |
+| R12 可复用资料 | 持续更新，最终交接未完成 | docs/17为当前状态，docs/40–44为最新运行及故障证据；历史文档按时间保留，不把旧部署指令当当前命令 |
+| R13 持久与恢复 | 未完成 | E007停机/订阅进程恢复、E023实际history故障、E024既有Stream隧道中断已过；真实失效凭据仍缺；24h原run未满时长，维护不可用保留 |
+| R14 Git/隐私/检出验证 | 阶段通过，最终封版未完成 | E021干净新venv；当前131回归；分阶段本地提交、manifest/暂存隐私门；无远程发布 |
+
+SHOULD保持原级别：R15已通过代表性doc/todo/calendar/draft，其他办公流程继续列缺口；R16外部/bot无现场环境；R17流式卡片/审批/追问未实现。均不能反过来掩盖MUST缺项。
+
+## 证据入口与复核
+
+- TXT/基础CSV：[docs/27](../../docs/27-two-account-ui-acceptance.md)，E025补验命令`python3 scripts/accept_csv_client_open.py`，原始UI及客户端下载件只在`local/csv-client-open-20261112/`。
+- PNG/PDF：[docs/28](../../docs/28-media-matrix-and-real-events.md)、[docs/29](../../docs/29-stream-service-and-offline-recovery.md)、[docs/33](../../docs/33-native-image-bridge.md)；实际文件名以文档索引为准。
+- DOCX/XLSX/ZIP：[docs/30](../../docs/30-docx-ui-and-reliability-start.md)、[docs/31](../../docs/31-xlsx-zip-ui-acceptance.md)。
+- 音视频：[docs/34](../../docs/34-audio-video-file-progress.md)。
+- 所有E编号、审计脚本与UI记录映射见[EVIDENCE](EVIDENCE.md)。复核已有实验只读，不换key重投。冻结快照记录当时计数，旧failed/blocked/cancelled/rejected不删除。
+
+没有将总任务标完成；原心跳继续。原24h观察起点仍为11月11日19:36:08，最早11月12日19:36:08后评估。

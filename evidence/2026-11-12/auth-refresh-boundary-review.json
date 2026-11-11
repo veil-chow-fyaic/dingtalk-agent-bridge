@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-11-12T01:59:49.941916+08:00",
+  "version": "v1.0.67",
+  "exitCode": 0,
+  "status": {
+    "success": true,
+    "authenticated": true,
+    "refreshed": null,
+    "token_valid": true,
+    "refresh_token_valid": true,
+    "expires_at": "2026-11-12T02:44:32.444972+08:00",
+    "refresh_expires_at": "2026-12-12T00:44:32.444972+08:00",
+    "reason": null
+  },
+  "mode": "auth status --readonly; no refresh requested",
+  "sourceHashes": {
+    "internal/app/auth_command.go": "babf31a530d0578ed09dc4b96f82da86e606c576538f44f90225dec926ef85a6",
+    "internal/app/auth_status_readonly.go": "52643d29b9dda608e62042bc65bc83eec871472344ecc2aca33e583978a721ea",
+    "internal/auth/token.go": "5673463a0e32dcfcc8f550840183a59237a4336db093c000e5a12fd36821a185",
+    "internal/auth/oauth_provider.go": "730adacbb193614ac86fafdae4266dcb33c3f9fdc9ab0eef82c160b1e9f68103",
+    "internal/app/auth_refresh_retry.go": "ea0e2c601e28a6b426fa1de68e95d72c428ab0dec80aa62bb2ac9c2bebddf8bc"
+  },
+  "claims": {
+    "readonlyDoesNotRefresh": true,
+    "accessValidityBufferSeconds": 300,
+    "ordinaryStatusCanRefresh": true,
+    "refreshFailureOrExpiryRecoveryLiveTestPassed": false,
+    "credentialValuesReadOrCopiedByBridge": false
+  },
+  "nextStep": "Observe natural access expiry using readonly metadata; refresh rollover alone must not be labeled revoked/expired refresh-credential recovery"
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "original_job_completed": true,
+    "original_artifact_still_matches": true,
+    "client_download_matches_original": true,
+    "client_download_79_bytes": true,
+    "csv_cells_match_expected": true,
+    "group_jobs_unchanged_during_ui": true,
+    "group_jobs_still_preserved": true,
+    "group_outbox_unchanged_during_ui": true,
+    "group_outbox_still_preserved": true,
+    "group_deliveries_unchanged_during_ui": true,
+    "group_deliveries_still_preserved": true,
+    "direct_jobs_unchanged_during_ui": true,
+    "direct_jobs_still_preserved": true,
+    "direct_outbox_unchanged_during_ui": true,
+    "direct_outbox_still_preserved": true,
+    "direct_deliveries_unchanged_during_ui": true,
+    "direct_deliveries_still_preserved": true,
+    "original_job_still_preserved": true,
+    "original_file_found_in_chat_files": true,
+    "original_chat_card_downloadable": true,
+    "quick_look_table_content_recorded": true,
+    "reviewed_screenshot_preserved": true
+  },
+  "bytes": 79,
+  "sha256": "d12d0040214b6753dc25cc2633bda6535ec2f412d18213d1484f6a8bdbc2f342",
+  "newMessagesSent": 0,
+  "newRuntimeTasks": 0,
+  "scope": "E001 direct outbound CSV downloaded from original native chat and opened in Finder Quick Look; UI observation recorded separately",
+  "limits": [
+    "No new group CSV evidence",
+    "No spreadsheet editing/formula or large-file coverage"
+  ],
+  "ok": true
+}

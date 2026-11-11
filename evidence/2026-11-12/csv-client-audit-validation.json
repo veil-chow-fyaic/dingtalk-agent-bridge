@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-12",
+  "baselineChecks": 22,
+  "checks": {
+    "corrupted_download_rejected": true,
+    "missing_open_ui_rejected": true
+  },
+  "method": "In-memory read substitution; no originals or ledgers changed",
+  "ok": true
+}

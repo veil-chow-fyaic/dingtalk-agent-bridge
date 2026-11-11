@@ -91,3 +91,7 @@ E018旧两段长回复已在主聊天完整AX逐字比对并核对7张首尾/边
 只对本bridge两consumer共享bus设置loopback CONNECT隧道，实际切断既有WebSocket89.446秒并阻止重连，history保持直连；同一bus/consumer/bridge进程恢复后收7提示，无重复任务。A原生UI任务实际Kimi算1927，但最终输出续写虚构下一任务而非JSON，gateway正确拒绝，failed/JSONDecodeError和局部文件/日志保持，仅ack＋失败提示，不重试/不交付局部文件；B不同新UI任务实际3127、三确认回复、37B客户端下载Quick Look打开。不是解析器误判，不放宽解析或把A改成功。
 50审计/4负向检查、131回归（新增4代理socket测试＋1局部产物后格式错误回归）；18产品模块仍与E021相同。工具scripts/network_fault_proxy.py仅测试，不是新传输后端，不解密TLS/记录载荷。setup/cleanup维护已记，临时wrapper/bus/proxy全部撤除，配置精确恢复、DM官方上下文恢复、manager/live doctor健康。只读复核accept_stream_network_recovery.py，docs/44。
 当前DM39任务/94outbox（93确认1拒绝），其中新增A failed保留；群3任务/7outbox无变化。原观察run/PID/起点保持，冻结722样本6.01h/5不可用，未满24h。下一段C01引用必须新入口（菜单/明确快捷键），不重复失败右键；并推进MUST/四方向验收矩阵与安全可行的凭据恢复方案，不撤真实授权。
+
+## 2026-11-12 E025 CSV补验与逐格自检
+原E001私聊CSV从既有聊天文件搜索定位并下载，79B Quick Look实际表格可见36/18/TOTAL54，原件SHA一致；零新消息/任务，群/私聊全部jobs/outbox/deliveries逐行保持。22只读检查及2负向检查通过，复核accept_csv_client_open.py，docs/27补节；产品代码不改、131回归版本保持。原生修改/帮助菜单无明确引用入口，未发送引用，不重试旧右键/坐标路径。
+ACCEPTANCE_MATRIX.md明确四方向与R01–R14逐项状态，群TXT入站/CSV双向、群长文/控制、群新媒体、引用、单消息多附件、原生类型、真实失效凭据和24h仍缺；不因已有测试量标完成。原观察冻结758样本6.31h/5不可用，run/PID/起点不变，未满24h。下一步沿CRITICAL_PATH从官方明确入口/凭据条件查证后推进可行私聊项，群范围答复未到不扩展。

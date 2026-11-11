@@ -1,5 +1,7 @@
 # 当前执行清单与闭环状态
 
+最新补验E025：原E001私聊79B CSV已从既有文件卡片下载，并在Quick Look实际打开表格36/18/TOTAL54，摘要一致；22只读检查/2负向通过、零新消息/任务。当前[四方向与MUST矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)明确列出群TXT入站/CSV双向等未验格子；引用修改/帮助菜单未找到命令。原观察冻结758样本6.31h/5不可用，未满24h；当前产品131回归版本不变。详见[CSV补验](27-two-account-ui-acceptance.md)。
+
 最新检查点（2026-11-12）：[E024真实Stream断连](44-stream-network-recovery-and-runtime-failure.md)已完成限定范围验收。切断已建立WebSocket89.446秒，history仍接收veil任务；恢复后同一daemon/consumer/bridge进程收7条有效提示，没有重复任务。A工具计算1927但模型最终输出违约，failed及用户侧提示保留，不自动重试；B不同新任务3127完成，37B客户端下载Quick Look打开且原件一致。50项审计、4项负向检查与131回归通过，18个产品模块保持E021版本。
 
 当前临时代理和配置均已恢复，三进程由manager正常管理。原24h观察器冻结722样本约6.01h/累计5不可用，维护单列，不标24h。[E022长文原生UI](42-long-bubble-native-ui.md)、[E023历史HTTP断网恢复](43-history-network-outage-recovery.md)保持。引用、单消息多附件、真实失效凭据及余下矩阵继续；群第三人范围问题待答复。下一步以[关键路径](../plans/completion/CRITICAL_PATH.md)为准。
