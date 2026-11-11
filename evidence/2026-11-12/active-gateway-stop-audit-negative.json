@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "cases": {
+    "late_write": {
+      "rejected": true,
+      "failedChecks": [
+        "start_file_unchanged_late_file_absent"
+      ]
+    },
+    "early_check": {
+      "rejected": true,
+      "failedChecks": [
+        "checked_after_wait_deadline"
+      ]
+    },
+    "surviving_tool": {
+      "rejected": true,
+      "failedChecks": [
+        "all_original_processes_gone"
+      ]
+    },
+    "foreign_ancestry": {
+      "rejected": true,
+      "failedChecks": [
+        "owned_tool_ancestry"
+      ]
+    }
+  },
+  "mutations": "In-memory only; original UI evidence and running service unchanged."
+}

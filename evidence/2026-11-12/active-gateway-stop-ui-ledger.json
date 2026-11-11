@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "only_direct_gateway_replaced": true,
+    "owned_tool_ancestry": true,
+    "actual_sleep_and_late_write_command": true,
+    "all_original_processes_gone": true,
+    "stopped_before_original_deadline": true,
+    "restarted_healthy": true,
+    "checked_after_wait_deadline": true,
+    "start_file_unchanged_late_file_absent": true,
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "exact_two_new_tasks": true,
+    "exact_four_confirmed_outbox": true,
+    "native_session_unchanged": true,
+    "cancelled_authorized_input": true,
+    "cancelled_bound_confirmed_replies": true,
+    "cancelled_no_self_echo": true,
+    "cancelled_log_preserved": true,
+    "followup_authorized_input": true,
+    "followup_bound_confirmed_replies": true,
+    "followup_no_self_echo": true,
+    "followup_log_preserved": true,
+    "running_became_cancelled_without_result": true,
+    "one_cancellation_feedback": true,
+    "original_task_not_replayed": true,
+    "followup_after_deadline": true,
+    "followup_real_read_and_calculate": true,
+    "followup_completed_no_files": true,
+    "native_cancel_feedback": true,
+    "native_full_followup": true,
+    "exact_two_ui_send_attempts": true,
+    "reviewed_frames_preserved": true,
+    "still_no_late_write": true
+  },
+  "ok": true,
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 52,
+      "outbox": 131,
+      "deliveries": 140,
+      "events": 193
+    }
+  },
+  "scope": "Native DM task, actual Python/shell ancestry, managed gateway SIGTERM, one cancellation, restart and real read-only follow-up. Not SIGKILL, OS sandbox, group controls or unrelated process control."
+}

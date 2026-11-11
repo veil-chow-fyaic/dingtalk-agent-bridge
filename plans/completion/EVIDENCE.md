@@ -90,3 +90,8 @@
 - docs/58；附件原名/类型/字节数/SHA及安全路径独立传runtime，缺失名null；163全量、Python3.12 gateway34、新wheel六入口18模块通过。
 - 原生准备任务后上传135B中文/空格/emoji名CSV，实际csv+Decimal处理、175B CSV与572B JSON均客户端下载Quick Look打开，原名/三行/57.00正确。48审计4负向；LF原件保留，Quick Look视觉扁平化另记。
 - 两任务六确认，DM50/127/136/187、群保持；两gateway空闲加载，传输/原观察未重启。1150样本9.584h未满24h。私有local/unicode-csv-ui-20261112。
+
+## E042 — 真实工具中停止私聊gateway并恢复
+- docs/59；scripts/accept_active_gateway_stop_ui.py 41只读检查/4负向通过；active-gateway-stop-ui-ledger与active-gateway-stop-audit-negative.json。
+- veil真实私聊，确认Python→Shell→Kimi→gateway归属后正常stop；四进程退出、取消反馈UI可见；104.38秒后无晚写，恢复后实际只读检查及703完整回复。首次取消日志仅版本元事件，真实命令证据来自现场ps与开始标记。
+- 两任务四确认，DM52/131/140/193；群、旧记录/日志、传输和原观察保持，同native session。1175样本9.792h仍未满24h，产品沿用E041，历史manager错误不改绿。私有local/active-stop-ui-20261112。
