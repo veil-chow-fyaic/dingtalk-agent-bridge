@@ -95,3 +95,8 @@
 - docs/59；scripts/accept_active_gateway_stop_ui.py 41只读检查/4负向通过；active-gateway-stop-ui-ledger与active-gateway-stop-audit-negative.json。
 - veil真实私聊，确认Python→Shell→Kimi→gateway归属后正常stop；四进程退出、取消反馈UI可见；104.38秒后无晚写，恢复后实际只读检查及703完整回复。首次取消日志仅版本元事件，真实命令证据来自现场ps与开始标记。
 - 两任务四确认，DM52/131/140/193；群、旧记录/日志、传输和原观察保持，同native session。1175样本9.792h仍未满24h，产品沿用E041，历史manager错误不改绿。私有local/active-stop-ui-20261112。
+
+## E043 — 官方会议边界与个人钉盘真实交付
+- docs/60；conference固定v1.0.67源码/Help明确下线，本机退出5；日程会议、实体会议室、听记分开，8边界检查通过，official-office-boundary.json。
+- 一次原生私聊交办，Kimi实际官方mySpace/根目录查询、唯一意图/一次+upload/按ID+info和+download，57B原件比对，IM完整回复和客户端下载Quick Look打开。39审计4负向，drive-ui-ledger和drive-audit-negative.json。
+- DM53/134/143/197、群/旧日志保持，同session无部署变化；1200样本10.001h未满24h。私有local/office-boundary-20261112；下段合成语音本人听记，不录环境/发卡片，未知按原ID对账。

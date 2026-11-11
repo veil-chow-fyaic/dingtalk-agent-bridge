@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "exact_one_new_task": true,
+    "exact_three_confirmed_outbox": true,
+    "native_session_unchanged": true,
+    "authorized_completed_input": true,
+    "liev_bound_replies": true,
+    "no_self_echo": true,
+    "run_log_preserved": true,
+    "office_records_preserved": true,
+    "unique_personal_space": true,
+    "official_created_file_target": true,
+    "single_preserved_upload_attempt": true,
+    "upload_target_scope_and_no_overwrite": true,
+    "independent_info_same_created_node": true,
+    "official_download_same_node": true,
+    "exact_one_real_upload_command": true,
+    "actual_info_download_and_byte_comparison": true,
+    "official_info_download_exit_zero": true,
+    "source_exact_utf8": true,
+    "official_download_exact": true,
+    "native_client_exact": true,
+    "expected_57_bytes": true,
+    "one_official_download_artifact": true,
+    "native_download_completed": true,
+    "native_file_opened": true,
+    "native_full_reply": true,
+    "no_private_ids_in_result": true,
+    "one_native_input_attempt": true,
+    "reviewed_frames_preserved": true
+  },
+  "file": {
+    "bytes": 57,
+    "sha256": "40b246d9478146acc659acf0a9afff40a642eb83934948206d2fe51ccf670347"
+  },
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 53,
+      "outbox": 134,
+      "deliveries": 143,
+      "events": 197
+    }
+  },
+  "scope": "One personal Drive file via official CLI and actual local Kimi; native DM request/reply, client download/open. No shared space, permissions, independent meeting or ASR claim."
+}

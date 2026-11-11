@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "cases": {
+    "wrong_space": {
+      "rejected": true,
+      "failedChecks": [
+        "upload_target_scope_and_no_overwrite"
+      ]
+    },
+    "wrong_download_node": {
+      "rejected": true,
+      "failedChecks": [
+        "official_download_same_node"
+      ]
+    },
+    "overwrite": {
+      "rejected": true,
+      "failedChecks": [
+        "upload_target_scope_and_no_overwrite"
+      ]
+    },
+    "changed_client_bytes": {
+      "rejected": true,
+      "failedChecks": [
+        "native_client_exact",
+        "expected_57_bytes"
+      ]
+    }
+  },
+  "mutations": "In-memory copies only; no remote writes or real evidence changes."
+}

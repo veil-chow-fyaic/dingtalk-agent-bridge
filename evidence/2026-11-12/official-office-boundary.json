@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-12",
+  "version": "1.0.67",
+  "ok": true,
+  "checks": {
+    "conference_unavailable_exit5": true,
+    "drive_search_read_success": true,
+    "drive_search_can_return_online_doc": true,
+    "minutes_mine_empty_complete": true,
+    "personal_drive_identified": true,
+    "drive_official_upload_available_unknown_idempotency": true,
+    "minutes_official_upload_and_resume": true,
+    "conference_source_no_backend": true
+  },
+  "sources": {
+    "internal/helpers/conference.go": "2bc1ea518fcc151e4a011f1a037f1e4dbdae72804961fdcc89390ba623eda2c8",
+    "internal/helpers/drive.go": "71c740d7a890eb3d0319e4c29e770514746ced30a2e50693af9d2177b8dd9aea",
+    "skills/multi/dingtalk-calendar/references/calendar.md": "1c0f3a53e9cdee84e0857de1dc2377483826df9d5eb048ddbdfc1b696036249f"
+  },
+  "scope": "Pinned official source/help/schema and real read-only bound-profile queries. No claim of live conference, ASR upload, native voice or drive write acceptance from these reads."
+}
