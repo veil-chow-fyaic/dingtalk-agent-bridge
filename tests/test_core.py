@@ -71,6 +71,12 @@ class Tests(unittest.TestCase):
         self.fake.messages[0].pop('senderId')
         self.b.sync()
         self.assertIsNone(self.b.events()[0]['from_self'])
+    def test_health_counts_only_observed_peer_events(self):
+        self.assertEqual(self.b.health()['other_member_inbound'],'not_observed')
+        self.fake.messages.append({'messageId':'unknown','conversationId':'g','text':'unknown sender'})
+        self.assertEqual(self.b.sync()['other_member_events_observed'],1)
+        self.assertEqual(self.b.health()['other_member_events'],1)
+        self.assertEqual(self.b.health()['other_member_inbound'],'observed')
     def test_partial_history_recovers_after_restart(self):
         self.fake.complete = False
         self.b.sync()

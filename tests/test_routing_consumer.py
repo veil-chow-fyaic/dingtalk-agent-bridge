@@ -29,6 +29,29 @@ class Tests(unittest.TestCase):
         m=normalize(event(refs=[ref('fileId','f')]),CFG)
         self.assertIn('unpositioned_resources',m['issues'])
         with self.assertRaises(ValueError):normalize(event(quote={'conversationId':'other','text':'secret'}),CFG)
+    def test_native_image_alias_requires_identical_downloaded_bytes(self):
+        refs=[ref('mediaId','positioned'),{**ref('mediaId','native'),'contentType':'image'}]
+        original=normalize(event(text='[图片消息](mediaId=positioned)',refs=refs),CFG)
+        self.assertEqual(original['issues'],[])
+        self.assertEqual(len(list(media_parts(original))),1)
+        folder=self.root/'local/runtime/downloads/alias';folder.mkdir(parents=True)
+        records=[]
+        for rid in ('positioned','native'):
+            p=folder/(rid+'.png');p.write_bytes(b'identical')
+            records.append({'resourceType':'mediaId','resourceId':rid,'localPath':str(p.relative_to(self.root)),
+                            'sizeBytes':9,'sha256':hashlib.sha256(b'identical').hexdigest()})
+        ledger={'ok':True,'downloads':records}
+        ready=materialize(copy.deepcopy(original),ledger,self.root)
+        self.assertTrue(ready['imageAliasCandidates'][0]['verified'])
+        self.assertEqual(ready['imageAliasCandidates'][0]['aliasOf'],ref('mediaId','positioned'))
+        with self.assertRaisesRegex(ValueError,'missing_downloaded_resource'):
+            materialize(copy.deepcopy(original),{'ok':True,'downloads':records[:1]},self.root)
+        (folder/'native.png').write_bytes(b'different')
+        records[1]['sha256']=hashlib.sha256(b'different').hexdigest()
+        rejected=copy.deepcopy(original)
+        with self.assertRaisesRegex(ValueError,'unpositioned_image_not_alias'):
+            materialize(rejected,ledger,self.root)
+        self.assertNotIn('path',rejected['parts'][0])
     def test_inbox_transaction_rollback_and_restart(self):
         i=Inbox(self.root,CFG)
         with self.assertRaises(ValueError):i.ingest({'events':[event()], 'next_cursor':99})

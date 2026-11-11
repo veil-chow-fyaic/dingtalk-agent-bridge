@@ -145,7 +145,8 @@ class Bridge:
                 self.db.commit()
                 if inserted:self.event_condition.notify_all()
             return {'inserted': inserted, 'complete': complete, 'count': data.get('count'),
-                    'source': 'history_poll', 'deep':deep, 'inbound_other_member_verified': False}
+                    'source': 'history_poll', 'deep':deep,
+                    'other_member_events_observed':self.health()['other_member_events']}
 
     def events(self, after=0, limit=100, wait_seconds=0):
         if type(after) is not int or after < 0 or type(limit) is not int or not 1 <= limit <= 200:
@@ -305,9 +306,11 @@ class Bridge:
         with self.lock:
             r = self.db.execute('SELECT value FROM meta WHERE key="last_sync"').fetchone()
             count = self.db.execute('SELECT count(*) FROM events').fetchone()[0]
+            peers = self.db.execute('SELECT count(*) FROM events WHERE json_extract(body,"$.from_self")=0').fetchone()[0]
         return {'mode': 'experimental', 'transport': 'dws_history_poll', 'events': count,
                 'last_sync': json.loads(r[0]) if r else None,
-                'native_audio_video': False, 'other_member_inbound': 'skipped_by_user'}
+                'native_audio_video': False, 'other_member_events':peers,
+                'other_member_inbound': 'observed' if peers else 'not_observed'}
 
     def close(self):
         self.db.close()

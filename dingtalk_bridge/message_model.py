@@ -50,12 +50,23 @@ def project(raw, group, depth=0):
         if offset<len(text):parts.append({'type':'text','text':text[offset:]})
         if ('[图片消息]' in text and not IMAGE.search(text)) or ('[文件]' in text and not file_match):
             issues.append('unparsed_media_marker')
+    # The native client can expose a second mediaId for the same image. Do not
+    # discard it or guess its placement. Hydration must prove byte equality with
+    # a positioned image before this candidate can reach the runtime.
+    extra=set(refs)-used-quoted_keys
+    candidates=[]
+    if any(p['type']=='image' for p in parts):
+        for key in sorted(extra):
+            if key[0]=='mediaId' and refs[key].get('contentType')=='image':
+                candidates.append({'resource':{'type':key[0],'resourceId':key[1]}})
+    unresolved=extra-{ref_key(x['resource']) for x in candidates}
     # DWS aggregates quoted resources at the top level. They belong in quote only.
-    if set(refs)-used-quoted_keys:issues.append('unpositioned_resources')
+    if unresolved:issues.append('unpositioned_resources')
     if not parts:issues.append('empty_projection')
     for flag in ('partial','truncated'):
         if raw.get(flag):issues.append(flag)
     result={'parts':parts,'issues':sorted(set(issues)),'fidelity':'dws_text_projection'}
+    if candidates:result['imageAliasCandidates']=candidates
     if quote is not None:result['quote']=quote
     return result
 
@@ -104,7 +115,22 @@ def materialize(model,ledger,root,cache_root=None):
         if digest!=entry.get('sha256') or len(data)!=entry.get('sizeBytes'):raise ValueError('download_integrity_mismatch')
         records[key]={'path':str(path),'sha256':digest,'sizeBytes':len(data)}
     needed={ref_key(p['resource']) for p in media_parts(model)}
+    aliases=[]
+    def collect(node):
+        for candidate in node.get('imageAliasCandidates',[]):aliases.append((node,candidate))
+        if node.get('quote'):collect(node['quote'])
+    collect(model)
+    needed.update(ref_key(a['resource']) for _,a in aliases)
     if not needed.issubset(records):raise ValueError('missing_downloaded_resource')
+    verified=[]
+    for node,candidate in aliases:
+        record=records[ref_key(candidate['resource'])]
+        matches=[p for p in node['parts'] if p['type']=='image' and
+                 records[ref_key(p['resource'])]['sha256']==record['sha256']]
+        if not matches:raise ValueError('unpositioned_image_not_alias')
+        verified.append((candidate,record,matches[0]['resource']))
     # Assign only after all resources have passed validation (no partial ready payload).
     for part in media_parts(model):part.update(records[ref_key(part['resource'])])
+    for candidate,record,resource in verified:
+        candidate.update(record,verified=True,aliasOf=dict(resource))
     return model

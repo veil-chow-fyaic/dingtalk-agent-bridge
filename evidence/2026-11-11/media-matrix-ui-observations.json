@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-11",
+  "observer": "Codex native CUA, veil logged in; DWS bound to liev",
+  "observations": [
+    {
+      "local_file": "group-png-in.png",
+      "sha256": "0d9b921c2d6ea5b6ce0b55b046c9a8899b7070ef83d8dac5f1dfcb585ea6c67c",
+      "observation": "veil原生群图片可见"
+    },
+    {
+      "local_file": "group-png-out.png",
+      "sha256": "171ec5196b0b4df48ce791f419cdca5cf238ac999eb031bb43ec9811d086b667",
+      "observation": "liev群图片及通过AI发送可见"
+    },
+    {
+      "local_file": "group-pdf-out.png",
+      "sha256": "05afe9d2870871ed11e5695487ba9977576b1ae2cafb0b04c635af4be8b405b1",
+      "observation": "liev群PDF卡片及预览可见"
+    },
+    {
+      "local_file": "dm-event-reply.png",
+      "sha256": "5245003e481d715d6ddf05dab800ada487ed74f52f40089699353d60722d0734",
+      "observation": "veil事件命令及liev实际回答可见"
+    },
+    {
+      "local_file": "direct-media-out.png",
+      "sha256": "2147b7c22f58ba6f87191eb6ffffd5831e96cb5eab01b69c27a225823d4e2b83",
+      "observation": "liev私聊PDF卡片和图片消息可见，图片上部被裁出视口"
+    },
+    {
+      "local_file": "direct-png-in.png",
+      "sha256": "fa148e8776137f1a39bfa06ebd109c570bcc816c090cd75c4083bd82634ddadc",
+      "observation": "veil私聊原生图片与PDF接收回执"
+    },
+    {
+      "local_file": "direct-pdf-opened.png",
+      "sha256": "6dbce7972d4669a06e4f2826ad753d4b6d3b14074669d8dac066e1437d09eb01",
+      "observation": "客户端下载PDF在Finder Quick Look打开，内容可读"
+    },
+    {
+      "local_file": "direct-png-fix-reply.png",
+      "sha256": "e7c8419ed3246a274a11f4b71e943625c5ed67ff68cb1d8657501eb29d1ab148",
+      "observation": "修复后私聊图文任务回答正确"
+    },
+    {
+      "local_file": "group-png-task-reply.png",
+      "sha256": "505a6e9167747aab67489efd761f3678865b24ed9598dec0a0af52c2df170494",
+      "observation": "群图文任务回答正确"
+    },
+    {
+      "local_file": "direct-pure-png-fix-reply.png",
+      "sha256": "9db409d894e94af4700a3c0d3463ace2b69b26c0e6d48e9e32a1dcafd18eb5df",
+      "observation": "原生纯图片重测，实际双资源别名验证成功后，liev UI回复正确文字及320×180"
+    }
+  ],
+  "limitations": [
+    "group PDF client download/open pending",
+    "outbound images client save pending",
+    "initial direct image blocked before alias fix; original failure retained",
+    "UI screenshots contain private sidebar and are excluded from Git"
+  ]
+}

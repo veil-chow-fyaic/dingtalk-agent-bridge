@@ -2,7 +2,9 @@
 
 通用钉钉 IM 工具：任意 Agent/程序通过统一 CLI 或 HTTP 接入普通账号私聊、群聊及组织工具，不依赖特定组织或 Agent runtime。官方 DWS 优先；AX只补已证实缺口，不预设完整移植WeCom。
 
-**2026-11-11双账号UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
+**2026-11-11双账号基础UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
+
+最新扩展：[PNG/PDF双向、真人图片缺陷修复与真实事件](docs/28-media-matrix-and-real-events.md)。8个传输案例、10份资源原件一致；群/私聊识图任务UI通过，真实Stream采到16条业务事件。尚未完成所有格式及长期稳定性。活动长任务见[续跑入口](plans/completion/INIT.md)。
 
 目标是把钉钉作为本地 Agent 的工作入口：群聊/私聊交办、附件输入、执行反馈、连续上下文与结果交付。bridge 保持通用，同时交付可用的具体 runtime 接入。官方已有 `dws dev connect` 机器人本地接入；我们补的是普通账号路线的执行与恢复。官方/自研边界、71项回归和新增现场场景见 [能力边界与场景台账](docs/25-official-boundary-and-scenarios.md)。先看 [实际使用与验收](docs/24-local-agent-product-and-acceptance.md)。
 
@@ -35,13 +37,13 @@
 
 用户已授权：客户端veil（组织名周威），DWS精确绑定liev；只监听原内部群和这两人的私聊。组织/profile是鉴权路由上下文，不是产品固定租户。旧周威账本与配置备份保留。
 
-隔离DWS v1.0.67、全局v1.0.61保留。HTTP+SQLite监听127.0.0.1:18768，每15秒补读两个指定会话；群和私聊各一个Kimi gateway，仅允许veil发任务，liev自身消息忽略，无开机自启。本轮70事件、5任务完成、14确认投递。私聊直接发文字/附件，群以 `/agent` 开头。Kimi没有OS级沙箱，未对任意联系人开放。
+隔离DWS v1.0.67、全局v1.0.61保留。HTTP+SQLite监听127.0.0.1:18768，每15秒补读两个指定会话；群和私聊各一个Kimi gateway，仅允许veil发任务，liev自身消息忽略，无开机自启。70事件/5任务/14投递是docs/27的历史基线；新增媒体和事件任务见docs/28，以实时status为准。私聊直接发文字/附件，群以 `/agent` 开头。Kimi没有OS级沙箱，未对任意联系人开放。
 
 ```bash
 python3 scripts/service_ctl.py status
 python3 scripts/agent_ctl.py status
 python3 scripts/agent_ctl.py --config local/agent-direct-config.json status
-python3 scripts/accept_two_account_ui.py
+python3 scripts/accept_media_matrix.py
 python3 -m unittest discover -s tests -v
 python3 scripts/verify_handoff.py
 ```
@@ -50,10 +52,10 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：27份当前/历史分明的知识文档。
+- `docs/`：28份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
-- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和73项回归。
+- `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和76项回归。
 - `local/`：忽略的二进制、账号配置、原始回复、令牌、数据库、附件及日志。**不整包分享这个目录。**
 
-尚未初始化Git或发布GitHub仓库。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。
+已建立本地Git分支`codex/complete-bridge`及基线标签`baseline/ui-2026-11-11`；没有发布远程。提交钩子检查暂存blob中的已知账号ID/令牌和私密路径。`plans/completion/`是唯一活动任务/证据账本，Codex心跳每30分钟续跑（依赖机器与应用在线）。本轮留存的测试对象和清理边界见docs/19、20；未经核实不批量删除。

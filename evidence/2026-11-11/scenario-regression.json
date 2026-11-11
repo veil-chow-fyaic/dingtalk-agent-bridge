@@ -1,8 +1,8 @@
 {
   "date": "2026-11-11",
   "ok": true,
-  "tests": 73,
-  "seconds": 7.564,
+  "tests": 76,
+  "seconds": 10.283,
   "scope": "local unit/integration and real subprocesses with synthetic provider events; no remote business calls",
   "results": [
     {
@@ -194,6 +194,10 @@
       "result": "passed"
     },
     {
+      "test": "test_core.Tests.test_health_counts_only_observed_peer_events",
+      "result": "passed"
+    },
+    {
       "test": "test_core.Tests.test_history_dedup_uses_identity_not_text",
       "result": "passed"
     },
@@ -231,6 +235,10 @@
     },
     {
       "test": "test_core.Tests.test_unobserved_attachment_rejected",
+      "result": "passed"
+    },
+    {
+      "test": "test_privacy.PrivacyTests.test_staged_secret_detected_even_when_working_tree_was_cleaned",
       "result": "passed"
     },
     {
@@ -279,6 +287,10 @@
     },
     {
       "test": "test_routing_consumer.Tests.test_multiroute_identity_and_idempotency_isolation",
+      "result": "passed"
+    },
+    {
+      "test": "test_routing_consumer.Tests.test_native_image_alias_requires_identical_downloaded_bytes",
       "result": "passed"
     },
     {

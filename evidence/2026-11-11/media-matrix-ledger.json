@@ -1,0 +1,181 @@
+{
+  "date": "2026-11-11",
+  "scope": "transport bytes, real event capture and actual runtime; UI observations remain separate",
+  "cases": [
+    {
+      "case": "group-png-in",
+      "resources": 2,
+      "bytes": 1853,
+      "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "group-png-out",
+      "resources": 1,
+      "bytes": 1853,
+      "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "group-pdf-in",
+      "resources": 1,
+      "bytes": 3081,
+      "sha256": "8e327441f34a2eee785cb4b211705da7f368c14d9f808503a0c0fa4ea9aba7bf",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "group-pdf-out",
+      "resources": 1,
+      "bytes": 3081,
+      "sha256": "8e327441f34a2eee785cb4b211705da7f368c14d9f808503a0c0fa4ea9aba7bf",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "direct-png-in",
+      "resources": 2,
+      "bytes": 1853,
+      "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "direct-png-out",
+      "resources": 1,
+      "bytes": 1853,
+      "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "direct-pdf-in",
+      "resources": 1,
+      "bytes": 3081,
+      "sha256": "8e327441f34a2eee785cb4b211705da7f368c14d9f808503a0c0fa4ea9aba7bf",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    },
+    {
+      "case": "direct-pdf-out",
+      "resources": 1,
+      "bytes": 3081,
+      "sha256": "8e327441f34a2eee785cb4b211705da7f368c14d9f808503a0c0fa4ea9aba7bf",
+      "checks": {
+        "committed_event_matches": true,
+        "sender_direction_correct": true,
+        "all_resource_bytes_match_fixture": true,
+        "one_positioned_media": true,
+        "normalized_without_issues": true
+      }
+    }
+  ],
+  "stream": [
+    {
+      "route": "group",
+      "events": 5,
+      "all_in_committed_history": true,
+      "unique_message_ids": 5,
+      "event_clock_to_local_seconds": {
+        "min": 0.551,
+        "max": 0.771
+      },
+      "schema": [
+        "content",
+        "conversation_id",
+        "create_time",
+        "event_id",
+        "event_time",
+        "message_id",
+        "sender",
+        "sender_open_dingtalk_id",
+        "subscribe_id",
+        "timestamp",
+        "type"
+      ]
+    },
+    {
+      "route": "direct",
+      "events": 11,
+      "all_in_committed_history": true,
+      "unique_message_ids": 11,
+      "event_clock_to_local_seconds": {
+        "min": 0.434,
+        "max": 0.819
+      },
+      "schema": [
+        "content",
+        "conversation_id",
+        "create_time",
+        "event_id",
+        "event_time",
+        "message_id",
+        "sender",
+        "sender_open_dingtalk_id",
+        "subscribe_id",
+        "timestamp",
+        "type"
+      ]
+    }
+  ],
+  "tasks": {
+    "group": {
+      "marker": "DAB-MATRIX-IMAGE-GROUP-002",
+      "completed_once_with_correct_answer": true,
+      "aliases_verified_when_present": true,
+      "image_alias_candidates": 0,
+      "historical_blocked_jobs": 0
+    },
+    "direct": {
+      "marker": "DAB-MATRIX-IMAGE-FIX-001",
+      "completed_once_with_correct_answer": true,
+      "aliases_verified_when_present": true,
+      "image_alias_candidates": 0,
+      "historical_blocked_jobs": 1
+    }
+  },
+  "checks": {
+    "ordinary_group_event_not_executed": true,
+    "pure_native_image_retest_completed_with_verified_alias": true,
+    "pure_native_image_retest_correct_answer": true,
+    "direct_client_download_matches_pdf": true
+  },
+  "ok": true
+}
