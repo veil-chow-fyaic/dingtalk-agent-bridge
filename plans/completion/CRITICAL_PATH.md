@@ -1,13 +1,13 @@
 # 当前关键路径
 
-2026-11-12 E030后续，同一CURRENT_MISSION与PRD。逐格结果见ACCEPTANCE_MATRIX.md；历史操作/错误见PROGRESS_LEDGER及99-执行偏差日志，不重复旧实验。
+2026-11-12 E031后续，同一CURRENT_MISSION与PRD。逐格结果见ACCEPTANCE_MATRIX.md；历史操作/错误见PROGRESS_LEDGER及99-执行偏差日志，不重复旧实验。
 
 1. **C01 双账号UI矩阵**：PDF/DOCX/XLSX/ZIP四方向，私聊TXT/CSV、原生PNG、WAV/MP4文件、长气泡、控制命令、多轮均有原件/UI证据。E026补单消息双PNG真实读取/报告下载打开；E027补私聊出站引用气泡，E029补JPEG实际读图/旋转及图片/报告客户端下载打开。仍缺私聊入站引用、普通文件单消息组合/出站组合、原生语音/独立video协议；引用跳原文AX点击offscreen未过。旧右键/坐标/Command+Up/设置导航路径已loop guard，不盲重试。
 2. **C02 事件/恢复**：Stream实收、常驻唤醒、15秒history兜底、停机补漏、订阅子进程恢复、E023 history HTTP真实故障、E024已建立Stream断连89.446秒恢复均有证据；真实失效凭据仍缺。E028已实际观察自然access预刷新，59次readonly采样、后续双路完整同步通过；不能把自然轮换当已失效refresh凭据恢复。禁止复制/改写token、改系统时间或撤真实授权。
 3. **C03 错误保持**：图片别名/status自身计数/UTF-16分段/拒绝对账及失败提示已修实测；旧blocked/cancelled/rejected和E024 A模型违约failed全部保持。未知投递先对账，不换key/切UI补发。E026模型初始Read图片错误保留。
 4. **C04 安装/运行**：E027三进程已加载引用发送；139回归，干净新wheel六入口/18模块同摘要，live doctor健康。manager stop曾报告PID变化保护错误，随后独立status确认旧进程全停才正常start；未强杀或放宽保护。两轮隔离合成worker诊断均未复现，30身份观察保留，loop guard停止重复。E030独立复现并修复pre-signal已退出误报，原during-shutdown根因尚未确定，不混称已修；后续仅有新证据再诊断。
 5. **C05 官方工具/边界**：E021 liev doc/todo/calendar/未发送draft四类实际任务与三报告下载打开保持，DM工具上下文显式启用、群关闭；非强制权限沙箱。官方个人audio/video按file；Raw OpenAPI需完整应用凭据，不能将liev MCP用户授权当应用授权。Codex既有请求是响应流重试超时，根因未知、不重复同样请求；Kimi已满足任选执行器，会议/钉盘/bot/外部仍按SHOULD列缺口。
-6. **C04/C11 长期与终检**：原run=reliability-20261111，起点11月11日19:36:08，观察PID97881未重置。E029冻结897样本7.47h/6不可用，维护单列。最早11月12日19:36后评估24h；不声称同版本零中断，72h延伸。所有MUST/UI格子处置及最终隐私/manifest/检出核验后，才标完成停心跳。
+6. **C04/C11 长期与终检**：原run=reliability-20261111，起点11月11日19:36:08，观察PID97881未重置。E031冻结917样本7.640h/6不可用及3poll_error，维护单列。最早11月12日19:36后评估24h；不声称同版本零中断，72h延伸。所有MUST/UI格子处置及最终隐私/manifest/检出核验后，才标完成停心跳。
 
 下一执行段：
 
@@ -16,4 +16,4 @@
 - 对原生语音和单消息普通多文件，优先官方公开契约及客户端明确入口；当前只有双PNG与文件拆条证据，不能拿文件模式或API接受当原生UI通过。
 - 完成一段就更新审计/矩阵/manifest/隐私与本地Git。当前DM41任务101outbox110传输152事件；群3任务7outbox12传输76事件。E027一次出站引用无新runtime任务；所有已确认实验只读复核。
 
-- E030后下一独立段：对原24h捕获实现只读终检，核验实际时长、停止原因、样本/事件计数、采样缺口、错误和维护分层；未达86400秒必须输出未完成，不新建/重置原观察器。
+- E031只读终检已实现并验证，未来对原run用review_service_observations.py --require-complete；当前退出2是正确未达时长结果。下一独立C01段：超2MiB图片artifact转文件而不压缩的真实UI结果交付，先记录新合成意图，不重放JPEG或PNG旧实验。

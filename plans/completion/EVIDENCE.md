@@ -40,3 +40,5 @@
 | E029 | L4/L5 | JPEG原件实际读图/旋转，1任务4确认回复；原生图片查看器及图片/报告下载打开，同字节；43审计/3负向 | docs/48；jpeg-ui-ledger.json；jpeg-audit-validation.json | 仅私聊小JPEG；客户端追加.png后缀但内容JPEG；短回复未单独观察，原24h7.47h/6不可用 |
 
 | E030 | L3/L4 | 管理器发信号前退出竞态实际合成进程先失败、窄修复；13管理器/139全量、干净wheel六入口18模块；现场无重启/账本保持 | docs/49；manager-exit-race-validation.json；manager-exit-race-install.json | E027 during-shutdown错误根因仍未知；不作为新UI/24h通过证据 |
+
+| E031 | L3/L4阶段 | 只读时长/计数/序列/归属/缺口工具，11新增测试；917真实样本122事件与冻结账本一致，24h门返回2 | docs/50；reliability-progress-review.json；reliability-review-validation.json | 7.640h非24h；6不可达/3poll_error/14维护保留，不证明上游无漏或同版本零中断 |

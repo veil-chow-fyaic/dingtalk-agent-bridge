@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-12",
+  "targetedTests": 11,
+  "targetedPassed": true,
+  "previousProductRegressionTests": 139,
+  "previousProductRegressionPassed": true,
+  "checks": {
+    "actual_partial_run_rejected_by_completion_gate": true,
+    "completion_gate_exit_code_2": true,
+    "no_account_or_conversation_ids_in_public_report": true,
+    "exact_122_local_events_reconciled": true
+  },
+  "testLogSha256": "0553528fa67f943827c5153de327449fd651055a54686b0fa097e9bc64163d6d",
+  "ok": true
+}
