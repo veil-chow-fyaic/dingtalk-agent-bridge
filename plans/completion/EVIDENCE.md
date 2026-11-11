@@ -105,3 +105,8 @@
 - docs/61；scripts/accept_minutes_ui.py 51只读检查/5负向通过，minutes-ui-ledger.json 与 minutes-audit-negative.json。
 - 两次原生输入：准备后单次WAV上传；提示无原稿或答案。Kimi一次官方创建/原taskUuid独立读回，转写/摘要/三行动项准确，关键词空列表明确报告；2125B报告客户端下载Quick Look打开并核尾页。
 - DM55/139/148/204，群/旧证据及native session保持，无部署变化。原观察1229样本10.243h/6不可达仍未满24h。私有local/minutes-ui-20261112；不算原生语音条、独立会议、独立待办指派通过。
+
+## E045 — 崩溃不确定提示及真实工具遗留
+- docs/62；隔离真实Gateway/LocalRuntime实证parent death后工具写入，先失败回归后修正误称停止；163全量与新wheel六入口18模块通过，crash-notice-validation/install。
+- veil单次真实任务，确认Python/Shell/Kimi/gateway归属后只SIGKILL私聊gateway；75.105秒后实际late文件存在。明确身份清理所有原进程后恢复，原任务interrupted不重做、新提示UI可见；新只读核验实际工具/完整回复通过、文件mtime与字节保持。43审计5负向，crash-recovery-ui-ledger/audit-negative；自动父进程丢失清理仍缺。
+- DM57/143/152/210，群及旧账本保持；两gateway加载提示修复，传输/原观察保持，1261样本10.510h仍未满24h。私有local/crash-recovery-20261112。另核官方语音手册仅列手机步骤，无新Mac入口。

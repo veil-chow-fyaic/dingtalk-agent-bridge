@@ -105,7 +105,7 @@ class Gateway:
             interrupted=self.db.execute('SELECT id FROM jobs WHERE state="running"').fetchall()
             self.db.execute('UPDATE jobs SET state="interrupted",error="process_restart" WHERE state="running"')
             for row in interrupted:
-                self.emit(row['id'],'interrupted',{'text':'[Agent] 上次任务因服务中断而停止，未自动重做。可查询状态并说明如何继续。'})
+                self.emit(row['id'],'interrupted',{'text':'[Agent] 上次任务执行期间服务中断，执行结果未确认，未自动重做。工具可能仍在执行或已产生结果；请先核对后再决定如何继续。'})
         (self.local/'tasks.sqlite3').chmod(0o600)
 
     def http(self,path,data=None):

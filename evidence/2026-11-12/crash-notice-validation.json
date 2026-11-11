@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "isolated_actual_parent_death_late_effect": true,
+    "old_notice_falsely_claimed_stopped": true,
+    "failing_regression_before_fix": true,
+    "full_163_pass": true,
+    "live_doctor": true
+  },
+  "automaticParentDeathCleanupFixed": false,
+  "ok": true
+}

@@ -190,6 +190,16 @@ class AgentGatewayTests(unittest.TestCase):
         with self.g.db:self.g.db.execute('UPDATE jobs SET state="running"')
         self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
         self.assertFalse(self.g.execute_one());self.assertEqual(self.g.summary()['jobs']['interrupted'],1)
+        self.g.flush()
+        notices=[s['text'] for s in self.api.sends.values() if '未自动重做' in s.get('text','')]
+        self.assertEqual(len(notices),1)
+        self.assertIn('执行结果未确认',notices[0])
+        self.assertIn('工具可能仍在执行或已产生结果',notices[0])
+        self.assertNotIn('中断而停止',notices[0])
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        self.g.intake();self.assertFalse(self.g.execute_one());self.g.flush()
+        self.assertEqual(self.runtime.calls,0)
+        self.assertEqual(sum('未自动重做' in s.get('text','') for s in self.api.sends.values()),1)
 
     def test_artifact_outside_exports_and_symlink_rejected(self):
         workspace=self.g.workspace();(workspace/'private.txt').write_text('not an artifact')

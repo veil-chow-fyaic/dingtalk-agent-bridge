@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "wrong_parent_rejected": true,
+    "alive_gateway_rejected": true,
+    "early_write_observation_rejected": true,
+    "unclean_restart_rejected": true,
+    "cleanup_after_restart_rejected": true
+  },
+  "scope": "In-memory audit mutations only; original failure, processes and messages not replayed."
+}
