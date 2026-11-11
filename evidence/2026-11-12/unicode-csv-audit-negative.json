@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-12",
+  "positiveChecks": 48,
+  "negativeChecks": {
+    "wrong_original_name_rejected": true,
+    "flattened_csv_newline_rejected": true,
+    "lost_empty_field_rejected": true,
+    "missing_official_resource_rejected": true
+  },
+  "method": "In-memory value/read injection; real rows/logs/files/UI unchanged",
+  "realEvidenceUnchanged": true,
+  "ok": true
+}

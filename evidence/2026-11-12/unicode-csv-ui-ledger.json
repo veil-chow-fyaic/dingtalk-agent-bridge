@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "exact_two_new_tasks": true,
+    "exact_six_new_outbox": true,
+    "native_session_unchanged": true,
+    "prepare_authorized_completed_input": true,
+    "prepare_confirmed_bound_replies": true,
+    "prepare_no_self_echo_task": true,
+    "prepare_log_preserved": true,
+    "preparation_waited_without_tools_or_files": true,
+    "prompt_contains_no_filename_or_answers": true,
+    "file_authorized_completed_input": true,
+    "file_confirmed_bound_replies": true,
+    "file_no_self_echo_task": true,
+    "file_log_preserved": true,
+    "single_original_attachment_exact": true,
+    "safe_runtime_input_original_bytes": true,
+    "actual_python_read_and_csv_parse": true,
+    "actual_decimal_compute_and_two_exports": true,
+    "two_requested_artifacts": true,
+    "csv_client_export_staged_exact": true,
+    "csv_official_resource_exact": true,
+    "csv_native_download_completed": true,
+    "json_client_export_staged_exact": true,
+    "json_official_resource_exact": true,
+    "json_native_download_completed": true,
+    "source_bom_and_complex_fields": true,
+    "output_bom_and_header": true,
+    "csv_original_fields_preserved": true,
+    "csv_amounts_and_total": true,
+    "report_original_name": true,
+    "report_encoding_count_total": true,
+    "report_rows_exact": true,
+    "full_native_reply_correct": true,
+    "csv_opened_native_cells": true,
+    "json_opened_native_full_report": true,
+    "one_text_and_one_file_attempt": true,
+    "reviewed_frames_preserved": true,
+    "tested_installed_modules_match": true
+  },
+  "ok": true,
+  "sourceSha256": "ff912c32760033f7c058067dad1064d78906ad846533e16dd913b8f42c68fa4f",
+  "outputs": {
+    "csv": {
+      "bytes": 175,
+      "sha256": "7524358ee5ae5bc5b0af129cc696ac53e094f4e9ae5538f53001cb791d52523b"
+    },
+    "json": {
+      "bytes": 572,
+      "sha256": "4d0bda114733559d7974dfb167a226a88e82cf5013a4069f36a64144f5943dcf"
+    }
+  },
+  "scope": "Two native DM inputs: prepare then one file; original name metadata, CSV data, real tools and two client downloads/openings. No group or single-message multi-file claim.",
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 50,
+      "outbox": 127,
+      "deliveries": 136,
+      "events": 187
+    }
+  }
+}

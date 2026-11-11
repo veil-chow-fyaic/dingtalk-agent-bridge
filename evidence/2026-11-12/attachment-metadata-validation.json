@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-12",
+  "sourceSha256": "0cbc816a15921f8eedf3b6eed25b137d000e32a36b88a12dbd1f6f5ae856b17e",
+  "checks": {
+    "new_test_failed_before_metadata": true,
+    "full_163_passed": true,
+    "python312_gateway_34_passed": true,
+    "clean_install": true,
+    "live_doctor": true
+  },
+  "privateLogSha256": {
+    "before-metadata-test.log": "03965cd8f4a646179b3fc1e8d273f2cb177e4a1b22da32639c5356eded6df772",
+    "full-tests.log": "2cc22fc27ebe689c6a31d9f6032193659bc9c585c3023bfb5a48c6988c5b055c",
+    "python312-gateway-tests.log": "4f506f28a7a5b55198d2123369ee49d2019d840bbc4c73124586e7c48de00482"
+  },
+  "limits": [
+    "E040 Python3.12 full suite was 162 tests; E041 ran affected gateway 34, not another claimed full 163",
+    "E039 historical manager errors remain unresolved; E040 diagnostics retained",
+    "Metadata is data, not additional permission or OS isolation"
+  ],
+  "ok": true
+}

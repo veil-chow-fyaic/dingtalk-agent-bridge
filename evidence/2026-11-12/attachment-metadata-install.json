@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "all_18_modules_match": true,
+    "six_entrypoints": true,
+    "wheel_no_private_files": true,
+    "clean_source_no_local": true
+  },
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "abdfbd14ff4af75c67ccb3726963e0838f9a3d3f12c9bf5e1d0585154badc1a4",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "agent_runtime.py": "16f0f1fd9d2bc0287768e9c37225c0fe974d4e0ba483e840381029f4eb32a95f",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "2fdce9bcda4619142d8f8f944983c9571c164257a51b4fe95a418da2311bbe58",
+    "agent_gateway.py": "0cbc816a15921f8eedf3b6eed25b137d000e32a36b88a12dbd1f6f5ae856b17e",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "479e3a8cd1f55d854265726ac5ef92b1f40eee0144ed640693221802c7e58767",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "84db108afcd631e1965769b90d03b7f5f4eb51c4e4157821e59d831481db8a3b",
+    "cli.py": "b6039cde8b9ffd9e6c58d64fe30f30dc1b27d160909beb891bb2f45f37f64381",
+    "consumer.py": "60c0e81f6b9e84316681d6d6bed0733a26a5e74678100bf6a4eff992cab62e44",
+    "routing.py": "361597872a3c87461471115e972355592c244372d1f2a848cdd9991b00e0c764",
+    "official_tools.py": "58f7af819b5948fd2b0313ddb1e104e5251d132a4fb608aae39346e737982909",
+    "doctor.py": "bee491fb6df9ba373b83318d57446a2f033b7d5c1650c4f89b1c239abda9ec76",
+    "__main__.py": "15d7544b96ba84cba99b73f286f4ee4ec18c1b793e2af7ac1e9e361aaed67c34",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "entrypoints": {
+    "dab": true,
+    "dab-bridge": true,
+    "dab-agent": true,
+    "dab-consume": true,
+    "dab-doctor": true,
+    "dab-service": true
+  },
+  "wheelSha256": "5c0767d0663cc20899ba6e4c539ddb197511684cfd2196efe6ff329da514e595",
+  "ok": true
+}

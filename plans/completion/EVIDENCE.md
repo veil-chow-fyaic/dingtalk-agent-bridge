@@ -85,3 +85,8 @@
 - docs/57；manager-identity-install.json、manager-identity-diagnostic-validation.json。相同ps观察记录expected/current/raw到0600本地错误日志；status只读，写失败仍拒绝，无额外信号。
 - manager15项；Python3.14/3.12各162全量通过。64次限定关闭实验未复现，停止该路径；E039两次历史错误和E027未知根因不改为已修复。
 - 干净wheel六入口18模块通过；现网三个PID及两路全部账本/会话/日志保持，无新消息/重启。原观察9.4h/1128样本，未满24h。私有local/manager-identity-diagnostic-20261112。
+
+## E041 — 原始附件名与Unicode/BOM CSV
+- docs/58；附件原名/类型/字节数/SHA及安全路径独立传runtime，缺失名null；163全量、Python3.12 gateway34、新wheel六入口18模块通过。
+- 原生准备任务后上传135B中文/空格/emoji名CSV，实际csv+Decimal处理、175B CSV与572B JSON均客户端下载Quick Look打开，原名/三行/57.00正确。48审计4负向；LF原件保留，Quick Look视觉扁平化另记。
+- 两任务六确认，DM50/127/136/187、群保持；两gateway空闲加载，传输/原观察未重启。1150样本9.584h未满24h。私有local/unicode-csv-ui-20261112。
