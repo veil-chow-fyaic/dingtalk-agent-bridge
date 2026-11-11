@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-11",
+  "observer": "Codex native CUA; authorized veil client and liev DWS identity",
+  "observations": [
+    {
+      "local_file": "direct-png-open-attempt.png",
+      "sha256": "b3e7532efc4b48fe943b0da4b6da76705a1373b8265abacfc4f13bb3ee1e2e44",
+      "observation": "旧Markdown内联图可见，点击/双击没有打开查看器"
+    },
+    {
+      "local_file": "native-png-viewer-control.png",
+      "sha256": "c479a2fc3e012cc836ffb8896b625a70554a10e2693dbd014266a283b1fc0091",
+      "observation": "同客户端的veil原生图片打开查看器，下载按钮存在"
+    },
+    {
+      "local_file": "direct-visible.png",
+      "sha256": "40bd28187217f5d2196589e498231659c639e823835d3202b8cc5abf149f22fe",
+      "observation": "新独立图片实验：liev左侧独立图片气泡"
+    },
+    {
+      "local_file": "direct-viewer.png",
+      "sha256": "f1674f74e18725151cf63761ae30b8ac44122524e6d0cd8a479f798f28567f75",
+      "observation": "新图片打开liev分享的图片查看器并显示下载"
+    },
+    {
+      "local_file": "direct-downloaded-opened.png",
+      "sha256": "d27d98a01c98674ac94a2dcecf82a7a37340994e170bf31faeb6fb7e373b1d58",
+      "observation": "客户端下载的PNG在Finder Quick Look打开，内容正确"
+    }
+  ],
+  "limitations": [
+    "Native experiment covers direct chat only",
+    "Current bridge image argument still uses Markdown; integration pending",
+    "Original screenshots/AX/private receipts remain local only"
+  ]
+}

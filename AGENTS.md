@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/32（原生图片缺口与官方路径）、31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -42,3 +42,6 @@ DOCX群/私聊×双向4案例通过，四资源＋两份客户端下载原件字
 
 ## 2026-11-11 20:20 XLSX/ZIP检查点
 XLSX/ZIP八格传输、8资源完整，四份客户端下载原件分别在Numbers打开/系统解包后TextEdit打开；两个DM实际Kimi任务、6确认投递、两份提取TXT客户端下载打开通过。群普通文件和liev自身文件不触发。只读脚本scripts/accept_extended_office_files.py：73项案例检查＋精确覆盖，通过缺资源/损坏客户端负向注入。docs/31与E010。下一步出站PNG客户端下载、音视频及引用多附件；不得重发这些固定实验。24h观察连续89样本/约44分钟/0不可用，仅短期进展。
+
+## 2026-11-11 20:36原生图片检查点
+旧Markdown出站PNG可见但当前私聊客户端不能打开查看器/保存，真人原生PNG可打开作为对照。官方Shortcut已有--msg-type image --media-id，新的独立类型实验DAB-NATIVE-PNG-20261111-direct-001已经SUCCESS，UI下载原件Quick Look打开与fixture一致；脚本accept_native_image.py只读。docs/32/E011，私密intent/send/status及截图在local/native-png-20261111。bridge仍使用Markdown，未修改发送代码；下一步优先查官方本地上传取mediaId、持久化分阶段状态和失败对账，再接入群/私聊验证。不得将原生实验当作旧Markdown已客户端下载。

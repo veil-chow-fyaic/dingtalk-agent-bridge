@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-11",
+  "scope": "Official DWS native image, direct chat only; bridge integration pending; UI separate",
+  "fixture": {
+    "bytes": 1853,
+    "sha256": "14bc34d2e2aed2a70b0371def3f39f8c8dc344c3bf998229c7cb83893781c582"
+  },
+  "checks": {
+    "original_markdown_send_already_confirmed": true,
+    "same_bound_profile": true,
+    "preview_is_native_image": true,
+    "native_send_success": true,
+    "exact_target": true,
+    "one_committed_native_event": true,
+    "bound_account_sent": true,
+    "no_self_task": true,
+    "client_download_original_intact": true
+  },
+  "ok": true
+}

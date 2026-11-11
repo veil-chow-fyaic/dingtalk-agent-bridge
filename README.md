@@ -4,6 +4,8 @@
 
 **2026-11-11双账号基础UI验收通过：veil在客户端交办，liev真人账号自动回复。**原群和私聊均完成文字任务、Kimi执行、文件回传、客户端下载打开；另通过CSV上传计算、多轮上下文、普通群消息不触发和重启不重跑。当前为DWS `--as user`，没有创建bot。详见[最新双账号验收](docs/27-two-account-ui-acceptance.md)；自动测试与UI观察分开记录。
 
+图片补验：[独立图片与Markdown内联图的差异](docs/32-native-image-versus-inline.md)。官方独立图片私聊路径已通过查看器、原件下载打开；bridge仍待接入该路径，不能把内联可见当原生功能完整。
+
 最新文件验收：[XLSX/ZIP八格双向与实际任务](docs/31-xlsx-zip-ui-acceptance.md)。四份客户端原件下载后打开/解包，两个Kimi任务及TXT客户端下载打开通过；此前[DOCX四方向](docs/30-docx-ui-and-reliability-start.md)保留。24h观察于11月11日19:36启动，尚未达时长。
 
 恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
@@ -56,7 +58,7 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：31份当前/历史分明的知识文档。
+- `docs/`：32份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
 - `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和76项回归。
