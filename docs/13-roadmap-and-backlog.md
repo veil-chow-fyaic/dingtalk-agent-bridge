@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E046之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E047之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E047：真实90秒执行超时、工具自动清理、155秒无晚写，同gateway下一只读任务及完整UI回复；最低Python3.11隔离已安装wheel全量165项通过。[证据](64-runtime-timeout-and-installed-wheel.md)
 
 - E033：原SHA错误和第一跟进误判保留，明确源文本后实际Python比较并在客户端更正；原文件未改/重发。[证据](52-sha-correction-ui.md)
 - E034：quote保留来源ID/会话/显示名/可用senderId，缺失身份不猜测、白名单仍取外层sender；7条旧官方事件离线持久回放，UI入站引用仍未过。[实现](53-quoted-source-identity.md)
@@ -10,7 +12,7 @@
 
 - E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
 
-E046全量164项、3.12运行器18项及新wheel六入口/19模块通过；E039两次manager历史错误保持；两gateway已加载E046，传输/原24h观察器未重启。DM59/147/156/216，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+E047全量165项、3.12 gateway35项、3.11隔离wheel全量165项及六入口19模块通过；E039两次manager历史错误保持；两gateway已加载E047，私聊临时90秒已精确恢复600秒，传输/原24h观察器未重启。DM61/151/160/222，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 

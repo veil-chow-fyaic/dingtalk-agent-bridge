@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "wrong_parent_rejected": true,
+    "manual_cleanup_rejected": true,
+    "early_deadline_rejected": true,
+    "restarted_gateway_rejected": true,
+    "unrestored_config_rejected": true
+  },
+  "scope": "In-memory audit mutations; no task, message or deadline experiment replayed."
+}

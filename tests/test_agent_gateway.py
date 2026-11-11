@@ -296,6 +296,32 @@ class AgentGatewayTests(unittest.TestCase):
         self.g.intake();self.g.execute_one();self.g.execute_one()
         self.assertEqual(self.g.summary()['jobs'],{'completed':1,'failed':1})
 
+    def test_timeout_reports_limit_keeps_partial_output_and_never_replays(self):
+        from dingtalk_bridge.agent_runtime import RuntimeStopped
+        self.g.settings={**self.g.settings,'runtime':{**self.g.settings['runtime'],'timeoutSeconds':90}}
+        calls=[]
+        def timeout(prompt,workspace,*args):
+            calls.append(prompt)
+            (workspace/'exports/partial.txt').write_text('partial local effect')
+            raise RuntimeStopped('timeout')
+        self.runtime.run=timeout
+        self.api.events=[event(1,text='/agent timeout test',sender='self')]
+        self.g.intake();self.g.execute_one();self.g.flush()
+        row=self.g.db.execute('SELECT state,error,result FROM jobs').fetchone()
+        self.assertEqual(tuple(row),('failed','RuntimeStopped',None))
+        messages=[p.get('text','') for p in self.api.sends.values()]
+        notice=next(t for t in messages if '超时' in t)
+        self.assertIn('90秒',notice);self.assertIn('未自动重做',notice)
+        self.assertIn('已产生的文件或外部变更可能仍存在',notice)
+        self.assertFalse(any('file' in p for p in self.api.sends.values()))
+        self.assertEqual((self.g.workspace()/'exports/partial.txt').read_text(),'partial local effect')
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        self.g.intake();self.g.flush();self.assertFalse(self.g.execute_one());self.assertEqual(len(calls),1)
+        self.runtime.run=FakeRuntime().run
+        self.api.events.append(event(2,text='/agent next task',sender='self'))
+        self.g.intake();self.assertTrue(self.g.execute_one());self.g.flush()
+        self.assertEqual(self.g.summary()['jobs'],{'completed':1,'failed':1})
+
     def test_running_task_cancel_command_reaches_runtime(self):
         from dingtalk_bridge.agent_runtime import RuntimeStopped
         started=threading.Event()

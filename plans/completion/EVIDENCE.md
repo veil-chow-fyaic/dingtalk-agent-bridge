@@ -115,3 +115,8 @@
 - docs/63；LocalRuntime pipe生命周期＋独立守护持有CLI直至同组清理，正常完成/取消/超时继续；164全量、双Python运行器各18项、新wheel六入口19模块通过。
 - 新veil原生任务确认五进程父子链后仅SIGKILL私聊gateway，0.365秒后自动全部退出，测试控制器对后代零信号；204秒无晚写，原interrupted/no result不重做。新只读Python及完整liev回复UI可见。
 - 42审计5负向；runtime-parent-guard-validation/install/ui-ledger/audit-negative.json。DM59/147/156/216，群3/7/12/76与旧记录/日志保持；两gateway已加载，transport/原观察保持。1290样本10.752h仍未满24h；非OS沙箱，不覆盖守护自身SIGKILL。私有local/runtime-parent-guard-20261112。
+
+## E047 — 真实运行器超时及最低Python已安装包验证
+- docs/64；新增准确deadline/未重做/可能已有副作用提示；旧实现回归先失败，3.14全量165、3.12 gateway35通过。最低3.11.15在无源码包/账号数据的测试目录安装同wheel，全量165项通过；六入口19模块摘要保持。
+- veil真实150秒Python等待，runtime90.399秒超时failed，无结果且自动工具清理；155.203秒无晚写，同gateway/session下一只读Python计算703，完整回复UI可见。随后精确恢复原600秒配置，仅空闲重载DM。
+- 42审计5负向，runtime-timeout-validation/install/ui-ledger/audit-negative.json。DM61/151/160/222、群及旧记录保持；原观察1315样本10.960h未满24h；私有local/runtime-timeout-ui-20261112。无新C01入口，不重复菜单/试探发送。

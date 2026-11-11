@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "tests": {
+    "python314_full": 165,
+    "python312_gateway": 35,
+    "python311_installed_wheel_full": 165
+  },
+  "minimumPythonVersion": "3.11.15",
+  "installedWheelTestSourcePackageAbsent": true,
+  "installedWheelTestAccountDataAbsent": true,
+  "wheelSha256": "2d4a9b99830db1993da9f6bd5127cf9a2554cb420b1ae963b6661d4d61425020",
+  "logSha256": {
+    "before-fix-tests.log": "09a6c5c5136029caea325ebea5ea13f2ccc88989fc44ec4f0a328d1bd87926eb",
+    "gateway-tests.log": "8ecb7d18510aa390f3f613b44b997f6b98eaad93dd3dd410ccb601c8886277b5",
+    "full-tests.log": "185f855be06724c4fa62eae7198a1c8cfe5db49fe3b6aa40015cb22aa451a80e",
+    "py312-tests.log": "62992ef5e24dbb1569e6f5eb32682714954a603b8f319d1c4e4f92658718be56",
+    "installed-py311-tests.log": "143754e4cdc486727e2fce5bebe30db8f99f329955d6d06d550762876d171625"
+  },
+  "oldGenericNoticeFailedNewRegression": true,
+  "liveDoctorOk": true,
+  "observedRuntimeSeconds": 90.39888620376587,
+  "noLateWriteObservedSecondsAfterToolStart": 155.2033338546753,
+  "testSideProcessSignalsDuringTask": 0,
+  "originalConfigRestoredByteExactly": true,
+  "scope": "One real runtime deadline and independent read-only next task on same gateway/session; not rollback of completed side effects."
+}

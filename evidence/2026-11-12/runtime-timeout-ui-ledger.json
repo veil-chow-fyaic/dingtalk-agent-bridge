@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "owned_guard_cli_tool_ancestry": true,
+    "actual_150_second_tool": true,
+    "measured_runtime_timeout": true,
+    "automatic_cleanup_no_test_signals": true,
+    "gateway_survived_timeout_and_followup": true,
+    "past_original_deadline_without_late_write": true,
+    "config_limit_restored_exactly": true,
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_old_logs_preserved": true,
+    "exact_two_new_tasks": true,
+    "exact_four_confirmed_outbox": true,
+    "native_session_unchanged": true,
+    "timeout_authorized_input": true,
+    "timeout_bound_confirmed_replies": true,
+    "timeout_no_self_echo": true,
+    "timeout_log_preserved": true,
+    "followup_authorized_input": true,
+    "followup_bound_confirmed_replies": true,
+    "followup_no_self_echo": true,
+    "followup_log_preserved": true,
+    "running_became_failed_timeout_without_result": true,
+    "one_accurate_timeout_notice": true,
+    "original_task_not_replayed": true,
+    "followup_after_cleanup_and_deadline": true,
+    "followup_real_read_tools": true,
+    "followup_completed_no_files": true,
+    "native_timeout_feedback": true,
+    "native_full_followup": true,
+    "exact_two_ui_send_attempts": true,
+    "reviewed_frames_preserved": true,
+    "started_preserved_no_late_after_followup": true,
+    "guard_observed_parent_pipe_and_cleanup": true,
+    "installed_code_matches": true
+  },
+  "counts": {
+    "group": {
+      "jobs": 3,
+      "outbox": 7,
+      "deliveries": 12,
+      "events": 76
+    },
+    "direct": {
+      "jobs": 61,
+      "outbox": 151,
+      "deliveries": 160,
+      "events": 222
+    }
+  },
+  "scope": "Real native DM 90-second runtime timeout during 150-second Python wait; no operator process signals, gateway/session survive, no late write past deadline, actual read-only next task and native replies. Config restored byte-exactly to 600 seconds; not side-effect rollback."
+}

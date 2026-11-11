@@ -249,6 +249,7 @@ class Gateway:
         except Exception as exc:
             state='cancelled' if isinstance(exc,RuntimeStopped) and str(exc)=='cancelled' else 'failed'
             notice=('[Agent] 任务已停止。' if state=='cancelled' else
+                    '[Agent] 本次任务执行超时（'+str(self.settings['runtime'].get('timeoutSeconds',600))+'秒），未完成且未自动重做，未发送结果文件。已产生的文件或外部变更可能仍存在，请先核对；可拆分任务后继续。' if isinstance(exc,RuntimeStopped) and str(exc)=='timeout' else
                     '[Agent] 结果文件超过20 MiB交付上限，本次任务未完成，未发送结果文件。已保留执行记录；请补充任务要求，将结果压缩或拆分到每个文件不超过20 MiB。' if isinstance(exc,ArtifactTooLarge) else
                     '[Agent] 本次任务未完成，已保留记录；可以查询状态或补充说明。')
             with self.lock,self.db:
