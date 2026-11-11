@@ -1,0 +1,7 @@
+{
+  "changed_quote_source_rejected": true,
+  "failed_checks": [
+    "direct_exact_models_and_ids",
+    "direct_durable_shadow_models"
+  ]
+}

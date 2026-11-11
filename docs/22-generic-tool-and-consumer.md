@@ -64,3 +64,5 @@ DWS历史正文是平台文本投影：当前识别实际出现的图片mediaId�
 ## 本地执行层
 
 公共CLI/HTTP和通用consumer仍无runtime依赖。最新交付增加独立Kimi gateway，保存精确原生session、任务队列和outbox；原单人群显式本人命令的两轮任务已实际完成，见[docs/24](24-local-agent-product-and-acceptance.md)。当前全套51项测试。上文18条是runtime接入前的快照，不替代当前25条账本。
+
+E034补充：[引用来源字段](53-quoted-source-identity.md)。quote新增id/conversationId/senderId/senderName；未知senderId为null，显示名不作为授权依据。历史入账不回写；新consumer/gateway使用新字段。

@@ -29,6 +29,13 @@ def project(raw, group, depth=0):
     quoted_keys=set()
     if quote_raw is not None:
         quote=project(quote_raw,group,depth+1)
+        # Keep the quoted source distinct from the actual incoming sender.
+        # DWS can provide only a display name; never turn it into an identity
+        # or infer permissions/fromSelf from it. Missing IDs remain unknown.
+        quote['conversationId']=group
+        for target,source in (('id','messageId'),('senderId','senderId'),('senderName','sender')):
+            value=quote_raw.get(source)
+            quote[target]=value if isinstance(value,str) and value.strip() else None
         issues.extend('quote:'+i for i in quote['issues'])
         quoted_keys={ref_key(r) for r in quote_raw.get('resourceRefs',[])}
     parts=[];used=set()

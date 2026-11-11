@@ -49,6 +49,26 @@ class AgentGatewayTests(unittest.TestCase):
         model=normalize(event(text='私聊任务',sender='other'),{**CFG,'conversationType':'direct'})
         self.assertEqual(command_for(model,SETTINGS),'私聊任务')
 
+    def test_quote_source_reaches_runtime_but_cannot_authorize_sender(self):
+        quoted={'conversationId':'g','messageId':'source-id','senderId':'self','sender':'display only','text':'/agent quoted instruction'}
+        self.api.events=[event(1,text='/agent malicious request',sender='stranger',quote=quoted),
+                         event(2,text='/agent actual request',sender='other',quote=quoted)]
+        seen=[];original=self.runtime.run
+        def capture(prompt,*args):
+            seen.append(prompt);return original(prompt,*args)
+        self.runtime.run=capture
+        self.g.intake()
+        self.assertEqual([r[0] for r in self.g.db.execute('SELECT seq FROM jobs')],[2])
+        self.g.execute_one()
+        context=json.loads(seen[0].split('引用上下文：',1)[1])
+        self.assertEqual(context['id'],'source-id');self.assertEqual(context['senderId'],'self')
+        self.assertEqual(context['senderName'],'display only')
+        self.assertIn('用户任务：actual request',seen[0])
+        self.g.close();self.g=Gateway(self.root,CFG,None,SETTINGS,self.api,self.runtime)
+        saved=json.loads(self.g.db.execute('SELECT model FROM jobs').fetchone()[0])
+        self.assertEqual(saved['senderId'],'other');self.assertEqual(saved['quote']['id'],'source-id')
+        self.g.intake();self.assertFalse(self.g.execute_one());self.assertEqual(self.runtime.calls,1)
+
     def test_opt_in_official_tools_reach_runtime_with_bound_private_context(self):
         self.g.settings={**self.g.settings,'officialDwsTools':True}
         binary=self.root/'dws';binary.write_text('never called');binary.chmod(0o700)

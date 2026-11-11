@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_no_tasks_or_messages_at_deploy": true,
+    "group_old_logs_preserved": true,
+    "group_exact_existing_official_events": true,
+    "group_exact_models_and_ids": true,
+    "group_durable_shadow_models": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_no_tasks_or_messages_at_deploy": true,
+    "direct_old_logs_preserved": true,
+    "direct_exact_existing_official_events": true,
+    "direct_exact_models_and_ids": true,
+    "direct_durable_shadow_models": true,
+    "transport_pid_preserved": true,
+    "two_agents_restarted_and_running": true,
+    "observer_origin_preserved": true,
+    "doctor_passed": true,
+    "installed_modules_match_frozen_source": true,
+    "154_regressions_passed": true,
+    "pre_fix_missing_metadata_reproduced": true
+  },
+  "passed": true,
+  "existing_quote_samples": 7,
+  "inbound_quote_ui_passed": false,
+  "limits": [
+    "Offline replay of existing official events; no new inbound native quote",
+    "Historical live inbox/job models are not rewritten",
+    "Display names are not sender IDs or authorization"
+  ]
+}

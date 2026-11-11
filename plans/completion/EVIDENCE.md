@@ -50,3 +50,8 @@
 - evidence/2026-11-12/sha-correction-ui-ledger.json、sha-correction-audit-negative.json。
 - 两次原生veil输入/liev完整回复可见；第一结论误判保留，第二实际Python判prefix false并明确更正。2任务4确认回复，无文件输出，既有15exports含mtime保持。
 - local/sha-correction-ui-20261112仅本机；原E032和第一次followup语义验收不改绿，无部署变动。
+
+## E034 — 引用来源字段修复
+- docs/53；scripts/accept_quote_identity.py，23检查及篡改来源ID负向拒绝；154全量回归/干净wheel六入口18模块。
+- quote-identity-{ledger,install,negative}.json；私有local/quote-identity-20261112、quote-side-menu-20261112。
+- 7条既有官方引用离线标准化/持久重开，不修改历史模型或授权；两gateway已加载，传输/原观察不重启，无新任务/消息。原生入站引用仍未过。

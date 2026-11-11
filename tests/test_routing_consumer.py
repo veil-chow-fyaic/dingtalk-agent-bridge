@@ -29,6 +29,27 @@ class Tests(unittest.TestCase):
         m=normalize(event(refs=[ref('fileId','f')]),CFG)
         self.assertIn('unpositioned_resources',m['issues'])
         with self.assertRaises(ValueError):normalize(event(quote={'conversationId':'other','text':'secret'}),CFG)
+    def test_quote_source_identity_survives_without_inventing_sender_id(self):
+        q={'conversationId':'g','messageId':'quoted-id','sender':'display name','text':'quoted body'}
+        m=normalize(event(text='reply',quote=q),CFG)
+        self.assertEqual(m['quote']['id'],'quoted-id')
+        self.assertEqual(m['quote']['conversationId'],'g')
+        self.assertEqual(m['quote']['senderName'],'display name')
+        self.assertIsNone(m['quote']['senderId'])
+        self.assertEqual(m['id'],'m1');self.assertEqual(m['senderId'],'other')
+        self.assertEqual(m['quote']['parts'],[{'type':'text','text':'quoted body'}])
+    def test_nested_quote_metadata_stays_on_its_own_source(self):
+        inner={'conversationId':'g','messageId':'inner','senderId':'inner-sender','text':'inner text'}
+        outer={'conversationId':'g','messageId':'outer','senderId':'outer-sender','text':'outer text','quotedMessage':inner}
+        m=normalize(event(quote=outer),CFG)
+        self.assertEqual((m['quote']['id'],m['quote']['senderId']),('outer','outer-sender'))
+        self.assertEqual((m['quote']['quote']['id'],m['quote']['quote']['senderId']),('inner','inner-sender'))
+        inner['conversationId']='foreign'
+        with self.assertRaisesRegex(ValueError,'cross_conversation_message'):normalize(event(quote=outer),CFG)
+    def test_missing_quote_identity_remains_explicitly_unknown(self):
+        q={'conversationId':'g','messageId':{'unexpected':'object'},'senderId':42,'sender':'','text':'body'}
+        m=normalize(event(quote=q),CFG)
+        self.assertIsNone(m['quote']['id']);self.assertIsNone(m['quote']['senderId']);self.assertIsNone(m['quote']['senderName'])
     def test_native_image_alias_requires_identical_downloaded_bytes(self):
         refs=[ref('mediaId','positioned'),{**ref('mediaId','native'),'contentType':'image'}]
         original=normalize(event(text='[图片消息](mediaId=positioned)',refs=refs),CFG)
