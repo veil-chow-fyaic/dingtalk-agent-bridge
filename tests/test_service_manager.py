@@ -85,11 +85,11 @@ class ServiceManagerTests(unittest.TestCase):
 
     def test_transient_pre_exec_identity_is_not_persisted(self):
         seen=set()
-        def observed(pid):
+        def observed(pid, observation=None):
             if pid not in seen:
                 seen.add(pid)
                 return 'transient launcher before exec'
-            return process_identity(pid)
+            return process_identity(pid, observation)
         with patch('dingtalk_bridge.service_manager.process_identity',side_effect=observed):
             self.assertTrue(self.manager.start(timeout=3)['all_running'])
         state=self.manager.read_state()
@@ -116,13 +116,13 @@ class ServiceManagerTests(unittest.TestCase):
         child = self.manager.children[record['pid']]
         observations = 0
 
-        def exit_between_checks(pid):
+        def exit_between_checks(pid, observation=None):
             nonlocal observations
             observations += 1
             if observations == 2:
                 child.terminate()
                 child.wait(timeout=3)
-            return process_identity(pid)
+            return process_identity(pid, observation)
 
         with patch('dingtalk_bridge.service_manager.process_identity', side_effect=exit_between_checks):
             self.manager.stop_component(record, timeout=1)
@@ -135,6 +135,36 @@ class ServiceManagerTests(unittest.TestCase):
         with patch('dingtalk_bridge.service_manager.process_identity', side_effect=['owned-process', 'different-process']), \
                 patch('dingtalk_bridge.service_manager.os.kill') as kill:
             with self.assertRaisesRegex(RuntimeError, 'ownership changed at shutdown'):
+                self.manager.stop_component(record, timeout=1)
+        kill.assert_not_called()
+
+    def test_shutdown_error_keeps_deciding_observation_and_sends_no_more_signals(self):
+        import signal
+        identity = 'Thu Nov 12 04:55:00 2026 /synthetic/owned'
+        raw = 'Rs Thu Nov 12 04:55:00 2026 /synthetic/changed\n'
+        record = {'name': 'transport', 'pid': 12345, 'identity': identity}
+        replies = [subprocess.CompletedProcess([], 0, 'Ss ' + identity + '\n', '')] * 2
+        replies += [subprocess.CompletedProcess([], 0, raw, '')]
+        with patch('dingtalk_bridge.service_manager.subprocess.run', side_effect=replies) as ps, \
+                patch('dingtalk_bridge.service_manager.os.kill') as kill:
+            with self.assertRaisesRegex(RuntimeError, 'PID changed during shutdown'):
+                self.manager.stop_component(record, timeout=1)
+        self.assertEqual(ps.call_count, 3)  # No diagnostic resampling.
+        kill.assert_called_once_with(12345, signal.SIGTERM)
+        path = self.manager.folder / 'manager-identity-errors.ndjson'
+        error = json.loads(path.read_text())
+        self.assertEqual(error['expected'], identity)
+        self.assertEqual(error['observed']['stdout'], raw)
+        self.assertEqual(error['phase'], 'stop-after-signal')
+        self.assertEqual(path.stat().st_mode & 0o077, 0)
+
+    def test_diagnostic_write_failure_does_not_allow_signal(self):
+        self.manager.folder.mkdir(parents=True)
+        (self.manager.folder / 'manager-identity-errors.ndjson').mkdir()
+        record = {'name': 'transport', 'pid': 12345, 'identity': 'owned'}
+        with patch('dingtalk_bridge.service_manager.process_identity', return_value='foreign'), \
+                patch('dingtalk_bridge.service_manager.os.kill') as kill:
+            with self.assertRaisesRegex(RuntimeError, 'refusing to signal'):
                 self.manager.stop_component(record, timeout=1)
         kill.assert_not_called()
 

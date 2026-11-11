@@ -80,3 +80,8 @@
 - 旧实现两条真实进程复现会在返回后继续写；修复保留leader身份直到同组清理，新增4项，Python3.12的17运行器测试通过。初始160全绿，最终兼容补丁全量160有2个既有manager关闭身份错误，未解决；187观察/6次带诊断执行未复现，不覆盖失败。
 - 一次veil原生交办，真实Python计算/写文件，liev完整回复及16B TXT客户端下载Quick Look打开；DM48/121/130/179、群保持。UI在兼容补丁前；补丁后新安装/空闲重载/doctor单列，不重发冒充UI。
 - 原观察1107样本9.225h/6不可达，未满24h；私有local/runtime-orphan-20261112。下一段补manager失败私有诊断，原缺口保持。
+
+## E040 — manager私有诊断与双Python完整回归
+- docs/57；manager-identity-install.json、manager-identity-diagnostic-validation.json。相同ps观察记录expected/current/raw到0600本地错误日志；status只读，写失败仍拒绝，无额外信号。
+- manager15项；Python3.14/3.12各162全量通过。64次限定关闭实验未复现，停止该路径；E039两次历史错误和E027未知根因不改为已修复。
+- 干净wheel六入口18模块通过；现网三个PID及两路全部账本/会话/日志保持，无新消息/重启。原观察9.4h/1128样本，未满24h。私有local/manager-identity-diagnostic-20261112。

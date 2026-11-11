@@ -16,13 +16,17 @@ from .doctor import diagnose, fetch_health
 from .routing import route_configs
 
 
-def process_identity(pid):
+def process_identity(pid, observation=None):
     if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 1:
         raise ValueError('Invalid managed PID')
     result = subprocess.run(['ps', '-p', str(pid), '-o', 'stat=', '-o', 'lstart=', '-o', 'command='],
                             capture_output=True, text=True, timeout=5)
     fields = result.stdout.strip().split(None, 1)
-    return fields[1] if result.returncode == 0 and len(fields) == 2 and not fields[0].startswith('Z') else None
+    identity = fields[1] if result.returncode == 0 and len(fields) == 2 and not fields[0].startswith('Z') else None
+    if observation is not None:
+        observation.update(at=time.time(), pid=pid, returncode=result.returncode,
+                           stdout=result.stdout, stderr=result.stderr, identity=identity)
+    return identity
 
 
 class Manager:
@@ -33,6 +37,7 @@ class Manager:
         self.folder = self.root / 'local/runtime'
         self.state_path = self.folder / 'managed-processes.json'
         self.children = {}
+        self.observations = {}
 
     def read_state(self):
         if not self.state_path.exists():
@@ -78,6 +83,29 @@ class Manager:
             output.write(json.dumps({'at': time.time(), 'event': event, 'component': name}) + '\n')
             output.flush(); os.fsync(output.fileno())
 
+    def observe_identity(self, pid):
+        observation = {}
+        current = process_identity(pid, observation)
+        self.observations[pid] = observation
+        return current
+
+    def ownership_error(self, record, phase, message):
+        # Persist the observation that caused this decision, not a second ps
+        # sample after the process may have disappeared. Private local only.
+        try:
+            self.folder.mkdir(parents=True, exist_ok=True, mode=0o700)
+            path = self.folder / 'manager-identity-errors.ndjson'
+            with path.open('a') as output:
+                os.chmod(path, 0o600)
+                output.write(json.dumps({'at': time.time(), 'phase': phase,
+                    'component': record['name'], 'pid': record['pid'],
+                    'expected': record['identity'],
+                    'observed': self.observations.get(record['pid'])}) + '\n')
+                output.flush(); os.fsync(output.fileno())
+        except OSError:
+            pass  # A diagnostic write failure must not change the refusal.
+        raise RuntimeError(message)
+
     def component_status(self, record):
         child = self.children.get(record['pid'])
         if child and child.poll() is not None:
@@ -86,7 +114,7 @@ class Manager:
         # macOS Python replaces its launcher executable during startup.
         if child and record.get('starting') is True:
             return 'running'
-        current = process_identity(record['pid'])
+        current = self.observe_identity(record['pid'])
         if current is None:
             return 'stopped'
         return 'running' if current == record['identity'] else 'ownership_mismatch'
@@ -197,19 +225,19 @@ class Manager:
     def stop_component(self, record, timeout):
         status = self.component_status(record)
         if status == 'ownership_mismatch':
-            raise RuntimeError('PID ownership changed; refusing to signal it')
+            self.ownership_error(record, 'stop-precheck', 'PID ownership changed; refusing to signal it')
         if status == 'stopped':
             return
         # Compare again at signal time; never signal by name or process group.
         own_starting_child = self.children.get(record['pid']) if record.get('starting') is True else None
         if not own_starting_child:
-            current = process_identity(record['pid'])
+            current = self.observe_identity(record['pid'])
             # The owned process may exit between the liveness and signal checks.
             # Absence needs no signal; a different live identity still fails closed.
             if current is None:
                 return
             if current != record['identity']:
-                raise RuntimeError('PID ownership changed at shutdown')
+                self.ownership_error(record, 'stop-before-signal', 'PID ownership changed at shutdown')
         try:
             if own_starting_child:
                 own_starting_child.terminate()
@@ -224,7 +252,7 @@ class Manager:
                 self.journal('stopped', record['name'])
                 return
             if state == 'ownership_mismatch':
-                raise RuntimeError('PID changed during shutdown; no further signal sent')
+                self.ownership_error(record, 'stop-after-signal', 'PID changed during shutdown; no further signal sent')
             time.sleep(.2)
         raise RuntimeError('Graceful shutdown still pending; no force kill performed')
 
@@ -236,7 +264,7 @@ class Manager:
             for r in state['components']:
                 status = self.component_status(r)
                 if status == 'ownership_mismatch':
-                    raise RuntimeError('PID ownership mismatch; existing records were not overwritten')
+                    self.ownership_error(r, 'start-precheck', 'PID ownership mismatch; existing records were not overwritten')
                 if status == 'running' and not any(all(r[k] == s[k] for k in s) for s in desired):
                     raise RuntimeError('Active configuration changed; stop the managed processes first')
             created = []
@@ -285,8 +313,9 @@ class Manager:
             return self.status()
         with self.locked():
             state = self.read_state()
-            if any(self.component_status(r) == 'ownership_mismatch' for r in state['components']):
-                raise RuntimeError('PID ownership mismatch; no process was signalled')
+            for r in state['components']:
+                if self.component_status(r) == 'ownership_mismatch':
+                    self.ownership_error(r, 'stop-all-precheck', 'PID ownership mismatch; no process was signalled')
             for record in reversed(state['components']):
                 self.stop_component(record, timeout)
         return self.status()

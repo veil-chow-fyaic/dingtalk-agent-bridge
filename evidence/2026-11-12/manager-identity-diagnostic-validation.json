@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_ledgers_unchanged": true,
+    "group_runtime_logs_unchanged": true,
+    "direct_ledgers_unchanged": true,
+    "direct_runtime_logs_unchanged": true,
+    "observer_not_reset": true,
+    "live_pids_unchanged": true
+  },
+  "ok": true,
+  "fullSuites": {
+    "python314": {
+      "tests": 162,
+      "failures": 0,
+      "errors": 0,
+      "identityObservations": 5,
+      "version": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]"
+    },
+    "python312": {
+      "tests": 162,
+      "failures": 0,
+      "errors": 0,
+      "identityObservations": 5,
+      "version": "3.12.13 (main, Jul 23 2026, 14:33:47) [Clang 22.1.3 ]"
+    }
+  },
+  "boundedShutdownExperiment": {
+    "attempts": 64,
+    "reproduced": false
+  },
+  "unresolvedHistoricalManagerErrors": 2,
+  "sourceSha256": "2fdce9bcda4619142d8f8f944983c9571c164257a51b4fe95a418da2311bbe58",
+  "privateLogSha256": {
+    "targeted-tests.log": "48e73036e8491496331a254c464c3ed0c985ed48ff1dd77072ae0fea0c628e3b",
+    "python314-full-tests.log": "998d1bac8a17d04d35144b9d70641cdf192882979ba7628a87198caeae2eb2c3",
+    "python312-full-tests.log": "88604dd52cb5e1f5cd55c87fcf4b2fe1a0998ece0d2ee593ee0975d2cdade1d9",
+    "reproduction.json": "cea8e4a4badfc895eb50f9a42e718788f981c46777f658bcccfc9f97ded68089"
+  },
+  "observer": {
+    "samples": 1128,
+    "elapsedHours": 9.4,
+    "unavailableSamples": 6,
+    "complete24h": false
+  }
+}
