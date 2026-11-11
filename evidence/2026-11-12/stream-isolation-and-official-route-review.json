@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-12",
+  "officialVersion": "1.0.67",
+  "readOnly": true,
+  "eventStatusExitCode": 0,
+  "matchingPersonalBusState": "running",
+  "consumerCount": 2,
+  "subscriptionCount": 2,
+  "sourceState": {
+    "observed": true,
+    "state": "idle",
+    "source": "inferred"
+  },
+  "sameConfiguredProfile": true,
+  "sourceSha256": {
+    "internal/app/event_personal_command.go": "74ffddd693558982c7d9b310153b2c10c8f073c9af44bfe4fe33c43343ea0dc0",
+    "internal/app/event_command.go": "28ea5016d9ff6b497964f544187b8b04b4e0be3bb261cbb61af1b47942823ffe",
+    "internal/event/personal/client.go": "ab3031d426eed6c5372be1ae96d3798b7aa426ce288b4c5562f924f924ff506b",
+    "internal/event/busctl/discover.go": "9cf3f763e1f1e5a248c7c45e982393552037c9f2715c9890f9b60801d5ebd6e7",
+    "internal/event/busctl/spawn.go": "16d58ffd750f33cefc471af11187f9589c2bec69c19858ff7b353adc1f4b8a47",
+    "internal/event/source/state.go": "c1713a6720a9fdae5c0be6f5df07b7695d7799e53517d1342874f3267353567a",
+    "pkg/config/constants.go": "54fcb0887097f915aedf963e4846a9aa2a04f93c63dbc553efd58b6325c36d88",
+    "internal/helpers/deap_agent_channel.go": "b4fae27e6f6c54fadfd05a1162eb61c4a368808badb6fb696bb9d48ae3114ce7",
+    "internal/helpers/deap_agent_adapter.go": "b40fd9b264533b392ad1ecb712975a97d179710f953c88117b602f96ac33590d"
+  },
+  "helpSha256": "f94c3490dbd2c6bea74bd79fc70e4cc6beaa9048ff46580d90359da12b7c441a",
+  "conclusions": [
+    "Personal event bus identity key contains account/client/source, not conversation; consumers reuse an existing bus via local IPC",
+    "Changing only new consumer proxy environment does not reconfigure a running shared bus",
+    "DWS_CONFIG_DIR isolates the complete configuration namespace; separate event-only namespace not established",
+    "Digital employee connect is an official existing route requiring published employee identity and independent profile; not an established replacement for the current human account"
+  ],
+  "limits": [
+    "No daemon stopped or credentials copied/revoked",
+    "No full Stream outage or expired credential acceptance claimed",
+    "idle/inferred is quiet-window inference, not new independent upstream liveness proof",
+    "Digital employee help/source checked only; no binding, publishing or runtime execution"
+  ],
+  "bothConsumersOwnedByBridgeTransport": true
+}

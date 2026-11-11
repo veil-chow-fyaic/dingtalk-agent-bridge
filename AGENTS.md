@@ -84,3 +84,5 @@ Finder多选两份合成TXT/CSV一次粘贴，钉钉拆成两消息/两任务，
 E018旧两段长回复已在主聊天完整AX逐字比对并核对7张首尾/边界视口，无新消息，22审计/2负向检查；docs/42。原生会话搜索→点击结果→selectText可定位正文；右键仍无引用菜单，Command+Up会切侧栏会话，禁止盲重试，不把AI搜索摘要当消息正文。
 私聊history HTTP子进程实际断网78.310秒（官方5次io_timeout），veilUI发一次任务；恢复自动补收，Kimi Python计算1591，三确认回复、36B客户端下载Quick Look打开通过，42审计/3负向检查；docs/43。非完整Stream/整机断网或凭据过期。测试launcher已撤除，local/service-config.json精确恢复，DM生成上下文回到原官方binary；三个manager进程当前健康，setup/cleanup维护已记，恢复期间无重启/重发。
 当前DM37任务/89outbox（88确认1拒绝），群3任务/7outbox不变，旧blocked/cancelled保持。原观察run/PID/起点不变，冻结669样本约5.57h/累计4不可用（清理维护新增1），未满24h。只读复核accept_long_bubble_ui.py和accept_history_network_recovery.py，不重复新旧实验。下一段先查可隔离的官方Stream连接/凭据失效机制或引用有效新入口，不能撤真实授权/改整机网络；无法安全隔离就具体记阻塞，转最终MUST/矩阵/边界缺口自检与独立实现。原群范围仍待答复。
+
+01:25只读补查：官方event status显示两consumer共享账号级personal bus，父PID均属当前bridge，idle/inferred不是新实收证据。SDK代理/共享daemon的限定断连方案仍需验证，见docs/43。官方另有dingtalk-tag connect已发布数字员工路线（独立员工profile/设备绑定），本机Help/固定源码已确认并补docs/25；没有发布/绑定员工，不将其混为liev真人路线。

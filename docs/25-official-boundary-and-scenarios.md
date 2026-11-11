@@ -10,20 +10,27 @@ DWS 已有 `dws dev connect`：使用机器人凭证连接本地 Codex 等渠道
 
 另有钉钉官方 OpenClaw Connector，提供机器人通道、会话与媒体处理、交互卡片及办公集成；它要求 OpenClaw 宿主，不能直接作为本项目普通账号路线的等价替换。[官方 Connector](https://github.com/DingTalk-Real-AI/dingtalk-openclaw-connector/blob/88df00ee594072e9941ef3f71da90a37f3291ad3/README.md)
 
+## 2026-11-12补查：官方数字员工路线
+
+固定v1.0.67还有 `dws dingtalk-tag connect`。本机Help和官方源码确认，它把已发布的local_agent数字员工接到本地Agent/DSH，保存员工独立profile和设备绑定，可用daemon/alwayson、会话记忆、工作目录、text/A2UI回复及状态管理。此前只列机器人dev connect和OpenClaw，遗漏了这条官方路线，现补全。
+
+它要求已有已发布员工身份及agent UUID，接入会产生员工profile和服务端绑定；不能仅因它也使用Event和profile，就当成liev真人既有会话的等价替换。本轮只读Help/源码，没有创建、发布、绑定员工，也未验证员工会话覆盖或实际本地执行。后续若用户选择该身份，先验官方现成能力，再决定需要补充什么。证据与固定源码摘要见[官方路线与事件隔离补查](../evidence/2026-11-12/stream-isolation-and-official-route-review.json)。
+
 ## 能力归属
 
 | 能力 | 官方入口 | 我们应补什么 | 当前边界 |
 |---|---|---|---|
 | 认证、刷新、组织账号 | DWS auth/profile、系统凭据存储 | 精确选择已授权 profile，报错与运维 | 不复制凭据，不自行实现 OAuth，不用群名猜账号 |
 | 群/私聊历史和发现 | chat +chat-list、+conversation-info、+chat-messages | 配置允许路由、游标、去重、补读和完整性判断 | 历史索引延迟属于平台约束，不能宣称实时全收 |
-| 实时事件 | event +listen-im / consume、官方 Stream | 重连、限定订阅、事件到任务的持久消费及补全 | 目前仅可选事件提示唤醒历史；完整业务事件尚未验收 |
+| 实时事件 | event +listen-im / consume、官方 Stream | 重连、限定订阅、事件到任务的持久消费及补全 | 独立业务事件与常驻提示已过E005/E007；E023仅history HTTP断网恢复，完整Stream分区未验 |
 | 文本、图片、文件、引用 | chat +messages-send / reply | 稳定回复目标、持久发送键、丢失回包对账 | 用户身份与 bot 身份分别验收，未知结果不切后端重发 |
 | 下载、资源读取 | chat +messages-mget --download-resources 等 | 有序 parts/引用、缓存哈希、任务输入隔离、失败重试 | 图片/文件内容解析由 Agent/工具做，不能只给路径就称理解通过 |
 | 流式文本卡片 | chat +messages-send-card / update-card | 绑定任务与 bizId、限频更新、结果校验 | 本轮官方 API 接受创建/更新；无独立内容验证，尚未接进 gateway |
 | 交互表单与审批卡 | 官方 Connector / A2UI 相关入口 | 在所选身份下绑定授权人、请求、有效期和执行 | streaming text helper 不支持 action callback，不能冒充审批完成 |
-| 文档、表格、日历、待办、邮件、钉盘、会议纪要 | DWS 对应产品 shortcuts / 原子命令 | 向 Agent 提供所需官方能力及资源/动作边界、审计 | 已有代表性手工编排实测；全套办公尚未接成 Kimi 受控工具 |
+| 文档、表格、日历、待办、邮件、钉盘、会议纪要 | DWS 对应产品 shortcuts / 原子命令 | 向 Agent 提供所需官方能力及资源/动作边界、审计 | E021代表性四类办公已由真实Kimi/IM任务验证；上下文非强制权限层，全套办公仍非通过 |
 | DWS 未封装的开放平台能力 | 核实后选择 OpenAPI/官方 SDK；DWS api 可作为原始调用入口 | 最小适配、身份与权限验证 | 原始 API 不是任意权限代理，不因缺 shortcut 就立刻写 AX |
 | 机器人接本地 Agent | dws dev connect；或官方 OpenClaw Connector | 仅补实际不满足的 runtime/部署需求 | bot 路线应优先评估官方接入，不另造同类全栈 |
+| 已发布数字员工接本地Agent | dingtalk-tag connect | 先评估官方daemon/会话/产物与已发布范围，补具体不足 | Help/固定源码已核对，未创建或绑定；员工独立身份不等于liev真人 |
 | 普通账号接本机 Kimi | DWS 用户消息 + 本项目 gateway | 显式触发、持久任务、精确 session、取消、产物与恢复 | 指定veil→liev群/私聊UI通过；非OS沙箱，不开放任意成员 |
 | 桌面操作缺口 | 官方能力核实失败后才考虑 AX | 只针对有证据的具体缺口 | 本项目尚无 AX backend，不能说原生音视频已有兜底 |
 

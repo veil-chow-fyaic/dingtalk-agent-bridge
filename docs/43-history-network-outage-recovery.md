@@ -35,3 +35,9 @@ python3 scripts/accept_long_bubble_ui.py
 42项网络恢复检查通过；内存注入“断网游标已变化”“缺官方失败证据”“下载文件损坏”三项均被拒绝，不改原始现场证据。E021办公69项、E020管理器39项只读复核仍通过。此次没有修改产品运行代码，沿用E021最终126项回归/干净安装版本，不将审计条数当新增单元测试。共享结果见[现场审计](../evidence/2026-11-12/history-network-recovery-ledger.json)、[负向验证](../evidence/2026-11-12/history-network-audit-validation.json)。
 
 24h观察器保留原run/PID/19:36:08起点；冻结检查点669样本、5.57小时、累计4个不可用样本（本轮清理维护新增1），没有重置成零失败。该计数是采样可达性，不等同全程零中断或所有路由健康。最早11月12日19:36后评估真实24h；授权过期与完整Stream断网仍待独立证据。
+
+## 后续Stream隔离只读检查
+
+01:20后官方 `event status --profile … --format json` 成功读到一个personal bus、两个订阅和两个consumer。逐个核对consumer父PID，两个均属于当前bridge传输进程。固定源码的Identity.Key按账号/client/source生成，不含会话；Discover先连接既有IPC，只有连接失败才spawn。因此两个会话复用同一个上游bus，不能把新consumer的代理环境当成旧WebSocket已经断网。
+
+本次状态是 `idle`、来源 `inferred`。源码把60秒无新事件后的连接标为空闲，这是推断而非新的实收/连接探针。`DWS_CONFIG_DIR`改变整个配置命名空间，不是已验证的仅event隔离开关；没有为此复制凭据、改profile或停止daemon。共享证据见[隔离与官方路线补查](../evidence/2026-11-12/stream-isolation-and-official-route-review.json)。下一步需验证SDK WebSocket的代理路径与daemon仅有本项目consumer的条件，再设计有界断连/恢复；不将这次只读检查计为网络验收通过。
