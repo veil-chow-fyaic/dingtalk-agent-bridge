@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-12",
+  "positiveChecks": 47,
+  "negativeChecks": {
+    "same_dimensions_wrong_rotation_rejected": true,
+    "correct_pixels_but_orientation_retained_rejected": true,
+    "missing_image_resource_rejected": true,
+    "wrong_short_reply_rejected": true
+  },
+  "realEvidenceUnchanged": true,
+  "method": "Private synthetic negative images and in-memory read injection; no real DB, file or UI record changed",
+  "ok": true
+}

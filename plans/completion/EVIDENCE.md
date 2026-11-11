@@ -65,3 +65,8 @@
 - README/AGENTS/PREFLIGHT/docs13/docs17改为当前状态；原全文保存docs/history/through-E035，与2bb8530版本逐字节/SHA一致。
 - current-handoff-consolidation.json确认原CURRENT_MISSION、PRD编号/等级/验收正文及18产品模块不变；仅更新当前证据列，不降低门槛，不新增UI通过。
 - 下一独立项是带EXIF方向JPEG的私聊输入/原件/实际处理；群、入站引用、失效refresh及24h缺口保持。
+
+## E037 — EXIF方向6原件与实际归正
+- docs/55；scripts/accept_exif_ui.py，47只读检查及4负向通过；exif-ui-ledger.json、exif-audit-validation.json。
+- 原生veil单条图文、原件23810B/Orientation=6保持、Kimi真实读图/Bash归正，30666B PNG与462B报告客户端下载Quick Look打开；完整短回复正确可见。
+- 一任务四确认，DM47/118/127/175、群保持；同native session，无部署变更。仅方向6样本、不外推镜像/动画/群；入站图片独立查看器未开。私有local/exif-ui-20261112。

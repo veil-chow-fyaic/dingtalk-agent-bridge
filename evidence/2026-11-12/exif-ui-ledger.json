@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_old_logs_preserved": true,
+    "group_unchanged": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_old_logs_preserved": true,
+    "immutable_completed_job": true,
+    "one_job_for_input": true,
+    "authorized_native_input": true,
+    "single_text_and_jpeg": true,
+    "exact_prompt_without_answers": true,
+    "source_original_bytes": true,
+    "runtime_log_preserved": true,
+    "actual_input_media_read_once": true,
+    "runtime_staged_input_exact": true,
+    "runtime_received_original_jpeg": true,
+    "initial_read_error_retained": true,
+    "actual_exif_metadata_read": true,
+    "actual_exif_transpose_and_verification": true,
+    "two_requested_artifacts": true,
+    "export_and_staged_exact": true,
+    "client_image_exact": true,
+    "source_exif6_only": true,
+    "output_png_upright_size": true,
+    "output_orientation_removed": true,
+    "independent_pixels_exact": true,
+    "client_report_exact": true,
+    "actual_report_write": true,
+    "report_correct": true,
+    "short_reply_correct": true,
+    "image_official_resources_exact": true,
+    "file_official_resources_exact": true,
+    "native_image_uploaded_and_delivered": true,
+    "four_confirmed_replies": true,
+    "bound_liev_reply_identity": true,
+    "no_self_echo_task": true,
+    "exact_one_new_task": true,
+    "exact_four_new_outbox": true,
+    "native_session_unchanged": true,
+    "one_send_attempt": true,
+    "reviewed_frames_preserved": true,
+    "report_opened_ui_full_text": true,
+    "image_opened_ui": true,
+    "short_reply_full_ui": true
+  },
+  "runtimeCalls": 1,
+  "confirmedReplies": 4,
+  "source": {
+    "bytes": 23810,
+    "sha256": "948db8e1c5a27e05e72679cae51fb57bc9856c1307581dc176507a49e8976efe",
+    "format": "JPEG",
+    "encodedSize": [
+      460,
+      300
+    ],
+    "orientation": 6
+  },
+  "clientImage": {
+    "bytes": 30666,
+    "sha256": "6546be9d486a5fe1036da86f25545658570942f8c53ede9a29848f85f4efde17",
+    "format": "PNG",
+    "size": [
+      300,
+      460
+    ],
+    "orientation": null
+  },
+  "clientReport": {
+    "bytes": 462,
+    "sha256": "4db78d06970268c48ad45b3ed3dda6d4601c2477386e87b4178e246858d3b84d"
+  },
+  "limits": [
+    "Direct chat; one synthetic EXIF orientation (6)",
+    "Not mirrored orientations 2/4/5/7, other metadata, HEIC, animation, group or all platforms",
+    "Initial runtime Read error preserved; recovered with actual image tools",
+    "Native input chat top/bottom viewports observed; input viewer not opened"
+  ],
+  "ok": true
+}

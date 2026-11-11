@@ -1,8 +1,8 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E035之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E037之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
-最新现场是[21MiB超限与压缩恢复](54-output-limit-and-compressed-recovery.md)：veil真实交办→实际生成→明确失败提示→显式新压缩任务→ZIP客户端下载/系统解包，原件相同，原failed保留。此前[引用来源字段](53-quoted-source-identity.md)已修复、7条旧官方事件离线回放通过，但入站引用UI仍缺；[SHA明确更正](52-sha-correction-ui.md)保留两次旧错误结论。
+最新现场是[EXIF方向原件与归正](55-exif-orientation-ui.md)：单条JPEG任务、实际工具归正、PNG/报告下载打开、完整短回复；47审计/4负向通过。此前[21MiB超限与压缩恢复](54-output-limit-and-compressed-recovery.md)：veil真实交办→实际生成→明确失败提示→显式新压缩任务→ZIP客户端下载/系统解包，原件相同，原failed保留。此前[引用来源字段](53-quoted-source-identity.md)已修复、7条旧官方事件离线回放通过，但入站引用UI仍缺；[SHA明确更正](52-sha-correction-ui.md)保留两次旧错误结论。
 
 ## 当前交付状态
 
@@ -17,7 +17,7 @@
 | 官方办公 | 绑定liev的doc/todo/calendar/未发送draft真实任务与IM报告 | 会议/钉盘完整闭环、密送独立读证、外部场景按SHOULD保留 |
 | 文档与Git | 官方/补充边界、研究引用、合成fixture、只读审计、manifest/隐私门、分段本地提交 | 最终自检、封版和完成标签未做；未远程发布 |
 
-运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E035快照DM46任务/114outbox（113确认1旧拒绝）/123传输/170事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，04:04附近约8.47小时；累计6不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
+运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E037快照DM47任务/118outbox（117确认1旧拒绝）/127传输/175事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，04:24附近约8.80小时；累计6不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
 
 ## 用户从一开始要解决的问题
 

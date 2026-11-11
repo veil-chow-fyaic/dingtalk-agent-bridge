@@ -1,14 +1,16 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E035之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E037之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
-## 本轮实质结果
+## 最近实质结果
 
 - E033：原SHA错误和第一跟进误判保留，明确源文本后实际Python比较并在客户端更正；原文件未改/重发。[证据](52-sha-correction-ui.md)
 - E034：quote保留来源ID/会话/显示名/可用senderId，缺失身份不猜测、白名单仍取外层sender；7条旧官方事件离线持久回放，UI入站引用仍未过。[实现](53-quoted-source-identity.md)
 - E035：真实21MiB文件被本地限额拒绝，UI给出限额及恢复建议；独立新压缩任务的ZIP客户端下载、系统解包、原件一致，原failed保持。[闭环](54-output-limit-and-compressed-recovery.md)
 
-当前156回归与新wheel六入口/18模块通过；两gateway已加载E035，传输/原24h观察器未重启。DM46/114/123/170，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+- E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
+
+当前156回归与新wheel六入口/18模块通过；两gateway已加载E035，传输/原24h观察器未重启。DM47/118/127/175，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 
@@ -21,7 +23,7 @@
 | 24h与交接 | 原run继续，到真实时长后用只读终检；执行全部MUST和隐私/manifest/检出终检 | 最早11月12日19:36后；错误/维护均保留，项目未完成 |
 | SHOULD扩展 | 会议/钉盘/外部/bot、Codex超时、卡片/审批/追问按实际依赖继续 | 不扩大权限/联系人，不抬高Kimi任选门槛 |
 
-下一独立实验候选是带EXIF方向的JPEG私聊输入、原件与实际处理；先记录合成样本和稳定key，再原生UI交办，不能把已有普通JPEG旋转证据复制成EXIF通过。引用旧入口和已确认文件不重放。
+E037已完成EXIF方向6私聊输入、原件保留、Kimi真实归正及PNG/报告客户端下载打开，47审计4负向。下一独立项是官方用户原生语音/普通多附件契约与本客户端明确入口。引用旧入口和已确认文件不重放。
 
 当前授权仍为liev的DWS与veil客户端、两人私聊及原群；新增群测试因已观察到第三人暂挂。无需再索取已授权私聊许可，不新建bot/邀请人/改权限/远程发布。
 

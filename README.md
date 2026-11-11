@@ -22,7 +22,7 @@
 - [双账号任务与文件](docs/27-two-account-ui-acceptance.md)，[PNG/PDF](docs/28-media-matrix-and-real-events.md)、[DOCX](docs/30-docx-ui-and-reliability-start.md)、[XLSX/ZIP](docs/31-xlsx-zip-ui-acceptance.md)，[原生PNG](docs/33-native-image-bridge.md)、[JPEG实际旋转](docs/48-jpeg-ui-rotation.md)、[WAV/MP4文件](docs/34-audio-video-file-progress.md)。通过范围以矩阵为准。
 - [状态/取消/新会话](docs/36-task-control-ui.md)、[长文分段](docs/38-long-text-limit-and-regression.md)、[完整气泡UI](docs/42-long-bubble-native-ui.md)、[拒绝反馈](docs/39-rejection-reconciliation-and-feedback.md)、[私聊出站引用](docs/46-quoted-text-reply.md)。
 - [history故障恢复](docs/43-history-network-outage-recovery.md)、[Stream真实断连](docs/44-stream-network-recovery-and-runtime-failure.md)、[自然凭据轮换](docs/47-natural-auth-rollover.md)；不等于失效refresh恢复或24h通过。
-- 最新：[错误SHA的明确更正](docs/52-sha-correction-ui.md)、[引用来源元数据修复](docs/53-quoted-source-identity.md)、[21MiB超限提示→新压缩任务→ZIP客户端下载解包](docs/54-output-limit-and-compressed-recovery.md)。原错误/failed记录保留。
+- 最新：[EXIF方向6原件与真实归正/下载打开](docs/55-exif-orientation-ui.md)、[错误SHA的明确更正](docs/52-sha-correction-ui.md)、[引用来源元数据修复](docs/53-quoted-source-identity.md)、[21MiB超限提示→新压缩任务→ZIP客户端下载解包](docs/54-output-limit-and-compressed-recovery.md)。原错误/failed记录保留。
 
 官方DWS负责认证、通讯/历史/资源及办公API；bridge补路由、执行队列、会话、文件、幂等及恢复。固定官方v1.0.67缺本地CHAT_IMAGE上传叶子，隔离补充复用其源码鉴权/上传；≤2MiB PNG/JPEG走image，较大图片走file，bridge输出单文件上限20MiB。官方bot的dev connect/OpenClaw/数字员工是另一身份路线，不能与普通账号混同。
 
@@ -35,7 +35,7 @@
 ```bash
 python3 -m dingtalk_bridge.service_manager status
 python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
-python3 scripts/accept_output_limit_ui.py
+python3 scripts/accept_exif_ui.py
 python3 -m unittest discover -s tests
 python3 scripts/verify_handoff.py
 ```
