@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-12",
+  "baselineChecks": 38,
+  "checks": {
+    "missing_second_image_rejected": true,
+    "reversed_image_order_rejected": true,
+    "corrupt_download_rejected": true
+  },
+  "method": "In-memory substitutions only; no original records altered",
+  "ok": true
+}

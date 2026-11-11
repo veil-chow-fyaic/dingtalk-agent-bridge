@@ -30,3 +30,5 @@
 | E024 | L3/L4/L5 | 已建立Stream WebSocket实际切断89.446秒，同一bus/consumer恢复7提示，history兜底无重复；2真实UI/Kimi任务，A格式错误failed及提示保留，B3127/37B客户端下载打开；131回归/50审计/4负向检查，装置已撤 | docs/44；stream-network-recovery-ledger.json；stream-network-audit-validation.json；stream-network-test-validation.json | A未成功交付；未逐条保存原始Stream载荷，非同时整机断网/失效凭据；24h原观察6.01h/5不可用继续 |
 
 | E025 | L5只读补验 | 原E001的79B CSV从既有私聊下载、Quick Look表格实际打开并核对36/18/TOTAL54，原件一致；22审计/2负向检查、零新增消息/任务、账本保持 | docs/27补节；csv-client-open-ledger.json；csv-client-audit-validation.json；ACCEPTANCE_MATRIX.md | 不是新群CSV或编辑验收；引用修改/帮助菜单无入口，未发送引用；24h原观察6.31h/5不可用继续 |
+
+| E026 | L4/L5 | 私聊单条文字＋两PNG，1真实Kimi/3确认回复；两原件实际ReadMediaFile/Bash测量，420B报告客户端下载打开；38审计/3负向检查 | docs/45；multi-image-ui-ledger.json；multi-image-audit-validation.json | 非任意文件/群/出站多附件；初始两Read错误保留；短回复未单独UI观察；24h继续 |
