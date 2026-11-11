@@ -1,0 +1,131 @@
+{
+  "date": "2026-11-11",
+  "scope": "Eight XLSX/ZIP directions, client originals and two actual direct tasks; UI observed separately",
+  "fixtures": {
+    "xlsx": {
+      "bytes": 1577,
+      "sha256": "6279bd1d04395f5b8ffa8a7d91f58c28bdea9d3d6453c21b0149bc9a6325cc9c"
+    },
+    "zip": {
+      "bytes": 243,
+      "sha256": "97124afc3e59ef52b84b1b4c402dace45c24ea00285cde940db5ecb84dbd8e99"
+    }
+  },
+  "cases": [
+    {
+      "case": "group-xlsx-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "unprefixed_file_did_not_execute": true
+      }
+    },
+    {
+      "case": "group-xlsx-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true,
+        "own_message_did_not_execute": true
+      }
+    },
+    {
+      "case": "group-zip-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "unprefixed_file_did_not_execute": true
+      }
+    },
+    {
+      "case": "group-zip-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true,
+        "own_message_did_not_execute": true,
+        "client_extracted_content_intact": true
+      }
+    },
+    {
+      "case": "direct-xlsx-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "one_actual_task": true,
+        "completed_with_file_content": true,
+        "numeric_cell_correct": true,
+        "ack_answer_and_file_confirmed": true,
+        "replies_from_bound_account": true,
+        "one_result_file": true,
+        "result_client_download_intact": true,
+        "result_file_content_correct": true,
+        "result_numeric_cell_correct": true
+      }
+    },
+    {
+      "case": "direct-xlsx-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true,
+        "own_message_did_not_execute": true
+      }
+    },
+    {
+      "case": "direct-zip-in",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "one_actual_task": true,
+        "completed_with_file_content": true,
+        "ack_answer_and_file_confirmed": true,
+        "replies_from_bound_account": true,
+        "one_result_file": true,
+        "result_client_download_intact": true,
+        "result_file_content_correct": true,
+        "result_contains_entire_archive_text": true
+      }
+    },
+    {
+      "case": "direct-zip-out",
+      "checks": {
+        "committed_event_matches": true,
+        "correct_direction": true,
+        "one_resource": true,
+        "downloaded_original_intact": true,
+        "one_file_without_issues": true,
+        "durable_send_confirmed": true,
+        "client_download_intact": true,
+        "own_message_did_not_execute": true,
+        "client_extracted_content_intact": true
+      }
+    }
+  ],
+  "exact_case_coverage": true,
+  "ok": true
+}

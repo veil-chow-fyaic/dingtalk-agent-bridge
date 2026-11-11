@@ -46,3 +46,6 @@
 2026-11-11后续：两路Stream常驻唤醒、双账号短停机补漏、订阅子进程重连通过；群PDF客户端下载补齐。见[docs/29](29-stream-service-and-offline-recovery.md)。下一步C01其他文件UI、C04交付与真实24h；完整项目保持未完成。
 
 19:52：DOCX四方向及客户端下载打开、Kimi提取TXT回传通过；24h观察19:36启动未完成。见[docs/30](30-docx-ui-and-reliability-start.md)，下一步XLSX/ZIP、剩余媒体与运行交付。
+
+## 2026-11-11 XLSX/ZIP现场补验
+[docs/31](31-xlsx-zip-ui-acceptance.md)：八格传输和四份客户端原件打开/解包、两个私聊Kimi任务、六个确认投递和两份结果TXT下载打开通过。只读审计73项案例检查与精确覆盖通过；24h观察继续，不把短期0错误当完整通过。活动下一步仍以CRITICAL_PATH为准。

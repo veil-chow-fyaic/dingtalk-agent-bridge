@@ -1,0 +1,10 @@
+{
+  "read_only": true,
+  "method": "in-memory mock injection; no live files or databases changed",
+  "checks": {
+    "missing_resource_rejected": true,
+    "client_corruption_rejected": true,
+    "actual_data_passes_after_negative_checks": true
+  },
+  "ok": true
+}

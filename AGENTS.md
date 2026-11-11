@@ -1,6 +1,6 @@
 # 项目工作约定
 
-当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
+当前交付目标：通用钉钉IM工具＋真实本地Agent接入，群聊/私聊交办任务、附件、多轮上下文和结果交付；不绑定组织或runtime。先读README、plans/completion/INIT.md与CURRENT_MISSION.md、docs/31（XLSX/ZIP四方向）、30（DOCX与24h启动）、29（常驻Stream与补漏）、28（媒体与事件）、27（双账号基线）、17（总状态）、13（摘要）、25（官方边界）、15（运维）。docs/07、14、16、23、24、26中的历史数量和部署不要当当前配置。
 
 ## 最新授权与真实部署（2026-11-11）
 
@@ -39,3 +39,6 @@ PNG/PDF群/私聊双向8案例、10资源摘要一致；私聊PDF客户端下载
 ## 2026-11-11 19:52续跑检查点
 DOCX群/私聊×双向4案例通过，四资源＋两份客户端下载原件字节一致；两份DOCX在TextEdit打开，私聊Kimi提取TXT也客户端下载打开并校验。证据docs/30、scripts/accept_office_files.py，只读复核；不要重发固定key。XLSX/ZIP仍只有历史API证据，本轮probe只是预览。
 24h只读观察于19:36:08启动，run=reliability-20261111，30秒采样，预计次日19:36后才可能达时长；不能标通过。续跑先核对local/service-observations该run的status更新时间、PID所属命令及日志，不删除/重启覆盖中断。下一步C01 XLSX/ZIP、原生媒体等；服务/gateway持续运行、未扩大授权。
+
+## 2026-11-11 20:20 XLSX/ZIP检查点
+XLSX/ZIP八格传输、8资源完整，四份客户端下载原件分别在Numbers打开/系统解包后TextEdit打开；两个DM实际Kimi任务、6确认投递、两份提取TXT客户端下载打开通过。群普通文件和liev自身文件不触发。只读脚本scripts/accept_extended_office_files.py：73项案例检查＋精确覆盖，通过缺资源/损坏客户端负向注入。docs/31与E010。下一步出站PNG客户端下载、音视频及引用多附件；不得重发这些固定实验。24h观察连续89样本/约44分钟/0不可用，仅短期进展。

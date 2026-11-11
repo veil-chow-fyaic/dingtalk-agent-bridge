@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-11",
+  "observer": "Codex native CUA; veil client, liev DWS user identity",
+  "observations": [
+    {
+      "local_file": "group-xlsx-in.png",
+      "sha256": "5c338e533fd7d773913906a64a93705e8ee1f834faa3bc1dc853ec025a9bf75d",
+      "observation": "veil群聊上传XLSX完成"
+    },
+    {
+      "local_file": "direct-xlsx-in.png",
+      "sha256": "44961d12be52585690c08f6d230d98c44b1a4bef5a41543da35acb2a7f9a765c",
+      "observation": "veil私聊上传XLSX完成"
+    },
+    {
+      "local_file": "group-zip-in.png",
+      "sha256": "0955278726becca9508d9728e7581680f0515d34585dab2eca2781b276e9fa33",
+      "observation": "veil群聊上传ZIP完成，liev文件卡片可见"
+    },
+    {
+      "local_file": "direct-zip-in.png",
+      "sha256": "1779e3f25f19798af39422c09ae01fee0f6d4237ec30a8739e636dc9090f71eb",
+      "observation": "veil私聊上传ZIP完成"
+    },
+    {
+      "local_file": "group-extended-out.png",
+      "sha256": "bbf12f7eba16feca222dc916be94da369eeb1abc1064ce94f023232fea78a6f9",
+      "observation": "群聊liev发送的XLSX原生文件预览可见"
+    },
+    {
+      "local_file": "group-xlsx-opened.png",
+      "sha256": "9dccc8568fea298f739f250f843b265fd99887ecb4fbb433376f7972592c719d",
+      "observation": "群客户端下载XLSX原件在Numbers中打开，A1标记及B1数值1可见"
+    },
+    {
+      "local_file": "direct-xlsx-opened.png",
+      "sha256": "10b0494b8bcd95337644ddd92fd551964f06527b64484c87131e9ab37e599ad6",
+      "observation": "私聊客户端下载XLSX原件在Numbers中打开，A1标记及B1数值1可见"
+    },
+    {
+      "local_file": "group-zip-content-opened.png",
+      "sha256": "3ae59fd8ce4f83eb5519beaf381125395d610aa7d2da74a33ebb1c65b77bfef0",
+      "observation": "群客户端下载ZIP经系统解包，TXT在TextEdit中打开，中英文内容可读"
+    },
+    {
+      "local_file": "direct-zip-content-opened.png",
+      "sha256": "d205f070590ec9297a7c207535cb63c7b27b58a1c9d0ba7b0a3e6c2dc9bedc26",
+      "observation": "私聊客户端下载ZIP经系统解包，TXT在TextEdit中打开，中英文内容可读"
+    },
+    {
+      "local_file": "direct-originals-visible.png",
+      "sha256": "e1d062b91b67633aefa7ce75d44adc170951ecbee51605d42c3222261a339ae7",
+      "observation": "liev私聊ZIP卡片及XLSX任务准确回复可见"
+    },
+    {
+      "local_file": "direct-zip-task-text.png",
+      "sha256": "daf50a3ecfe0364afebed1885bc4cf2dbd43bfccb0d5dab132b863fbf46498d7",
+      "observation": "liev私聊ZIP任务接收回执与内容摘要可见"
+    },
+    {
+      "local_file": "direct-xlsx-result-open.png",
+      "sha256": "26f422a7f3b5e17f1970c5ad6bc4232143c1c7d88cdd2a8baf4a99230b1906bf",
+      "observation": "Kimi提取表格的82字节TXT通过客户端下载并打开，A1/B1正确"
+    },
+    {
+      "local_file": "direct-zip-result-open.png",
+      "sha256": "bd4cb1a532f46895ff00daca99b5f9b230137829de727ba5ca2b3a6e7d14c186",
+      "observation": "Kimi生成235字节ZIP清单和内容TXT通过客户端下载打开"
+    }
+  ],
+  "limitations": [
+    "Raw screenshots and AX remain private local only",
+    "Minimal XLSX: one sheet with two cells; no formulas/macros/complex styling",
+    "ZIP: one synthetic UTF-8 text file; no encryption, nested archive or adversarial extraction coverage",
+    "Group unprefixed files intentionally do not execute; actual file-only tasks validated in direct chat"
+  ]
+}
