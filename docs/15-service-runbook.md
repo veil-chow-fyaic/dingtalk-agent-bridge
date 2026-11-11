@@ -132,3 +132,5 @@ python3 -m unittest discover -s tests -v
 安装包及只读doctor的准确语义、退出码、干净导出验证见[docs/35](35-install-and-doctor.md)。旧service_ctl/agent_ctl仍管理当前检出，不等于统一多worker管理已完成。
 
 状态查询现以中文展示快照；自身先标完成再统计，避免空闲误报排队。实际取消和新会话UI证据见[docs/36](36-task-control-ui.md)。群和私聊gateway已一并加载该修复与原生图片结果选择，群图片新UI案例仍受原群范围待答复限制。
+
+2026-11-11 22:39 多文件验收复核：`python3 scripts/accept_multi_attachment_ui.py`只读；已完成三请求不重发。附件独立消息各自执行，后续文字沿用同会话；文件来源/金额/结果客户端下载证据见docs/37。当前私聊generation1，旧generation0保留，本段不重启。

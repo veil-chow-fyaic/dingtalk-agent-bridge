@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-11",
+  "checks": {
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_unchanged_during_experiment": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "exact_three_new_jobs": true,
+    "exact_seven_new_replies": true,
+    "distinct_ordered_messages": true,
+    "same_native_session_and_generation": true,
+    "no_amounts_supplied_in_followup": true
+  },
+  "cases": [
+    {
+      "case": "a",
+      "checks": {
+        "immutable_completed_job": true,
+        "authorized_input_committed": true,
+        "one_job_for_input": true,
+        "confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_log_preserved": true,
+        "one_valid_file_per_message": true,
+        "downloaded_original_intact": true,
+        "staged_input_intact": true,
+        "actual_runtime_read": true,
+        "read_content_correct": true,
+        "no_unrequested_artifact": true
+      }
+    },
+    {
+      "case": "b",
+      "checks": {
+        "immutable_completed_job": true,
+        "authorized_input_committed": true,
+        "one_job_for_input": true,
+        "confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_log_preserved": true,
+        "one_valid_file_per_message": true,
+        "downloaded_original_intact": true,
+        "staged_input_intact": true,
+        "actual_runtime_read": true,
+        "read_content_correct": true,
+        "no_unrequested_artifact": true
+      }
+    },
+    {
+      "case": "join",
+      "checks": {
+        "immutable_completed_job": true,
+        "authorized_input_committed": true,
+        "one_job_for_input": true,
+        "confirmed_replies": true,
+        "bound_reply_identity": true,
+        "no_reply_echo_task": true,
+        "runtime_log_preserved": true,
+        "text_followup_without_new_attachment": true,
+        "one_result_artifact": true,
+        "client_download_matches_staged_artifact": true,
+        "combined_report_correct": true,
+        "actual_runtime_write": true
+      }
+    }
+  ],
+  "runtimeCalls": 3,
+  "confirmedReplies": 7,
+  "clientBehavior": "One two-file Finder selection/paste became two separate native messages and two tasks",
+  "combinedTaskBehavior": "Two earlier tasks read originals; following task used retained context and wrote report",
+  "joinTaskReopenedFiles": false,
+  "limits": [
+    "Not a single message with multiple attachments",
+    "No automatic debounce or batch coalescing",
+    "Join reused prior read context; not proof that it reopened source files",
+    "Only two small synthetic files in one authorized direct session"
+  ],
+  "ok": true
+}

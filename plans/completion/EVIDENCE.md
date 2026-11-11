@@ -17,3 +17,4 @@
 | E014 | L4/L5 | WAV/MP4私聊双向四格4资源；两个真实Kimi任务6确认回复，两份分析TXT客户端下载打开且相同；MP4客户端视频卡片/播放/下载/系统打开通过 | docs/34；audio-video-direct-ledger.json；audio-video-direct-ui.json；audio-video-audit-validation.json；54项检查 | 群4格待范围答复；WAV无语音条，file协议MP4播放不等于独立video协议；仅合成1秒样本 |
 | E015 | L3/L4 | 可安装包0.1.0、5入口、工作目录token修复、只读脱敏doctor；干净暂存树导出/新venv/最终模块摘要、93回归通过；现场31检查、1历史blocked警告 | docs/35；clean-install-validation.json；doctor-live.json；scenario-regression.json | 无新UI投递；未统一后台管理；只验macOS/Python3.14.6；不证明模型可调用/进程代码版本/24h |
 | E016 | L3/L4/L5 | 私聊9次真实UI请求/14确认回复/4次Kimi；修复状态查询自身排队；sleep实际取消、子进程结束/超时长无文件、队列继续437、新native会话隔离 | docs/36；task-controls-ledger.json；task-controls-ui.json；100只读检查与2负向检查；95回归 | 仅私聊；等待附件取消仅自动测试；不是OS沙箱或撤销已完成副作用；维护已记录 |
+| E017 | L4/L5 | 一次两文件多选上传被客户端分成两消息；各Kimi Read，后续同会话合并生成40，结果客户端下载Quick Look打开、字节一致；3任务7回复/50只读检查/2负向检查 | docs/37；multi-attachment-ledger.json；multi-attachment-ui.json；multi-attachment-audit-validation.json | 非单条多附件/自动合批，join沿用先前读取上下文未重开文件；引用仍待测 |

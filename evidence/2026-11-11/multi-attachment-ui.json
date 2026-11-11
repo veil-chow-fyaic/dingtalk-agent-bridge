@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-11",
+  "inputIdentity": "veil native DingTalk UI",
+  "replyIdentity": "liev bound DWS user identity, not bot",
+  "observations": {
+    "selection": "Finder selected exactly dab-batch-a.txt and dab-batch-b.csv; copied and pasted once into liev DM",
+    "messages": "Both upload cards observed; two distinct native input messages and attachment acknowledgements",
+    "followup": "veil typed one request naming both files without supplying amounts; one followup job",
+    "delivery": "liev result file card 0-dab-batch-summary.txt visible, downloaded through client Save dialog",
+    "opened": "Actual client download opened in Finder Quick Look; both source names/markers, amounts 17 and 23, total 40 visible"
+  },
+  "result": {
+    "bytes": 213,
+    "sha256": "b60fcd8f2fb7583c59f4fd8e4f4759e9fd25d5797cd3c0e53a74c45abf82275f"
+  },
+  "rawEvidence": "Private AX/screenshots/intents/snapshots in local/multi-attachment-ui-20261111",
+  "limits": [
+    "One multi-select upload became two messages; not one message with multiple attachments",
+    "First two Kimi tasks read their inputs. Join task wrote from retained session context without reopening files",
+    "Visible result-file and Quick Look evidence; separate text reply not newly visible in final narrow chat viewport",
+    "No new group sends, no batch debounce"
+  ]
+}

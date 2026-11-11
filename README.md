@@ -12,6 +12,8 @@
 
 任务控制：[私聊状态、实际取消与新会话隔离](docs/36-task-control-ui.md)完成9次UI请求、14条确认回复；修复空闲状态误报排队1。95项当前回归通过，旧失败记录保留。
 
+多文件：[两份文件上传与后续合并任务](docs/37-multiple-files-and-followup.md)。一次多选被客户端拆成两条消息，两个附件任务实际读取；后续同会话合并得到40，TXT客户端下载打开及50项只读检查通过。没有将此标成单条多附件或自动合批。
+
 恢复验收：[常驻Stream唤醒与双账号停机补漏](docs/29-stream-service-and-offline-recovery.md)。veil真实UI发出5条实验消息，3个任务与6个回复通过；服务停机补读、订阅子进程重连及旧任务不重跑已有现场证据。
 
 媒体扩展：[PNG/PDF双向、真人图片缺陷修复与真实事件](docs/28-media-matrix-and-real-events.md)。8个传输案例、10份资源原件一致；群/私聊识图任务UI通过，真实Stream采到16条业务事件。尚未完成所有格式及长期稳定性。活动长任务见[续跑入口](plans/completion/INIT.md)。
@@ -65,7 +67,7 @@ python3 scripts/verify_handoff.py
 
 ## 目录与共享边界
 
-- `docs/`：36份当前/历史分明的知识文档。
+- `docs/`：37份当前/历史分明的知识文档。
 - `evidence/`：脱敏实测与公开来源/Help，`handoff-manifest.json`记录可交接文件摘要。
 - `fixtures/`：合成素材；`scripts/`：基线、显式实验、服务管理和完整性校验。
 - `dingtalk_bridge/`、`tests/`：实验服务、本地 Agent gateway 和95项回归。
