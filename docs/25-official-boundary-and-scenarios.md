@@ -132,3 +132,5 @@ E019补充：官方错误的invalid_request+PARAM_ERROR可在首次发送阶段�
 
 ## E027引用回复接入
 官方已有messages-reply个人引用（群/私聊），本轮无需新增官方叶子。bridge只补可选reply_to的本路由源校验、幂等持久化及回执差异兼容；DWS负责源/peer校验、引用协议和状态。私聊原生UI实际气泡已过，群及入站引用未过，见[docs/46](46-quoted-text-reply.md)。
+
+2026-11-12底层入口补核：固定官方`chat message send`机器schema仍将audio/video列为类型，但file参数明示按file发送，不能由enum存在推成语音条。`dws api`帮助要求完整应用Client ID/Secret pair，默认MCP加密用户凭据不能直接用于Raw OpenAPI；不能拿当前liev用户授权推成另有应用权限。`mcp published`是已发布MCP工具入口，本轮没有发现额外个人原生语音契约、未发布服务或发送试探消息。结果与源码摘要见[native-type-boundary-review.json](../evidence/2026-11-12/native-type-boundary-review.json)；阻塞定位到官方个人发送契约，WAV/MP4文件实测不受影响。

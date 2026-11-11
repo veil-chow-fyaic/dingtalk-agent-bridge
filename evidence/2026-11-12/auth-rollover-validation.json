@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-12",
+  "baselineChecks": 19,
+  "negativeChecks": {
+    "after_expiry_regressed_rejected": true,
+    "post_refresh_poll_failed_rejected": true,
+    "late_capture_too_early_rejected": true
+  },
+  "originalRecordsChanged": false,
+  "ok": true
+}

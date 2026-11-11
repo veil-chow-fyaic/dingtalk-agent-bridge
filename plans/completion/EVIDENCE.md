@@ -34,3 +34,5 @@
 | E026 | L4/L5 | 私聊单条文字＋两PNG，1真实Kimi/3确认回复；两原件实际ReadMediaFile/Bash测量，420B报告客户端下载打开；38审计/3负向检查 | docs/45；multi-image-ui-ledger.json；multi-image-audit-validation.json | 非任意文件/群/出站多附件；初始两Read错误保留；短回复未单独UI观察；24h继续 |
 
 | E027 | L3/L4/L5 | 通用reply_to接官方DWS；137回归/干净wheel六入口18模块、30审计2负向；1私聊引用气泡真实UI源/回复/AI标识可见，无runtime回声 | docs/46；quote-reply-ui-ledger.json；quote-reply-validation.json；quote-reply-install.json | 入站/群引用及跳回源未过；stop PID保护错误保留后独立确认停完再启动；24h原观察6.86h/6不可用 |
+
+| E028 | L4 | 官方自然access预刷新59只读采样、expiry延长及轮换后双路完整同步，19审计/3负向；账本无新增、原观察器归属保持 | docs/47；auth-rollover-ledger.json；auth-rollover-validation.json | 非失效refresh/重新授权/Stream重鉴权；采样保留1次维护URLError；24h冻结7.07h/6不可用 |

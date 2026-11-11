@@ -1,0 +1,30 @@
+{
+  "customProviderConfigured": false,
+  "openaiBaseUrlOverride": false,
+  "chatgptBaseUrlOverride": false,
+  "proxyVariablesPresent": [],
+  "logs": {
+    "codex-configured-stderr.log": {
+      "bytes": 924,
+      "sha256": "fed8a1d716b6cb777b77f1088e3842e5c92a58e4f92fe999bd518985b1a5269a"
+    },
+    "codex-configured-events.jsonl": {
+      "bytes": 308,
+      "sha256": "472eee74425bc44ac4950e10bc61eedc2c6f1981c9c2b8bd3bc88ce13dc4d4bc"
+    }
+  },
+  "runtimeRerun": false,
+  "configChanged": false,
+  "date": "2026-11-12",
+  "observedFailure": "sampling request timed out during response stream; four warnings retained",
+  "warningCount": 4,
+  "jsonTerminalCompleted": false,
+  "rootCauseEstablished": false,
+  "notes": [
+    "Existing configured run reached turn.started then repeated timeout warnings; no successful final answer",
+    "Current config uses built-in OpenAI with no explicit endpoint override or proxy environment; this is a later read-only snapshot, not proof of the original network environment",
+    "No inference that adapter cancellation, authentication rejection, model rejection or timeout setting is the root cause",
+    "No repeated model request; Kimi still satisfies the required local executor"
+  ],
+  "source": "https://learn.chatgpt.com/docs/config-file/config-advanced"
+}

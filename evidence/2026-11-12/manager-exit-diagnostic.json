@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-12",
+  "isolatedCycles": 2,
+  "ownedWorkersPerCycle": 3,
+  "identityObservations": 30,
+  "allStopped": true,
+  "liveGuardErrorReproduced": false,
+  "traceSha256": "07226da1854e54e1b2e70546a6237fd1932c87db6b6b26e7e985ad035df1aa1f",
+  "liveBridgeMutated": false,
+  "rootCauseEstablished": false,
+  "loopGuard": "Two cycles without reproduction; no further repetitions",
+  "scope": "Diagnostic evidence only; not a product fix or closure of original guard failure"
+}

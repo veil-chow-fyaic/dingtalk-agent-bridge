@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-12",
+  "version": "1.0.67",
+  "schemaSha256": "dfce65f1abcf32ea7ef7cfc6d4bd586144d83afa8be2db3e2a450ac9784df49d",
+  "msgTypeEnum": [
+    "image",
+    "file",
+    "audio",
+    "video"
+  ],
+  "fileParameterDescription": "本地文件路径（msgType=file/audio/video 时直接上传并按 file 消息发送）",
+  "sourceSha256": "22b6ae62087dad8cdc6a889be6c763ed7bfec9f8bf8e785f6565f6db113523ed",
+  "sourceLines": [
+    4326,
+    5942
+  ],
+  "publishedMcpHelpScope": "Static commands for published MCP services; not evidence of an additional native voice route",
+  "rawApiBoundary": "Requires a complete application Client ID/Secret pair; default MCP encrypted user credential does not support raw OpenAPI",
+  "newMessagesSent": 0,
+  "credentialsChanged": false,
+  "nativeVoiceVerified": false,
+  "nativeVideoProtocolVerified": false,
+  "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go"
+}

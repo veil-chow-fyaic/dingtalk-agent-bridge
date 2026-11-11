@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-12",
+  "checks": {
+    "frozen_sample_file_intact": true,
+    "collector_source_intact": true,
+    "baseline_still_valid": true,
+    "one_changed_expiry_sample": true,
+    "expiry_extended": true,
+    "within_preexpiry_five_minute_window": true,
+    "rotated_status_valid": true,
+    "after_status_same_valid_expiry": true,
+    "health_healthy_at_and_after": true,
+    "sync_after_rotation_observation": true,
+    "timer_poll_continued": true,
+    "collector_does_not_contain_token_values": true,
+    "no_auth_config_or_clock_mutation": true,
+    "maintenance_collection_error_retained": true,
+    "no_new_tasks_messages_or_deliveries": true,
+    "original_24h_observer_preserved": true,
+    "after_old_expiry_capture_intact": true,
+    "after_old_expiry_valid_status": true,
+    "both_routes_sync_beyond_old_expiry": true
+  },
+  "samples": 59,
+  "observedBeforeOldExpirySeconds": 265.918,
+  "collectionErrors": 1,
+  "healthyPollErrorSamples": 0,
+  "naturalPreexpiryRollover": true,
+  "expiredRefreshCredentialRecovery": false,
+  "limits": [
+    "Metadata expiry changed; no token values read or copied by collector",
+    "Official CLI runtime refresh observed indirectly; no exclusive attribution to a particular history request",
+    "No revoked/expired refresh token or reauthorization test",
+    "Planned deployment collection error retained; not uninterrupted uptime"
+  ],
+  "ok": true
+}

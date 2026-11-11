@@ -128,3 +128,6 @@ python3 scripts/verify_handoff.py
 指定veil与liev已完成真实私聊及两人群UI，外部会话和任意第三人仍未验收，不外推全部会话覆盖。当前历史轮询有索引延迟，尚无完整事件实时收取验收。原生语音/视频发送仍缺，音视频文件可以作为附件传输，理解/转写取决于另行配置的处理工具。
 
 复杂任务还需要项目工作区绑定、受控办公工具、审批与执行中追问、任务级进度、会话/线程策略、保留期和长期运行验收。当前可以实际处理会话工作区内的任务与文件；不承诺所有业务任务、所有文件格式、任意本地仓库或办公权限都已接通。接入这些能力应继续扩展现有 gateway，而非重做传输层或停在文档调研。
+
+## 2026-11-12 Codex超时只读复核
+原configured请求有turn.started及四次responses_retry采样超时告警，没有turn.completed；这是响应流失败证据，不足以推断具体网络、授权或模型根因。当前本机配置为内置OpenAI、无显式endpoint覆盖/代理环境变量，但这是后续快照，不能反推原请求环境。本轮不重复模型请求、不改配置/凭据；Kimi仍满足任选本地执行器。脱敏记录见[codex-timeout-review.json](../evidence/2026-11-12/codex-timeout-review.json)。官方[高级配置](https://learn.chatgpt.com/docs/config-file/config-advanced)分别说明provider端点与重试参数；不将一般重试参数视为本例修复证据。
