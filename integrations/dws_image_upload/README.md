@@ -13,7 +13,7 @@ git clone --depth 1 --branch v1.0.67 https://github.com/DingTalk-Real-AI/dingtal
 python3 integrations/dws_image_upload/build.py --source local/dws-image-source --go /absolute/path/to/go --output local/bin/dws-image-upload-v1.0.67/dws-image-upload
 ```
 
-构建会验证固定 commit、拒绝覆盖非预期已跟踪源码修改，复制本目录的叶子和测试，只在这份专用源码工作副本添加注册；先运行 6 个上传用例和上游命令/schema 完整性检查，再构建。构建回执包含源 commit、补充文件摘要、Go 版本及二进制摘要。依赖与上游许可证保留在上游工作副本；上游采用 [Apache-2.0](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/LICENSE)。没有分发或修改系统安装的 DWS。
+构建会验证固定 commit、拒绝覆盖非预期已跟踪源码修改，复制本目录的叶子和测试，只在这份专用源码工作副本添加注册；先运行 6 个上传用例和上游命令/schema 完整性检查，再构建。构建开始前还会拒绝无有效归属回执的已有输出、已变更输出、输出/回执/生成源符号链接和非预期生成测试文件。首次构建使用不存在的输出路径；再次构建仅允许回执中的binarySha256仍匹配原产物。旧有效回执保持兼容，新回执补充testSha256和replacedVerifiedOutput。回执不再无条件宣称原版DWS未变；该结论需单独比较实际原版二进制摘要。构建回执包含源commit、补充/测试文件摘要、Go版本及二进制摘要。依赖与上游许可证保留在上游工作副本；上游采用 [Apache-2.0](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/LICENSE)。没有分发或修改系统安装的 DWS。
 
 只在需要启用图片的现有路由中增加：
 

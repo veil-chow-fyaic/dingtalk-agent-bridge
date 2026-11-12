@@ -189,3 +189,11 @@
 ## E063 — Git离线交接核验
 - E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。
 - [docs/80](../../docs/80-offline-handoff-export.md)、[构建](../../evidence/2026-11-12/clean-handoff-build.json)、[19审计](../../evidence/2026-11-12/clean-handoff-validation.json)。raw local/clean-handoff-20261112；只bundle子目录为脱敏交接payload。
+
+## E064 — 图片补充独立构建与覆盖保护
+- E064修复图片补充构建器覆盖已有输出/生成测试文件的缺口；4新方法、源码及双Python已安装runtime连同公开构建器各201项、独立官方源码真实Go构建与22审计通过。官方binary/现场补充/配置不变，未部署、无新UI。
+- [docs/81](../../docs/81-image-build-ownership.md)、[22审计](../../evidence/2026-11-12/image-build-validation.json)；`PYTHONPATH=. python3 scripts/accept_image_build.py`。旧4方法3失败1错误、网络克隆超时、真实Go和安装日志均保留local/image-build-20261112；隔离配置仅生成log，未声称始终空目录或字节可复现。
+
+## E065 — 真实Keychain读取故障，尚未恢复
+- E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。
+- [docs/82](../../docs/82-live-keychain-read-failure.md)、[脱敏事实](../../evidence/2026-11-12/live-keychain-failure.json)；原始官方输出/observer报告local/sync-failure-20261112。不冒称refresh过期、恢复通过或doctor健康；已请求用户恢复现有访问，无新UI发送。

@@ -1,12 +1,12 @@
-# READY_WITH_WARNINGS
+# LIVE_SYNC_BLOCKED
 
-2026-11-12，E063之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
+2026-11-12，E065之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
 
 - 同一仓库/分支codex/complete-bridge；基线166b11b、tag baseline/ui-2026-11-11。单Agent，未远程发布。
-- 精确liev profile、veil原生客户端及两人私聊授权保持。原群增至3人，新增群实验等待已发问题的范围答复；不影响私聊/独立工作。
+- 精确liev profile、veil原生客户端及两人私聊授权保持。原群3人已获用户本轮明确授权继续测试；两账号执行白名单保持，群缺项已授权，当前先恢复DWS同步。
 - 固定DWS v1.0.67；PNG/JPEG隔离上传补充已启用，原版binary不改。HTTP/SQLite＋stream_hint/history和两个Kimi gateway已运行；DM官方办公上下文开、群关。
 - 当前manager归属：传输27650、群gateway27711、私聊gateway27725。只读status验证实际归属，不按旧PID直接发信号；旧ctl不再管理。无开机自启。
-- E062 Python3.14/3.11隔离wheel各197项及六入口19模块通过；E039历史manager错误根因仍未解；live doctor通过，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/manager-exit-install.json。守护自身SIGKILL/恶意脱组不在保证内。
+- E062 Python3.14/3.11隔离wheel各197项及六入口19模块通过；E039历史manager错误根因仍未解；此前live doctor通过；当前E065官方auth fail，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/manager-exit-install.json。守护自身SIGKILL/恶意脱组不在保证内。
 - E055快照：DM65任务160outbox（159确认1旧拒绝）169传输235事件；群3/7/12/76。已确认实验只读复核，不重发；所有旧失败与错结论保持。
 - PNG/PDF/DOCX/XLSX/ZIP等证据分层保留；JPEG私聊实际旋转、超2MiB PNG file、21MiB超限后新压缩任务均有UI/原件证据。不是所有格式/四方向均完成，逐格见ACCEPTANCE_MATRIX。
 - E023 history故障、E024 Stream断连恢复、E028自然access轮换已验；真实失效refresh凭据恢复未验，不复制/改写token或撤授权。Kimi不是OS沙箱，Codex超时可选跟踪。
@@ -40,3 +40,6 @@
 - E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。 原观察13.421h/7不可达；下一段当前commit离线导出/交接自检，不重复已过UI或有界探针。
 
 - E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。 下一段图片补充的独立构建/覆盖保护，不动官方binary或真实授权。
+
+- E064修复图片补充构建器覆盖已有输出/生成测试文件的缺口；4新方法、源码及双Python已安装runtime连同公开构建器各201项、独立官方源码真实Go构建与22审计通过。官方binary/现场补充/配置不变，未部署、无新UI。
+- E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。

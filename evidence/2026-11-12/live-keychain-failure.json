@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E065",
+  "resolved": false,
+  "injected": false,
+  "officialHistoryExitCode": 51,
+  "officialHistoryError": "resolve access token: load access token: load from keychain: read DEK from macOS Keychain: exit status 51",
+  "doctor": {
+    "exitCode": 0,
+    "summary": {
+      "fail": 1,
+      "pass": 3,
+      "warn": 1
+    },
+    "checks": [
+      {
+        "name": "auth",
+        "status": "fail",
+        "message": "无法读取 macOS Keychain 中的登录密钥，无法判断登录状态"
+      },
+      {
+        "name": "keychain",
+        "status": "pass",
+        "message": "macOS 默认钥匙串可用"
+      },
+      {
+        "name": "runtime_context",
+        "status": "pass",
+        "message": "Runtime context ready"
+      },
+      {
+        "name": "network",
+        "status": "pass",
+        "message": "https://mcp.dingtalk.com 可达 (延迟 391ms)"
+      },
+      {
+        "name": "version",
+        "status": "warn",
+        "message": "有新版本 (当前 v1.0.67, 最新 v1.0.68)"
+      }
+    ]
+  },
+  "newNativeUISends": 0,
+  "processesRestarted": false,
+  "credentialsChanged": false,
+  "observer": {
+    "evidence_valid": true,
+    "samples": 1685,
+    "elapsed_hours": 14.047,
+    "poll_error_samples": 30,
+    "unavailable_samples": 7,
+    "active": true,
+    "zero_recorded_errors": false,
+    "observation_complete_24h": false
+  },
+  "rawSha256": {
+    "official-history.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "official-history.stderr": "dd82746fb044292190e5a4ac6e9782bb7e8fe6df61404b84adfc341f08423ec4",
+    "official-doctor.stdout": "5705e06296a4061bfc83e46fa64b52d1ebdc032354223ca8dd6670f637a27a24",
+    "official-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observer-review.json": "2d34c4def8d8591223449d6bca7500c32fcea9921cac503755ced2cc169d9732"
+  },
+  "next": "Restore existing macOS Keychain access, then verify automatic history recovery and unchanged prior ledger; original group of three is authorized",
+  "limits": [
+    "DEK read failure is not evidence of expired refresh credentials",
+    "Official doctor exit 0 has auth fail",
+    "No new UI, successful recovery or completed 24h claim",
+    "DWS v1.0.68 only observed as version notice; release capabilities not verified"
+  ]
+}

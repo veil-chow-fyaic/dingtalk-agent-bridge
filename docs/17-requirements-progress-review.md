@@ -1,6 +1,10 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E063之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。 [故障证据](82-live-keychain-read-failure.md)
+
+E064修复图片补充构建器覆盖已有输出/生成测试文件的缺口；4新方法、源码及双Python已安装runtime连同公开构建器各201项、独立官方源码真实Go构建与22审计通过。官方binary/现场补充/配置不变，未部署、无新UI。 [构建证据](81-image-build-ownership.md)
+
+2026-11-12，E065之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
 最新交接：[E063](80-offline-handoff-export.md)。E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。
 
@@ -23,7 +27,7 @@
 | 目标 | 已验证范围 | 仍缺/限制 |
 |---|---|---|
 | 通用工具与真实执行 | CLI/HTTP/consumer、多路由、队列/会话/outbox、至少一个Kimi真工具执行 | Codex超时单独跟踪；不是OS恶意隔离 |
-| 身份与双向收发 | veil真人UI输入，liev真人DWS回复、AI发送标识；原两账号群/私聊基础路径 | 原群新增第三人后新实验暂挂；外部/bot无现场结论 |
+| 身份与双向收发 | veil真人UI输入，liev真人DWS回复、AI发送标识；原两账号群/私聊基础路径 | 原3人群已授权补验；当前Keychain故障，外部/bot无现场结论 |
 | 附件与媒体 | PDF/DOCX/XLSX/ZIP四方向；私聊TXT/CSV、原生PNG/JPEG、WAV/MP4 file、下载打开和实际工具 | 群TXT入站/CSV双向等仍缺；语音条/独立video不由文件替代；详见四方向矩阵 |
 | 长文、引用、组合 | UTF-16分段、完整长气泡UI、私聊出站引用、单条双PNG、分条多文件后续合并 | 私聊入站/群引用、其他单条多附件、群长文未过 |
 | 控制与失败 | 私聊status/cancel/new、实际取消、拒绝对账、模型错误保留、超限提示及新压缩任务 | 群控制等仍缺；未知先对账、从不静默重做 |
