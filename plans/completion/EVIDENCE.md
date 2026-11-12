@@ -173,3 +173,7 @@
 ## E059 — 清单原子提交
 - E059清单原子提交：真实子进程短写复现旧缓存损坏，同目录0600临时文件写入/fsync/replace后冷/热缓存恢复、提交前SIGKILL保旧通过；2新方法、源码及双Python安装包191项、50缓存57资源只读与28审计，三进程空闲加载。首次全量仍有1个manager关闭身份错误，其精确ps因测试清理丢失，未宣称解决；无新UI。
 - [docs/76](../../docs/76-atomic-download-manifest.md)、[安装](../../evidence/2026-11-12/atomic-manifest-install.json)、[28项审计](../../evidence/2026-11-12/atomic-manifest-validation.json)。`PYTHONPATH=. python3 scripts/accept_atomic_manifest.py`；raw local/atomic-manifest-20261112，原观察13.121h/7不可达。
+
+## E060 — 测试清理前诊断留存
+- E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。
+- [docs/77](../../docs/77-manager-test-evidence-retention.md)、[29项核验](../../evidence/2026-11-12/manager-test-evidence-validation.json)；`PYTHONPATH=. python3 scripts/accept_manager_test_evidence.py`。原观察13.229h/7不可达；原始日志local/manager-shutdown-20261112，新诊断local/test-evidence，均不入Git。
