@@ -1,0 +1,27 @@
+{
+  "evidence": "E103",
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "managed_reload_passed": true,
+    "unique_completed_task": true,
+    "exact_result_includes_1387": true,
+    "two_confirmed_receipts": true,
+    "two_distinct_task_and_message_ids": true,
+    "transport_receipt_ack": true,
+    "transport_receipt_result": true,
+    "actual_python_tool": true,
+    "old_rows_and_sessions_unchanged": true,
+    "only_target_has_new_jobs": true,
+    "all_native_sessions_unchanged": true,
+    "two_routes_history_synced_without_error": true,
+    "frozen_21_modules_unchanged": true,
+    "config_bytes_unchanged": true,
+    "services_running": true
+  },
+  "productCommit": "3fa5011",
+  "gatewayCommit": "e27547b",
+  "newJobs": 1,
+  "newConfirmedReceipts": 2,
+  "scope": "Only managed transport reloaded; single native AIC group task, Python 1387 and UI reply; no old task replay, auth diagnostics or new capability matrix cells."
+}

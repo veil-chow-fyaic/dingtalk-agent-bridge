@@ -1,6 +1,6 @@
 # 当前任务池
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+> E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
 E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../../docs/102-user-requirements-and-roadmap.md)、[PRD](01-PRD.md)、[矩阵](ACCEPTANCE_MATRIX.md)。截至E096原清单按字节[归档](../../docs/history/through-E096/TODO.md.txt)，阶段证据留EVIDENCE/Git，旧“待许可/未部署”不再作为待办。
 
@@ -22,7 +22,7 @@ E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../.
 ## S2 — 继续抄CEO的通用部分
 
 - [x] E102 C02发送事实负例映射及窄修复：旧冻结8方法22失败，新冻结源码/双Python各307；只改core，未知不重发。
-- [ ] E102 transport受管重载及唯一合成群任务UI正向；其他组件/账本保留。
+- [x] E103只重载transport，实际Python1387/两确认/UI、15核验；其他组件/账本保留。
 - [ ] C03后续能力与终态契约（E099结果/错误已落地）：Kimi旧行为保持，CLI/原生协议边界独立；不默认切runtime/账号或重放。
 - [ ] C04会话兼容性元数据：冻结契约，升级/不兼容可解释，旧session/任务/回执不丢。
 - [ ] Qwen admitted/completed与inbox/job入库事务专项对照仍保留；现实现已有同等证据则不重复改写。

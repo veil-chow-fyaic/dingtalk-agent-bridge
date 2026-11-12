@@ -1,6 +1,6 @@
 # DingTalk Agent Bridge
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+> E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](docs/106-send-evidence-contract.md)。
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
@@ -9,10 +9,10 @@
 **项目尚未完整验收；当前普通账号群聊和私聊已恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
 
-- E095实际加载E093/661b67c的21模块，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
+- E103传输加载E102/3fa5011，gateway保留E099/e27547b，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
 - E092整理13项公开参考来源、69份选摘文件的固定版本/摘要/许可，明确采用边界；没有运行上游服务/测试、移入其实现或新增UI通过项。本地WeCom资料不作为当前选型依据。
 - E093实际采用社区的[文件摘要校验](docs/references/artifact-digest-adoption.md)，补上排队后产物变更缺口。新任务file/image携带原定SHA256，已发送原key继续对账；MIT许可随包保留。11项新增专项，最终源码/双Python安装包各291项、12项冻结核验通过；E095部署同一源码，本轮未重跑全量。
-- E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。当前矩阵64格：41通过、22阻塞、1部分；14项MUST仍8项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
+- E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。E098媒体及E100长文/控制补验后，当前矩阵64格：49通过、14阻塞、1部分；14项MUST仍7项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
 - E075交接包固定f0d2911，包含已验E073 wheel和当时539项manifest；未包含后续变更。仅local/handoff-f0d2911-20261112/bundle为payload，父目录与其他local内容不得分享。[冻结交接](docs/80-offline-handoff-export.md)
 
 ## 使用与事实边界

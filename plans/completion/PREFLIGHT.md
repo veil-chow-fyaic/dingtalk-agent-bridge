@@ -1,15 +1,11 @@
 # 续作前置核对
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认原checkout、codex/complete-bridge和未提交归属。不能从聊天空目录另做实现。
 
-先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认同一checkout、codex/complete-bridge和未提交归属。不要从聊天空目录另做实现。
+E103当前transport已加载3fa5011，gateway为e27547b；只有core在两版本间不同。E102冻结21模块、源码及双Python安装各307已核，E10315项部署/UI核验通过。没有新代码/未解疑点不重复全量；不拿当前HEAD冒充旧冻结测试。
 
-E095当前三个受管服务运行、双路history-only；新AIC测试群是唯一群测试目标，原企业群已退出活动配置，私聊不变。实际操作前核精确会话/profile/白名单和原key账本，不按旧PID控制进程。不要重复resume、重启服务或消耗两个历史一次查询key。心跳PAUSED与服务运行分清。
+三服务history-only运行、心跳PAUSED。精确会话/显式profile/白名单沿当前配置，只在AIC与原私聊操作；企业大群和旧群禁测。已有投递按原key对账，未确认不UI补发。停止/重载只用原manager归属记录，不按历史PID。
 
-用户已提供登录成功，不再索取密码/弹窗名称/第二账号或旧恢复许可。助手不得auth/doctor/系统Keychain诊断、锁解锁、file-DEK/reset/删凭据/复制token/改权限/重启Mac；受管普通业务可用，故障持久暂停，不自动反复认证。不增加成员、bot、权限、远程发布。
+用户已登录成功，不索取密码/弹窗名称/第二账号。助手auth/doctor/系统Keychain诊断锁解锁、file-DEK/reset/删凭据/复制token/改权限/重启Mac均禁；故障持久暂停，不自动恢复。两个历史一次查询key已消费。
 
-21模块与E093冻结版相同且已部署；代码修复才执行对应回归，文档以链接/摘要/隐私验证为主，不重跑已过全量凑进度。原账号/聊天/截图/日志/下载件仅local。未知投递原key对账，不UI补发，旧失败不删。
-
-提交前verify_handoff写manifest并复核、verify_privacy扫描暂存blob、git diff --check。review_acceptance只核声明，当前未满足require-covered是正确缺口结果，不是最终认证。原24h观察及维护不重置。
-
-续作以E097统一需求及精简TODO为准；through-E096归档仅历史。CEO新版31文件是只读参考，不运行其登录/后台/测试脚本，不把它作为可直接部署的checkout。
+原24h观察已结束，故障及维护保留、不重新计时或称健康。原始账号/聊天/截图/日志/下载件留local或私有工具记录。提交前verify_handoff写manifest并核对、verify_privacy扫暂存blob、git diff --check；review_acceptance只核声明，当前未完整覆盖是正确缺口。

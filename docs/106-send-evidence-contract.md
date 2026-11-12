@@ -27,3 +27,11 @@
 8个新增方法先在旧冻结产品上失败，再验证修复；全量使用独立冻结源码和同一新wheel，在Python3.14与3.11安装环境核对，结果见[冻结报告](../evidence/2026-11-12/send-evidence-contract-validation.json)。不会拿HEAD替换已测试代码，也不把离线负例当新增UI。
 
 本记录的初始提交尚未部署：线上transport仍E093，两gateway为E099。后续只在无未终态任务/投递且冻结摘要一致时，用管理器重载受影响transport，保留原账本与gateway；再做唯一合成群任务的真实UI正向验收。原24h观察已经结束，维护另留新记录，不改E101原run及错误。
+
+## E103：已部署并通过真实UI
+
+E102代码提交`3fa5011`后，先核任务/投递全部终态及21模块冻结摘要，再由原manager只重载transport；两个gateway进程、全部旧任务/发件箱/投递/session和配置保持。没有auth/doctor/钥匙串操作，不改E101原观察。维护证据单独留local/send-evidence-deploy-20261112。
+
+veil在唯一AIC群原生输入一条独立任务，Kimi实际Python计算73×19=1387；liev确认与结果两条气泡及AI标识真实可见。两个不同task/message回执与传输账本逐项一致，原key未重放。两路history均在维护后完整同步且poll_error为空。[15项只读核验](../evidence/2026-11-12/send-evidence-deployment-validation.json)通过，UI观察保留本聊天工具记录；没有新增能力矩阵格。
+
+首版审计误猜health存在last_complete_sync_ms而失败，实际字段为last_sync.at/complete；原失败报告留local，修正按真实契约核维护后时间与complete，未重发任务。E102离线报告deployed=false保留初始冻结检查点，当前部署事实以E103为准。下一段C03能力/终态和C04会话兼容性，项目仍未完整验收。

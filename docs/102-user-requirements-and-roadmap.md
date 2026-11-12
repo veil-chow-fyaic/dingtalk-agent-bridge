@@ -1,6 +1,6 @@
 # 用户需求总复盘、当前进度与后续路线
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+> E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](106-send-evidence-contract.md)。
 
 2026-11-12，E097。复盘原聊天 `01a1bfcf-e2c8-7331-880e-781e1fe2f64c` 的全部14条用户消息，以及本聊天的需求、纠偏、授权和事故处理。原聊天已直接读取，不只依赖此前助手总结。本文整合解释；[PRD](../plans/completion/01-PRD.md) 的17项需求及MUST/SHOULD等级、[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)保持原标准。
 

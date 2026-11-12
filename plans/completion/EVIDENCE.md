@@ -349,3 +349,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [官方/社区边界与修复](../../docs/106-send-evidence-contract.md)、[13项冻结核验](../../evidence/2026-11-12/send-evidence-contract-validation.json)。固定CEO源码摘要复核，固定官方投影源码说明first ID与请求task回填边界；新代码/测试自写，不运行上游服务或真实DWS。
 - 旧E099冻结产品跑新8方法，22失败子场景；初6方法18失败记录也保留。新core拒绝投影/底层冲突、错task终态、非法/冲突消息ID、被引用源ID、嵌套显式失败/其他契约；仅可信SUCCESS确认，原key重启不重发、原pending和终态竞态保持。
 - 冻结源码/同一wheel双Python各307通过，21模块/六入口/许可相同，只有core产品模块变化；13核验通过。无新UI，49/14/1及7 MUST缺口保持。本检查点未部署，下一步受管重载transport并作唯一合成群任务验收，不改E101原观察记录。
+
+## E103 — 回执校验部署与真实群任务
+- [部署与UI](../../docs/106-send-evidence-contract.md)、[15项核验](../../evidence/2026-11-12/send-evidence-deployment-validation.json)。3fa5011冻结21模块一致，仅原manager重载transport；两gateway进程、旧任务/回执/投递/session/config保持，三服务运行。
+- veil原生新任务一次，Kimi实际Python1387，liev两气泡及AI标识可见；两个不同task/message回执与传输账本一致。两路history维护后完整同步、无poll_error；无auth/doctor、旧key重放或新矩阵通过格。
+- 首审计字段误猜导致1项失败留local，改核真实last_sync.at/complete后15项通过。原24h run未改，49/14/1、7 MUST未完整；下一项C03/C04，不重做已过UI。
