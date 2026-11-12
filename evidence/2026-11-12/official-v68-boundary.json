@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E066",
+  "scope": "Official release and selected source comparison only; no new binary executed",
+  "release": {
+    "tag": "v1.0.68",
+    "commit": "ba02fc6cdbdb3543d21d0cdb70f027bf0d142692",
+    "publishedAt": "2026-11-11T08:50:17Z",
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68"
+  },
+  "compare": {
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/compare/v1.0.67...v1.0.68",
+    "base": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "head": "ba02fc6cdbdb3543d21d0cdb70f027bf0d142692",
+    "totalCommits": 53,
+    "changedFilesReturned": 218
+  },
+  "directSourceComparison": {
+    "internal/keychain/keychain_darwin.go": {
+      "sameBytes": true,
+      "oldSha256": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+      "newSha256": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2"
+    },
+    "internal/helpers/image_upload.go": {
+      "sameBytes": true,
+      "oldSha256": "db91c106d4e7e9d757e19d76d5532cf8553f7123c49eb36e05d486bbda5d09a4",
+      "newSha256": "db91c106d4e7e9d757e19d76d5532cf8553f7123c49eb36e05d486bbda5d09a4"
+    }
+  },
+  "chatPatchLines": 67,
+  "newVersionInstalled": false,
+  "existingVersionChanged": false,
+  "credentialsChanged": false,
+  "newNativeUITest": false,
+  "rawSha256": {
+    "official-selected.json": "3b889f70df2013159fa6c9698b17deb57c320d602ad9899d59120725bc4c2378",
+    "keychain_darwin.go": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+    "image_upload.go": "db91c106d4e7e9d757e19d76d5532cf8553f7123c49eb36e05d486bbda5d09a4",
+    "comparison.json": "24fc25e349fd2a7ace4bf1bcd013a5ce06d52820dcd6d665898f4823ec84121f"
+  },
+  "conclusions": [
+    "No macOS DEK implementation change in the directly compared file; no evidence v1.0.68 resolves E065",
+    "Image upload helper unchanged and chat diff adds no upload leaf; preserve pinned supplement pending actual equivalent official capability",
+    "Upgrade review must validate history partial/decryption semantics before any live replacement"
+  ],
+  "limits": [
+    "Not exhaustive runtime certification of v1.0.68",
+    "Release source unchanged does not establish the cause of a system Keychain read failure",
+    "No upgrade, new UI, restored credential access or completed 24h claim"
+  ]
+}

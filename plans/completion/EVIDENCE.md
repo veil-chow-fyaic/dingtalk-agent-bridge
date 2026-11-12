@@ -197,3 +197,7 @@
 ## E065 — 真实Keychain读取故障，尚未恢复
 - E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。
 - [docs/82](../../docs/82-live-keychain-read-failure.md)、[脱敏事实](../../evidence/2026-11-12/live-keychain-failure.json)；原始官方输出/observer报告local/sync-failure-20261112。不冒称refresh过期、恢复通过或doctor健康；已请求用户恢复现有访问，无新UI发送。
+
+## E066 — 官方v1.0.68相关源码边界
+- 只读官方发布与53提交218文件比较，macOS Keychain与image_upload原件逐字节相同、chat差异未新增上传叶子。没有安装/执行新版或改变现场，不把Windows隔离改动当macOS修复。
+- [docs/83](../../docs/83-official-v1.0.68-boundary-review.md)、[证据](../../evidence/2026-11-12/official-v68-boundary.json)；原始选取响应/源码local/dws-v68-review-20261112。升级前须另验解密/分页partial语义；E065仍待恢复。
