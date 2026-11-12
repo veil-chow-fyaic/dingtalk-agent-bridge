@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-2026-11-12，E050核对。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI只用于用户视角验收，不是自动发送后端。liev普通账号与veil两人私聊、原两人群均有实际证据；原群增至3人后暂停新增群实验，不把它固定成产品组织。旧阶段文字及计数已[按字节存档](history/through-E049/README.md)。
+2026-11-12，E077当前停机边界更新。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI只用于用户视角验收，不是自动发送后端。liev普通账号与veil两人私聊、原两人群均有实际证据；历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；不把它固定成产品组织。旧运行入口已[按字节存档](history/through-E076/README.md)。当前真实服务停机、operator_suspended保持；下文是接口契约，不授权执行真实查询/发送或启动后台，E074一次核验许可仍待决。
 
 ## 调用方式
 
@@ -11,7 +11,7 @@ python3 -m dingtalk_bridge.cli health
 python3 -m dingtalk_bridge.cli conversations
 ```
 
-以下是参数模板，A/C/M/BUSINESS-KEY须换成自己已验证的账号别名、会话、消息及业务键，不能直接作为健康探针发送：
+以下是独立部署参数模板。discovery、sync、reconcile及附件下载都可能调用真实DWS，即使只读也可能触发鉴权，当前事故停机期禁用。A/C/M/BUSINESS-KEY须换成自己已验证的账号别名、会话、消息及业务键，不能直接作为健康探针发送：
 
 ```text
 python3 -m dingtalk_bridge.cli --account-id A discovery --cursor 0 --limit 50
@@ -59,7 +59,7 @@ python3 -m dingtalk_bridge.consume --name MY-CONSUMER --account-id A --conversat
 
 每批最多200条，保存到`local/consumers/MY-CONSUMER/inbox.sqlite3`。一个名字绑定一个账号/会话；多路分别命名，锁防同名并发写入。默认一次有界shadow消费；`--follow`长轮询，wait为1–30秒，`--max-batches 0`持续至中断。不会调用模型或自动回复；`--hydrate-self`只允许下载自身消息附件用于核对，仍不让self进入ready。
 
-Inbox先同事务写原事件与游标，再物化媒体。pending_media、media_failed、normalized、quarantined分别保留状态；下一次可重试只读下载。`Inbox.ready()`只返回fromSelf=false、解析完整且附件路径/摘要仍有效的消息，不等于下游已执行成功。通用consumer不提供任务确认/租约或模型调度；独立可选gateway另有任务/会话/outbox，任意runtime也可自行实现消费策略。
+Inbox先同事务写原事件与游标，再物化媒体。pending_media、media_failed、normalized、quarantined分别保留状态；正常运行时下一次可重试只读下载；E072凭据/超时等暂停生效后不再启动真实DWS，不以下载重试绕过暂停。`Inbox.ready()`只返回fromSelf=false、解析完整且附件路径/摘要仍有效的消息，不等于下游已执行成功。通用consumer不提供任务确认/租约或模型调度；独立可选gateway另有任务/会话/outbox，任意runtime也可自行实现消费策略。
 
 历史正文是平台投影；当前恢复实际图片mediaId、文件fileId、quotedMessage为有序parts，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
 

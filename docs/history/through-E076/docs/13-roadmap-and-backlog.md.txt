@@ -1,0 +1,64 @@
+# 执行摘要与剩余验收
+
+当前现场：E071事故后三个服务保持停止。用户已确认密码弹窗停止，但真实DWS登录尚未恢复；不要重试doctor/auth/Keychain或自动重启。原24h中断样本保持。
+
+E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 [方案与证据](90-guarded-recovery-read-plan.md)。
+
+2026-11-12，E065之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+
+## 最近实质结果
+
+- E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。 [证据](80-offline-handoff-export.md)
+- E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。 [证据](79-manager-exiting-transition.md)
+- E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。 [证据](78-route-process-recovery.md)
+- E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。 [证据](77-manager-test-evidence-retention.md)
+- E059清单原子提交：真实子进程短写复现旧缓存损坏，同目录0600临时文件写入/fsync/replace后冷/热缓存恢复、提交前SIGKILL保旧通过；2新方法、源码及双Python安装包191项、50缓存57资源只读与28审计，三进程空闲加载。首次全量仍有1个manager关闭身份错误，其精确ps因测试清理丢失，未宣称解决；无新UI。 [证据](76-atomic-download-manifest.md)
+- E058：首次/缓存统一校验，坏响应不写成功清单，repair失败保旧；5新增方法、真实本地HTTP恢复，双Python安装包189项、50现场缓存57资源只读/24审计通过，三进程空闲重载。[证据](75-fresh-download-integrity.md)
+
+- E057：快速附件结果仅原消息消费，优先处理已有slot，取消后清理；4个新增回归、旧源码/wheel各2失败复现，双Python已安装包各184项及24审计通过，仅两gateway空闲重载。[证据](74-media-completion-scheduling.md)
+
+- E056：固定官方18个隔离dry-run、46审计9负向；重复file末项覆盖、混合互斥、9/10图引用、audio/video=file等契约准确记录，未改产品或增加UI通过格。[证据](73-official-send-composition-contract.md)
+
+- E055：真实私聊mget下载HTTP故障115.987秒，等待附件时status完整回复；原消息自动恢复，一次Python处理/192B JSON客户端下载打开。52审计8负向通过，原配置精确恢复，产品沿用E054。[证据](72-attachment-download-outage-ui.md)
+
+- E054：缓存命中完整性，6种损坏拒绝/显式repair保留旧件；双Python已安装包各180项、48现场缓存55资源只读核验和22审计通过；三进程空闲加载，无新消息。[证据](71-download-cache-integrity.md)
+
+- E053：异常raw/资源引用隔离，18形状及后续合法任务/重启不重放通过；双Python179全量，新wheel/双gateway空闲加载，302旧官方事件投影不变，25审计。[证据](70-malformed-message-isolation.md)
+
+- E052：并发对账终态保护；双Python各177全量、新wheel/重载通过，新私聊实际Python计算、145B JSON回传客户端下载Quick Look，36审计7负向。[证据](69-monotonic-reconciliation-and-ui.md)
+
+- E051：中文/空格工作目录、TMPDIR下64既有测试；同wheel新中文安装六入口及只读doctor通过，23核验通过，无产品/现场改变。[证据](68-unicode-workspace-install-validation.md)
+
+- E050：当前运行/工具文档及HTTP契约核对修正；旧原文按字节归档，隔离安装18帮助/33既有测试与25核验通过，无产品/部署/消息变更。[证据](67-current-handoff-contract.md)
+
+- E049：五个历史UI审计改核冻结源码/wheel/安装包，全部只读复核通过；10负向、双Python各3专项，旧报告不改、当前版本差异独立展示。[证据](66-frozen-install-audit-boundary.md)
+
+- E048：无效时限启动前拒绝，doctor保持只读；Python3.14与最低3.11隔离wheel各169项通过，无新UI发送。[证据](65-finite-runtime-deadlines.md)
+
+- E047：真实90秒执行超时、工具自动清理、155秒无晚写，同gateway下一只读任务及完整UI回复；最低Python3.11隔离已安装wheel全量165项通过。[证据](64-runtime-timeout-and-installed-wheel.md)
+
+- E033：原SHA错误和第一跟进误判保留，明确源文本后实际Python比较并在客户端更正；原文件未改/重发。[证据](52-sha-correction-ui.md)
+- E034：quote保留来源ID/会话/显示名/可用senderId，缺失身份不猜测、白名单仍取外层sender；7条旧官方事件离线持久回放，UI入站引用仍未过。[实现](53-quoted-source-identity.md)
+- E035：真实21MiB文件被本地限额拒绝，UI给出限额及恢复建议；独立新压缩任务的ZIP客户端下载、系统解包、原件一致，原failed保持。[闭环](54-output-limit-and-compressed-recovery.md)
+
+- E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
+
+E062 Python3.14/3.11隔离wheel各197项及六入口19模块通过；E039旧错误及E059首次全量1个manager错误保持；三个进程核心沿用E059、manager按次加载E062，私聊600秒保持，原24h观察器未重启。DM65/160/169/235，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+
+## 仍需完成
+
+| 项目 | 下一步和前提 | 验收边界 |
+|---|---|---|
+| gateway崩溃后的工具清理 | E046独立守护及新真实私聊已通过，42审计5负向；旧E045失败保持 | 不覆盖守护本身被SIGKILL、恶意脱组或外部副作用回滚 |
+| 群矩阵、群控制 | 原3人群继续测试已授权；保持两账号白名单，当前先恢复DWS同步 | 不用旧两人群结果覆盖新成员范围，不以缺第二账号为由停私聊 |
+| 私聊入站引用 | 仅在找到明确新原生入口后再试；右键/坐标/快捷键/侧按钮旧路径触发loop guard | 标准化回放不是UI发送；出站引用E027保持 |
+| 原生类型、组合 | E056已限定当前官方单文件/图文契约；无新明确入口时停止重复本路径，转未验的消费者恢复边界 | WAV/MP4 file不算语音条/独立video；两PNG不外推任意多附件 |
+| 凭据恢复 | E074单次只读计划待明确同意；三服务与持久暂停保持；失败不重试 | 本次不包含后台恢复；E028自然预刷新不等于失效恢复 |
+| 24h与交接 | 原run继续，到真实时长后用只读终检；执行全部MUST和隐私/manifest/检出终检 | 最早11月12日19:36后；错误/维护均保留，项目未完成 |
+| SHOULD扩展 | 独立会议/外部/bot、Codex超时、卡片/审批/追问按实际依赖继续 | 不扩大权限/联系人，不抬高Kimi任选门槛 |
+
+E037已完成EXIF方向6私聊输入、原件保留、Kimi真实归正及PNG/报告客户端下载打开，47审计4负向。E038原生入口仍无结果并已停止旧路径；E039运行器后代清理和真实交付通过，最终全量新见2个既有manager关闭错误。E040已补私有错误诊断且64次限定实验未复现，停止该路径；E041已补原名并实际处理Unicode CSV；E042已完成运行中停私聊gateway的取消与恢复；E043已验个人钉盘真实交付及conference下线边界；E044已验合成听记与IM报告；E045已修崩溃不确定提示并完成真实UI核验；E046已补通用守护、真实gateway崩溃自动清理及新只读UI核验，下一段仅据明确新入口补C01边界。[证据](63-runtime-parent-death-guard.md)。引用旧入口和已确认文件不重放。
+
+当前授权仍为liev的DWS与veil客户端、两人私聊及原群；原3人群继续测试已获用户本轮明确授权。无需再索取已授权私聊许可，不新建bot/邀请人/改权限/远程发布。
+
+历史摘要按字节存档于[原执行摘要](history/through-E035/13-roadmap-and-backlog.md.txt)，原日期/失败/实验详情保留。执行记录仅追加到[推进账本](../plans/completion/PROGRESS_LEDGER.md)；本页当前表格原位更新，避免再把过时下一步堆在文末。

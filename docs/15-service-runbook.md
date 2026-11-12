@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-2026-11-12，E050核对、E062后续更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E077。事故前旧运行入口已[按字节存档](history/through-E076/README.md)。当前本机三个服务停止、operator_suspended保持；真实DWS/auth/doctor/Keychain及后台恢复均禁用。E074一次只读核验已提问待决，成功也不恢复服务，见[单次方案](90-guarded-recovery-read-plan.md)。本文通用参数不是绕过此停机约束的授权。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 安装与工作目录
 
@@ -16,32 +16,32 @@ python3 -m venv .venv
 
 从[路由模板](../config.routes.example.json)及[执行器模板](../config.agent.example.json)填入独立核实的身份和会话；模板占位符不能直接运行。`accountId`为本地别名，`profile`是官方授权上下文，`selfSenderId`须用本人实际消息字段核对。私聊另需`peerOpenDingTalkId`。多路由及迁移见[通用工具](22-generic-tool-and-consumer.md)。
 
-路由模板默认history轮询；要启用官方事件提示，明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
+路由模板默认history轮询，当前恢复候选也仅使用history，不启动共享bus。独立部署如需官方事件提示，应先核共享bus生命周期和清理边界，再明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
 
 ## 当前本机部署与管理
 
-本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用`--as user`；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。原测试群增至3人后新增群实验暂停，等待范围答复；两人私聊继续有效。
+本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用`--as user`；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；两人私聊授权保持，不能把技术故障当缺第二账号。
 
-统一管理器拥有传输及两个gateway。以下status/doctor只读；stop/start会改变运行状态，维护前先确认任务空闲：
+统一管理器拥有传输及两个gateway；事故期间只允许以下不调用DWS的本地状态读取，不把状态检查当作新增验收：
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status
-python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
-python3 -m dingtalk_bridge.service_manager stop
-python3 -m dingtalk_bridge.service_manager --agent-config local/agent-config.json --agent-config local/agent-direct-config.json start
+python3 -m dingtalk_bridge.dws_access status
 ```
 
-启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。详情见[管理器与恢复](40-service-manager-and-restart-ui.md)。
+后台start/restart、解除暂停和前台传输会改变运行或调用准入状态，当前不能执行；持久暂停的存在不构成擅自启动服务的许可。正常独立部署使用`dab-service --agent-config PATH start`等管理器参数，需自己的配置与授权；本事故实例先按E074核验、另行说明history-only恢复方案并取得后台恢复明确同意。`resume --confirm-retry`只解除本地防护，不修复钥匙串，也不是当前可执行步骤。
 
-没有开机自启；机器重启后从同一工作目录按上述显式配置启动。status只说明归属和存活，doctor不证明模型可调用或真实UI成功。E062已修复实际捕获的TERM后同启动时间E退出过渡：只继续有界观察，不追加信号或提前判已停止。其他身份变化仍拒绝，未观察的历史错误不能断言同因；若再次发生，先读同次私有诊断及status，不按旧PID强杀，见[退出过渡修复](79-manager-exiting-transition.md)与[诊断边界](57-manager-identity-diagnostics.md)。
+启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。管理器参数及当时实验见[历史管理器验收](40-service-manager-and-restart-ui.md)，不能直接照抄历史恢复动作。
 
-前台诊断先停止受管实例，再运行`python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15`；前台退出后才恢复管理器。传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
+没有开机自启，也未授权重启本机。状态只说明本地归属和存活，不能证明认证、模型或真实UI成功。E062已修复实际捕获的TERM后同启动时间E退出过渡：只继续有界观察，不追加信号或提前判已停止。其他身份变化仍拒绝，未观察的历史错误不能断言同因；若再次发生，先读同次私有诊断及status，不按旧PID强杀，见[退出过渡修复](79-manager-exiting-transition.md)与[诊断边界](57-manager-identity-diagnostics.md)。
+
+前台诊断同样会调用DWS，当前停机期禁用，不能通过前台绕过受管暂停。正常独立部署前台/后台不能同时占用同一实例；传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
 
 ## 本机令牌与接口
 
 HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-不发送消息的检查：
+服务已获准运行后的本地HTTP查询示例；当前服务停止，不为查询自动启动：
 
 ```bash
 python3 -m dingtalk_bridge.cli health
@@ -76,7 +76,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash与同会话文件交付；它及提示词、官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
-当前源码E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。该版本尚未加载现场，详见[诊断](85-credential-store-health-diagnostics.md)。poll_error出现时保留账本，检查日志、官方授权及选定会话只读请求，修复后补读；不改组织或扩监听范围。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
+E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，均尚未加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。发生凭据存储/超时/进程中断时持久暂停后续受管DWS调用；不自动探测是否恢复。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
 ## 验证与共享边界
 
@@ -89,7 +89,7 @@ python3 scripts/verify_handoff.py
 
 诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
 
-产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；没有通用任意命令代理或新增bot。
+产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；E073生成的受管入口支持doc/todo/calendar/mail/drive/minutes六类，固定身份/JSON，保持官方双流及退出码。它不是OS权限隔离，没有新增bot，见[入口边界](89-supervised-official-office-entrypoint.md)。
 
 异常raw或资源引用结构保存在consumer的quarantined状态，游标可继续处理后续合法消息；不为无法规范化的输入创建Agent任务或猜身份。原始事件留本地inbox，只读排查后再明确用户意图，不能自动重放。见[异常消息隔离](70-malformed-message-isolation.md)。
 

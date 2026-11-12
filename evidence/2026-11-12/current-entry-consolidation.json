@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E077",
+  "sourceCommit": "860a2b5",
+  "ok": true,
+  "checks": {
+    "all_ten_archives_equal_original_commit_bytes": true,
+    "prd_unchanged": true,
+    "all_ui_cells_and_must_assessments_unchanged": true,
+    "all_21_runtime_modules_unchanged": true,
+    "review_tool_and_test_unchanged": true,
+    "prepared_query_still_matches_checker_and_package": true,
+    "prepared_query_has_no_attempt": true,
+    "prepared_live_config_unchanged": true,
+    "coverage_still_incomplete": true,
+    "current_runbook_no_old_live_doctor_or_restart_recipe": true
+  },
+  "archives": {
+    "AGENTS.md": {
+      "archive": "docs/history/through-E076/AGENTS.md.txt",
+      "sha256": "bfc287f5fd7efd6ff3b2bc7fe8ed5a706f1ff389efc8a56f35a0446034ac5431",
+      "currentSha256": "dd88f0509b4501413e59d249b4328fa010c5fb050100fb7ef473986e8d6ff9cf"
+    },
+    "README.md": {
+      "archive": "docs/history/through-E076/README.md.txt",
+      "sha256": "a5b24d9d2274eb4445ff016ec950b8b077e997784b02d778b69202dd850e5da7",
+      "currentSha256": "f903c80bd59df882cd6a915acf453ebfc25659e98b8f323304894507f35dd844"
+    },
+    "plans/completion/CURRENT_MISSION.md": {
+      "archive": "docs/history/through-E076/plans/completion/CURRENT_MISSION.md.txt",
+      "sha256": "6284acd7a0bc6af61650630359bc1f59f3bed00e3fd35f3422d65efbae969e8d",
+      "currentSha256": "3d47e62afd5f280507fec4852e99a1d0ddd5e179133344def1e39a4bea2e296d"
+    },
+    "plans/completion/MODE.md": {
+      "archive": "docs/history/through-E076/plans/completion/MODE.md.txt",
+      "sha256": "94950e1645ed26ee288c1221ceec17e15a0e9201d030eb91010dbac7ec91c226",
+      "currentSha256": "0029289fe42b37ac37c57f4a00f674a076b401a28a56e8a07c8fb8cb3ed6ef34"
+    },
+    "plans/completion/PREFLIGHT.md": {
+      "archive": "docs/history/through-E076/plans/completion/PREFLIGHT.md.txt",
+      "sha256": "7479b95d926b5355883f7a5cb902704532fa1b6e1cdf51e7ab8f4eb4334708f0",
+      "currentSha256": "1cd0e6f4cf33eed160e7e4324e66ce12659cb2a9e44f73da1b1ba3dadd526421"
+    },
+    "plans/completion/CRITICAL_PATH.md": {
+      "archive": "docs/history/through-E076/plans/completion/CRITICAL_PATH.md.txt",
+      "sha256": "6adca64702defb5a29210d4fdbeecfc348fb58765c3f746e62dd51bd7b46c9c4",
+      "currentSha256": "90cfe3d9a00903338591639fac96459a16e44f90e6d838c432a8e28cd8ef248f"
+    },
+    "docs/13-roadmap-and-backlog.md": {
+      "archive": "docs/history/through-E076/docs/13-roadmap-and-backlog.md.txt",
+      "sha256": "c8d604fd997a41bd29ca972a5392af73aa54045464444fe2c5885c2bf0e85eaf",
+      "currentSha256": "5baf549b2a209e11a5958a2117a77ebb593e14b1c6e57949eca725aa8fd877dd"
+    },
+    "docs/17-requirements-progress-review.md": {
+      "archive": "docs/history/through-E076/docs/17-requirements-progress-review.md.txt",
+      "sha256": "61340a296e41af91297453a6380ef03b7296037fd9940ad6a9aa1965257d2190",
+      "currentSha256": "b87c52a77e79af0f5b6886ed816d2724a73bd16154d34fc648b922ec5ced7b43"
+    },
+    "docs/15-service-runbook.md": {
+      "archive": "docs/history/through-E076/docs/15-service-runbook.md.txt",
+      "sha256": "2d5b1f629040cfd469526a67c370d23ccb7b06311c7334fdede55a1f49648ac2",
+      "currentSha256": "ce043ef3a1d1e37b3eb083007f29b2eba4e1fa5cd0e1ee91c3b25e7f27d4ab16"
+    },
+    "docs/22-generic-tool-and-consumer.md": {
+      "archive": "docs/history/through-E076/docs/22-generic-tool-and-consumer.md.txt",
+      "sha256": "40dca4cd7bf626c5011fe2f52ccae99e3dc3f8293029987c4a8091c636bcdf3e",
+      "currentSha256": "85e323a96d6e5fa0627a0c8f93051d832448f7452bce8a581d6ab595c29ea829"
+    }
+  },
+  "realDwsCalls": 0,
+  "productChanged": false,
+  "testsRerun": false,
+  "newUIEvidence": false,
+  "permissionStillPending": true,
+  "limits": [
+    "Document consolidation only; no live auth query or service restart",
+    "Historical authorization retained; latest workspace instruction to skip multi-person testing takes precedence",
+    "Ten old documents preserved byte for byte including their obsolete instructions, explicitly historical",
+    "Coverage and product unchanged; not a final acceptance or new installed package certification"
+  ]
+}

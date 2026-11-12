@@ -236,3 +236,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E076 — 验收声明只读核对
 - [说明](../../docs/91-acceptance-coverage-review.md)、[64格与14 MUST报告](../../evidence/2026-11-12/acceptance-coverage.json)、[11项验证](../../evidence/2026-11-12/acceptance-review-validation.json)。37格历史通过/25阻塞/2部分，MUST仍9项未完整覆盖；原64格与PRD判据保持。
 - 新工具5专项在源码/隔离3.14/隔离3.11通过，未重跑全量244或改产品；首轮中文相邻E编号漏检失败已保留并修复。真实DWS为0，查询许可仍待决。
+
+## E077 — 当前运行入口与事故约束一致
+- [旧10份入口](../../docs/history/through-E076/README.md)按860a2b5原字节归档；[10项核验](../../evidence/2026-11-12/current-entry-consolidation.json)确认PRD、MUST/64格、21模块和E076工具/测试不变，E074查询计划未执行且仍匹配。
+- 当前AGENTS/任务/前置/关键路径及运行手册移除旧待密码/解锁/直接重启指令，明确真实读取与后台恢复分别待允许；群范围遵守最新入口多人暂跳过。仅文档修改，无新全量/UI/部署。
