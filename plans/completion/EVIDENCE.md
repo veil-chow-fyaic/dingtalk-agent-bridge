@@ -160,3 +160,5 @@
 - docs/72；仅私聊官方mget子进程代理网络隔离115.987秒，14次原始官方io_timeout/request_timeout失败；history/Stream保持，原CSV waiting_media且未运行，status完整UI可见。
 - 原消息恢复后一次成功下载/一次真实Python csv+Decimal+SHA，192B JSON客户端下载Quick Look全文打开；输入3份/输出4份原件相等。accept_attachment_outage_ui.py 52审计8负向，attachment-outage-ui-ledger/audit-negative.json。
 - 3新任务6确认，DM65/160/169/235、群3/7/12/76及旧记录/session保持；设置/撤除有维护，恢复不重启或重发，配置精确恢复，product仍E054/180项。原观察1477样本12.312h、7不可达（维护增1）及旧3poll_error保留，未满24h。私有local/attachment-outage-20261112。
+
+| E056 | 2026-11-12 | 固定DWS发送组合18个无账号dry-run；重复file末项覆盖、互斥、9/10图引用及audio/video=file，46审计9负向，现网与E054产品保持 | [报告](../../docs/73-official-send-composition-contract.md)、[合成CLI计划](../../evidence/2026-11-12/send-contract-probe.json)、[审计](../../evidence/2026-11-12/send-contract-audit.json)；`PYTHONPATH=. python3 scripts/accept_send_contract.py`；原始首次类别失败与快照local/send-contract-20261112 | CLI计划不是UI，单消息普通附件/原生媒体未改绿，原观察约12.545h未满24h |

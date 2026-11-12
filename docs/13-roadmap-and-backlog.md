@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E055之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E056之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E056：固定官方18个隔离dry-run、46审计9负向；重复file末项覆盖、混合互斥、9/10图引用、audio/video=file等契约准确记录，未改产品或增加UI通过格。[证据](73-official-send-composition-contract.md)
 
 - E055：真实私聊mget下载HTTP故障115.987秒，等待附件时status完整回复；原消息自动恢复，一次Python处理/192B JSON客户端下载打开。52审计8负向通过，原配置精确恢复，产品沿用E054。[证据](72-attachment-download-outage-ui.md)
 
@@ -37,7 +39,7 @@ E054 Python3.14/3.11隔离wheel各180项及六入口19模块通过；E039两次m
 | gateway崩溃后的工具清理 | E046独立守护及新真实私聊已通过，42审计5负向；旧E045失败保持 | 不覆盖守护本身被SIGKILL、恶意脱组或外部副作用回滚 |
 | 群矩阵、群控制 | 等待原群第三人范围问题的答复；保持两账号白名单 | 不用旧两人群结果覆盖新成员范围，不以缺第二账号为由停私聊 |
 | 私聊入站引用 | 仅在找到明确新原生入口后再试；右键/坐标/快捷键/侧按钮旧路径触发loop guard | 标准化回放不是UI发送；出站引用E027保持 |
-| 原生类型、组合 | 查新的官方用户媒体入口或客户端明确入口；独立补有意义的私聊附件边界 | WAV/MP4 file不算语音条/独立video；两PNG不外推任意多附件 |
+| 原生类型、组合 | E056已限定当前官方单文件/图文契约；无新明确入口时停止重复本路径，转未验的消费者恢复边界 | WAV/MP4 file不算语音条/独立video；两PNG不外推任意多附件 |
 | 凭据恢复 | 保留真实失效refresh缺口；不改token/时钟或撤授权 | E028自然access预刷新已过，不重复当失效恢复 |
 | 24h与交接 | 原run继续，到真实时长后用只读终检；执行全部MUST和隐私/manifest/检出终检 | 最早11月12日19:36后；错误/维护均保留，项目未完成 |
 | SHOULD扩展 | 独立会议/外部/bot、Codex超时、卡片/审批/追问按实际依赖继续 | 不扩大权限/联系人，不抬高Kimi任选门槛 |

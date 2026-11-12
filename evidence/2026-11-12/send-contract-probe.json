@@ -1,0 +1,730 @@
+{
+  "version": "1.0.67",
+  "binarySha256": "43e379465ed97645f113a15df0b826e4a887339740c977e6d4d37e932a57a462",
+  "ok": true,
+  "caseCount": 18,
+  "cases": [
+    {
+      "name": "one_file",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "file": "a.txt",
+        "requested": "file"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 2,
+        "actions": [
+          {
+            "file": {
+              "name": "a.txt",
+              "path": "a.txt",
+              "sizeBytes": 16
+            },
+            "identity": "user",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "init/commit_conversation_file_upload"
+          },
+          {
+            "effectiveMessageType": "file",
+            "identity": "user",
+            "requestedMessageType": "file",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan"
+      },
+      "stdoutSha256": "44a63c035ad7db733f57903766b2be8dccdaadc230a5d9bad42305abfd695b66",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "repeat_file_last_b",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "a.txt",
+        "--file",
+        "b.txt"
+      ],
+      "expected": {
+        "file": "b.txt",
+        "requested": "file"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 2,
+        "actions": [
+          {
+            "file": {
+              "name": "b.txt",
+              "path": "b.txt",
+              "sizeBytes": 16
+            },
+            "identity": "user",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "init/commit_conversation_file_upload"
+          },
+          {
+            "effectiveMessageType": "file",
+            "identity": "user",
+            "requestedMessageType": "file",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan"
+      },
+      "stdoutSha256": "4590aca8389141658fa93d8cd1e4d9f0051f9832213025a228513a811e8ff908",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "repeat_file_last_a",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "b.txt",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "file": "a.txt",
+        "requested": "file"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 2,
+        "actions": [
+          {
+            "file": {
+              "name": "a.txt",
+              "path": "a.txt",
+              "sizeBytes": 16
+            },
+            "identity": "user",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "init/commit_conversation_file_upload"
+          },
+          {
+            "effectiveMessageType": "file",
+            "identity": "user",
+            "requestedMessageType": "file",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan"
+      },
+      "stdoutSha256": "44a63c035ad7db733f57903766b2be8dccdaadc230a5d9bad42305abfd695b66",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "file_alias_conflict",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "a.txt",
+        "--file-path",
+        "b.txt"
+      ],
+      "expected": {
+        "reject": "互斥"
+      },
+      "exitCode": 3,
+      "data": {
+        "error": {
+          "category": "validation",
+          "code": 3,
+          "message": "参数 --text、--markdown、--media-id、--file、--file-path、--image-url、--contact-id、--share-chat-id、--a2ui-messages 互斥，只能指定其一（当前指定了 --file、--file-path）"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "4bf800d433b30067dde311a0e9f7cee4250f569cf06f8ca77703f69dc9e237d3",
+      "ok": true
+    },
+    {
+      "name": "comma_is_not_file_array",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "a.txt,b.txt"
+      ],
+      "expected": {
+        "reject": "a.txt,b.txt: no such file",
+        "code": 5,
+        "category": "internal"
+      },
+      "exitCode": 5,
+      "data": {
+        "error": {
+          "category": "internal",
+          "code": 5,
+          "message": "cannot read file <temporary-workspace>/a.txt,b.txt: stat <temporary-workspace>/a.txt,b.txt: no such file or directory"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "35865e0bffd8b33bcc1d2ce3d589bd8a448693b9f80a3cb8312817101679beda",
+      "ok": true
+    },
+    {
+      "name": "json_is_not_file_array",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--file",
+        "[\"a.txt\",\"b.txt\"]"
+      ],
+      "expected": {
+        "reject": "[\"a.txt\",\"b.txt\"]: no such file",
+        "code": 5,
+        "category": "internal"
+      },
+      "exitCode": 5,
+      "data": {
+        "error": {
+          "category": "internal",
+          "code": 5,
+          "message": "cannot read file <temporary-workspace>/[\"a.txt\",\"b.txt\"]: stat <temporary-workspace>/[\"a.txt\",\"b.txt\"]: no such file or directory"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "557fa534d34c055f5a8438e3fafe0a7e60664c8d8ffa7484ac05dc360a6d1df6",
+      "ok": true
+    },
+    {
+      "name": "text_and_file",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--text",
+        "caption",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "reject": "互斥"
+      },
+      "exitCode": 3,
+      "data": {
+        "error": {
+          "category": "validation",
+          "code": 3,
+          "message": "参数 --text、--markdown、--media-id、--file、--file-path、--image-url、--contact-id、--share-chat-id、--a2ui-messages 互斥，只能指定其一（当前指定了 --text、--file）"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "0f10d63b26478345c5d25785144c63763afd1883289ae4298509d95e3e226a3f",
+      "ok": true
+    },
+    {
+      "name": "markdown_and_file",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "caption",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "reject": "互斥"
+      },
+      "exitCode": 3,
+      "data": {
+        "error": {
+          "category": "validation",
+          "code": 3,
+          "message": "参数 --text、--markdown、--media-id、--file、--file-path、--image-url、--contact-id、--share-chat-id、--a2ui-messages 互斥，只能指定其一（当前指定了 --markdown、--file）"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "bd9877dc65348ef074ebb1984c28ad65022fccda93ae58065079655b2dfec5e7",
+      "ok": true
+    },
+    {
+      "name": "audio_maps_to_file",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--msg-type",
+        "audio",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "file": "a.txt",
+        "requested": "audio"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 2,
+        "actions": [
+          {
+            "file": {
+              "name": "a.txt",
+              "path": "a.txt",
+              "sizeBytes": 16
+            },
+            "identity": "user",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "init/commit_conversation_file_upload"
+          },
+          {
+            "effectiveMessageType": "file",
+            "identity": "user",
+            "requestedMessageType": "audio",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan"
+      },
+      "stdoutSha256": "ef63a966097d68f81875f470173d4b92a3b2a85bc80eb6654e20bbacb1cb07e2",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "video_maps_to_file",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--msg-type",
+        "video",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "file": "a.txt",
+        "requested": "video"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 2,
+        "actions": [
+          {
+            "file": {
+              "name": "a.txt",
+              "path": "a.txt",
+              "sizeBytes": 16
+            },
+            "identity": "user",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "init/commit_conversation_file_upload"
+          },
+          {
+            "effectiveMessageType": "file",
+            "identity": "user",
+            "requestedMessageType": "video",
+            "target": {
+              "openConversationId": "synthetic-offline-target"
+            },
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan"
+      },
+      "stdoutSha256": "e4f565b3c8c1bca6fa18d4fe9cd4c60e2e8a9f6f6c9738e446f80908145cce22",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "native_voice_enum_absent",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--msg-type",
+        "voice",
+        "--file",
+        "a.txt"
+      ],
+      "expected": {
+        "reject": ""
+      },
+      "exitCode": 3,
+      "data": {
+        "error": {
+          "category": "validation",
+          "code": 3,
+          "message": "参数 --msg-type 取值 \"voice\" 不合法，允许值：text, markdown, image, file, audio, video, profile, share-chat, a2ui"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "d7b0df100fb9d327544d072617c90ff9b240e3aac77c482e8275393d8e6ebb84",
+      "ok": true
+    },
+    {
+      "name": "two_local_images",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "before ![image-0](./missing-0.png) middle ![image-1](./missing-1.png) after"
+      ],
+      "expected": {
+        "images": 2,
+        "unique": 2
+      },
+      "exitCode": 0,
+      "data": {
+        "content": "[本地图文内容已脱敏]",
+        "dry_run": true,
+        "executed": false,
+        "imageCount": 2,
+        "preview_kind": "plan",
+        "tool": "send_personal_message",
+        "uniquePathCount": 2
+      },
+      "stdoutSha256": "9108f2afba0d6de170a0059ba8418e6271f8ca766ae2ea1003f0ddb4b20ab7bc",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "nine_local_images",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "before ![image-0](./missing-0.png) middle ![image-1](./missing-1.png) middle ![image-2](./missing-2.png) middle ![image-3](./missing-3.png) middle ![image-4](./missing-4.png) middle ![image-5](./missing-5.png) middle ![image-6](./missing-6.png) middle ![image-7](./missing-7.png) middle ![image-8](./missing-8.png) after"
+      ],
+      "expected": {
+        "images": 9,
+        "unique": 9
+      },
+      "exitCode": 0,
+      "data": {
+        "content": "[本地图文内容已脱敏]",
+        "dry_run": true,
+        "executed": false,
+        "imageCount": 9,
+        "preview_kind": "plan",
+        "tool": "send_personal_message",
+        "uniquePathCount": 9
+      },
+      "stdoutSha256": "60f13f938c42506bb2638d4e533c398f6b7d8816eff440211b31a21536dd2c28",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "ten_local_images",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "before ![image-0](./missing-0.png) middle ![image-1](./missing-1.png) middle ![image-2](./missing-2.png) middle ![image-3](./missing-3.png) middle ![image-4](./missing-4.png) middle ![image-5](./missing-5.png) middle ![image-6](./missing-6.png) middle ![image-7](./missing-7.png) middle ![image-8](./missing-8.png) middle ![image-9](./missing-9.png) after"
+      ],
+      "expected": {
+        "reject": "单条消息最多支持 9 张本地图片",
+        "code": 5,
+        "category": "internal"
+      },
+      "exitCode": 5,
+      "data": {
+        "error": {
+          "category": "internal",
+          "code": 5,
+          "message": "单条消息最多支持 9 张本地图片"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "e09f5143da4833597d8ed6c6e87b5ca5642850d8581f3e7adc93fe60ae8d462e",
+      "ok": true
+    },
+    {
+      "name": "nine_repeated_image_refs",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "before ![image-0](./missing-0.png) middle ![image-1](./missing-0.png) middle ![image-2](./missing-0.png) middle ![image-3](./missing-0.png) middle ![image-4](./missing-0.png) middle ![image-5](./missing-0.png) middle ![image-6](./missing-0.png) middle ![image-7](./missing-0.png) middle ![image-8](./missing-0.png) after"
+      ],
+      "expected": {
+        "images": 9,
+        "unique": 1
+      },
+      "exitCode": 0,
+      "data": {
+        "content": "[本地图文内容已脱敏]",
+        "dry_run": true,
+        "executed": false,
+        "imageCount": 9,
+        "preview_kind": "plan",
+        "tool": "send_personal_message",
+        "uniquePathCount": 1
+      },
+      "stdoutSha256": "1f5edbd24afe5c4c4ea77ec7a5564efac26334a8fd6779ba85906ca6a2cb87bc",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    },
+    {
+      "name": "ten_repeated_image_refs",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "before ![image-0](./missing-0.png) middle ![image-1](./missing-0.png) middle ![image-2](./missing-0.png) middle ![image-3](./missing-0.png) middle ![image-4](./missing-0.png) middle ![image-5](./missing-0.png) middle ![image-6](./missing-0.png) middle ![image-7](./missing-0.png) middle ![image-8](./missing-0.png) middle ![image-9](./missing-0.png) after"
+      ],
+      "expected": {
+        "reject": "单条消息最多支持 9 张本地图片",
+        "code": 5,
+        "category": "internal"
+      },
+      "exitCode": 5,
+      "data": {
+        "error": {
+          "category": "internal",
+          "code": 5,
+          "message": "单条消息最多支持 9 张本地图片"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "e09f5143da4833597d8ed6c6e87b5ca5642850d8581f3e7adc93fe60ae8d462e",
+      "ok": true
+    },
+    {
+      "name": "reference_image_syntax",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "![image][a]\n\n[a]: ./missing.png"
+      ],
+      "expected": {
+        "reject": "引用式本地图片暂不支持",
+        "code": 5,
+        "category": "internal"
+      },
+      "exitCode": 5,
+      "data": {
+        "error": {
+          "category": "internal",
+          "code": 5,
+          "message": "引用式本地图片暂不支持，请使用 ![说明](路径) 行内写法"
+        }
+      },
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "d69a9f117de5d5f21b766abc536796006b2aacc6db9f595912de54c8f8257384",
+      "ok": true
+    },
+    {
+      "name": "file_links_remain_markdown",
+      "argv": [
+        "chat",
+        "+messages-send",
+        "--as",
+        "user",
+        "--group",
+        "synthetic-offline-target",
+        "--dry-run",
+        "--format",
+        "json",
+        "--markdown",
+        "[A](a.txt) [B](b.txt)"
+      ],
+      "expected": {
+        "markdown": "[A](a.txt) [B](b.txt)"
+      },
+      "exitCode": 0,
+      "data": {
+        "actionCount": 1,
+        "actions": [
+          {
+            "arguments": {
+              "clawType": "openClaw",
+              "content": "{\"text\":\"[A](a.txt) [B](b.txt)\",\"title\":\"[A](a.txt) [B](b.txt)\"}",
+              "msgType": "markdown",
+              "openConversationId": "synthetic-offline-target"
+            },
+            "identity": "user",
+            "tool": "send_personal_message"
+          }
+        ],
+        "dry_run": true,
+        "executed": false,
+        "failedCount": 0,
+        "preview_kind": "plan",
+        "tool": "send_personal_message"
+      },
+      "stdoutSha256": "5e56728f94ec7fe69579e715aff89f3b5d4894e646e04f95e4c8999359d926bb",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ok": true
+    }
+  ],
+  "controls": {
+    "everyCaseDryRun": true,
+    "syntheticTargetOnly": true,
+    "emptyIsolatedConfig": true,
+    "credentialEnvInherited": false,
+    "confirmationFlagUsed": false,
+    "proxy": "reserved-unlistening-loopback"
+  },
+  "limits": [
+    "CLI parser/plan evidence only; no server, native UI or download validation",
+    "audio/video use a text fixture to inspect mapping only, not media validity",
+    "missing image paths intentionally prove dry-run is not image validation",
+    "Only the pinned official user send shortcut is covered; no platform-wide impossibility claim"
+  ]
+}

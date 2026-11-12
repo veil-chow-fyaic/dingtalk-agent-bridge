@@ -140,3 +140,7 @@ E019补充：官方错误的invalid_request+PARAM_ERROR可在首次发送阶段�
 2026-11-12，当前Mac客户端9.0.5（59563623）。原生UI查看输入框扩展控件：截图坐标及对应AX加号均未展开可识别菜单；另一控件只打开格式工具栏，已关闭并恢复空白输入框。没有录音、上传、发送或更改权限；群/私聊账本和native session均不变。不能据按钮未响应断言整个Mac客户端不支持语音。该路径触发loop guard，找到明确新入口前不重复。
 
 固定[v1.0.67源码](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go)仍明确将audio/video映射file，file输入是单个路径。普通多文件一次多选被客户端拆条的E017证据保持；该发送叶子未提供任意附件数组，也不能推导平台所有接口均不支持。公开[语音识别介绍](https://www.dingtalk.com/qidian/page-0SgQkFLi.html)仅给出泛化麦克风操作，未指定本Mac版本，不能代替现场入口。`evidence/2026-11-12/native-entry-review.json`记录版本/契约/零新消息；原始UI留local。原生语音及普通单消息多附件仍未过，不把重复查文档改称突破。
+
+### E056：发送组合不能从参数名字推断
+
+固定官方18个无账号dry-run证实：重复`--file`只取末项，逗号/JSON不是附件数组，正文/Markdown与file互斥；audio/video有效类型仍file。本地图文最多9个引用（同图重复也计数），上传并发3；缺失图片路径的dry-run也可通过，不能证明文件/上传/UI有效。普通文件链接不上传附件，正式图文还可能压缩。产品继续逐件交付并分别持久化，单消息普通多附件及原生语音/独立video不改绿。[完整契约、复现及源码](73-official-send-composition-contract.md)。

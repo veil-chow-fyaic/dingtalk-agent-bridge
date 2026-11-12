@@ -4,7 +4,7 @@
 
 只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。
 
-每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–72。
+每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–73。
 
 交付通用普通账号IM工具＋真实本地Agent接入：群聊/私聊交办、文件原件、实际工具执行、多轮上下文及同会话交付。CLI/HTTP/consumer不绑定组织或runtime。至少一个本地执行器即可；Kimi真实Read/Write/Bash已满足，Codex请求超时单独跟踪，不额外制造双runtime门槛。
 
@@ -20,6 +20,8 @@
 固定官方DWS v1.0.67在`local/bin/v1.0.67`，全局旧v1.0.61保留。官方负责身份/权限/profile、聊天/历史/资源和办公API；bridge补路由、白名单、任务/会话、幂等投递、文件及恢复。没有必要时不重造官方能力。
 
 原生image需本地CHAT_IMAGE上传的明确缺口：隔离补充叶子复用固定官方源码上传/鉴权，原版binary不改，PNG/JPEG ≤2MiB；更大图片作为file交付。输出单文件20MiB是bridge策略，超限failed并提示压缩/拆分，不自动改写产物。WAV/MP4 file原件可传，MP4客户端可播放，均不能外推语音条/独立video协议。
+
+E056补固定官方18个无账号dry-run：重复file只保留最后一项，文本/文件互斥，本地图引用最多9（并发3），audio/video计划仍file；46审计9负向。图文可能压缩且不代表可下载原件，没有新增原生通过；docs/73记录范围，勿重跑旧菜单或同一契约探针凑进展。
 
 官方已有bot的dev connect/OpenClaw及数字员工路线，与liev普通账号路线分开。E044已验合成WAV经官方听记分析、独立读回与报告客户端下载打开；独立会议/外部/bot未实测项保留；不创建新身份代替验收。DM仅显式启用officialDwsTools，群关闭；上下文不授予额外权限。官方契约、源码、API、原件、UI和独立对端证据分别陈述。
 

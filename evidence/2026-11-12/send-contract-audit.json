@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E056",
+  "ok": true,
+  "checks": {
+    "pinned_version": true,
+    "pinned_binary_unchanged": true,
+    "complete_18_cases": true,
+    "initial_five_category_assumptions_retained": true,
+    "service_config_exact_and_official_context": true,
+    "same_three_managed_processes_healthy": true,
+    "product_code_still_e054": true,
+    "original_observer_continues": true,
+    "transport_poll_healthy": true,
+    "cli_one_file": true,
+    "cli_repeat_file_last_b": true,
+    "cli_repeat_file_last_a": true,
+    "cli_file_alias_conflict": true,
+    "cli_comma_is_not_file_array": true,
+    "cli_json_is_not_file_array": true,
+    "cli_text_and_file": true,
+    "cli_markdown_and_file": true,
+    "cli_audio_maps_to_file": true,
+    "cli_video_maps_to_file": true,
+    "cli_native_voice_enum_absent": true,
+    "cli_two_local_images": true,
+    "cli_nine_local_images": true,
+    "cli_ten_local_images": true,
+    "cli_nine_repeated_image_refs": true,
+    "cli_ten_repeated_image_refs": true,
+    "cli_reference_image_syntax": true,
+    "cli_file_links_remain_markdown": true,
+    "source_unified_send.go": true,
+    "source_identity_contract.go": true,
+    "source_chat.go": true,
+    "source_chat_markdown_images.go": true,
+    "source_chat_markdown_image_upload.go": true,
+    "source_chat_image_upload.go": true,
+    "source_chat_personal_emotion.go": true,
+    "direct_jobs_unchanged": true,
+    "direct_outbox_unchanged": true,
+    "direct_deliveries_unchanged": true,
+    "direct_events_unchanged": true,
+    "direct_meta_unchanged": true,
+    "direct_runtimeFiles_unchanged": true,
+    "group_jobs_unchanged": true,
+    "group_outbox_unchanged": true,
+    "group_deliveries_unchanged": true,
+    "group_events_unchanged": true,
+    "group_meta_unchanged": true,
+    "group_runtimeFiles_unchanged": true
+  },
+  "negativeChecks": {
+    "executed_true": true,
+    "dry_run_missing": true,
+    "first_file_not_last": true,
+    "extra_send_action": true,
+    "audio_not_file": true,
+    "wrong_image_count": true,
+    "wrong_unique_paths": true,
+    "auth_failure_not_input_limit": true,
+    "network_failure_not_input_limit": true
+  },
+  "officialCliDryRunCases": 18,
+  "newMessages": 0,
+  "newNativeUICapabilityVerified": false,
+  "productChanged": false,
+  "observerElapsedHours": 12.545,
+  "sources": {
+    "internal/shortcut/chat/unified_send.go": {
+      "sha256": "01859e34a48b8b5f5c4668e3f102666464671d27d1b666c5eba46487f7e83611",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/shortcut/chat/unified_send.go"
+    },
+    "internal/shortcut/chat/identity_contract.go": {
+      "sha256": "1d19b68c907816e89be48bca5d99e85c38eef50ad3cf9e162ba0129092970b0c",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/shortcut/chat/identity_contract.go"
+    },
+    "internal/helpers/chat.go": {
+      "sha256": "22b6ae62087dad8cdc6a889be6c763ed7bfec9f8bf8e785f6565f6db113523ed",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat.go"
+    },
+    "internal/helpers/chat_markdown_images.go": {
+      "sha256": "f1daf034874e696f15e89f342e59a6daa2357debcb1905bf742f95ecc6307227",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_markdown_images.go"
+    },
+    "internal/helpers/chat_markdown_image_upload.go": {
+      "sha256": "0a90e9e88df79e5ab91ef5baadd617c99457d5f981bfd7bd655a838aaa3b69c6",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_markdown_image_upload.go"
+    },
+    "internal/helpers/chat_image_upload.go": {
+      "sha256": "13229bfe9af3086e88407602ced0fd182555585ea930c3901c2572d3a9c8b00d",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_image_upload.go"
+    },
+    "internal/helpers/chat_personal_emotion.go": {
+      "sha256": "2ee94bba1f1aadb19878b65083d25df24de26eb01e7d243a967fa1d1677941c6",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_personal_emotion.go"
+    }
+  },
+  "artifactsSha256": {
+    "probe.json": "e0ddec89e0494cfcfef6252494351d40241af5fce7cf84564a77ca735edcb68f",
+    "probe-initial.json": "e55ca8b70be8d32cec934b99c232c510f3656ea267072a2db94cba020c8d7216",
+    "probe.log": "8cac01f1337bd02cf2556fa54e9ab553fd50ec00f0bd2f2fcbf118c98c6ebf07",
+    "probe-initial.log": "43707db127bcb5f07575a1c4f3134a288a643f0b350b70985565e6d9284d8ee2"
+  },
+  "limits": [
+    "CLI parser/plan evidence only; no server, native UI or download validation",
+    "audio/video use a text fixture to inspect mapping only, not media validity",
+    "missing image paths intentionally prove dry-run is not image validation",
+    "Only the pinned official user send shortcut is covered; no platform-wide impossibility claim"
+  ]
+}

@@ -24,6 +24,8 @@
 - [history故障恢复](docs/43-history-network-outage-recovery.md)、[Stream真实断连](docs/44-stream-network-recovery-and-runtime-failure.md)、[自然凭据轮换](docs/47-natural-auth-rollover.md)；不等于失效refresh恢复或24h通过。
 - 最新：[历史UI审计与冻结安装版本](docs/66-frozen-install-audit-boundary.md)；[启动前拒绝无效执行时限](docs/65-finite-runtime-deadlines.md)；[真实超时、同进程恢复及最低Python安装验证](docs/64-runtime-timeout-and-installed-wheel.md)；[gateway崩溃后自动清理及真实私聊核验](docs/63-runtime-parent-death-guard.md)；[崩溃结果不确定提示与工具遗留实证](docs/62-crash-recovery-uncertainty.md)；[合成语音经官方听记与报告交付](docs/61-official-minutes-ui.md)；[个人钉盘真实交付与会议下线边界](docs/60-official-drive-and-conference.md)；[真实工具运行中停止gateway及恢复](docs/59-active-gateway-stop-ui.md)；[附件原名与Unicode CSV实际处理](docs/58-attachment-metadata-unicode-csv.md)；[运行器后代清理与真实私聊回归](docs/56-runtime-process-group-cleanup.md)，最终全量中的2个manager关闭错误保持未解决；[EXIF方向6原件与真实归正/下载打开](docs/55-exif-orientation-ui.md)、[错误SHA的明确更正](docs/52-sha-correction-ui.md)、[引用来源元数据修复](docs/53-quoted-source-identity.md)、[21MiB超限提示→新压缩任务→ZIP客户端下载解包](docs/54-output-limit-and-compressed-recovery.md)。原错误/failed记录保留。
 
+[固定版发送组合契约](docs/73-official-send-composition-contract.md)已用18个无账号dry-run核验：重复`--file`只取最后一项，正文与文件互斥，audio/video仍为file，本地图文最多9个引用。46审计/9负向通过；这是CLI计划证据，单消息普通多附件及原生语音仍未通过。
+
 官方DWS负责认证、通讯/历史/资源及办公API；bridge补路由、执行队列、会话、文件、幂等及恢复。固定官方v1.0.67缺本地CHAT_IMAGE上传叶子，隔离补充复用其源码鉴权/上传；≤2MiB PNG/JPEG走image，较大图片走file，bridge输出单文件上限20MiB。官方bot的dev connect/OpenClaw/数字员工是另一身份路线，不能与普通账号混同。
 
 [官方办公接入](docs/41-official-office-agent-ui.md)已完成doc/todo/calendar/未发送draft代表性任务；只对DM显式启用、默认关闭，不是权限沙箱。WeCom/Slack/Telegram参考及适用范围见[WeCom对照](docs/03-wecom-reference.md)、[runtime边界](docs/21-existing-runtime-integration.md)、[本地接入](docs/24-local-agent-product-and-acceptance.md)；开通见[经验手册](docs/11-onboarding-lessons.md)。
