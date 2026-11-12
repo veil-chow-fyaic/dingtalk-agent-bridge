@@ -1,6 +1,6 @@
 # 当前任务
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。下一步CEO C02发送事实负例对照，C03/C04契约与余下UI缺口继续；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
 
 交付通用普通账号DingTalk IM bridge：群/私聊文字、媒体原件、真实本地Agent任务、上下文和同会话交付；CLI/HTTP/consumer不绑定组织/runtime。沿用[01-PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)，项目未完成。只在原项目codex/complete-bridge工作，单Agent，不远程发布。
 

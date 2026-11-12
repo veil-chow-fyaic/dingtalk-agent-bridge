@@ -344,3 +344,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [记录与限制](../../docs/105-original-24h-observation.md)、[13项完整性核验](../../evidence/2026-11-12/reliability-original-24h-review.json)。原run达到24h结束，2878样本/205事件/52维护，最大gap30.748秒，0重复事件。
 - 1059 unavailable（681 URLError/378 HTTPError）和168 poll_error样本保留。378 HTTPError均仍有health但路由集与旧baseline不同、0事件捕获，符合旧群退出后冻结查询不再适用；原记录没有精确HTTP状态，不猜404或全部DWS宕机。
 - 未重置/启动新run；原事件最终账本对照未做、当前AIC部署没有24h覆盖。完整记录不是健康通过，R13仍未完成。
+
+## E102 — CEO发送凭据负例与身份校验
+- [官方/社区边界与修复](../../docs/106-send-evidence-contract.md)、[13项冻结核验](../../evidence/2026-11-12/send-evidence-contract-validation.json)。固定CEO源码摘要复核，固定官方投影源码说明first ID与请求task回填边界；新代码/测试自写，不运行上游服务或真实DWS。
+- 旧E099冻结产品跑新8方法，22失败子场景；初6方法18失败记录也保留。新core拒绝投影/底层冲突、错task终态、非法/冲突消息ID、被引用源ID、嵌套显式失败/其他契约；仅可信SUCCESS确认，原key重启不重发、原pending和终态竞态保持。
+- 冻结源码/同一wheel双Python各307通过，21模块/六入口/许可相同，只有core产品模块变化；13核验通过。无新UI，49/14/1及7 MUST缺口保持。本检查点未部署，下一步受管重载transport并作唯一合成群任务验收，不改E101原观察记录。

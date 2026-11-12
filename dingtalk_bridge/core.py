@@ -35,6 +35,46 @@ class ArtifactIntegrityError(ValueError):
         super().__init__('artifact_integrity_mismatch')
 
 
+def provider_ids(value, fields):
+    """Inspect only official response wrappers, never quoted messages or actions.
+
+    DWS projects the first ID found in these wrappers. Preserve the underlying
+    evidence too, so a projection cannot hide conflicting provider identities.
+    """
+    found = set()
+    def collect(item):
+        if isinstance(item, dict):
+            if any(item.get(key) in (False, 'false') for key in ('success', 'ok') if key in item):
+                raise BridgeError('Provider result reports failure')
+            for field in fields:
+                candidate = item.get(field)
+                if candidate is None or candidate == '':
+                    continue
+                if not isinstance(candidate, str) or not candidate.strip():
+                    raise BridgeError('Malformed provider identity')
+                found.add(candidate.strip())
+            for name in ('result', 'data', 'response', 'content', 'message'):
+                collect(item.get(name))
+        elif isinstance(item, list):
+            for child in item:
+                collect(child)
+    collect(value)
+    return found
+
+
+def send_task_identity(data, allow_raw=False):
+    receipt = data.get('sendReceipt')
+    projected = set()
+    if receipt is not None:
+        if not isinstance(receipt, dict) or receipt.get('contractVersion', 'im.message-send-receipt.v1') != 'im.message-send-receipt.v1':
+            raise BridgeError('Unexpected send receipt contract')
+        projected = provider_ids(receipt, ('openTaskId', 'taskId'))
+    tasks = projected | provider_ids(data, ('openTaskId', 'taskId'))
+    if len(tasks) != 1 or not (projected or allow_raw):
+        raise BridgeError('Missing or conflicting send task ID; do not resend')
+    return tasks.pop()
+
+
 class DWS:
     def __init__(self, root, config):
         self.root, self.config = Path(root), config
@@ -447,28 +487,8 @@ class Bridge:
             args += ['--msg-type', 'file', '--file', payload['staged']]
         try:
             data = self.dws.call(args)
-            task = data.get('sendReceipt', {}).get('openTaskId')
-            if not task and reply_to is not None:
-                # v1.0.67 group quote returns raw MCP data; DM quote projects a
-                # sendReceipt. Only inspect official response wrappers, never the
-                # referenced source message. Ambiguous receipts remain unknown.
-                tasks = set()
-                def collect(value):
-                    if isinstance(value, dict):
-                        for name in ('openTaskId', 'taskId'):
-                            candidate = value.get(name)
-                            if isinstance(candidate, str) and candidate.strip():
-                                tasks.add(candidate.strip())
-                        for name in ('result', 'data', 'response', 'content', 'message'):
-                            collect(value.get(name))
-                    elif isinstance(value, list):
-                        for item in value:
-                            collect(item)
-                collect(data)
-                if len(tasks) == 1:
-                    task = tasks.pop()
-            if not isinstance(task, str) or not task.strip():
-                raise BridgeError('No send task ID; do not resend')
+            # v1.0.67 group quote may return raw MCP data without sendReceipt.
+            task = send_task_identity(data, allow_raw=reply_to is not None)
             with self.lock:
                 self.db.execute('UPDATE deliveries SET state="submitted",task_id=? WHERE key=?', (task, key))
                 self.db.commit()
@@ -508,12 +528,29 @@ class Bridge:
         if not item['task_id'] or item['state'] in {'confirmed', 'rejected', 'failed'}:
             return item
         data = self.dws.call(['chat', '+messages-query-send-status', '--open-task-id', item['task_id']])
+        if data.get('contractVersion', 'im.message-send-status.v1') != 'im.message-send-status.v1':
+            raise BridgeError('Unexpected send status contract')
+        tasks = provider_ids(data, ('openTaskId', 'taskId'))
+        if tasks and tasks != {item['task_id']}:
+            raise BridgeError('Delivery result task mismatch')
         result = data.get('result', {})
         status = result.get('sendStatus')
         state = 'confirmed' if status == 'SUCCESS' else 'failed' if status == 'FAILED' else 'submitted'
         ref = data.get('messageRef', {})
-        if state == 'confirmed' and (ref.get('openConversationId') != self.config['group'] or not ref.get('openMessageId')):
-            raise BridgeError('Delivery result identity mismatch')
+        if state == 'confirmed':
+            mid = ref.get('openMessageId')
+            if (ref.get('openConversationId') != self.config['group'] or
+                    not isinstance(mid, str) or not mid.strip()):
+                raise BridgeError('Delivery result identity mismatch')
+            messages = provider_ids(data, ('openMessageId', 'messageId', 'msgId'))
+            conversations = provider_ids(data, ('openConversationId', 'conversationId', 'openCid'))
+            if ((messages and messages != {mid}) or
+                    (conversations and conversations != {self.config['group']})):
+                raise BridgeError('Conflicting delivery result identities')
+            with self.lock:
+                payload = json.loads(self.db.execute('SELECT payload FROM deliveries WHERE key=?', (key,)).fetchone()[0])
+            if mid == payload.get('reply_to'):
+                raise BridgeError('Referenced source is not outgoing delivery evidence')
         with self.lock:
             # Status calls run outside the lock. Preserve the first committed
             # terminal result when an older pending/conflicting reply arrives.

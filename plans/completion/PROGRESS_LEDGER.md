@@ -271,3 +271,5 @@
 | 2026-11-12 19:45 E098/E099媒体与契约 | JPEG/WAV/MP4六方向新增UI、四下载件/打开/SHA、16核验；AV原failed保留，独立只读交付。结果契约新增8方法，冻结源码/双Python299、9审计 | docs/103；local/aic-media-20261112、runtime-result-20261112 | 47/16/1，8 MUST不完整；代码尚未重载。下一段仅受管重载idle gateway，保留transport/session/失败，再群长文与控制。原24h已到期，现有只读review表明完整观察且有1059不可达/168poll_error，另作终检，绝非健康24h |
 
 | 2026-11-12T20:14:12+08:00 E100/E101闭环 | 两gateway受管加载e27547b、transport保持；群长文/上下文/status/cancel/new真实UI及21核验，10记录18confirmed；原24h13核验完整但有故障，旧run保留 | docs/104–105；E100/E101 | 49/14/1、7 MUST未完整；下一项CEO C02发送事实负例对照，C03/C04及新UI入口；不重发旧实验 |
+
+| 2026-11-12T20:24:08+08:00 E102 | CEO C02负例落实：旧冻结8方法22失败，新core/8方法，源码及同wheel双Python各307、13审计通过 | docs/106；send-evidence-contract-validation | 当前尚未部署，下一步仅受管transport重载及唯一UI正向；不重跑旧实验，不增加矩阵通过格 |

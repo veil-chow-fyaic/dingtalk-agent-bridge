@@ -1,0 +1,71 @@
+{
+  "evidence": "E102",
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "three_frozen_suites_307": true,
+    "old_frozen_e099_eight_methods_22_failures": true,
+    "build_install_ok": true,
+    "only_core_product_module_changed": true,
+    "current_matches_frozen_21_modules": true,
+    "all_frozen_test_bytes_match": true,
+    "both_installed_suites_use_sitepackages": true,
+    "six_help_entrypoints_both_pythons": true,
+    "ceo_fixed_sources_match_index": true,
+    "wheel_sha_matches": true,
+    "wheel_modules_match_frozen": true,
+    "existing_mit_license_preserved": true,
+    "e100_product_validation_preserved": true
+  },
+  "tests": {
+    "source": {
+      "ok": true,
+      "testsRun": 307,
+      "failures": 0,
+      "errors": 0
+    },
+    "py314": {
+      "ok": true,
+      "testsRun": 307,
+      "failures": 0,
+      "errors": 0
+    },
+    "py311": {
+      "ok": true,
+      "testsRun": 307,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "oldEightFailures": 22,
+  "wheelSha256": "9fcb456d8e4b802375fbe555765d3c5d5f32ac2ef90a233315a317f41bb31d4b",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "e733ae7ea98be4754f172b4451e41ca5146dd329ad0e88f966ddbaf6bf8a65d7",
+    "runtime_guard.py": "62a566cb491c4ceae836e125d2c0b8732a727580a605ee998212900139e55b28",
+    "agent_runtime.py": "8a4d4bf85ac052b236dd59dc5dad8449cf60a583016c78ea12b922ec1c3dee7f",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "a0094a2ea2387e4d2f991b05a4b6352649e9e9bb8f1fa94f4407dc2eb63a62af",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "17eca681a86f550841aeb49ba1b73b746e2c21a9d16cfce418b3034f27466952",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "58a1b7a707c3254de2ef7c2b4d40f601cc8b58fa9c27c7647135d786955d9741",
+    "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "official_proxy.py": "26ecebae37d8c0f77a634dbb27b5dcf28ab6b99d0dc18c969b546d8404e84e09",
+    "doctor.py": "a390d906eca3526bb1e4be9c8736a6c7d08552610a4d829b7560634808c0d9ba",
+    "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "deployed": false,
+  "sources": {
+    "officialCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "ceoCommit": "92e360ed1eb35f006afee738916cc9b735c1deb5"
+  },
+  "scope": "Frozen offline synthetic provider/process tests; no new UI/DWS or credential access; native behavior in E100 stays historical."
+}

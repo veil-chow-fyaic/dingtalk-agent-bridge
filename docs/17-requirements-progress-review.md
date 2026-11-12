@@ -1,6 +1,6 @@
 # 需求回顾与当前真实进度
 
-> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。下一步CEO C02发送事实负例对照，C03/C04契约与余下UI缺口继续；心跳PAUSED、三服务运行。 见[本轮闭环](104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
+> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。E102已修CEO C02回执身份缺口，冻结源码/双Python各307通过；新core未部署。下一步受管transport重载及唯一UI正向验收，再C03/C04与余下UI缺口；心跳PAUSED、三服务运行。 见[本轮闭环](104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
 
 E097已完整复盘全部用户输入，当前总入口为[需求/进度/路线](102-user-requirements-and-roadmap.md)与[CEO深挖](references/ceo-deep-dive.md)。下列是部署/验收摘要；活动次序见关键路径。
 
