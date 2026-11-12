@@ -201,3 +201,7 @@
 ## E066 — 官方v1.0.68相关源码边界
 - 只读官方发布与53提交218文件比较，macOS Keychain与image_upload原件逐字节相同、chat差异未新增上传叶子。没有安装/执行新版或改变现场，不把Windows隔离改动当macOS修复。
 - [docs/83](../../docs/83-official-v1.0.68-boundary-review.md)、[证据](../../evidence/2026-11-12/official-v68-boundary.json)；原始选取响应/源码local/dws-v68-review-20261112。升级前须另验解密/分页partial语义；E065仍待恢复。
+
+## E067 — 钥匙串UI和用户输入密码后的核对
+- 已定位dws-cli条目、未显示密码/改访问设置；Apple只读status=7，用户输入系统密码后官方auth仍fail；原记录保持。单次系统读取stdout丢弃/51且无stderr，不猜根因。
+- [docs/84](../../docs/84-keychain-ui-followup.md)、[证据](../../evidence/2026-11-12/keychain-user-followup.json)。原始local/sync-failure-20261112；Terminal UI被工具安全限制拒绝，无绕行；已请用户手动执行准备好的官方只读诊断，结果待到达。

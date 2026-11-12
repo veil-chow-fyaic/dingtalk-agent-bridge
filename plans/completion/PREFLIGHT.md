@@ -45,3 +45,5 @@
 - E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。
 
 E066已只读核官方v1.0.68发布/53提交218文件比较：新版macOS Keychain与image_upload两文件同旧版字节，chat差异无新增上传入口；没有升级/恢复实证，继续固定v1.0.67及原薄补充。无需再次重复版本提示调查，后续升级须单独验分页/解密partial语义。详见docs/83。
+
+E067用户已输入一次系统密码仍未恢复：原生UI条目存在/既有允许所有应用且未修改；Apple元数据API证实登录钥匙串已解锁（status=7），不能继续让用户盲目解锁。单次系统读取stdout直接丢弃，退出51且stderr空。电脑控制工具禁止访问Terminal，未绕行；待用户手工运行local/sync-failure-20261112/terminal-doctor-check.py的官方只读结果，先读terminal-doctor-summary.json，不重复让用户输密码或重复探针。docs/84。

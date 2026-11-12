@@ -1,0 +1,87 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E067",
+  "resolved": false,
+  "userReportedSystemPasswordEnteredOnce": true,
+  "userReportedPasswordChangeOrDeniedPrompt": "none or not noticed",
+  "keychainStatus": {
+    "at": 1794448275.892589,
+    "openOSStatus": 0,
+    "statusOSStatus": 0,
+    "statusBits": 7,
+    "unlocked": true,
+    "readable": true,
+    "writable": true,
+    "scope": "keychain metadata only; no item/secret reads or changes"
+  },
+  "keychainUI": {
+    "dwsEntryExists": true,
+    "accountLabel": "dek",
+    "showPasswordSelected": false,
+    "existingAccessSetting": "allow all applications",
+    "accessSettingChanged": false,
+    "saveChangesButtonEnabled": false
+  },
+  "systemReadProbe": {
+    "at": 1794448445.237296,
+    "exitCode": 51,
+    "stderr": "",
+    "secretStdout": "DEVNULL; not captured or retained"
+  },
+  "officialDoctorAfterUserPassword": {
+    "at": "2026-11-12T01:53:34.050276+00:00",
+    "exitCode": 0,
+    "summary": {
+      "fail": 1,
+      "pass": 3,
+      "warn": 1
+    },
+    "checks": [
+      {
+        "name": "auth",
+        "status": "fail",
+        "message": "无法读取 macOS Keychain 中的登录密钥，无法判断登录状态"
+      },
+      {
+        "name": "keychain",
+        "status": "pass",
+        "message": "macOS 默认钥匙串可用"
+      },
+      {
+        "name": "runtime_context",
+        "status": "pass",
+        "message": "Runtime context ready"
+      },
+      {
+        "name": "network",
+        "status": "pass",
+        "message": "https://mcp.dingtalk.com 可达 (延迟 344ms)"
+      },
+      {
+        "name": "version",
+        "status": "warn",
+        "message": "有新版本 (当前 v1.0.67, 最新 v1.0.68)"
+      }
+    ]
+  },
+  "sameRecordsAfterUserPassword": {
+    "group": true,
+    "direct": true
+  },
+  "nativeTerminalAutomation": "tool explicitly rejected access to com.apple.Terminal for safety reasons; no alternative UI route attempted",
+  "next": "User runs prepared official read-only doctor from ordinary Terminal; results saved locally for comparison",
+  "rawSha256": {
+    "dws-access-control.ax.txt": "e0eee6639acf1a1553f1bd745d71a350f31c8b8027a78a06bce237e186af7047",
+    "keychain-lock-status.json": "e82518d029a404f109144906d7bb9d7e3b3b1e957da87e382d286a117626f086",
+    "system-item-read-error.json": "021e0bb6f90dc9a2becb883cd63c5c4d72720ce7587629520dc681ab5e3f612e",
+    "after-password-doctor.stdout": "d96d3936b62c9a37b290f150e429d8d6450e0c287ff91f2eafefb1a8c4a0bf19",
+    "after-password-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "after-password-doctor-summary.json": "2fe0db7f0686098eb047812953d34f13cb3102e3c7a710aa6922a692b33f744e"
+  },
+  "limits": [
+    "Keychain unlocked status and item metadata are not proof the item secret is readable",
+    "System read probe discarded stdout directly to DEVNULL and captured no secret; exit51 had no stderr",
+    "No confirmed lock, ACL, token expiry, corruption or process-context root cause",
+    "No login reset, credential migration, permissions change, service restart or new UI message"
+  ]
+}
