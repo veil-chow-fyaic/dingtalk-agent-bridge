@@ -1,5 +1,6 @@
 """DingTalk tasks -> durable local Agent sessions -> same-conversation text/files."""
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -36,6 +37,43 @@ def command_for(model,settings):
     if text.startswith('[Agent]'):return None
     if addressed:text=text[len(prefix):].strip()
     return text or ('请处理收到的附件。' if list(media_parts(model)) else None)
+
+
+def file_request(model,command):
+    return model['conversationType']=='group' and command is not None and (command=='--files' or command.startswith('--files '))
+
+
+def select_file_sources(model,command,previous):
+    """Bind explicit names once; no implicit latest-file or cross-sender lookup."""
+    try:
+        raw=command[len('--files'):].lstrip()
+        names,end=json.JSONDecoder().raw_decode(raw)
+        task=raw[end:].strip()
+        if (not isinstance(names,list) or not 1<=len(names)<=8 or
+            any(not isinstance(n,str) or not n or len(n)>255 or any(c in n for c in '/\\\x00\r\n') for n in names) or
+            len(set(names))!=len(names) or not task or task in {'status','状态','cancel','取消','new','新会话'} or
+            model['issues'] or model.get('quote') or list(media_parts(model))):
+            raise ValueError('file_selection_invalid')
+        requested_at=datetime.fromisoformat(model['receivedAt'])
+    except (ValueError,TypeError) as exc:
+        raise ValueError('file_selection_invalid') from exc
+    sources=[]
+    for name in names:
+        matches=[]
+        for candidate in previous:
+            if (candidate is None or candidate['issues'] or candidate['senderId']!=model['senderId'] or
+                candidate['fromSelf'] is not model['fromSelf'] or
+                candidate['accountId']!=model['accountId'] or candidate['conversationId']!=model['conversationId']):continue
+            try:age=(requested_at-datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
+            except (TypeError,ValueError):continue
+            if not 0<=age<=1800:continue
+            # Only the actual sender's top-level files, never quoted resources.
+            for part in candidate['parts']:
+                if part['type']=='file' and part.get('name')==name:
+                    matches.append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
+        if len(matches)!=1:raise ValueError('file_selection_missing_or_ambiguous')
+        sources.append(matches[0])
+    return task,sources
 
 
 def status_text(summary):
@@ -140,15 +178,59 @@ class Gateway:
         raise HydrationPending()
 
     def needs_media(self,model):
-        if command_for(model,self.settings) is None or model['issues']:return False
+        if model['issues']:return False
+        with self.lock:
+            for row in self.db.execute('SELECT model FROM jobs WHERE state="waiting_media"'):
+                if any(s['messageId']==model['id'] for s in json.loads(row[0]).get('fileSources',[])):return True
+        if command_for(model,self.settings) is None:return False
         job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
         with self.lock:
             row=self.db.execute('SELECT state FROM jobs WHERE id=?',(job_id,)).fetchone()
         return row is None or row[0]=='waiting_media'
 
+    def bind_file_requests(self):
+        for row in self.inbox.db.execute('SELECT seq,model FROM inbox WHERE model!="null" ORDER BY seq'):
+            model=json.loads(row['model']);command=command_for(model,self.settings)
+            if not file_request(model,command):continue
+            job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
+            with self.lock,self.db:
+                if self.db.execute('SELECT 1 FROM jobs WHERE id=?',(job_id,)).fetchone():continue
+                previous=[json.loads(r[0]) for r in self.inbox.db.execute(
+                    'SELECT model FROM inbox WHERE seq<? ORDER BY seq DESC LIMIT 50',(row['seq'],))]
+                try:
+                    command,sources=select_file_sources(model,command,previous)
+                    model['fileSources']=sources;state='waiting_media';error=None
+                except ValueError as exc:state='blocked';error=str(exc)
+                self.db.execute('INSERT INTO jobs(id,seq,command,model,state,error) VALUES(?,?,?,?,?,?)',
+                    (job_id,row['seq'],command,json.dumps(model,ensure_ascii=False),state,error))
+                if state=='blocked':
+                    self.emit(job_id,'blocked',{'text':'[Agent] 未执行文件任务。请使用 /agent --files ["原文件名"] 具体任务；'
+                        '最多8个不同文件名，须为你在本群此前50条消息、30分钟内发送的文件。缺失或同名不明确时不会猜选；不能将控制命令作为文件任务。'})
+                else:self.emit(job_id,'ack',{'text':'[Agent] 已接收任务 '+job_id[:8]+'，正在获取指定附件。'})
+
+    def ready_file_requests(self):
+        with self.lock,self.db:
+            for row in self.db.execute('SELECT id,model FROM jobs WHERE state="waiting_media"').fetchall():
+                model=json.loads(row['model']);sources=model.get('fileSources')
+                if not sources:continue
+                parts=[]
+                for source in sources:
+                    item=self.inbox.db.execute('SELECT model,state FROM inbox WHERE message_id=?',(source['messageId'],)).fetchone()
+                    if not item or item['state']!='normalized':break
+                    original=json.loads(item['model'])
+                    matching=[p for p in original['parts'] if p['type']=='file' and
+                              p.get('name')==source['name'] and p['resource']==source['resource']]
+                    if original['issues'] or len(matching)!=1:break
+                    parts.append(dict(matching[0]))
+                else:
+                    model['parts'].extend(parts)
+                    self.db.execute('UPDATE jobs SET state="queued",model=? WHERE id=? AND state="waiting_media"',
+                        (json.dumps(model,ensure_ascii=False),row['id']))
+
     def intake(self):
         batch=self.api('/v1/events?'+urlencode({'after':self.inbox.cursor,'limit':200}))
         self.inbox.ingest(batch)
+        self.bind_file_requests()
         slot=self.media_slot
         if slot and slot['done'].is_set():
             owner=self.inbox.db.execute('SELECT model FROM inbox WHERE message_id=?',(slot['id'],)).fetchone()
@@ -160,10 +242,11 @@ class Gateway:
             include_self=self.settings.get('allowSelfCommands',False),
             eligible=self.needs_media,
             priority_message_id=self.media_slot['id'] if self.media_slot else None)
+        self.ready_file_requests()
         # normalized includes explicitly authorized owner commands; Inbox.ready's general self filter stays intact.
         for row in self.inbox.db.execute('SELECT seq,model,state FROM inbox WHERE model!="null" ORDER BY seq'):
             model=json.loads(row['model']);command=command_for(model,self.settings)
-            if command is None:continue
+            if command is None or file_request(model,command):continue
             job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
             state='blocked' if model['issues'] else 'queued' if row['state']=='normalized' else 'waiting_media'
             with self.lock,self.db:

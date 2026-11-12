@@ -215,3 +215,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E069 — 当前源码与安装包交接更新
 - E069已重新导出提交a83d3fd的源码和已验证E068同一wheel；512项冻结manifest、19模块及归档/安装包摘要匹配，无已知私有值。沿用源码与双Python安装包各207项结果，本次没有重跑测试或宣称新部署/UI通过。最新交接payload仅local/handoff-a83d3fd-20261112/bundle；E063旧包保持历史记录。
 - [docs/80](../../docs/80-offline-handoff-export.md)、[六项核验](../../evidence/2026-11-12/handoff-refresh-validation.json)。实际payload的SHA256SUMS再次独立核验通过；不是最终交付，E065/UI/24h保留。
+
+## E070/E071 — 群文件交办与事故停机
+- [E070实现与216项验证](../../docs/86-explicit-group-file-tasks.md)，早于事故的冻结快照不是当前在线证明。
+- [E071事故事实与边界](../../docs/87-authentication-popup-incident.md)，用户确认弹窗停止；认证未恢复，无新UI验收。

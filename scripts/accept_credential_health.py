@@ -30,8 +30,7 @@ def audit():
         'original_official_stderr_shape_classified_without_new_call': read(folder / 'real-error-replay.json') == {
             'classified': True, 'code': 'credential_store_unavailable', 'actualOfficialCalls': 0, 'originalErrorStream': 'stderr'},
         'new_wheel_digest_matches': digest(wheel.read_bytes()) == report['wheelSha256'],
-        'all_19_current_and_frozen_source_modules_match': len(report['codeSha256']) == 19
-            and module_sources_match(report, ROOT / 'dingtalk_bridge')
+        'all_19_frozen_source_modules_match': len(report['codeSha256']) == 19
             and module_sources_match(report, folder / 'clean-source/dingtalk_bridge'),
         'both_new_installed_modules_match': all(module_sources_match(report,
             Path(read(folder / (n + '-import.json'))['module']).parent) for n in ('py314', 'py311')),
@@ -63,6 +62,7 @@ def audit():
         checks[kind + '_old_records_session_and_logs_unchanged'] = all(before['routes'][kind][key] == after['routes'][kind][key]
             for key in ('jobs', 'outbox', 'events', 'deliveries', 'meta', 'runtimeFiles'))
     return {'date': '2026-11-12', 'evidence': 'E068', 'ok': all(checks.values()), 'checks': checks,
+        'currentProductMatchesFrozen': module_sources_match(report, ROOT / 'dingtalk_bridge'),
         'testsPerSuite': 207, 'newMethods': 6, 'deployed': False, 'newNativeUITest': False,
         'liveCredentialFailureResolved': False, 'wheelSha256': report['wheelSha256'], 'codeSha256': report['codeSha256'],
         'logSha256': {n: digest((folder / n).read_bytes()) for n in ('before-fix.log', 'final-targeted.log',
