@@ -232,3 +232,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 
 ## E075 — 停机期间冻结交接
 - [交接说明](../../docs/80-offline-handoff-export.md)、[8项核验](../../evidence/2026-11-12/handoff-e075-validation.json)。f0d2911归档/539manifest、21模块与E073wheel、全部Python测试与E074冻结套件一致；三套244为既有结果，本次未重跑、真实DWS为0。payload仅local/handoff-f0d2911-20261112/bundle。
+
+## E076 — 验收声明只读核对
+- [说明](../../docs/91-acceptance-coverage-review.md)、[64格与14 MUST报告](../../evidence/2026-11-12/acceptance-coverage.json)、[11项验证](../../evidence/2026-11-12/acceptance-review-validation.json)。37格历史通过/25阻塞/2部分，MUST仍9项未完整覆盖；原64格与PRD判据保持。
+- 新工具5专项在源码/隔离3.14/隔离3.11通过，未重跑全量244或改产品；首轮中文相邻E编号漏检失败已保留并修复。真实DWS为0，查询许可仍待决。

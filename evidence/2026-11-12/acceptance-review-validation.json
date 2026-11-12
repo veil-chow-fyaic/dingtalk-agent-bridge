@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E076",
+  "ok": true,
+  "checks": {
+    "source-final.log_five_tests_passed": true,
+    "py314-final.log_five_tests_passed": true,
+    "py311-final.log_five_tests_passed": true,
+    "initial_unicode_reference_failure_retained": true,
+    "all_64_original_ui_cells_unchanged": true,
+    "prd_unchanged_from_e075": true,
+    "all_21_product_modules_unchanged": true,
+    "no_product_or_account_data_in_frozen_suite": true,
+    "frozen_script_and_test_match_current": true,
+    "strict_coverage_gate_returns_two": true,
+    "all_27_ui_gaps_and_nine_must_gaps_retained": true
+  },
+  "testsPerTarget": 5,
+  "targets": [
+    "source Python 3.14",
+    "isolated E073 Python 3.14",
+    "isolated E073 Python 3.11"
+  ],
+  "fullSuiteRerun": false,
+  "priorFullSuite": {
+    "evidence": "E074",
+    "testsPerSuite": 244
+  },
+  "productChanged": false,
+  "realDwsCalls": 0,
+  "newUIEvidence": false,
+  "sourceSha256": {
+    "01-PRD.md": "9005ca73e125ae244be6c55483697f5bb6afd07aae90725f7e2c034d22a20a97",
+    "ACCEPTANCE_MATRIX.md": "e6a6c9afc6e27cd3a5e4e7fffc41bae0efef6908aee15af48d29f67f97f8256f",
+    "EVIDENCE.md": "e8bee70f5f9143e106be0f4e03ba3238d6ded0cf1751b661ca999469e9c1debd"
+  },
+  "scriptSha256": "1eb293f3b294d60a1633b9fdfbf343240606717dc372aa3bb02846e89808bb61",
+  "testSha256": "4082a642063adbbff4019c1570c8f0e433ef75137b14c459f14e2e30f988db90",
+  "logSha256": {
+    "source-final.log": "fdd2bd630af445e475d2e2491276ea39115d9427668cb5054e5b84ae9e81016c",
+    "py314-final.log": "950dbb577e07275dee317e6205e38f0961bdb006c2bd6cf2700fc7b89a5e2636",
+    "py311-final.log": "1a2d20368c3de81d668a0fe89a8b73495522faa83783f823ad86265872d7d648"
+  },
+  "limits": [
+    "Coverage declarations, not independent validation of private UI evidence",
+    "All passed historical cells and original PRD unchanged",
+    "No new full 249-test suite claim; five tool-specific tests only",
+    "Real read permission still pending; no deployment or authentication recovery"
+  ]
+}

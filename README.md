@@ -15,7 +15,7 @@ E074已完成双路history收发/暂停与单次核验的离线验证：7新增�
 | 要了解的内容 | 文档 |
 |---|---|
 | 需求、身份、真实进度 | [当前总状态](docs/17-requirements-progress-review.md) |
-| 每一方向/类型是否真的通过 | [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) |
+| 每一方向/类型是否真的通过 | [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) · [声明缺口核对](docs/91-acceptance-coverage-review.md) |
 | 下一步、阻塞与结束条件 | [关键路径](plans/completion/CRITICAL_PATH.md) · [执行摘要](docs/13-roadmap-and-backlog.md) |
 | 官方能力与自研边界 | [官方边界](docs/25-official-boundary-and-scenarios.md) · [身份与外部会话](docs/18-identity-and-conversation-boundaries.md) |
 | 安装、运行与接入 | [只读doctor/安装](docs/35-install-and-doctor.md) · [统一管理器](docs/40-service-manager-and-restart-ui.md) · [运行手册](docs/15-service-runbook.md) · [CLI/HTTP/consumer](docs/22-generic-tool-and-consumer.md) |

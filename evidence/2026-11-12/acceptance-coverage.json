@@ -1,0 +1,1087 @@
+{
+  "schemaVersion": 1,
+  "valid": true,
+  "scope": "Declared document coverage only; no raw UI verification, current health or final approval",
+  "allDeclaredCovered": false,
+  "requirementCounts": {
+    "MUST": 14,
+    "SHOULD": 3
+  },
+  "mustStateCounts": {
+    "partial": 5,
+    "passed": 5,
+    "open": 4
+  },
+  "uiStateCounts": {
+    "passed": 37,
+    "blocked": 25,
+    "partial": 2
+  },
+  "byDirection": {
+    "群 veil→liev": {
+      "passed": 6,
+      "blocked": 10
+    },
+    "群 liev→veil": {
+      "passed": 6,
+      "blocked": 9,
+      "partial": 1
+    },
+    "私聊 veil→liev": {
+      "passed": 12,
+      "blocked": 3,
+      "partial": 1
+    },
+    "私聊 liev→veil": {
+      "passed": 13,
+      "blocked": 3
+    }
+  },
+  "mustGaps": [
+    {
+      "id": "R01",
+      "state": "partial",
+      "detail": "CLI/HTTP/配置、多路由隔离；E020统一manager；E073六入口/21模块，E074源码与双Python同wheel各244项；E050当前CLI/HTTP/模板/运行文档核对通过；E051中文/空格路径64既有测试及新安装入口通过。不是绑定liev组织的产品；交付终检待做",
+      "evidenceIds": [
+        "E020",
+        "E050",
+        "E051",
+        "E073",
+        "E074"
+      ]
+    },
+    {
+      "id": "R04",
+      "state": "open",
+      "detail": "E018/E022长文、E016重复status、E027私聊出站引用已过；上表群长文、群引用及私聊入站引用缺口保留",
+      "evidenceIds": [
+        "E016",
+        "E018",
+        "E022",
+        "E027"
+      ]
+    },
+    {
+      "id": "R05",
+      "state": "open",
+      "detail": "PDF/DOCX/XLSX/ZIP四方向原件及下载打开通过；E025补私聊CSV，E041补原名及BOM/引号/换行CSV实际处理和双输出下载打开；群TXT入站及CSV双向仍缺",
+      "evidenceIds": [
+        "E025",
+        "E041"
+      ]
+    },
+    {
+      "id": "R06",
+      "state": "open",
+      "detail": "PNG/JPEG私聊原生与WAV/MP4文件私聊通过；群新媒体、原生语音及独立video见上表，不能用文件替代",
+      "evidenceIds": []
+    },
+    {
+      "id": "R07",
+      "state": "partial",
+      "detail": "多格式Kimi真工具和文件回原会话；E017分条多附件合并；E026一条两PNG实际读取通过；引用/其他多附件边界待处置",
+      "evidenceIds": [
+        "E017",
+        "E026"
+      ]
+    },
+    {
+      "id": "R08",
+      "state": "partial",
+      "detail": "E016真实cancel停止子进程、新session；E019明确拒绝与提示；E024 malformed输出failed原样保留、未交付局部文件。E039完成/超时/取消后同组工具清理真实进程测试及重载私聊交付通过；E042真实工具中停私聊gateway、一次取消反馈、无晚写/重放及恢复后新任务已验；E045真实SIGKILL后工具仍写入，已修准确不确定提示/不重做，E046新独立守护自动清理及204秒无晚写、真实只读核验UI已过；E047另验90秒运行器超时及155秒无晚写，同gateway下一任务真实执行/完整UI通过；群控制仍未完成；无OS恶意隔离结论",
+      "evidenceIds": [
+        "E016",
+        "E019",
+        "E024",
+        "E039",
+        "E042",
+        "E045",
+        "E046",
+        "E047"
+      ]
+    },
+    {
+      "id": "R12",
+      "state": "partial",
+      "detail": "docs/17为当前状态，docs/40–90为运行/UI/故障与停机恢复证据；E050两份运行/工具旧文按字节归档，当前说明与18帮助/33既有测试对照；历史文档按时间保留，不把旧部署指令当当前命令；最终交接未完成",
+      "evidenceIds": [
+        "E050"
+      ]
+    },
+    {
+      "id": "R13",
+      "state": "open",
+      "detail": "E007停机/订阅进程恢复、E023实际history故障、E024既有Stream隧道中断已过；E028自然access预刷新及后续同步已过；E052并发对账终态保护与真实部署UI已过；E053异常消息隔离及后续合法任务离线验证通过，旧302事件投影不变；E054缓存损坏拒绝/显式repair及48现场缓存只读通过；E059清单短写/提交前SIGKILL保旧和28审计通过；E058首次/缓存统一校验、坏清单/repair保旧/真实本地HTTP恢复、50缓存57资源只读及24审计通过；E057快速附件结果调度/优先级/取消/等待重启四项离线回归与24审计通过，均无新UI；E055真实mget故障中状态可用、原附件无需重发/重启恢复及192B JSON下载打开通过；真实失效refresh凭据仍缺；E065实际凭据故障、E071停机保持；E072/E073防护与E074三套244项仅为离线验证。原run仍保留全部故障和维护，24h终检未通过",
+      "evidenceIds": [
+        "E007",
+        "E023",
+        "E024",
+        "E028",
+        "E052",
+        "E053",
+        "E054",
+        "E055",
+        "E057",
+        "E058",
+        "E059",
+        "E065",
+        "E071",
+        "E072",
+        "E073",
+        "E074"
+      ]
+    },
+    {
+      "id": "R14",
+      "state": "partial",
+      "detail": "E075固定f0d2911交接/539manifest、E073同wheel/21模块与E074冻结测试核对通过；E021干净新venv；E059 Python3.14/3.11隔离wheel各191项通过；E060同一安装产品193项及29核验/清理前诊断通过；E061原3.11全量1个E退出过渡错误保留；E062按捕获证据修复，双Python新wheel197项及26审计通过，未观察历史原因不外推；E049补五个历史UI冻结版本审计与10负向；分阶段本地提交、manifest/暂存隐私门；最终封版未完成，无远程发布",
+      "evidenceIds": [
+        "E021",
+        "E049",
+        "E059",
+        "E060",
+        "E061",
+        "E062",
+        "E073",
+        "E074",
+        "E075"
+      ]
+    }
+  ],
+  "uiGaps": [
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺，已获原3人群授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：尚缺，已获原3人群授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "TXT原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未找到独立真人群上传TXT证据，群文本任务产生TXT不等于上传TXT",
+      "evidenceIds": []
+    },
+    {
+      "type": "CSV原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：暂无本双账号范围UI证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "CSV原件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：暂无本双账号范围下载打开证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "PNG内容/原件",
+      "direction": "群 liev→veil",
+      "state": "partial",
+      "detail": "部分/blocked：旧Markdown可见及资源一致；原生image客户端下载尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：缺真实原生类型输入证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：官方当前shortcut按file，尚无独立语音发送闭环",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：缺真实原生类型输入证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：WAV文件不能代替语音条",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未验证独立协议类型",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：MP4文件能力不能外推独立协议",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未验证独立协议类型",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：file协议MP4可播放，但不算独立video协议",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺原群UI引用",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：旧单账号API证据不替代双账号UI",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：右键/坐标/Command+Up未成功；E025修改/帮助菜单亦无明确命令",
+      "evidenceIds": [
+        "E025"
+      ]
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "私聊 veil→liev",
+      "state": "partial",
+      "detail": "部分通过 E026：一条文字＋两PNG、一个实际任务及报告下载打开；E017普通文件仍拆成两消息",
+      "evidenceIds": [
+        "E017",
+        "E026"
+      ]
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：E056固定官方仅单file、重复参数只取末项；图文最多9个本地图引用仅CLI计划，原件获取仍未过",
+      "evidenceIds": [
+        "E056"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R01",
+      "state": "partial",
+      "detail": "CLI/HTTP/配置、多路由隔离；E020统一manager；E073六入口/21模块，E074源码与双Python同wheel各244项；E050当前CLI/HTTP/模板/运行文档核对通过；E051中文/空格路径64既有测试及新安装入口通过。不是绑定liev组织的产品；交付终检待做",
+      "evidenceIds": [
+        "E020",
+        "E050",
+        "E051",
+        "E073",
+        "E074"
+      ]
+    },
+    {
+      "id": "R02",
+      "state": "passed",
+      "detail": "当前普通账号路线：E001 veil真人输入、liev真人回复、通过AI发送；docs/25分别说明user、bot/dev connect、OpenClaw、数字员工，未创建bot",
+      "evidenceIds": [
+        "E001"
+      ]
+    },
+    {
+      "id": "R03",
+      "state": "passed",
+      "detail": "历史双账号基础路径：E001/E004/E005/E007，群普通消息收取但不执行、自身回复不触发；外部范围未实测",
+      "evidenceIds": [
+        "E001",
+        "E004",
+        "E005",
+        "E007"
+      ]
+    },
+    {
+      "id": "R04",
+      "state": "open",
+      "detail": "E018/E022长文、E016重复status、E027私聊出站引用已过；上表群长文、群引用及私聊入站引用缺口保留",
+      "evidenceIds": [
+        "E016",
+        "E018",
+        "E022",
+        "E027"
+      ]
+    },
+    {
+      "id": "R05",
+      "state": "open",
+      "detail": "PDF/DOCX/XLSX/ZIP四方向原件及下载打开通过；E025补私聊CSV，E041补原名及BOM/引号/换行CSV实际处理和双输出下载打开；群TXT入站及CSV双向仍缺",
+      "evidenceIds": [
+        "E025",
+        "E041"
+      ]
+    },
+    {
+      "id": "R06",
+      "state": "open",
+      "detail": "PNG/JPEG私聊原生与WAV/MP4文件私聊通过；群新媒体、原生语音及独立video见上表，不能用文件替代",
+      "evidenceIds": []
+    },
+    {
+      "id": "R07",
+      "state": "partial",
+      "detail": "多格式Kimi真工具和文件回原会话；E017分条多附件合并；E026一条两PNG实际读取通过；引用/其他多附件边界待处置",
+      "evidenceIds": [
+        "E017",
+        "E026"
+      ]
+    },
+    {
+      "id": "R08",
+      "state": "partial",
+      "detail": "E016真实cancel停止子进程、新session；E019明确拒绝与提示；E024 malformed输出failed原样保留、未交付局部文件。E039完成/超时/取消后同组工具清理真实进程测试及重载私聊交付通过；E042真实工具中停私聊gateway、一次取消反馈、无晚写/重放及恢复后新任务已验；E045真实SIGKILL后工具仍写入，已修准确不确定提示/不重做，E046新独立守护自动清理及204秒无晚写、真实只读核验UI已过；E047另验90秒运行器超时及155秒无晚写，同gateway下一任务真实执行/完整UI通过；群控制仍未完成；无OS恶意隔离结论",
+      "evidenceIds": [
+        "E016",
+        "E019",
+        "E024",
+        "E039",
+        "E042",
+        "E045",
+        "E046",
+        "E047"
+      ]
+    },
+    {
+      "id": "R09",
+      "state": "passed",
+      "detail": "Kimi真实Read/Write/Bash多轮与交付；Codex超时独立跟踪，不增加双runtime强制门槛",
+      "evidenceIds": []
+    },
+    {
+      "id": "R10",
+      "state": "passed",
+      "detail": "docs/25/33/41/43/44：官方DWS身份/通讯/资源/办公，自研队列/路由/恢复；image上传叶子明确为补充。E024代理仅测试装置，非新后端；E056固定官方发送组合18个隔离dry-run明确重复file末项覆盖、互斥与图文引用/类型边界；E073办公入口及共享bus边界明确，不冒充UI",
+      "evidenceIds": [
+        "E024",
+        "E056",
+        "E073"
+      ]
+    },
+    {
+      "id": "R11",
+      "state": "passed",
+      "detail": "docs/03/21/24；不复制账号数据、不把平台特性照搬为钉钉能力",
+      "evidenceIds": []
+    },
+    {
+      "id": "R12",
+      "state": "partial",
+      "detail": "docs/17为当前状态，docs/40–90为运行/UI/故障与停机恢复证据；E050两份运行/工具旧文按字节归档，当前说明与18帮助/33既有测试对照；历史文档按时间保留，不把旧部署指令当当前命令；最终交接未完成",
+      "evidenceIds": [
+        "E050"
+      ]
+    },
+    {
+      "id": "R13",
+      "state": "open",
+      "detail": "E007停机/订阅进程恢复、E023实际history故障、E024既有Stream隧道中断已过；E028自然access预刷新及后续同步已过；E052并发对账终态保护与真实部署UI已过；E053异常消息隔离及后续合法任务离线验证通过，旧302事件投影不变；E054缓存损坏拒绝/显式repair及48现场缓存只读通过；E059清单短写/提交前SIGKILL保旧和28审计通过；E058首次/缓存统一校验、坏清单/repair保旧/真实本地HTTP恢复、50缓存57资源只读及24审计通过；E057快速附件结果调度/优先级/取消/等待重启四项离线回归与24审计通过，均无新UI；E055真实mget故障中状态可用、原附件无需重发/重启恢复及192B JSON下载打开通过；真实失效refresh凭据仍缺；E065实际凭据故障、E071停机保持；E072/E073防护与E074三套244项仅为离线验证。原run仍保留全部故障和维护，24h终检未通过",
+      "evidenceIds": [
+        "E007",
+        "E023",
+        "E024",
+        "E028",
+        "E052",
+        "E053",
+        "E054",
+        "E055",
+        "E057",
+        "E058",
+        "E059",
+        "E065",
+        "E071",
+        "E072",
+        "E073",
+        "E074"
+      ]
+    },
+    {
+      "id": "R14",
+      "state": "partial",
+      "detail": "E075固定f0d2911交接/539manifest、E073同wheel/21模块与E074冻结测试核对通过；E021干净新venv；E059 Python3.14/3.11隔离wheel各191项通过；E060同一安装产品193项及29核验/清理前诊断通过；E061原3.11全量1个E退出过渡错误保留；E062按捕获证据修复，双Python新wheel197项及26审计通过，未观察历史原因不外推；E049补五个历史UI冻结版本审计与10负向；分阶段本地提交、manifest/暂存隐私门；最终封版未完成，无远程发布",
+      "evidenceIds": [
+        "E021",
+        "E049",
+        "E059",
+        "E060",
+        "E061",
+        "E062",
+        "E073",
+        "E074",
+        "E075"
+      ]
+    }
+  ],
+  "uiCells": [
+    {
+      "type": "普通文字/任务",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E001/E007：显式任务，普通消息不执行",
+      "evidenceIds": [
+        "E001",
+        "E007"
+      ]
+    },
+    {
+      "type": "普通文字/任务",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E001：667及任务反馈可见",
+      "evidenceIds": [
+        "E001"
+      ]
+    },
+    {
+      "type": "普通文字/任务",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E001/E016：普通文字及控制命令",
+      "evidenceIds": [
+        "E001",
+        "E016"
+      ]
+    },
+    {
+      "type": "普通文字/任务",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E001/E016：697、上下文、状态/取消/新会话",
+      "evidenceIds": [
+        "E001",
+        "E016"
+      ]
+    },
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺，已获原3人群授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：尚缺，已获原3人群授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E018：3592字符真实输入；更长输入被客户端转文档提示拦下，已取消",
+      "evidenceIds": [
+        "E018"
+      ]
+    },
+    {
+      "type": "长文/换行/中文/emoji",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E018/E022：两段原生AX完整匹配及边界视口，8039B结果文件下载打开；末尾LF差异保留",
+      "evidenceIds": [
+        "E018",
+        "E022"
+      ]
+    },
+    {
+      "type": "TXT原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未找到独立真人群上传TXT证据，群文本任务产生TXT不等于上传TXT",
+      "evidenceIds": []
+    },
+    {
+      "type": "TXT原件",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E001：TXT客户端下载、TextEdit打开",
+      "evidenceIds": [
+        "E001"
+      ]
+    },
+    {
+      "type": "TXT原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E017：多选TXT/CSV被拆成两消息，分别读取",
+      "evidenceIds": [
+        "E017"
+      ]
+    },
+    {
+      "type": "TXT原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E001/E017等：多个TXT下载打开、摘要一致",
+      "evidenceIds": [
+        "E001",
+        "E017"
+      ]
+    },
+    {
+      "type": "CSV原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：暂无本双账号范围UI证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "CSV原件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：暂无本双账号范围下载打开证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "CSV原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E001/E017：53B输入与后续CSV原件",
+      "evidenceIds": [
+        "E001",
+        "E017"
+      ]
+    },
+    {
+      "type": "CSV原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E025：原E001的79B CSV下载、Quick Look表格打开、摘要一致",
+      "evidenceIds": [
+        "E001",
+        "E025"
+      ]
+    },
+    {
+      "type": "PDF原件",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E004",
+      "evidenceIds": [
+        "E004"
+      ]
+    },
+    {
+      "type": "PDF原件",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E004/E007：群PDF下载打开补证",
+      "evidenceIds": [
+        "E004",
+        "E007"
+      ]
+    },
+    {
+      "type": "PDF原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E004，含实际Kimi读取",
+      "evidenceIds": [
+        "E004"
+      ]
+    },
+    {
+      "type": "PDF原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E004：Quick Look打开",
+      "evidenceIds": [
+        "E004"
+      ]
+    },
+    {
+      "type": "DOCX原件",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E008",
+      "evidenceIds": [
+        "E008"
+      ]
+    },
+    {
+      "type": "DOCX原件",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E008：TextEdit打开",
+      "evidenceIds": [
+        "E008"
+      ]
+    },
+    {
+      "type": "DOCX原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E008，含实际Kimi提取",
+      "evidenceIds": [
+        "E008"
+      ]
+    },
+    {
+      "type": "DOCX原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E008：TextEdit打开及提取TXT下载",
+      "evidenceIds": [
+        "E008"
+      ]
+    },
+    {
+      "type": "XLSX原件",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E010",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "XLSX原件",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E010：Numbers打开",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "XLSX原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E010，含实际Kimi提取",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "XLSX原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E010：Numbers打开及提取TXT下载",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "ZIP原件",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E010",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "ZIP原件",
+      "direction": "群 liev→veil",
+      "state": "passed",
+      "detail": "通过 E010：系统解包、内部TXT打开",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "ZIP原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E010，含实际Kimi读取",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "ZIP原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E010：系统解包、内部TXT打开及报告下载",
+      "evidenceIds": [
+        "E010"
+      ]
+    },
+    {
+      "type": "PNG内容/原件",
+      "direction": "群 veil→liev",
+      "state": "passed",
+      "detail": "通过 E004/E006：原生上传、别名校验、图文任务",
+      "evidenceIds": [
+        "E004",
+        "E006"
+      ]
+    },
+    {
+      "type": "PNG内容/原件",
+      "direction": "群 liev→veil",
+      "state": "partial",
+      "detail": "部分/blocked：旧Markdown可见及资源一致；原生image客户端下载尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "PNG内容/原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E004/E006：原生图片、读图及别名回归",
+      "evidenceIds": [
+        "E004",
+        "E006"
+      ]
+    },
+    {
+      "type": "PNG内容/原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E011/E012：独立image查看器、下载、Quick Look；含Kimi实际生成PNG；E032另验超2MiB走file、原件/报告下载打开，短SHA文字错误保留",
+      "evidenceIds": [
+        "E011",
+        "E012",
+        "E032"
+      ]
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E029：图文单消息、16061B原件、实际Kimi读图；E037另验EXIF=6原件保留及实际归正",
+      "evidenceIds": [
+        "E029",
+        "E037"
+      ]
+    },
+    {
+      "type": "JPEG内容/原件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E029：实际旋转240×400、原生查看器/下载/Quick Look、8234B同字节；客户端追加.png后缀但内容JPEG",
+      "evidenceIds": [
+        "E029"
+      ]
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E014：原件及实际分析；E044另验21.93秒合成语音经官方听记转写/摘要/行动项及报告交付",
+      "evidenceIds": [
+        "E014",
+        "E044"
+      ]
+    },
+    {
+      "type": "WAV作为文件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E013/E014：下载、Quick Look音频播放器；不声称听觉质量",
+      "evidenceIds": [
+        "E013",
+        "E014"
+      ]
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：原3人群现已授权，待补验",
+      "evidenceIds": []
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "私聊 veil→liev",
+      "state": "passed",
+      "detail": "通过 E014：原件及实际分析",
+      "evidenceIds": [
+        "E014"
+      ]
+    },
+    {
+      "type": "MP4作为文件",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E014：客户端视频卡片实际播放/保存/系统打开",
+      "evidenceIds": [
+        "E014"
+      ]
+    },
+    {
+      "type": "原生语音条",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：缺真实原生类型输入证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：官方当前shortcut按file，尚无独立语音发送闭环",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：缺真实原生类型输入证据",
+      "evidenceIds": []
+    },
+    {
+      "type": "原生语音条",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：WAV文件不能代替语音条",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未验证独立协议类型",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：MP4文件能力不能外推独立协议",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：未验证独立协议类型",
+      "evidenceIds": []
+    },
+    {
+      "type": "独立video协议",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：file协议MP4可播放，但不算独立video协议",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺原群UI引用",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：旧单账号API证据不替代双账号UI",
+      "evidenceIds": []
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "私聊 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：右键/坐标/Command+Up未成功；E025修改/帮助菜单亦无明确命令",
+      "evidenceIds": [
+        "E025"
+      ]
+    },
+    {
+      "type": "引用/回复关系",
+      "direction": "私聊 liev→veil",
+      "state": "passed",
+      "detail": "通过 E027：liev纯文本引用既有veil双图任务，原生UI源/回复/AI标识可见；点击跳源未通过",
+      "evidenceIds": [
+        "E027"
+      ]
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "群 veil→liev",
+      "state": "blocked",
+      "detail": "blocked：尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "群 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：尚缺",
+      "evidenceIds": []
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "私聊 veil→liev",
+      "state": "partial",
+      "detail": "部分通过 E026：一条文字＋两PNG、一个实际任务及报告下载打开；E017普通文件仍拆成两消息",
+      "evidenceIds": [
+        "E017",
+        "E026"
+      ]
+    },
+    {
+      "type": "单消息多附件",
+      "direction": "私聊 liev→veil",
+      "state": "blocked",
+      "detail": "blocked：E056固定官方仅单file、重复参数只取末项；图文最多9个本地图引用仅CLI计划，原件获取仍未过",
+      "evidenceIds": [
+        "E056"
+      ]
+    }
+  ],
+  "criterionSha256": {
+    "R01": "c18c66703fd0fc2b42c27f1f10c6c9725262b453bbc3d43b26610adfc9500e03",
+    "R02": "e0d2d8367a6c518f15058d19bb6d69cc84fff55253769d7d6a728d41ec5c5e00",
+    "R03": "c9ff3062662ce1206acbc22b4d3ab3b06c64ecaff18a4ed7958856d03b768a8b",
+    "R04": "c242d8245d5352aea88332e28da6213ab72af83e6f572e27db393cb0da9fe58d",
+    "R05": "8bd0f03da57efa6f9adf77cfeb8a7a7c83a57456e4370cdf78d0ad1488aa13dc",
+    "R06": "db99da9f1b86f5efe043b66140fb3083e0a5e8ac84abc010c897178a331766f4",
+    "R07": "0235793c97e0ea8679ac1816807f892c463d81693465e26a976a283290d47ea9",
+    "R08": "4d9fd845ee5b961d5c78cbe569bbff83cc89ca2198b94d0abc223b00192053d1",
+    "R09": "6e6a5228e76b077ac173f417643edef096db79fd933d155db8997b273328374a",
+    "R10": "afcc616748d7cecafcf2874e8da363e866caa7330d12595cdb25917330d82419",
+    "R11": "d43b140014ca352366fa69d25db526720ea5bf7abb05fa2764876e5ce542d6f9",
+    "R12": "eaa7f7e2d85db5d766d2296f9b8da022cec69eaa6e53bdb6df757116a482709e",
+    "R13": "8544351a84c1752658d2317d705ff92cd938ea66c81ce4295ac1384442df08fa",
+    "R14": "ade0a2f7ae8db08f439f9370919b9d819098d26b69e131a9c8c69a576b6d828f",
+    "R15": "fc1425ddbf09d27d84cad70f36b4539122d000d7dd58ee3d988d6eb69f7e9cba",
+    "R16": "0751f783eecb392c6f0cc15110afeb02b33cf16933818ef35710139f1f087d5f",
+    "R17": "2c4c73318e92eacd4e57a26839cc5bad24bb91cfe5dcac92be5917c5a45178ca"
+  },
+  "notAssessed": [
+    "Private UI evidence contents and artifact hashes",
+    "Current DWS authentication and deployment",
+    "Real 24-hour observation and error disposition",
+    "Final release/privacy/rollback review"
+  ],
+  "limits": [
+    "Historical passes retain their original versions and scope; outages do not erase them",
+    "Unverified or blocked platform types stay gaps; this tool does not waive a MUST",
+    "Registered evidence IDs prove an index entry exists, not that its claim is true",
+    "All declared cells covered would still require independent final review"
+  ],
+  "sourceSha256": {
+    "01-PRD.md": "9005ca73e125ae244be6c55483697f5bb6afd07aae90725f7e2c034d22a20a97",
+    "ACCEPTANCE_MATRIX.md": "e6a6c9afc6e27cd3a5e4e7fffc41bae0efef6908aee15af48d29f67f97f8256f",
+    "EVIDENCE.md": "e8bee70f5f9143e106be0f4e03ba3238d6ded0cf1751b661ca999469e9c1debd"
+  },
+  "date": "2026-11-12",
+  "evidence": "E076",
+  "newUIEvidence": false,
+  "realDwsCalls": 0
+}
