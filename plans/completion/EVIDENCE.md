@@ -222,3 +222,6 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 
 ## E072 — DWS受管调用防护
 - [实现/边界](../../docs/88-dws-process-containment.md)、[隔离安装](../../evidence/2026-11-12/dws-containment-install.json)、[冻结审计](../../evidence/2026-11-12/dws-containment-validation.json)。12新增方法、源码及双Python各228项；真实认证调用0、未部署/UI未测。独立bus和直接办公CLI仍是部署阻塞。
+
+## E073 — 官方办公入口与共享bus边界
+- [实现报告](../../docs/89-supervised-official-office-entrypoint.md)、[安装](../../evidence/2026-11-12/official-proxy-install.json)、[冻结审计](../../evidence/2026-11-12/official-proxy-validation.json)、[官方bus源码边界](../../evidence/2026-11-12/official-bus-ownership-boundary.json)。三套237、9新增方法，真实DWS调用0；仅新增本地operator_suspended状态。

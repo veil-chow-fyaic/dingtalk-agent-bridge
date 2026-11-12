@@ -3,13 +3,22 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import shlex
+import sys
+from .agent_runtime import timeout_seconds
+from .official_proxy import OFFICE_COMMANDS
 
 CONTEXT = '.dab-official-dws.json'
 GUIDE = '.dab-official-dws.md'
+WRAPPER = '.dab-official-dws'
 INSTRUCTIONS = '''# 已授权会话的官方 DWS 办公工具
 
 本上下文由宿主配置显式启用。读取 .dab-official-dws.json；每次用其中的 binary，
 并显式追加 --profile 对应的 profile 和 --format json，不使用全局默认账号。
+binary是受管入口：支持doc/todo/calendar/mail/drive/minutes，命令族必须放在参数首位。
+保留官方参数、工作目录、原始输出和退出码；固定本会话profile及--as user。
+不要绕过它调用原binary。故障暂停后停止该项，不自行resume、登录或反复尝试；
+宿主处理恢复。此入口不提供auth/event/dev/mcp或账号配置动作。
 认证与令牌由官方 DWS 负责，不读取、复制或回传凭据。文件读写仍仅限当前工作区。
 
 仅执行用户本轮明确要求的办公动作。文档用 doc，待办用 todo，日程用 calendar，
@@ -43,13 +52,13 @@ def enabled(settings):
     return value
 
 
-def private_file(path, content):
+def private_file(path, content, mode=0o600):
     if path.is_symlink():
         raise ValueError('Generated official tool context cannot be a symlink')
     with tempfile.NamedTemporaryFile(mode='w', dir=path.parent, delete=False) as output:
         temporary = Path(output.name)
         try:
-            os.chmod(temporary, 0o600)
+            os.chmod(temporary, mode)
             output.write(content); output.flush(); os.fsync(output.fileno())
             os.replace(temporary, path)
         finally:
@@ -60,7 +69,7 @@ def prepare(root, workspace, route, settings):
     workspace = Path(workspace)
     if not enabled(settings):
         # Only these generated context files; no tokens, sessions or runtime state.
-        for name in (CONTEXT, GUIDE):
+        for name in (CONTEXT, GUIDE, WRAPPER):
             (workspace / name).unlink(missing_ok=True)
         return ''
     profile = route.get('profile')
@@ -69,7 +78,13 @@ def prepare(root, workspace, route, settings):
     binary = (Path(root) / route['binary']).resolve()
     if not binary.is_file() or not os.access(binary, os.X_OK):
         raise ValueError('Official DWS executable is unavailable')
-    private_file(workspace / CONTEXT, json.dumps({'schemaVersion': 1, 'binary': str(binary),
-        'profile': profile}, ensure_ascii=False, indent=2) + '\n')
+    timeout=timeout_seconds(settings.get('runtime',{}))
+    for name in (CONTEXT,GUIDE,WRAPPER):
+        if (workspace/name).is_symlink():raise ValueError('Generated official tool context cannot be a symlink')
+    command=[sys.executable,str(Path(__file__).with_name('official_proxy.py').resolve()),
+             '--root',str(Path(root).resolve()),'--binary',str(binary),'--profile',profile,'--timeout',str(timeout),'--']
+    private_file(workspace/WRAPPER,'#!/bin/sh\nexec '+shlex.join(command)+' "$@"\n',mode=0o700)
+    private_file(workspace / CONTEXT, json.dumps({'schemaVersion': 2, 'binary': str((workspace/WRAPPER).resolve()),
+        'profile': profile,'commands':list(OFFICE_COMMANDS)}, ensure_ascii=False, indent=2) + '\n')
     private_file(workspace / GUIDE, INSTRUCTIONS)
     return '\n宿主已显式配置官方DWS办公工具：执行相关任务前读取 '+GUIDE+' 和 '+CONTEXT+'。该配置不授权当前请求以外的操作。\n'

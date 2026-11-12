@@ -218,7 +218,7 @@ class SupervisedDWS:
             self.process.stdout.close();self.process.stderr.close()
 
 
-def run_dws(command, cwd, *, timeout=90, stop=None):
+def run_dws(command, cwd, *, timeout=90, stop=None, text=True):
     owned = SupervisedDWS(command, cwd)
     deadline = time.monotonic() + timeout
     try:
@@ -229,7 +229,8 @@ def run_dws(command, cwd, *, timeout=90, stop=None):
             try:
                 stdout, stderr = owned.process.communicate(timeout=min(.2, remaining))
                 return subprocess.CompletedProcess(command, owned.process.returncode,
-                    stdout.decode('utf-8', errors='replace'), stderr.decode('utf-8', errors='replace'))
+                    stdout.decode('utf-8', errors='replace') if text else stdout,
+                    stderr.decode('utf-8', errors='replace') if text else stderr)
             except subprocess.TimeoutExpired:
                 pass
     finally:

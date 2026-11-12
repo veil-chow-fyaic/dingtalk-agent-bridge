@@ -20,3 +20,5 @@
 2. officialDwsTools上下文目前仍把原官方binary交给runtime，直接调用尚未走上述暂停及清理。须补薄包装和真实合成runtime测试，保持官方参数/输出及身份边界。
 
 进程组守护不覆盖恶意脱组、守护自身被SIGKILL或系统失效。当前测试全用合成程序，没有执行真实DWS、doctor、auth、Keychain、登录、解锁或UI发送。三服务停止，官方binary/现场配置不变。原观察继续保存停机与故障，不能写成24小时健康或完成验收。
+
+后续E073已离线补齐生成办公入口的防护，见[docs/89](89-supervised-official-office-entrypoint.md)。共享bus边界仍未解决，真实服务保持停机；本页228项为E072冻结版本，不与E073的237项混为一次执行。

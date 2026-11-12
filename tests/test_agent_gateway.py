@@ -81,7 +81,11 @@ class AgentGatewayTests(unittest.TestCase):
         self.assertEqual(self.runtime.calls,1)
         self.assertIn('.dab-official-dws.md',seen[0]);self.assertNotIn(CFG['profile'],seen[0])
         context=json.loads((self.g.workspace()/'.dab-official-dws.json').read_text())
-        self.assertEqual(context['profile'],CFG['profile']);self.assertEqual(context['binary'],str(binary.resolve()))
+        self.assertEqual(context['profile'],CFG['profile'])
+        self.assertNotEqual(context['binary'],str(binary.resolve()))
+        self.assertEqual(Path(context['binary']).name,'.dab-official-dws')
+        self.assertEqual(Path(context['binary']).stat().st_mode & 0o777,0o700)
+        self.assertEqual(context['schemaVersion'],2)
         self.assertEqual(self.g.db.execute('SELECT state FROM jobs').fetchone()[0],'completed')
 
     def test_invalid_official_tool_binary_fails_task_before_runtime(self):

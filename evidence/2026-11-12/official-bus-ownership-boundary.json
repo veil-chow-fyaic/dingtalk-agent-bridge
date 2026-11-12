@@ -1,0 +1,29 @@
+{
+  "evidence": "E073",
+  "date": "2026-11-12",
+  "ok": true,
+  "officialSourceCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "sourceSha256": {
+    "internal/event/busctl/spawn_unix.go": "d5fe52506b15dc01527fb0b81720f5bbb694e2d69c92156a6961ce6df042f17e",
+    "internal/event/busctl/spawn.go": "16d58ffd750f33cefc471af11187f9589c2bec69c19858ff7b353adc1f4b8a47",
+    "internal/app/event_command.go": "28ea5016d9ff6b497964f544187b8b04b4e0be3bb261cbb61af1b47942823ffe",
+    "internal/app/event_personal_command.go": "74ffddd693558982c7d9b310153b2c10c8f073c9af44bfe4fe33c43343ea0dc0",
+    "internal/event/bus/tuning.go": "8f0896871c37db486026b053ed8f26774f2f1ee031b031565cf355d97b0cfedb",
+    "internal/event/bus/daemon.go": "d6ecb95db4c5a7ac041a541ee5b20db661af5a61893399cb857a66685826d37e"
+  },
+  "checks": {
+    "detached_session": true,
+    "workdir_shared_by_config_and_identity": true,
+    "foreground_runs_bus_not_consume": true,
+    "stop_reads_identity_and_cancels_subscriptions": true,
+    "bus_stop_depends_on_remaining_run_states": true,
+    "idle_timeout_default_five_minutes": true
+  },
+  "officialCalls": 0,
+  "limits": [
+    "Source-only review; no event status/stop/auth called",
+    "No exclusive ownership of the stock per-identity bus established",
+    "Do not use --all or infer ownership from parentage",
+    "Existing history mode can avoid starting the optional bus; next segment must validate and prepare this recovery boundary"
+  ]
+}

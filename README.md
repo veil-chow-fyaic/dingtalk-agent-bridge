@@ -2,7 +2,7 @@
 
 当前现场：E071事故后三个服务保持停止。用户已确认密码弹窗停止，但真实DWS登录尚未恢复；不要重试doctor/auth/Keychain或自动重启。原24h中断样本保持。
 
-E070已实现群文件显式交办；E072补桥接DWS调用的持久暂停、最多两个并行调用与受管进程组清理。源码和Python3.14/3.11隔离安装包各228项通过，均未部署、无新UI验收。恢复前仍需解决官方Stream独立bus及Agent直接办公CLI绕过防护的边界。 [事故记录](docs/87-authentication-popup-incident.md)、[防护与验收范围](docs/88-dws-process-containment.md)。
+当前代码E073已把runtime办公工具入口接入共享暂停与进程守护，六类业务仍由官方CLI完成；源码与Python3.14/3.11隔离安装包各237项通过。项目已写入仅本地operator_suspended标志，三个服务继续停止，未读钥匙串/未部署。独立共享Stream bus仍未受管；下一段验证现有history模式的安全恢复方案，未经明确同意不恢复真实DWS或后台。 [实现与证据](docs/89-supervised-official-office-entrypoint.md)。
 
 通用钉钉IM工具，让本地Agent通过CLI或HTTP承接群聊/私聊任务、文件、多轮上下文并将结果回传原会话。接口不绑定组织或runtime；当前本机Kimi已真实接通，Codex adapter保留但请求超时，至少一个执行器门槛已满足。
 

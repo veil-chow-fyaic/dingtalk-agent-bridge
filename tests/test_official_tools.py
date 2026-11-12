@@ -4,7 +4,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from dingtalk_bridge.official_tools import prepare, enabled, CONTEXT, GUIDE
+from dingtalk_bridge.official_tools import prepare, enabled, CONTEXT, GUIDE, WRAPPER
+from dingtalk_bridge.official_proxy import OFFICE_COMMANDS
 
 
 class OfficialToolContextTests(unittest.TestCase):
@@ -21,8 +22,10 @@ class OfficialToolContextTests(unittest.TestCase):
             prompt=prepare(self.root,self.workspace,self.route,{'officialDwsTools':True})
         self.assertIn(GUIDE,prompt);self.assertNotIn('synthetic-user',prompt)
         self.assertEqual(json.loads((self.workspace/CONTEXT).read_text()),
-            {'schemaVersion':1,'binary':str(self.binary.resolve()),'profile':self.route['profile']})
-        for name in (CONTEXT,GUIDE):self.assertEqual((self.workspace/name).stat().st_mode & 0o077,0)
+            {'schemaVersion':2,'binary':str((self.workspace/WRAPPER).resolve()),'profile':self.route['profile'],
+             'commands':list(OFFICE_COMMANDS)})
+        for name in (CONTEXT,GUIDE,WRAPPER):self.assertEqual((self.workspace/name).stat().st_mode & 0o077,0)
+        self.assertEqual((self.workspace/WRAPPER).stat().st_mode & 0o777,0o700)
         self.assertIn('不可自动再创建',(self.workspace/GUIDE).read_text())
 
     def test_default_is_off_and_disabling_removes_only_generated_context(self):
@@ -43,10 +46,14 @@ class OfficialToolContextTests(unittest.TestCase):
 
     def test_generated_context_cannot_overwrite_symlink_target(self):
         outside=self.root/'outside';outside.write_text('untouched')
-        (self.workspace/CONTEXT).symlink_to(outside)
-        with self.assertRaisesRegex(ValueError,'symlink'):
-            prepare(self.root,self.workspace,self.route,{'officialDwsTools':True})
-        self.assertEqual(outside.read_text(),'untouched')
+        for name in (CONTEXT,GUIDE,WRAPPER):
+            with self.subTest(name=name):
+                (self.workspace/name).symlink_to(outside)
+                with self.assertRaisesRegex(ValueError,'symlink'):
+                    prepare(self.root,self.workspace,self.route,{'officialDwsTools':True})
+                self.assertEqual(outside.read_text(),'untouched')
+                self.assertEqual(list(self.workspace.iterdir()),[self.workspace/name])
+                (self.workspace/name).unlink()
 
     def test_boolean_is_not_coerced_from_strings_or_numbers(self):
         for value in ('false','true',1,None,[]):
