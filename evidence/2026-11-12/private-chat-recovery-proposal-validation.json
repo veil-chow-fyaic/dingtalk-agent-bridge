@@ -22,7 +22,7 @@
   "configurationApplied": false,
   "backgroundStarted": false,
   "newTests": 0,
-  "permissionState": "not_yet_requested",
+  "permissionState": "requested_pending",
   "limits": {
     "dwsRequestTimeoutSeconds": 90,
     "cleanupBudgetSeconds": 15,
