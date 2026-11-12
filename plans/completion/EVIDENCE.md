@@ -169,3 +169,7 @@
 - [docs/75](../../docs/75-fresh-download-integrity.md)；22坏首次/3部分/4坏缓存/失败repair保旧及本地HTTP 502→同消息200→命中缓存，5新方法；旧源码16失败10错误、旧wheel18失败10错误保留。
 - 源码/双Python已安装wheel各189项、六入口19模块；50既有缓存57资源只读禁网、24审计通过，三进程空闲加载。配置/旧账本/session/运行日志及原观察保持；12.921h/7不可达，无新UI。
 - [安装](../../evidence/2026-11-12/fresh-download-install.json)、[审计](../../evidence/2026-11-12/fresh-download-validation.json)；`PYTHONPATH=. python3 scripts/accept_fresh_download.py`，raw local/fresh-download-20261112。
+
+## E059 — 清单原子提交
+- E059清单原子提交：真实子进程短写复现旧缓存损坏，同目录0600临时文件写入/fsync/replace后冷/热缓存恢复、提交前SIGKILL保旧通过；2新方法、源码及双Python安装包191项、50缓存57资源只读与28审计，三进程空闲加载。首次全量仍有1个manager关闭身份错误，其精确ps因测试清理丢失，未宣称解决；无新UI。
+- [docs/76](../../docs/76-atomic-download-manifest.md)、[安装](../../evidence/2026-11-12/atomic-manifest-install.json)、[28项审计](../../evidence/2026-11-12/atomic-manifest-validation.json)。`PYTHONPATH=. python3 scripts/accept_atomic_manifest.py`；raw local/atomic-manifest-20261112，原观察13.121h/7不可达。

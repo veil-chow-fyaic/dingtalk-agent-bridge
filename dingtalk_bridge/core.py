@@ -2,9 +2,11 @@ from __future__ import annotations
 import hashlib
 import fcntl
 import json
+import os
 from pathlib import Path
 import sqlite3
 import subprocess
+import tempfile
 import threading
 import time
 import uuid
@@ -444,6 +446,27 @@ class Bridge:
             raise BridgeError(label + ' manifest or file integrity is invalid; '
                               + ('repair local cache explicitly' if cached else 'download was not cached')) from exc
 
+    def _commit_download_manifest(self, manifest, ledger):
+        temporary = None
+        try:
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            descriptor, name = tempfile.mkstemp(prefix='.manifest-', suffix='.json', dir=manifest.parent)
+            temporary = Path(name)  # mkstemp is private (0600) before any bytes exist.
+            with os.fdopen(descriptor, 'wb') as output:
+                output.write(json.dumps(ledger, ensure_ascii=False).encode())
+                output.flush()
+                os.fsync(output.fileno())
+            # Same-directory replacement publishes a complete file without first
+            # truncating the last good cache. A killed writer may leave only a
+            # private temporary file, which cache readers never select.
+            os.replace(temporary, manifest)
+        except (OSError, ValueError, TypeError) as exc:
+            raise BridgeError('Attachment cache commit failed; check local storage before retrying') from exc
+        finally:
+            if temporary is not None:
+                try:temporary.unlink(missing_ok=True)
+                except OSError:pass  # Do not mask the commit error; orphan remains private.
+
     def _download(self, message_id, repair=False):
         with self.lock:
             row = self.db.execute('SELECT body FROM events WHERE message_id=?', (message_id,)).fetchone()
@@ -475,9 +498,7 @@ class Bridge:
         elif ledger.get('partial') or ledger.get('failedCount'):
             ledger={**ledger,'ok':False}
         if ledger.get('ok') is True and not ledger.get('partial') and not ledger.get('failedCount'):
-            manifest.parent.mkdir(parents=True, exist_ok=True)
-            manifest.write_text(json.dumps(ledger, ensure_ascii=False))
-            manifest.chmod(0o600)
+            self._commit_download_manifest(manifest, ledger)
         return ledger
 
     def health(self):
