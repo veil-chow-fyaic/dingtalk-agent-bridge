@@ -4,20 +4,18 @@
 
 选型优先采用公开 GitHub/钉钉官方已有实现：**官方 DWS 做通讯底座，Qwen DWS channel 做通道主体参照，CEO Agent Service 补文件交付与回执设计**。默认使用 DWS 授权真人账号；bot 项目仅参考可拆出的交互设计。[参考目录](docs/references/README.md) · [采用清单](docs/references/adoption-plan.md) · [全部文档导航](docs/README.md)
 
-**项目尚未完整验收，当前真实服务停止。** E071事故后三个服务和operator_suspended保持；E089获准的一次读取成功，但不证明auth login或底层根因已解决。两次单次查询许可均已履行，不再待答复或重试。真实DWS/auth/doctor/Keychain继续禁用，[E090后台恢复提案](docs/97-private-chat-recovery-proposal.md)尚未授权；本次研究不恢复后台，心跳保持PAUSED。
-
+**项目尚未完整验收；当前普通账号群聊和私聊已恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
 
-- E070群文件显式关联、E072持久暂停与进程清理、E073官方办公受管入口已提交，尚未部署。官方共享Stream bus无独占退出权；候选恢复使用已有history-only 15秒补读，现场配置未改。
-- E084应用持久history续页并保留E083官方参数修复；当次源码及Python3.14/3.11隔离安装新wheel各262项，21模块/10审计通过，未部署。此前244等结果保留各自冻结版本，不混加测试数。
+- E095实际加载E093/661b67c的21模块，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
 - E092整理13项公开参考来源、69份选摘文件的固定版本/摘要/许可，明确采用边界；没有运行上游服务/测试、移入其实现或新增UI通过项。本地WeCom资料不作为当前选型依据。
-- E093实际采用社区的[文件摘要校验](docs/references/artifact-digest-adoption.md)，补上排队后产物变更缺口。新任务file/image携带原定SHA256，已发送原key继续对账；MIT许可随包保留。11项新增专项，最终源码/双Python安装包各291项、12项冻结核验通过；尚未部署。
-- 当前矩阵64格：37历史通过、25阻塞、2部分；14项MUST仍9项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
+- E093实际采用社区的[文件摘要校验](docs/references/artifact-digest-adoption.md)，补上排队后产物变更缺口。新任务file/image携带原定SHA256，已发送原key继续对账；MIT许可随包保留。11项新增专项，最终源码/双Python安装包各291项、12项冻结核验通过；E095部署同一源码，本轮未重跑全量。
+- E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。当前矩阵64格：40通过、22阻塞、2部分；14项MUST仍8项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
 - E075交接包固定f0d2911，包含已验E073 wheel和当时539项manifest；未包含后续变更。仅local/handoff-f0d2911-20261112/bundle为payload，父目录与其他local内容不得分享。[冻结交接](docs/80-offline-handoff-export.md)
 
 ## 使用与事实边界
 
-veil是客户端真人用户，liev经显式profile绑定的DWS普通账号回复，界面显示liev和“通过AI发送”；`[Agent]`只是前缀。历史两账号群/私聊的基础闭环已有证据。原3人群曾获许可，但最新聊天入口要求多人实测暂跳过；私聊已有授权保持，后续按最新范围执行。
+veil是客户端真人用户，liev经显式profile绑定的DWS普通账号回复，界面显示liev和“通过AI发送”；`[Agent]`只是前缀。历史两账号群/私聊的基础闭环已有证据。当前唯一群测试范围为用户新建AIC测试群，成员2人已核；原私聊授权保持，企业大群和旧群禁止再测。
 
 官方DWS负责身份、通讯/历史、资源及办公API；bridge补路由、白名单、队列、会话、幂等、文件与恢复。固定v1.0.67缺本地CHAT_IMAGE上传叶子，隔离补充复用官方源码鉴权/上传，不改原版binary。原生PNG/JPEG≤2MiB，更大图片走file；bridge输出单文件20MiB。WAV/MP4文件和客户端播放不等于原生语音条或独立video协议。
 

@@ -1,0 +1,76 @@
+{
+  "evidence": "E095",
+  "at": "2026-11-12T08:50:14.218601+00:00",
+  "scope": "new AIC test group and existing two-person direct chat only",
+  "sourceBaseline": "661b67c / E093; 21 modules unchanged",
+  "checks": {
+    "old_group_three_databases_unchanged": true,
+    "current_21_modules_equal_E093_frozen": true,
+    "stage1_review_passed": true,
+    "ordinary_group_input_did_not_create_jobs": true,
+    "direct_config_unchanged": true,
+    "group_single_completed_job": true,
+    "group_all_deliveries_confirmed": true,
+    "group_python_tool_call_observed": true,
+    "group_0-aic-e095-result.csv_download_matches": true,
+    "group_1-aic-e095-report.txt_download_matches": true,
+    "group_two_source_messages_bound": true,
+    "group_input_aic-e095-input.csv_original_matches": true,
+    "group_input_aic-e095-notes.txt_original_matches": true,
+    "group_calculation_correct": true,
+    "report_contains_input_hashes": true,
+    "direct_single_completed_job": true,
+    "direct_all_deliveries_confirmed": true,
+    "direct_python_tool_call_observed": true,
+    "direct_0-aic-e095-dm.json_download_matches": true,
+    "direct_json_correct": true,
+    "direct_office_context_schema2": true,
+    "eight_historical_non_success_jobs_preserved": true
+  },
+  "artifacts": [
+    {
+      "route": "group",
+      "outputs": [
+        {
+          "name": "0-aic-e095-result.csv",
+          "bytes": 73,
+          "sha256": "8828f4b996f904f5c1b862a1776a9fc756a9000b6a53c03dad0abd7d353645d7"
+        },
+        {
+          "name": "1-aic-e095-report.txt",
+          "bytes": 376,
+          "sha256": "b211bbd2c023e62b3cba338566c9848a34a28d8864f8a1aa8d5d763c02e8148f"
+        }
+      ],
+      "toolNames": [
+        "Read",
+        "Read",
+        "Bash"
+      ]
+    },
+    {
+      "route": "direct",
+      "outputs": [
+        {
+          "name": "0-aic-e095-dm.json",
+          "bytes": 72,
+          "sha256": "1b7ef011b6c8e34a6ece7eb26857d30769339656e539be3dcb5b21d00004b932"
+        }
+      ],
+      "toolNames": [
+        "Bash"
+      ]
+    }
+  ],
+  "uiObservations": {
+    "source": "native CUA observations in this chat; manual observations separate from automatic checks",
+    "group": "veil sent 2 original files as 2 messages; explicit command ran once; liev reply and CSV/TXT cards visible; downloads opened in Numbers/TextEdit",
+    "direct": "liev replied 493; JSON downloaded from DingTalk and opened in Finder Quick Look showing marker/value/note"
+  },
+  "limitations": [
+    "Login screenshot is user-provided, not an assistant login or 30-day test.",
+    "No native single-message multi-file claim.",
+    "No auth root-cause cure or continuous 24h health claim.",
+    "No new full regression suite; deployed E093 frozen modules."
+  ]
+}

@@ -1,15 +1,11 @@
 # 续作前置核对
 
-读取当前AGENTS与任务/模式/关键路径/任务池/证据/账本/偏差日志，确认仍在同一checkout和codex/complete-bridge；不要从聊天空目录另建实现。先辨认未提交工作归属，不覆盖已有改动。
+先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认同一checkout、codex/complete-bridge和未提交归属。不要从聊天空目录另做实现。
 
-当前默认真实DWS禁用、三个服务停止、operator_suspended保持。不要为preflight运行doctor、auth、history、Keychain、锁定/解锁或启动服务；不再索取系统密码、弹窗名称或第二账号。E082原key已执行并以参数错误失败，receipt已有attempt；只读复核结果，不再执行、不换key或顺带恢复后台。E089修正后追加一次已获准成功，两个key均有attempt；一次读取可用不等于后台授权或auth login已修复。用户对E090要求先澄清方向，E091/docs98已记录；不得解释为允许启动或重复催问。心跳PAUSED保持。
+E095当前三个受管服务运行、双路history-only；新AIC测试群是唯一群测试目标，原企业群已退出活动配置，私聊不变。实际操作前核精确会话/profile/白名单和原key账本，不按旧PID控制进程。不要重复resume、重启服务或消耗两个历史一次查询key。心跳PAUSED与服务运行分清。
 
-当前聊天入口要求多人实测暂跳过；veil/liev私聊既有授权保持。真实UI恢复后仍核最新范围、精确会话/profile/白名单与原key账本，禁止第三人、bot、权限修改或远程发布。未知投递先对账，已有成功实验只读复核。
+用户已提供登录成功，不再索取密码/弹窗名称/第二账号或旧恢复许可。助手不得auth/doctor/系统Keychain诊断、锁解锁、file-DEK/reset/删凭据/复制token/改权限/重启Mac；受管普通业务可用，故障持久暂停，不自动反复认证。不增加成员、bot、权限、远程发布。
 
-产品/测试/合成fixtures和脱敏证据可入Git，账号/聊天/截图/日志/原件仅local。代码修复按变更选对应测试，安装比对冻结源码和当次测试，文档变更只做必要核验；不要把244既有全量与E076的5专项拼成新249结果。
+21模块与E093冻结版相同且已部署；代码修复才执行对应回归，文档以链接/摘要/隐私验证为主，不重跑已过全量凑进度。原账号/聊天/截图/日志/下载件仅local。未知投递原key对账，不UI补发，旧失败不删。
 
-提交前执行verify_handoff写manifest再只读核对、verify_privacy扫描暂存blob及git diff --check。原24h观察不得重置，当前停机不等于没有失败样本。新工具`review_acceptance.py --require-covered`返回2是当前27格/9 MUST仍有缺口的正确结果，不是平台故障或最终完成门。
-
-历史阶段快照和已失效的待密码/解锁指令见[归档](../../docs/history/through-E076/README.md)，不能当当前操作步骤。
-
-E094已用只读系统日志定位本机登录钥匙串解锁失败，官方worker合成复现仅2测试通过/1helper跳过；不是新的真实认证许可。只读系统日志不等于读取钥匙串密钥，本轮没有后者。故障窗口和原件已固定，不重复收集；新真实核验仍按AGENTS要求明确授权，禁止通过锁屏/重启/停系统守护复现新issue。
+提交前verify_handoff写manifest并复核、verify_privacy扫描暂存blob、git diff --check。review_acceptance只核声明，当前未满足require-covered是正确缺口结果，不是最终认证。原24h观察及维护不重置。

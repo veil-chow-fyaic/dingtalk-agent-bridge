@@ -9,9 +9,9 @@
 | 查当前任务与操作范围 | [AGENTS](../AGENTS.md) · [CURRENT_MISSION](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) |
 | 查已实现和未验收项 | [PRD](../plans/completion/01-PRD.md) · [验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [EVIDENCE](../plans/completion/EVIDENCE.md) |
 | 查产品接口 | [通用 CLI/HTTP/consumer](22-generic-tool-and-consumer.md) · [官方/自研边界](25-official-boundary-and-scenarios.md) |
-| 查当前认证和停机事实 | [主线复盘](98-channel-mainline-and-reuse-review.md) · [事故记录](87-authentication-popup-incident.md) · [尚未授权的恢复提案](97-private-chat-recovery-proposal.md) |
+| 查当前恢复与事故事实 | [主线复盘](98-channel-mainline-and-reuse-review.md) · [事故记录](87-authentication-popup-incident.md) · [E095实际恢复及新群UI](100-aic-group-resume-and-files.md) |
 | 追溯旧实现和旧说明 | [旧入口归档](history/through-E076/README.md) · [历史 WeCom 对照](03-wecom-reference.md) · [执行偏差](../plans/completion/99-执行偏差日志.md) |
 
 目录分工：`architecture/` 保存现行设计，`references/` 保存公开参考选型及固定来源，编号文档保存阶段研究/实现/验证，`../evidence/` 保存脱敏结果，`../plans/completion/` 保存唯一活动任务。源代码仍在 `../dingtalk_bridge/`；参考源选摘在不入 Git 的 `local/references/`，不移动运行数据或账号配置。
 
-本轮整理没有新增真实 UI 通过项，没有部署第三方 channel，也没有恢复 DWS 服务。auth login 与跨设备可复用性仍未证解决。
+E095已部署本项目E093冻结源码并恢复两路，新增群TXT/CSV真实UI证据；用户提供登录成功截图。没有部署第三方整套channel，跨设备长期认证与全部MUST仍未完成。

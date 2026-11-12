@@ -261,3 +261,5 @@
 | 2026-11-12 E093社区代码首项采用 | Qwen接口对照后保留原件模型；CEO原定摘要校验改造，复现并修排队文件变化仍发送、并发回执优先；11新增专项，最终源码/双Python291、21模块/六入口与12审计，MIT随包 | docs/references/artifact-digest-adoption、artifact-digest-adoption-validation.json；local/artifact-digest-final-20261112 | 旧失败/首轮wheel和测试保留，未部署/真实迁移/DWS/UI。下一独立项核Qwen admitted/completed与任务入库事务，只补有证据缺口；E090旧E084提案不能部署当前版本，PAUSED及账号边界不变 |
 
 | 2026-11-12 16:01 E094底座优先 | 用户追问DWS本体与本机用法，新增系统只读日志定位09:25:20钥匙串解锁-25293/Computer Use特征；固定官方worker合成复现超时残留，2通过/1helper跳过，v68同源 | docs/99、dws-base-failure-diagnosis.json；原始local/dws-base-diagnosis-20261112 | 系统故障层已证、Computer Use因果未定；真实DWS/Keychain0，产品未改/未部署，auth login与持续调用未验收。Qwen下一项后置，先限定底座串行核验（需明确允许），不恢复后台、不重复同窗口日志或旧查询，不增审批工具 |
+
+| 2026-11-12 E095 AIC限定恢复及真实文件 | 用户登录截图归local；精确新群/两成员核对，旧企业群退出三库不变，私聊配置不变；E09321模块部署，history先补/cut审查后三服务运行。群TXT/CSV→唯一Kimi任务43→两个结果下载/Numbers及TextEdit；私聊493/JSON下载快速查看；22只读核验 | docs/100、aic-resume-validation.json；原件local/aic-resume-20261112 | 新增3格/R05补齐，40/64通过，8 MUST不完整。仅新AIC群及原私聊，心跳PAUSED。下一段群PNG出站/JPEG/WAV/MP4和长文/控制；旧key不重放、旧群禁测、原24h故障不重置 |

@@ -1,7 +1,6 @@
 # 运行、接入与恢复
 
-2026-11-12，E077。事故前旧运行入口已[按字节存档](history/through-E076/README.md)。当前本机三个服务停止、operator_suspended保持；真实DWS/auth/doctor/Keychain及后台恢复均禁用。E074一次只读核验已提问待决，成功也不恢复服务，见[单次方案](90-guarded-recovery-read-plan.md)。本文通用参数不是绕过此停机约束的授权。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
-
+2026-11-12，E095当前状态：用户完成登录并授权回主线、新AIC专用群。三个受管服务运行，双路history-only15秒；实际部署E093冻结产品、cut/积压审查及UI证据见[恢复记录](100-aic-group-resume-and-files.md)。仅新AIC测试群＋原两人私聊可测试，企业大群禁测；心跳PAUSED。系统Keychain/auth/doctor诊断等仍禁止，故障持久暂停、不自动反复认证。旧入口已[存档](history/through-E076/README.md)，[完整验收](../plans/completion/ACCEPTANCE_MATRIX.md)仍未完成。
 ## 安装与工作目录
 
 需要Python≥3.11及POSIX；运行包仅使用标准库，构建需要setuptools。macOS arm64已有实际验证，Linux未实机认证。DWS及可选图片上传补充分别配置，不捆绑账号数据或二进制。新使用者在自己的项目检出中执行：
@@ -20,7 +19,7 @@ python3 -m venv .venv
 
 ## 当前本机部署与管理
 
-本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；两人私聊授权保持，不能把技术故障当缺第二账号。
+本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。
 
 统一管理器拥有传输及两个gateway；事故期间只允许以下不调用DWS的本地状态读取，不把状态检查当作新增验收：
 
@@ -35,7 +34,7 @@ python3 -m dingtalk_bridge.dws_access status
 
 没有开机自启，也未授权重启本机。状态只说明本地归属和存活，不能证明认证、模型或真实UI成功。E062已修复实际捕获的TERM后同启动时间E退出过渡：只继续有界观察，不追加信号或提前判已停止。其他身份变化仍拒绝，未观察的历史错误不能断言同因；若再次发生，先读同次私有诊断及status，不按旧PID强杀，见[退出过渡修复](79-manager-exiting-transition.md)与[诊断边界](57-manager-identity-diagnostics.md)。
 
-前台诊断同样会调用DWS，当前停机期禁用，不能通过前台绕过受管暂停。正常独立部署前台/后台不能同时占用同一实例；传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
+前台诊断同样会调用DWS，本机禁止额外auth/doctor诊断，不能通过前台绕过故障暂停或与当前服务重复运行。正常独立部署前台/后台不能同时占用同一实例；传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
 
 ## 本机令牌与接口
 

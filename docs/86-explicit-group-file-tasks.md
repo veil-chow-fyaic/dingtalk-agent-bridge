@@ -17,3 +17,7 @@
 源码及E073隔离Python3.14/3.11各2专项通过，[10项核验和逐场景记录](../evidence/2026-11-12/group-file-recovery-validation.json)。产品21模块和E074全量244结果保持；未构建新wheel或执行全量251。首次两个断点用例失败源于合成provider误用--task-id而非既有--open-task-id，修正fixture并增加最终confirmed断言；原失败保留。原始local/group-file-recovery-20261112。
 
 本次使用真实本地SQLite及子进程死亡、合成DWS/runtime与进程内API适配，不是钉钉、HTTP服务器或Kimi验收。当前多人实测暂跳过、服务与真实调用仍停止、单次核验许可待决；无新增UI通过，不重做此已验证分支。
+
+## E095 新AIC群首次真实验收
+
+E070实现已随E093冻结产品部署。veil原生多选TXT/CSV形成两消息，普通上传时0任务；明确--files命令关联唯一Kimi任务，Python实际读取/求和43，返回两结果由钉钉下载、Numbers/TextEdit打开、原件SHA一致。见[完整记录](100-aic-group-resume-and-files.md)。此前未部署/UI未验是历史状态；旧企业群不再测试，不把分条关联称单消息多附件。

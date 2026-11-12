@@ -1,7 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-2026-11-12，E093接口更新。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI只用于用户视角验收，不是自动发送后端。liev普通账号与veil两人私聊、原两人群均有实际证据；历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；不把它固定成产品组织。旧运行入口已[按字节存档](history/through-E076/README.md)。当前真实服务停机、operator_suspended保持；下文是接口契约，不授权执行真实查询/发送或启动后台。E089一次读取已成功且许可已履行；E090后台恢复仍未授权。
-
+2026-11-12，接口为E093产品，E095已实际部署。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI用于用户视角验收。当前仅新AIC测试群＋原veil/liev私聊获准，企业大群/旧群禁止测试。三个受管服务运行，history-only，心跳PAUSED；[本轮证据](100-aic-group-resume-and-files.md)明确文件/工具/UI分层。两个历史query key均已消费，不重复执行；系统Keychain/auth诊断禁止项见AGENTS。
 ## 调用方式
 
 从服务工作目录执行；安装后的`dab`等价于`python3 -m dingtalk_bridge.cli`。服务、随包CLI/gateway/consumer使用127.0.0.1:18768；CLI可改`--token-file`，没有远程地址或统一端口选项。运行管理与安装见[运行手册](15-service-runbook.md)。
@@ -11,7 +10,7 @@ python3 -m dingtalk_bridge.cli health
 python3 -m dingtalk_bridge.cli conversations
 ```
 
-以下是独立部署参数模板。discovery、sync、reconcile及附件下载都可能调用真实DWS，即使只读也可能触发鉴权，当前事故停机期禁用。A/C/M/BUSINESS-KEY须换成自己已验证的账号别名、会话、消息及业务键，不能直接作为健康探针发送：
+以下是独立部署参数模板。discovery、sync、reconcile及附件下载都可能调用真实DWS，即使只读也可能触发官方鉴权，只在已确认范围通过受管入口调用，不另开认证诊断。A/C/M/BUSINESS-KEY须换成自己已验证的账号别名、会话、消息及业务键，不能直接作为健康探针发送：
 
 ```text
 python3 -m dingtalk_bridge.cli --account-id A discovery --cursor 0 --limit 50

@@ -310,3 +310,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [诊断](../../docs/99-dws-base-failure-diagnosis.md)、[脱敏证据](../../evidence/2026-11-12/dws-base-failure-diagnosis.json)、[独立Go复现](../../evidence/2026-11-12/dws-keychain-timeout-probe_test.go)。公开OpenAI #60687是用户报告，无已核维护者修复；本机只读日志09:25:20屏幕解锁后SecKeychainLogin -25293，紧邻原两路最后成功同步和Guardian活动。系统故障层已定位，Computer Use因果未定。
 - 原字节官方worker/合成子进程复现等待超时但子进程仍活，最后自清理；正常完成对照通过，共2通过/1helper跳过，v1.0.68同Darwin源。未运行官方TestMain/DWS/security，未修改参考仓库或产品，未重跑291项全量。
 - 原始系统日志留local/dws-base-diagnosis-20261112，仅固定事件/摘要入Git。真实DWS/Keychain0、未启动服务/心跳；auth login未重测，长期稳定未验收。E028事故前自然预刷新、E089事故后一次成功都保留原范围。优先底座，不新增审批工具或扩上层功能。
+
+## E095 — 用户登录证据、AIC限定恢复与真实文件闭环
+- [实测记录](../../docs/100-aic-group-resume-and-files.md)、[22项只读核验](../../evidence/2026-11-12/aic-resume-validation.json)。用户新终端登录截图只留local；精确AIC新群及UI两成员核对，旧企业群退出配置/三库不变、私聊配置不变；E093的21模块原字节加载，三服务history-only恢复。
+- veil原生上传TXT/CSV为两消息，普通内容0任务；显式关联唯一Kimi任务，Bash/Python实际求和43，liev回同群四个confirmed回执。CSV/TXT客户端下载、Numbers/TextEdit打开，输入和输出SHA一致。新增群TXT入站/CSV双向三格通过，不称单消息多附件。
+- 私聊唯一新任务Python493、72B JSON三回执confirmed，钉钉下载/Finder快速查看及SHA通过；旧8非成功任务保留，实际办公上下文schema2生成，不冒称本轮重测办公API。恢复停transport中断较新history窗口已记录，完成原窗口一次而非删游标。
+- 本轮无产品修改/全量重跑；当前40/64格通过、22blocked、2部分，R05补齐后8 MUST仍不完整。原24h故障/维护与两个历史query key保留；心跳PAUSED、服务运行；企业群禁止再测。
