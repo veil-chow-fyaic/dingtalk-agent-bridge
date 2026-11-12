@@ -245,3 +245,9 @@
 | 2026-11-12 13:51 E086旧会话升级 | 2专项三环境/8核验；旧schema1在新任务前刷新受管入口，暂停拒绝；关闭办公保原session/代数、失败与完成任务/回执/文件 | docs/96、local/official-context-upgrade-20261112 | 无产品/真实工作区变更；追加许可待决不重问。具体恢复拆为transport补读后停机审查积压，再按最新范围启动私聊；下一独立项只读预览尚未消费的本地事件 |
 
 | 2026-11-12 13:54 E087本地未消费事件审查 | 6专项三环境/11核验；两路0未消费本地事件/0新候选/0quarantine，远端未补仍unknown；原20文件/21模块/追加提案保持 | docs/96、local/local-backlog-review-20261112 | 不执行旧消息、不改cursor，8历史非成功保留；不再重复本地空账本核对。追加读取许可待决；下一独立项核恢复首次history窗口是否覆盖整个事故停机期，基于现有源码与固定合成时间证明，不查询真实DWS |
+
+| 2026-11-12 14:01 E088停机窗口 | 3专项三环境/7核验，group/direct的72h旧watermark不截断；先完成旧失败窗口再补尾；无watermark仅24h | docs/92、local/history-outage-window-20261112 | 产品未改；恢复后停机须核watermark达到固定cut，不凭一次complete启动gateway |
+
+| 2026-11-12 14:01 E089追加一次获准成功 | 用户明确允许追加及新记录，提案匹配、新receipt不存在、三服务stopped后执行1次；官方exit0/目标匹配/readable，暂停和旧失败保持 | docs/94、local/recovery-checks/dab-auth-read-fixed-20261112 | 该许可已履行，不再待答复/重试。后台仍停机；下一步冻结两阶段history/私聊恢复配置、条件和原账本方案后单独申请 |
+
+| 2026-11-12 14:05 E090恢复方案具体化 | 冻结原配置/私聊候选/E084产品/两次查询receipt/DWS环境与旧审查；7静态核验，原活动配置不变 | docs/97、local/deployment-proposals/private-chat-recovery-20261112 | 只恢复私聊候选，群transport/gateway停用、原数据保留。300秒观察外有启动清理，15秒轮询不等于90秒RPC。提交方案后申请一次后台许可，无许可不执行 |

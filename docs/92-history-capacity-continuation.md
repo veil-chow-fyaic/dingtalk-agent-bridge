@@ -39,3 +39,11 @@ E074待决计划冻结21个产品模块；为保持用户尚未答复的一次�
 ## E084：应用并核整体产品
 
 [10项冻结审计](../evidence/2026-11-12/history-continuation-applied-validation.json)确认core.py和8方法逐字节匹配E080候选，其余20模块逐字节匹配E083。源码、Python3.14和3.11新wheel实际各执行262项，六入口/21模块及冻结测试匹配，不是把旧测试数相加。核验脚本保留E083正确参数，E082真实receipt/raw字节不变。三个服务继续停止，现场配置与账本未改，没有新真实调用或新查询key。
+
+## E088：长停机与首次恢复窗口
+
+[3专项三环境/7核验](../evidence/2026-11-12/history-outage-window-validation.json)使用固定合成时间，不改系统时钟、真实账本或真实DWS。group/direct均验证：72小时前watermark仍从其前5分钟开始，定期24h深读不会截掉更早积压；先前失败已冻结的窗口保持原end，恢复后先完成旧范围，下一轮再覆盖整个72h间隔，恰等于旧end的消息进入下一范围，按消息ID去重。无watermark的新部署只读过去24h，deep=true也不是全历史扫描。
+
+固定官方63a7c49的message_time_range.go使用[start,end)、不在该解析器中强加24h截断；history_cursor.go绑定原起止时间。两文件与固定提交逐字节一致。本次未运行官方CLI或新Go测试，不把源码局部审查当服务端保留期/任意范围可用性的证明。
+
+没有发现这些窗口场景的产品缺陷，因此不改21模块、不重建wheel、不重跑全量。新增测试在源码及E084已安装3.14/3.11各3项通过。恢复判据应记录本轮固定恢复cut，停机后核每路watermark>=cut且无未完成history_window；仅见一次last_sync.complete=true可能只是旧窗口结束，不能据此开启gateway。远端可见性与停机期任务授权仍需实际补读和审查。

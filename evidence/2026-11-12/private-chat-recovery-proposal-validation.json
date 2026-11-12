@@ -1,0 +1,33 @@
+{
+  "evidence": "E090",
+  "ok": true,
+  "checks": {
+    "single_direct_route": true,
+    "route_storage_unchanged": true,
+    "only_direct_receive_mode_changed": true,
+    "validated_product_unchanged": true,
+    "readable_receipt_bound": true,
+    "candidate_private_permissions": true,
+    "active_config_unchanged": true
+  },
+  "proposalSha256": "8c7e23032fbed7d3cec53fe7ea5d1e8133bba93005fa5b6b5ee5ea2865236ae2",
+  "candidateConfigSha256": "f52b30d7e3ede8955188c86aa1f489bc92b236d097fb2d818e89e54aa9945831",
+  "activeRoutesProposed": 1,
+  "conversationType": "direct",
+  "groupTransportAndGatewayInactive": true,
+  "originalGroupLedgerRetained": true,
+  "phase1": "transport only, up to300s observation, stop and suspend, then inspect durable catchup cut and original ledger",
+  "phase2": "only after all gates and explicit plan authorization: transport plus existing private-chat gateway",
+  "realDwsCalls": 0,
+  "configurationApplied": false,
+  "backgroundStarted": false,
+  "newTests": 0,
+  "permissionState": "not_yet_requested",
+  "limits": {
+    "dwsRequestTimeoutSeconds": 90,
+    "cleanupBudgetSeconds": 15,
+    "maxConcurrentDwsCalls": 2,
+    "managerTimeoutPerComponentSeconds": 45,
+    "autoPauseOnCredentialFailureOrTimeout": true
+  }
+}

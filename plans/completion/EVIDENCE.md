@@ -279,3 +279,15 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E087 — 尚未消费本地事件只读预览
 - [说明](../../docs/96-history-deployment-review.md)、[11项核验](../../evidence/2026-11-12/local-backlog-review-validation.json)。6专项三环境，复用当前纯分类逻辑、原ID去重/控制和文件待审、冻结/旁文件/cursor/scope拒绝；不构造worker或执行任务。
 - 当前两路0未消费本地事件/0新候选/0quarantine，远端未补消息仍unknown；20原文件、E084产品、追加核验提案保持。原5项首轮1失败/2错误保留，最终6项无新全量/UI/真实DWS。
+
+## E088 — 长停机首次恢复窗口
+- [说明](../../docs/92-history-capacity-continuation.md)、[7核验](../../evidence/2026-11-12/history-outage-window-validation.json)。3专项三环境，两种会话的72h watermark、旧失败冻结窗口先完成再补尾、无watermark24h范围已验；产品未改。
+- 停机后必须核watermark达到固定恢复cut且history_window清空，旧窗口complete不等于已补齐当前；只核固定官方两源码文件，没有真实调用/UI/全量重跑。
+
+## E089 — 明确授权的修正后追加一次读取成功
+- [说明](../../docs/94-single-read-unsupported-flag.md)、[7核验及脱敏回执](../../evidence/2026-11-12/corrected-single-read-validation.json)。用户明确允许追加一次和新记录，匹配冻结提案后仅1次真实conversation-info：exit0/targetMatched/readable，暂停保持、三服务停止，E082旧失败原位。
+- 一次凭据读取已证可用，非全平台/后台/UI恢复；两个key均已attempt，不重试/换key。后台授权尚无，先形成具体分阶段方案。
+
+## E090 — 仅私聊分阶段恢复提案
+- [具体方案](../../docs/97-private-chat-recovery-proposal.md)、[7项静态核验](../../evidence/2026-11-12/private-chat-recovery-proposal-validation.json)。私有候选仅激活原direct/history，群transport/gateway停用、原数据保留；身份/白名单/runtime/账本位置不变。
+- 待后台明确许可；阶段一最多300秒观察后停机核cut/未决/候选，全部满足才恢复私聊gateway。15秒轮询与90秒RPC/15秒清理分清；原配置未改、无真实调用/UI或新增测试。

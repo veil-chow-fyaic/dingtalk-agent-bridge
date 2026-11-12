@@ -1,5 +1,7 @@
 # E085：只读部署差异与账本清单
 
+当前具体恢复候选已由[E090仅私聊方案](97-private-chat-recovery-proposal.md)收窄：群transport与gateway都不恢复。下文E085/E086原两路清单与步骤保留历史，不作为启动授权。
+
 新增scripts/prepare_history_deployment.py，只生成本地私有审查材料，没有apply、start、send、auth或网络入口。当前清单位于local/deployment-reviews/history-deployment-20261112/plan.json；它不是恢复许可，也不能直接部署。
 
 实际只读检查了当前两路的六份bridge/tasks/inbox账本：未完成任务0，未确认原投递key 0，历史非成功任务8。失败、blocked、interrupted、cancelled等记录未删除或改绿。未配置的旧账号数据库保持字节/时间/权限不变，但本次不宣称对它们全部完成了服务端对账。配置、全部被保全的本地账本、暂停状态和原查询计划/回执共20文件未变。[11项审计与安全摘要](../evidence/2026-11-12/history-deployment-review-validation.json)。

@@ -1,5 +1,8 @@
 # E082：获准的一次查询因错误参数失败
 
+最新状态：E089修正后追加一次已获准成功，两个key都已attempt；后台仍暂停，下一步仅按[待授权E090方案](97-private-chat-recovery-proposal.md)。原E082失败保留。
+
+
 用户明确允许后，按原key dab-auth-read-20261112执行了一次已准备命令。执行前核无receipt、完整冻结计划匹配、三个manager组件停止和operator_suspended；没有改计划或扩大授权。官方返回exitCode=3、validation/unknown_flag：`unknown flag: --as`。原receipt记failed、attempted=true、automaticRetry=false、targetMatched=false、suspensionUnchanged=true。[脱敏回执](../evidence/2026-11-12/single-read-unsupported-flag.json)。
 
 这是bridge核验脚本的命令准备错误。固定版v1.0.67的chat +conversation-info并不提供--as；先前合成CLI只验证传递和清理，没有用官方命令树校验参数，所以漏掉了它。不能把该错误归给用户、钥匙串或网络，也不能用此前244项通过掩盖真实失败。E073官方办公包装器也追加--as user，需一起核固定官方边界。
@@ -21,3 +24,9 @@ E083已完成官方参数契约修复，E084完整产品三套262项通过，E08
 只有用户明确允许“追加一次并使用新记录”后，才可根据该提案创建新key的plan，核各摘要完全匹配后执行一次；若新key已有receipt/attempt则仅复核不调用，不得改名继续。原dab-auth-read-20261112的failed/raw/plan始终保留，不覆盖或重置。新许可也不包括后台启动，失败/未知不重试，成功只证明该次会话查询可读。
 
 拒绝或未答复时，继续独立离线工作；没有新真实调用。后台恢复仍需独立说明具体history部署和E085清单并取得明确许可。
+
+## E089：修正后的追加一次已获准并成功
+
+用户明确允许追加一次及新记录dab-auth-read-fixed-20261112后，核提案摘要/当前21模块/正确checker、原失败receipt和三服务stopped；新receipt不存在才prepare匹配计划并执行一次。官方exit0、目标会话匹配，receipt为readable/attempted=true/automaticRetry=false，暂停保持，三服务仍stopped。[7项核验与脱敏结果](../evidence/2026-11-12/corrected-single-read-validation.json)。
+
+本次许可已履行，不再等待该答复或运行此key。E082旧failed保持原字节；两个key都只可复核、不重试/覆盖。此次只证明指定会话的一次凭据支持读取可用，没有证明所有接口、两路后台、长期稳定或UI通过；没有执行auth、doctor、Keychain管理或恢复后台。系统窗口是否出现没有独立观测，不以exit0推断“绝无弹窗”。下一步是明确并冻结history分阶段恢复方案，后台仍需另获同意。

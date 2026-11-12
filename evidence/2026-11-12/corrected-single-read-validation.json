@@ -1,0 +1,41 @@
+{
+  "evidence": "E089",
+  "ok": true,
+  "checks": {
+    "explicit_additional_and_new_record_permission": true,
+    "fixed_proposal_matched": true,
+    "one_attempt_recorded": true,
+    "official_exit0_target_matched": true,
+    "pause_and_three_services_preserved": true,
+    "original_failed_receipt_preserved": true,
+    "product_and_checker_match_permitted_plan": true
+  },
+  "key": "dab-auth-read-fixed-20261112",
+  "receipt": {
+    "state": "readable",
+    "attempted": true,
+    "automaticRetry": false,
+    "exitCode": 0,
+    "targetMatched": true,
+    "suspensionUnchanged": true
+  },
+  "newRealDwsInvocations": 1,
+  "operation": "chat +conversation-info",
+  "requestTimeoutSeconds": 15,
+  "cleanupBudgetSeconds": 15,
+  "receiptSha256": "67d12142effaf384731ee92524bbfd68b47e273f53800dfc896089fcb2dda8f2",
+  "rawResultSha256": "2547a30e06a519761f0fdf5c22947853ca5c10a9db6e94ab21b8917e22028cb4",
+  "planSha256": "11546953634c05157d960a1fc1588dee9d55a89d99d00ff6d2830f04971ea7a7",
+  "preflightSha256": "299561aa402aa3368ba01274ecdb49aef558f5b2554473fcf9cae0c194297e3a",
+  "postflightSha256": "aa795d712512095cede40d82ec4fdc13f0e9b16025b279c363687a5f6321e0bf",
+  "backgroundStarted": false,
+  "newNativeUIEvidence": false,
+  "permissionConsumed": true,
+  "limits": [
+    "One successful credential-backed read for the fixed target; not all APIs, two routes, long-running stability or UI acceptance",
+    "Original E082 parameter failure preserved; neither key may be retried or replaced without new explicit permission",
+    "No Keychain management/auth/doctor operation or background recovery performed",
+    "System prompt occurrence is not instrumented; do not infer no prompt from exit0",
+    "Separate explicit authorization required for transport/gateway recovery"
+  ]
+}

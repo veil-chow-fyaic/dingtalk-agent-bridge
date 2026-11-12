@@ -1,0 +1,67 @@
+{
+  "evidence": "E088",
+  "ok": true,
+  "checks": {
+    "source_three_passed": true,
+    "py314_three_passed": true,
+    "py311_three_passed": true,
+    "frozen_test_and_runner_match": true,
+    "installed_origins_and_21_unchanged_modules": true,
+    "twenty_original_files_unchanged": true,
+    "official_pinned_source_files_match_archive": true
+  },
+  "runs": [
+    {
+      "environment": "source",
+      "targetedTests": 3,
+      "passed": true,
+      "logSha256": "bed04ec5b313d9637749b3eeb2d9cc5d48652296bf778c0bab11f2d92e2d8e90"
+    },
+    {
+      "environment": "py314",
+      "targetedTests": 3,
+      "passed": true,
+      "logSha256": "c77233edbce368737fbe110d1410fca4eb2cb3d31c9c3a79a5f5f21094e9bd8c"
+    },
+    {
+      "environment": "py311",
+      "targetedTests": 3,
+      "passed": true,
+      "logSha256": "dc0921a5349b4338c1965231558e02b6c8f7d3391dbceae75efc42138aa80fdb"
+    }
+  ],
+  "installedOrigins": [
+    {
+      "target": "py314",
+      "installed": true,
+      "modulesMatch": true
+    },
+    {
+      "target": "py311",
+      "installed": true,
+      "modulesMatch": true
+    }
+  ],
+  "testSha256": "1bef5456692f65f69dd301788e7a85136d4e4e5bf10ac050e3de3cd446342090",
+  "officialPinnedCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "officialSourceSha256": {
+    "internal/shortcut/smart/message_time_range.go": "ad48dd9b01b40512ed70f7c7dd9f28d259d983f52ea20d1552769576e2616715",
+    "internal/shortcut/smart/history_cursor.go": "947b65e1f962cc256d1c4053d276d83b0230c8587cbc9a8b7ba826b9dae6d8da"
+  },
+  "productChanged": false,
+  "newWheel": false,
+  "fullSuiteRerun": false,
+  "newRealDwsCallsForThisOfflineTest": 0,
+  "newNativeUIEvidence": false,
+  "scenarios": [
+    "72h prior watermark retained with five-minute overlap in both group/direct; deep24h does not truncate older watermark",
+    "Failed pre-outage frozen window completes at old end, then next window covers entire72h gap including exact prior end",
+    "No-watermark bootstrap reads last24h only even explicit deep; range complete does not imply all history"
+  ],
+  "limits": [
+    "Synthetic provider and patched Python datetime only; no host clock mutation or real DWS",
+    "No assertion about server retention, permissions, unavailable remote history or new task authorization",
+    "A complete old window is not caught-up-to-recovery time; stopped-state watermark must reach fixed recovery cut before gateway activation",
+    "No product bug found in these window cases; other pagination/failure boundaries retain earlier evidence"
+  ]
+}
