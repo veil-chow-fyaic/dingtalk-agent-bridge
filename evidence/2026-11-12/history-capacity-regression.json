@@ -1,0 +1,162 @@
+{
+  "evidence": "E079",
+  "date": "2026-11-12",
+  "reproductionVerified": true,
+  "regressionResolved": false,
+  "checks": {
+    "source-gap.json_stall_reproduced": true,
+    "py314-gap.json_stall_reproduced": true,
+    "py311-gap.json_stall_reproduced": true,
+    "all_three_observations_agree": true,
+    "two_official_contract_tests_passed": true,
+    "initial_missing_go_failure_retained": true,
+    "fixed_official_v67_commit": true,
+    "21_product_modules_unchanged": true,
+    "installed_probe_frozen_without_product": true,
+    "prepared_single_read_unattempted": true
+  },
+  "results": {
+    "source-gap.json": {
+      "scope": "Synthetic official-shaped bounded history and real local SQLite; no real DWS",
+      "inputMessages": 1001,
+      "polls": 3,
+      "restartAfterFirstPoll": true,
+      "insertedPerPoll": [
+        1000,
+        0,
+        0
+      ],
+      "completePerPoll": [
+        false,
+        false,
+        false
+      ],
+      "storedMessages": 1000,
+      "uniqueMessages": 1000,
+      "missingMessages": 1,
+      "calls": [
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        }
+      ],
+      "watermarkPresent": false,
+      "progressSatisfied": false,
+      "realDwsCalls": 0,
+      "credentialsRead": false,
+      "newNativeUITest": false
+    },
+    "py314-gap.json": {
+      "scope": "Synthetic official-shaped bounded history and real local SQLite; no real DWS",
+      "inputMessages": 1001,
+      "polls": 3,
+      "restartAfterFirstPoll": true,
+      "insertedPerPoll": [
+        1000,
+        0,
+        0
+      ],
+      "completePerPoll": [
+        false,
+        false,
+        false
+      ],
+      "storedMessages": 1000,
+      "uniqueMessages": 1000,
+      "missingMessages": 1,
+      "calls": [
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        }
+      ],
+      "watermarkPresent": false,
+      "progressSatisfied": false,
+      "realDwsCalls": 0,
+      "credentialsRead": false,
+      "newNativeUITest": false
+    },
+    "py311-gap.json": {
+      "scope": "Synthetic official-shaped bounded history and real local SQLite; no real DWS",
+      "inputMessages": 1001,
+      "polls": 3,
+      "restartAfterFirstPoll": true,
+      "insertedPerPoll": [
+        1000,
+        0,
+        0
+      ],
+      "completePerPoll": [
+        false,
+        false,
+        false
+      ],
+      "storedMessages": 1000,
+      "uniqueMessages": 1000,
+      "missingMessages": 1,
+      "calls": [
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        },
+        {
+          "returned": 1000,
+          "resumed": false,
+          "complete": false
+        }
+      ],
+      "watermarkPresent": false,
+      "progressSatisfied": false,
+      "realDwsCalls": 0,
+      "credentialsRead": false,
+      "newNativeUITest": false
+    }
+  },
+  "probeSha256": "f1870fabea62f623b9f3045c9399324a78f61d8d726c78d7ac039fceb82072f4",
+  "officialCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "officialSourceSha256": {
+    "internal/shortcut/smart/history_cursor.go": "947b65e1f962cc256d1c4053d276d83b0230c8587cbc9a8b7ba826b9dae6d8da",
+    "internal/shortcut/smart/chat_messages.go": "789f9e08477a13e993c10a27b32c578b1b7130eeff03cfda0a9ab3565f170df1",
+    "internal/shortcut/smart/chat_messages_test.go": "d9358f31c4679e7c4a48922cb4aba54f44ff9bf9608cc374383b13ab210f3814",
+    "internal/shortcut/smart/optimization_test.go": "42426c4f1308442e2a24bca2a047b12b4124048fccb84dfe252949cdbc725d78"
+  },
+  "officialTestLogSha256": "cf96802f22ee6f9d0d438aa99d04192cc7709bf072bc46a52ece003fc290a3e6",
+  "productReusedFrom": "E073",
+  "productChanged": false,
+  "realDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "limits": [
+    "Probe exit 2 is a real unresolved synthetic regression, not passing product acceptance",
+    "Two official Go tests use synthetic providers and no real DWS CLI/authentication",
+    "No fresh full suite or installed wheel claim",
+    "Pending single-read plan and three stopped services remain unchanged"
+  ]
+}

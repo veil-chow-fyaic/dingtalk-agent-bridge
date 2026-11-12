@@ -243,3 +243,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 
 ## E078 — 群文件关联的持久断点
 - [功能补充](../../docs/86-explicit-group-file-tasks.md)、[10核验/逐场景记录](../../evidence/2026-11-12/group-file-recovery-validation.json)。2专项三环境覆盖两次实际合成子进程SIGKILL及late history；一次下载/执行/确认，原blocked不复活。产品21模块不变，无真实DWS/UI或全量重跑。
+
+## E079 — history容量停滞已复现，尚未修复
+- [原因/官方边界](../../docs/92-history-capacity-continuation.md)、[10项复现核验](../../evidence/2026-11-12/history-capacity-regression.json)。1001条三轮1000/0/0，首轮后重启仍漏1；源码/双Python同wheel均退出2。两官方合成Go契约测试通过不抵消bridge失败。
+- 产品21模块/E074待决计划保持；无真实DWS/HTTP/UI。下一步在local源码候选实现原窗口与opaque token的持久接续，当前缺陷仍开放。
