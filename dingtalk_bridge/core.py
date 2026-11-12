@@ -149,22 +149,78 @@ class Bridge:
             raise BridgeError('Target identity mismatch')
         return True
 
-    def sync(self, deep=False):
-        with self.sync_lock:
-            now = datetime.now(timezone.utc)
-            with self.lock:
-                row = self.db.execute('SELECT value FROM meta WHERE key="watermark"').fetchone()
+    def _history_window(self, now, deep):
+        # Freeze the window before the request, including failed/interrupted reads.
+        # The official token is opaque and bound to this exact query; it is not a
+        # timestamp from which the bridge may manufacture its own continuation.
+        with self.lock, self.db:
+            saved = self.db.execute('SELECT value FROM meta WHERE key="history_window"').fetchone()
+            if saved:
+                try:
+                    window = json.loads(saved[0])
+                    if not isinstance(window, dict) or set(window) != {'version', 'start', 'end', 'deep', 'target', 'token', 'seen'}:
+                        raise ValueError('schema')
+                    if type(window['version']) is not int or window['version'] != 1:
+                        raise ValueError('version')
+                    if type(window['deep']) is not bool or window['target'] != self.target_args():
+                        raise ValueError('query binding')
+                    start, end = (datetime.fromisoformat(window[k]) for k in ('start', 'end'))
+                    if start.tzinfo is None or end.tzinfo is None or start > end:
+                        raise ValueError('time window')
+                    token, seen = window['token'], window['seen']
+                    if (not isinstance(seen, list) or len(seen) > 4096 or
+                            not all(isinstance(h, str) and len(h) == 64 and all(c in '0123456789abcdef' for c in h) for h in seen) or
+                            len(set(seen)) != len(seen)):
+                        raise ValueError('cursor history')
+                    if not ((token is None and not seen) or (self._valid_history_token(token) and seen and
+                            hashlib.sha256(token.encode()).hexdigest() == seen[-1])):
+                        raise ValueError('cursor')
+                except (ValueError, TypeError, KeyError) as exc:
+                    raise BridgeError('Invalid persisted history window; no request made') from exc
+                return window
+            row = self.db.execute('SELECT value FROM meta WHERE key="watermark"').fetchone()
             start = datetime.fromisoformat(row[0]) - timedelta(minutes=5) if row else now - timedelta(days=1)
-            with self.lock:
-                last_deep = self.db.execute('SELECT value FROM meta WHERE key="last_deep_sync"').fetchone()
+            last_deep = self.db.execute('SELECT value FROM meta WHERE key="last_deep_sync"').fetchone()
             deep = deep or not last_deep or now-datetime.fromisoformat(last_deep[0]) >= timedelta(minutes=30)
             if deep:
                 start = min(start, now-timedelta(hours=24))
-            data = self.dws.call(['chat', '+chat-messages', *self.target_args(),
-                '--start', start.isoformat(), '--end', now.isoformat(), '--order', 'asc',
-                '--page-all', '--page-limit', '20', '--max-items', '1000', '--limit', '50'])
+            window = {'version': 1, 'start': start.isoformat(), 'end': now.isoformat(),
+                      'deep': bool(deep), 'target': self.target_args(), 'token': None, 'seen': []}
+            self.db.execute('INSERT INTO meta VALUES (?,?)', ('history_window', json.dumps(window)))
+            return window
+
+    @staticmethod
+    def _valid_history_token(token):
+        return isinstance(token, str) and 0 < len(token) <= 8192 and all(33 <= ord(c) <= 126 for c in token)
+
+    def sync(self, deep=False):
+        with self.sync_lock:
+            now = datetime.now(timezone.utc)
+            window = self._history_window(now, deep)
+            deep = window['deep']
+            args = ['chat', '+chat-messages', *window['target'],
+                '--start', window['start'], '--end', window['end'], '--order', 'asc',
+                '--page-all', '--page-limit', '20', '--max-items', '1000', '--limit', '50']
+            if window['token'] is not None:
+                args += ['--page-token', window['token']]
+            data = self.dws.call(args)
             if not isinstance(data.get('messages'),list):
                 raise BridgeError('Missing history messages; watermark unchanged')
+            failed = bool(data.get('partial') or data.get('failedCount') or data.get('failures'))
+            complete = data.get('complete') is True and not failed and data.get('hasMore') is not True
+            continuation = None
+            continuation_error = None
+            if not complete and not failed and (data.get('stopReason') in {'page_limit', 'result_limit'} or
+                                                data.get('complete') is True):
+                token = data.get('nextPageToken')
+                if data.get('complete') is True or data.get('hasMore') is not True or not self._valid_history_token(token):
+                    continuation_error = 'History limit has no safe continuation; window retained'
+                else:
+                    fingerprint = hashlib.sha256(token.encode()).hexdigest()
+                    if fingerprint in window['seen'] or len(window['seen']) >= 4096:
+                        continuation_error = 'History continuation repeated or exceeded window budget; window retained'
+                    else:
+                        continuation = {**window, 'token': token, 'seen': [*window['seen'], fingerprint]}
             inserted = 0
             with self.lock, self.db:
                 for msg in data.get('messages', []):
@@ -183,15 +239,20 @@ class Bridge:
                     cur = self.db.execute('INSERT OR IGNORE INTO events(message_id,body) VALUES (?,?)',
                                           (mid, json.dumps(event, ensure_ascii=False)))
                     inserted += cur.rowcount
-                complete = data.get('complete') is True and not data.get('partial') and not data.get('failedCount')
                 if complete:
-                    self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)', ('watermark', now.isoformat()))
+                    self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)', ('watermark', window['end']))
                     if deep:
-                        self.db.execute('INSERT OR REPLACE INTO meta VALUES ("last_deep_sync",?)',(now.isoformat(),))
+                        self.db.execute('INSERT OR REPLACE INTO meta VALUES ("last_deep_sync",?)',(window['end'],))
+                    self.db.execute('DELETE FROM meta WHERE key="history_window"')
+                elif continuation is not None:
+                    self.db.execute('UPDATE meta SET value=? WHERE key="history_window"', (json.dumps(continuation),))
                 self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
-                    ('last_sync', json.dumps({'at': now.isoformat(), 'complete': complete, 'inserted': inserted, 'deep':deep})))
+                    ('last_sync', json.dumps({'at': now.isoformat(), 'complete': complete, 'inserted': inserted, 'deep':deep,
+                                             'continuing': continuation is not None, 'error': continuation_error})))
                 self.db.commit()
                 if inserted:self.event_condition.notify_all()
+            if continuation_error:
+                raise BridgeError(continuation_error)
             return {'inserted': inserted, 'complete': complete, 'count': data.get('count'),
                     'source': 'history_poll', 'deep':deep,
                     'other_member_events_observed':self.health()['other_member_events']}

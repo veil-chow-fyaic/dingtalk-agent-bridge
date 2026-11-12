@@ -235,3 +235,5 @@
 | 2026-11-12 13:17 E082获准一次查询失败 | 原key与冻结匹配、三服务stopped后仅1次调用；官方拒绝未知--as，exit3，原receipt failed/attempted，暂停不变 | docs/94、local/recovery-checks/dab-auth-read-20261112 | 用户许可已履行，认证未知；不重试/换key。优先修脚本/办公包装器参数并用固定官方命令树验证，部署清单工具尚未实现 |
 
 | 2026-11-12 13:25 E083官方参数修复 | 核验与办公入口不再强加--as；固定官方树旧8失败/新8通过、518解析/11占位；源码/双Python新wheel各254、14审计 | docs/95、local/official-argument-contract-20261112 | 原E082 raw/receipt不变，新增真实调用0；下一段应用E080候选并核整体包，再继续只读部署清单，不启动后台 |
+
+| 2026-11-12 13:29 E084续页候选应用 | 原样应用E080 core/8方法，保留E083其余20模块；源码/双Python新wheel实际各262、10审计通过 | docs/92、local/history-continuation-applied-20261112 | 仅代码，未部署/修改现场账本或配置；原一次失败attempt不变，新真实调用0。继续只读部署/账本工具 |

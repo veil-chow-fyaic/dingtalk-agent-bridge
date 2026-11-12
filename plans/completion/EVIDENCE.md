@@ -263,3 +263,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E083 — 官方命令参数契约修复
 - [说明](../../docs/95-official-argument-contract.md)、[14项冻结审计](../../evidence/2026-11-12/official-argument-contract-validation.json)。移除核验/办公入口强加--as，profile/json绑定保持；新增failed原key跨代码变更不重调回归。源码/双Python新wheel各254、六入口21模块通过。
 - 独立固定官方声明树：旧8参数组unknown_flag失败、新8通过；六族518命令解析、11无解析导航占位单列。只有ParseFlags，不执行CLI/鉴权/业务。原E082 raw/receipt字节保持，新增真实调用0、未部署。
+
+## E084 — 持久续页应用及整体产品验证
+- [说明](../../docs/92-history-capacity-continuation.md)、[10项冻结核验](../../evidence/2026-11-12/history-continuation-applied-validation.json)。core/8方法与E080逐字节一致，其余20模块保留E083；源码/双Python新wheel实际各262、六入口21模块通过。
+- 未部署/改配置/重放任务；E082真实receipt/raw原字节保持，无新真实DWS或UI。下一段继续只读部署差异与账本清单工具。
