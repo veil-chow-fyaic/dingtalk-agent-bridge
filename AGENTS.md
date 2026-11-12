@@ -1,5 +1,8 @@
 # 钉钉 bridge 工作约定
 
+当前执行入口（2026-11-12 E074）：E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 具体方案见docs/90-guarded-recovery-read-plan.md。下列旧阶段的等待密码、解锁和自动补读指令仅为历史记录，不再执行。
+
+
 ## 续作入口与目标
 
 只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。

@@ -225,3 +225,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 
 ## E073 — 官方办公入口与共享bus边界
 - [实现报告](../../docs/89-supervised-official-office-entrypoint.md)、[安装](../../evidence/2026-11-12/official-proxy-install.json)、[冻结审计](../../evidence/2026-11-12/official-proxy-validation.json)、[官方bus源码边界](../../evidence/2026-11-12/official-bus-ownership-boundary.json)。三套237、9新增方法，真实DWS调用0；仅新增本地operator_suspended状态。
+
+## E074 — history双路和单次核验准备
+- [方案](../../docs/90-guarded-recovery-read-plan.md)、[安装验证](../../evidence/2026-11-12/recovery-plan-installed.json)、[15项冻结审计](../../evidence/2026-11-12/recovery-plan-validation.json)。7新增方法、源码/双Python已安装产品各244项，复用E073同wheel和21模块；准备计划未执行，真实DWS调用0、服务全停、暂停保持。
+- 原始local/recovery-plan-20261112；只读复核`PYTHONPATH=. python3 scripts/accept_recovery_plan.py`。真实一次查询的许可独立于后台恢复，不把离线测试标UI通过。

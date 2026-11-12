@@ -2,9 +2,9 @@
 
 当前现场：E071事故后三个服务保持停止。用户已确认密码弹窗停止，但真实DWS登录尚未恢复；不要重试doctor/auth/Keychain或自动重启。原24h中断样本保持。
 
-当前代码E073已把runtime办公工具入口接入共享暂停与进程守护，六类业务仍由官方CLI完成；源码与Python3.14/3.11隔离安装包各237项通过。项目已写入仅本地operator_suspended标志，三个服务继续停止，未读钥匙串/未部署。独立共享Stream bus仍未受管；下一段验证现有history模式的安全恢复方案，未经明确同意不恢复真实DWS或后台。 [实现与证据](89-supervised-official-office-entrypoint.md)。
+E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 [方案与证据](90-guarded-recovery-read-plan.md)。
 
-2026-11-12，E065之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E074准备完成。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
 最新交接：[E063](80-offline-handoff-export.md)。E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。
 
@@ -31,7 +31,7 @@
 | 附件与媒体 | PDF/DOCX/XLSX/ZIP四方向；私聊TXT/CSV、原生PNG/JPEG、WAV/MP4 file、下载打开和实际工具 | 群TXT入站/CSV双向等仍缺；语音条/独立video不由文件替代；详见四方向矩阵 |
 | 长文、引用、组合 | UTF-16分段、完整长气泡UI、私聊出站引用、单条双PNG、分条多文件后续合并 | 私聊入站/群引用、其他单条多附件、群长文未过 |
 | 控制与失败 | 私聊status/cancel/new、实际取消、拒绝对账、模型错误保留、超限提示及新压缩任务 | 群控制等仍缺；未知先对账、从不静默重做 |
-| 运行与恢复 | manager、只读doctor、新venv六入口/19模块；E059 Python3.14/3.11隔离wheel各191项通过；manager私有诊断已补，历史关闭错误根因未解；短停机、history/Stream限定故障、自然access预刷新 | 真实失效refresh与完整24h未过；E027原during-shutdown诊断问题保留 |
+| 运行与恢复 | E073受管办公入口、E074双路history与一次核验防护；源码/双Python安装各244项、21模块；既有真实短停机/限定故障/自然轮换证据保持 | 三服务停机；一次真实查询待允许；认证/完整24h未过；历史错误保持 |
 | 官方办公 | 绑定liev的doc/todo/calendar/未发送draft、个人钉盘上传下载及合成语音听记真实任务与IM文件 | 独立会议、密送独立读证、外部场景按SHOULD保留 |
 | 文档与Git | 官方/补充边界、研究引用、合成fixture、只读审计、manifest/隐私门、分段本地提交 | 最终自检、封版和完成标签未做；未远程发布 |
 

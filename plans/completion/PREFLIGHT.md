@@ -1,5 +1,8 @@
 # LIVE_SYNC_BLOCKED
 
+当前执行入口（2026-11-12 E074）：E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 具体方案见../../docs/90-guarded-recovery-read-plan.md。下列旧阶段的等待密码、解锁和自动补读指令仅为历史记录，不再执行。
+
+
 2026-11-12，E065之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
 
 - 同一仓库/分支codex/complete-bridge；基线166b11b、tag baseline/ui-2026-11-11。单Agent，未远程发布。

@@ -2,7 +2,7 @@
 
 当前现场：E071事故后三个服务保持停止。用户已确认密码弹窗停止，但真实DWS登录尚未恢复；不要重试doctor/auth/Keychain或自动重启。原24h中断样本保持。
 
-当前代码E073已把runtime办公工具入口接入共享暂停与进程守护，六类业务仍由官方CLI完成；源码与Python3.14/3.11隔离安装包各237项通过。项目已写入仅本地operator_suspended标志，三个服务继续停止，未读钥匙串/未部署。独立共享Stream bus仍未受管；下一段验证现有history模式的安全恢复方案，未经明确同意不恢复真实DWS或后台。 [实现与证据](docs/89-supervised-official-office-entrypoint.md)。
+E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 [方案与证据](docs/90-guarded-recovery-read-plan.md)。
 
 通用钉钉IM工具，让本地Agent通过CLI或HTTP承接群聊/私聊任务、文件、多轮上下文并将结果回传原会话。接口不绑定组织或runtime；当前本机Kimi已真实接通，Codex adapter保留但请求超时，至少一个执行器门槛已满足。
 
@@ -58,11 +58,10 @@ E053：[异常消息隔离](docs/70-malformed-message-isolation.md)，防止坏�
 
 现行步骤已与已安装命令及HTTP实现逐项核对，见[交接契约复核](docs/67-current-handoff-contract.md)：18帮助/33既有测试通过；旧运行/工具说明已单独存档。[中文与空格路径验证](docs/68-unicode-workspace-install-validation.md)另通过64项既有测试、新同wheel安装六入口及只读doctor。
 
-使用当前checkout。传输监听127.0.0.1:18768，两路官方Stream提示唤醒history、15秒补读，群/私聊各一个Kimi gateway，仅允许已配置发送者。无开机自启；Kimi没有OS级沙箱。现有三个进程由service_manager管理，旧ctl/PID文件不再控制当前部署。
+事故前部署配置：传输监听127.0.0.1:18768，两路官方Stream提示唤醒history、15秒补读，群/私聊各一个Kimi gateway，仅允许已配置发送者。当前全部停止，恢复步骤按E074方案另行批准。无开机自启；Kimi没有OS级沙箱。现有三个进程由service_manager管理，旧ctl/PID文件不再控制当前部署。
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status
-python3 -m dingtalk_bridge.doctor --agent-config local/agent-config.json --agent-config local/agent-direct-config.json --live
 python3 scripts/accept_exif_ui.py
 python3 scripts/run_tests_with_evidence.py
 python3 scripts/verify_handoff.py

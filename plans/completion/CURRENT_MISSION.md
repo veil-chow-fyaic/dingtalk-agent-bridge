@@ -1,4 +1,7 @@
 # 当前任务
+
+当前执行入口（2026-11-12 E074）：E074已完成双路history收发/暂停与单次核验的离线验证：7新增方法，源码及Python3.14/3.11已安装包各244项，复用E073同一wheel/21模块，15项冻结审计通过。真实查询仅准备、尚未执行；三个服务停止、operator_suspended保持、现场配置不变。下一步只申请一次15秒会话查询，失败或未知不重试，查询成功也不恢复后台。 具体方案见../../docs/90-guarded-recovery-read-plan.md。下列旧阶段的等待密码、解锁和自动补读指令仅为历史记录，不再执行。
+
 目标：交付通用普通账号DingTalk IM bridge（双向群聊/私聊、文本和媒体原件、任务和文件），Kimi真实接入且runtime可替换；清楚区分DWS官方与自研补充，形成可安装运行、可复现测试、有Git历史的交付。
 模式build。项目/计划均在/Users/veil/Projects/dingtalk-agent-bridge，计划为plans/completion。分支codex/complete-bridge，初始基线166b11b/tag baseline/ui-2026-11-11；不修改WeCom等参考仓库。用户没有要求远程发布，当前只做本地Git。
 授权：DWS的liev行为＋原生钉钉UI的veil行为，原测试群（本轮已授权现有3人范围）及veil/liev私聊；允许合成文字、多格式文件、任务、恢复测试与同账号合成办公资源。既有授权持续有效，无需反复确认；不触达第三方业务联系人，不扩全组织监听，不新建bot/修改成员或权限。账号profile是配置，不是产品固定组织。
