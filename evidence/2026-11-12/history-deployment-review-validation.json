@@ -1,0 +1,74 @@
+{
+  "evidence": "E085",
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "source-initial.log": true,
+    "source-final-v2.log": true,
+    "py314-final.log": true,
+    "py311-final.log": true,
+    "frozen_tool_and_tests_match": true,
+    "installed_E084_modules_and_source_absence": true,
+    "twenty_original_files_unchanged": true,
+    "current_local_snapshot_check_passed": true,
+    "two_route_summary_preserves_eight_historical_jobs": true,
+    "private_non_executable_review": true,
+    "current_21_product_modules_still_E084": true
+  },
+  "runs": {
+    "source-initial.log": {
+      "testsRun": 7,
+      "passed": false,
+      "failures": 2,
+      "logSha256": "9281d2615a4348230c511296fa4b4df38e0177fc680f2772ef50c20d8616f7fb"
+    },
+    "source-final-v2.log": {
+      "testsRun": 7,
+      "passed": true,
+      "failures": 0,
+      "logSha256": "ca4f39931f50dba2549f5443cf03b0ad2238a8abf4d61c96d25cf0b5b02ac5ca"
+    },
+    "py314-final.log": {
+      "testsRun": 7,
+      "passed": true,
+      "failures": 0,
+      "logSha256": "4f1aa2de1600c952c66c46ea874f85346b74197753788c783dbd937c7bbd8780"
+    },
+    "py311-final.log": {
+      "testsRun": 7,
+      "passed": true,
+      "failures": 0,
+      "logSha256": "ba4ce62a6a19a69c98cb862ca325ff7ee47fcee33a37839af20381315c4403c6"
+    }
+  },
+  "newTestMethods": 7,
+  "targetedMethodsPerEnvironment": 7,
+  "privateReviewSha256": "5dfd50e3702d473de4292d616fa3663f50f85e674a2e23c312aa9fa5adae7aac",
+  "localReviewSummary": {
+    "ok": true,
+    "reviewWritten": true,
+    "routeCount": 2,
+    "unfinishedJobs": 0,
+    "unconfirmedOriginalKeys": 0,
+    "historicalNonSuccessJobs": 8,
+    "currentMatchesValidated": true,
+    "priorSingleReadState": "failed",
+    "newDwsCallsAllowed": false,
+    "backgroundStartAllowed": false
+  },
+  "plannerSha256": "e65f8584defd42e14cd19720e71bc8309ff6bf8c78ddee4c8586cb12f473f180",
+  "testSha256": "e9020a85a60323801df2a1bf451a9ec32a68cd8ac0d31f4564d87c63bddedea9",
+  "productChanged": false,
+  "newWheel": false,
+  "fullSuiteRerun": false,
+  "newRealDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "limits": [
+    "Only configured two routes inspected; unconfigured historical databases unchanged but not declared fully reconciled",
+    "Reads checkpointed SQLite through immutable/query-only only after refusing all WAL/SHM/journal sidecars and acquiring existing owner locks",
+    "No worker construction, checkpoint, new owner lock, account/credential copy, task replay, live RPC or startup",
+    "Review publishes only private key/state/hash inventory; raw messages/models/payloads and session/token values not copied",
+    "Current record has no pending work, but the read itself cannot establish current server/UI delivery or authentication",
+    "E084 262 full remains frozen history; seven new targeted methods are not a full 269-run claim"
+  ]
+}

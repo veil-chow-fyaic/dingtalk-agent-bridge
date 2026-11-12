@@ -267,3 +267,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E084 — 持久续页应用及整体产品验证
 - [说明](../../docs/92-history-capacity-continuation.md)、[10项冻结核验](../../evidence/2026-11-12/history-continuation-applied-validation.json)。core/8方法与E080逐字节一致，其余20模块保留E083；源码/双Python新wheel实际各262、六入口21模块通过。
 - 未部署/改配置/重放任务；E082真实receipt/raw原字节保持，无新真实DWS或UI。下一段继续只读部署差异与账本清单工具。
+
+## E085 — 只读部署差异与账本清单
+- [说明](../../docs/96-history-deployment-review.md)、[11项核验](../../evidence/2026-11-12/history-deployment-review-validation.json)。7专项三环境；既有owner锁、无旁文件只读SQLite、原绑定/状态/hash、不覆盖/变更拒绝。
+- 本地两路六库0未完成/0未确认key、8历史非成功保留；20原文件字节/mtime/权限不变，私有清单可校验且无执行入口。无产品变更/新wheel/全量269/真实DWS/UI。
