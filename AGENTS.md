@@ -10,7 +10,7 @@
 
 E071事故后用户已确认弹窗停止，要求回到主线；三个真实服务停止，工作区operator_suspended保持。禁止真实DWS/auth/doctor/Keychain读取、锁定或解锁、自动恢复；禁止file-DEK、reset、删凭据、复制token、改权限、重启Mac，以及绕过SecurityAgent/Terminal工具限制。不再等待弹窗名称、第二账号或系统密码，也不重复让用户输密码。
 
-E074单次只读核验已准备并向用户提问，**许可仍待决，不重复提问**。只有用户明确允许这一条查询后，才能按[docs/90](docs/90-guarded-recovery-read-plan.md)使用固定key `dab-auth-read-20261112`。先读本地receipt；已有attempt只核对，不重新执行、不换key。单次查询15秒请求＋最多15秒受管清理，仍可能触发系统窗口。失败或未知不重试，成功也不解除暂停或启动后台。核验许可不包含登录修复或后台恢复；后台恢复需先给出具体方案再获明确同意。
+E082：用户已明确允许并执行原key `dab-auth-read-20261112`的一次查询；官方因不支持脚本强加的`--as`返回validation/unknown_flag、退出3，receipt为failed且attempted=true。这是命令准备错误，认证是否恢复仍未知；三个服务和operator_suspended保持。原key已消耗，禁止重试/换key/删receipt，不能把一次许可扩成修正后再查或后台恢复。当前不再等待这次许可答复，也不再执行docs/90旧准备命令；先离线修官方参数契约，再说明具体方案，任何新真实调用或后台恢复均需明确允许。详见[失败与边界](docs/94-single-read-unsupported-flag.md)。
 
 E072持久暂停/最多两调用/进程守护、E073办公入口防护及E074history双路方案已离线验证，尚未部署。官方Stream bus按身份共享且Setsid脱组，不能杀共享bus；foreground只运行bus，不能当消费修复。候选恢复用既有history-only、15秒补读，实际配置仍stream_hint、尚未改动。当前包装器不是OS沙箱，不能覆盖恶意脱组、守护本身被杀或系统失效。
 

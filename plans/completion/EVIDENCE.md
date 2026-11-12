@@ -255,3 +255,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E081 — 测试入口零发现拒绝
 - [说明](../../docs/93-empty-test-discovery.md)、[8项核验](../../evidence/2026-11-12/empty-test-discovery-validation.json)。新增2方法，旧2失败；源码/双Python同E073产品各4专项通过。无匹配CLI退出1、summary明确no_tests_executed，非空实际执行通过。
 - 产品21模块和E074 checker不变，无真实DWS/新UI/新wheel/全量重跑；不得将E080候选259与本次2新增相加成261全量。
+
+## E082 — 一次许可已履行，官方参数失败
+- [失败/边界](../../docs/94-single-read-unsupported-flag.md)、[脱敏回执](../../evidence/2026-11-12/single-read-unsupported-flag.json)。用户明确允许后原key仅执行1次；未知--as导致validation/unknown_flag、exit3，未取得会话结果；暂停保持，三服务停止。
+- 命令准备错误和合成测试遗漏由bridge承担；认证仍未知，原attempt与raw不改，禁止重试/换key。下一离线项修核验/办公参数并用固定官方树校验，再继续候选与只读部署工具。

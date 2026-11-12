@@ -1,0 +1,67 @@
+{
+  "evidence": "E082",
+  "date": "2026-11-12",
+  "userExplicitlyAllowedSingleCheck": true,
+  "key": "dab-auth-read-20261112",
+  "realDwsInvocations": 1,
+  "additionalInvocations": 0,
+  "receipt": {
+    "state": "failed",
+    "attempted": true,
+    "automaticRetry": false,
+    "exitCode": 3,
+    "targetMatched": false,
+    "suspensionUnchanged": true
+  },
+  "error": {
+    "category": "validation",
+    "code": 3,
+    "reason": "unknown_flag",
+    "message": "unknown flag: --as\nSee 'dws chat +conversation-info --help' for usage.",
+    "available_flags": [
+      "client-id",
+      "client-secret",
+      "debug",
+      "dry-run",
+      "fields",
+      "format",
+      "group",
+      "help",
+      "jq",
+      "mock",
+      "open-dingtalk-id",
+      "profile",
+      "timeout",
+      "verbose",
+      "yes"
+    ]
+  },
+  "rootCause": "Bridge-prepared CLI invocation supplied unsupported --as user; synthetic tests did not validate the official command surface",
+  "authenticationRecovered": false,
+  "authenticationStateDetermined": false,
+  "credentialReadsInsideInvocation": "not instrumented; no claim",
+  "componentsAfterCheck": [
+    {
+      "component": "transport",
+      "status": "stopped"
+    },
+    {
+      "component": "agent-1",
+      "status": "stopped"
+    },
+    {
+      "component": "agent-2",
+      "status": "stopped"
+    }
+  ],
+  "pauseAfterCheck": {
+    "state": "suspended",
+    "reason": "operator_suspended"
+  },
+  "oldReceiptPreserved": true,
+  "rawResultSha256": "1703e19309d23fb7b5cd412d246c4acbe39484a523c87509713f9acd677c909d",
+  "receiptSha256": "e8f4d951629e207568d379c56841cb429bd0e32bbbbcf85e963aa51a383dd93c",
+  "nextRealCallAuthorized": false,
+  "backgroundStartAuthorized": false,
+  "newUIEvidence": false
+}
