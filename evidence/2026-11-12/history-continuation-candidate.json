@@ -1,0 +1,160 @@
+{
+  "evidence": "E080",
+  "date": "2026-11-12",
+  "ok": true,
+  "baseCommit": "640570a",
+  "candidateOnly": true,
+  "candidateApplied": false,
+  "candidateDeployed": false,
+  "activeProductStillHasE079Regression": true,
+  "checks": {
+    "candidate-full-py314.log_259_passed": true,
+    "py314-tests.log_259_passed": true,
+    "py311-tests.log_259_passed": true,
+    "candidate_changes_only_core": true,
+    "frozen_source_matches_installed_modules": true,
+    "frozen_tests_match_installed_tests": true,
+    "candidate_full_suite_has_eight_new_methods": true,
+    "patch_exactly_reproduces_frozen_delta": true,
+    "patch_applies_to_current_source": true,
+    "original_probe_now_drains": true,
+    "optimized_python_eight_tests_passed": true,
+    "active_21_modules_and_checker_still_match_pending_plan": true,
+    "single_read_not_attempted": true,
+    "zero_test_orchestration_result_retained": true
+  },
+  "runs": {
+    "candidate-full-py314.log": {
+      "testsRun": 259,
+      "passed": true,
+      "logSha256": "87ecb845d8b5de05cfbf7545afe06f06f0e4531c33553531f27fd7c361b97e5f",
+      "refusalsRetained": 11
+    },
+    "py314-tests.log": {
+      "testsRun": 259,
+      "passed": true,
+      "logSha256": "7c02dcad8c6057fe80dd79ac522107ff3087569a756533e6a7389c18fed45a52",
+      "refusalsRetained": 11
+    },
+    "py311-tests.log": {
+      "testsRun": 259,
+      "passed": true,
+      "logSha256": "f60bdd342fe851a1ea808609493ced9e47d1c1f71f148069d509f30dda02dc39",
+      "refusalsRetained": 11
+    }
+  },
+  "probe": {
+    "scope": "Synthetic official-shaped bounded history and real local SQLite; no real DWS",
+    "inputMessages": 1001,
+    "polls": 3,
+    "restartAfterFirstPoll": true,
+    "insertedPerPoll": [
+      1000,
+      1,
+      0
+    ],
+    "completePerPoll": [
+      false,
+      true,
+      true
+    ],
+    "storedMessages": 1001,
+    "uniqueMessages": 1001,
+    "missingMessages": 0,
+    "calls": [
+      {
+        "returned": 1000,
+        "resumed": false,
+        "complete": false
+      },
+      {
+        "returned": 1,
+        "resumed": true,
+        "complete": true
+      },
+      {
+        "returned": 0,
+        "resumed": false,
+        "complete": true
+      }
+    ],
+    "watermarkPresent": true,
+    "progressSatisfied": true,
+    "realDwsCalls": 0,
+    "credentialsRead": false,
+    "newNativeUITest": false
+  },
+  "patchSha256": "59936f690a31404dee6e0b17d68c3c16cd4f1044226e634897582a5f8e34d7de",
+  "testSha256": "dc68bfc4aa935ab0ac016e6f9591e19331c38455e7a7375a0a453c2945e25ed7",
+  "wheelSha256": "63768533ebd2a0485bf8cc0b0a3daa049b62de804b9aef1dff1afe5a95567cba",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "e733ae7ea98be4754f172b4451e41ca5146dd329ad0e88f966ddbaf6bf8a65d7",
+    "runtime_guard.py": "62a566cb491c4ceae836e125d2c0b8732a727580a605ee998212900139e55b28",
+    "agent_runtime.py": "ff924520762ef0300aea4f40854e825e2d4da935fe237011296bf8d61def2c00",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "9960085a87b78f29f1cab2581a66370ee256b2ee190d2041d19e3a30e3e9f203",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "17778e9e921a9c90284d754612d370e0232487f6025c29d1f1de97aea1b8d5f4",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "58a1b7a707c3254de2ef7c2b4d40f601cc8b58fa9c27c7647135d786955d9741",
+    "cli.py": "b6039cde8b9ffd9e6c58d64fe30f30dc1b27d160909beb891bb2f45f37f64381",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "8507a38b275ffdcf6eec3286415c703a51261a6d451cc7922b6c85c0821f2237",
+    "official_proxy.py": "d032c9d7943d7eb081562f9d51161f3615c3865b132fad11b1d00685e57d8124",
+    "doctor.py": "a390d906eca3526bb1e4be9c8736a6c7d08552610a4d829b7560634808c0d9ba",
+    "__main__.py": "15d7544b96ba84cba99b73f286f4ee4ec18c1b793e2af7ac1e9e361aaed67c34",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "frozenTestSha256": {
+    "tests/test_group_file_link.py": "fcd636ff43ef07f45926f43074407e8e73cccc488e36c8c2802abf77e4612c0d",
+    "tests/test_reconcile_race.py": "fb2cbaeb18f2fc290d2776d9f68a9cf76f1a2741be26285995755fc4697b3f64",
+    "tests/test_official_proxy.py": "c6f66ef8bddab7d2ee3c3f7dcc23026abf94de32237c1310864e7d2c5f9eab9d",
+    "tests/test_stream_http.py": "a02841d24952b7a76dcd8a764e7405ae427bf33e8182d37e3ec6fd15ed3b8e84",
+    "tests/test_official_tools.py": "8a07859e89366a920b2f242831f76a86787ced0009d0b828896d50d9e2527bd8",
+    "tests/test_message_shape.py": "5485efd0ec5f706feb2fe35f5a059026be06a51daaa7129d10904e263be84fdb",
+    "tests/test_probe.py": "e1541f1b767bf6e8ed12911b501d7ffcb763d24a4806f3d7134d4f836bca8f83",
+    "tests/test_history_continuation.py": "dc68bfc4aa935ab0ac016e6f9591e19331c38455e7a7375a0a453c2945e25ed7",
+    "tests/test_manager_exit_transition.py": "ecafd58ebee871106372325c9029fdc0dbf4b1f9955c6e0dee4d5ecec47255cd",
+    "tests/test_recovery_once.py": "70e75ffba816765b886d425985c0c02c928b57bdf1021f8033ab1d94cf170f4a",
+    "tests/test_core.py": "c1a5f6a9477c6e3f234b13cee07f4159fbf2b9fea402393eaf0e924d0f19ee74",
+    "tests/test_observation_review.py": "d81b2f1ed6a6382a797cb4254da00a690ffb2ede7d4a3194a0c28170a990de43",
+    "tests/test_route_process_recovery.py": "da9586407688303af56fc25ec94090fd3c632aafe49020e1c8009e52caa27e80",
+    "tests/test_doctor.py": "2028db8fd3f245ebf457f1cba9bbb8384cf53ca1804312b3adbded69920df77a",
+    "tests/test_atomic_manifest.py": "b0f3ccb69eacf235be323239182849ed4abc6c1b0db838efda0b340ab8736fef",
+    "tests/test_network_fault_proxy.py": "e5e16641d749a959eba83b3b0b6b06d15d4d881c5fdbc4d2ac0bdb4159e3bebd",
+    "tests/test_agent_gateway.py": "0171f8f23f154ad358d672b755c249beac3c1dfedeec0bd6979b3c13a8e70b3c",
+    "tests/test_acceptance_review.py": "4082a642063adbbff4019c1570c8f0e433ef75137b14c459f14e2e30f988db90",
+    "tests/test_history_recovery_mode.py": "e8737753cf3b35a32a3e402e04295c80b90557e2118e42e794754a5dca52d58b",
+    "tests/test_frozen_install.py": "6bc2635c274da7e2d2146f266b3c717d0806ed0bd1e2af7a93a4aa440a61fd35",
+    "tests/test_dws_containment.py": "441e121c37a2056e6202664657f1b2ee19a133e3f9265347dcea210caa8f8aa2",
+    "tests/test_test_evidence.py": "4a220ff22df9754412fc92c1f998093be8d792437d073efdff5ab046009416be",
+    "tests/test_continuation.py": "024236409e33b7429834794084f0b77316218a4c1a88cab36900f66cd880ed21",
+    "tests/test_group_file_recovery.py": "c41c7b20b8894d489b361b6234028ae26aace9df6467712891db7c7768a65e8d",
+    "tests/test_fresh_download.py": "586335e5d14e9b514248ab3061b171617279061a21d86a31b038fbcc23d26015",
+    "tests/test_download_cache.py": "aa807a0913c3b08a5651438f33557f229e452f62a3355471bdd73c3735556662",
+    "tests/test_agent_runtime_process.py": "1c17ce4325e52fd5ec6672cfc8b115cfe7af40ee929557fb3b7d2d8162d499d8",
+    "tests/test_rejection.py": "5e98176d8f6be1b5d60b050798cfe7d91023df9ebe754a0e6112bec4a291cc2c",
+    "tests/test_image_build.py": "2a6879777d710958375ec0e251df99ee7b0ba194a95ad4cef60af0f3b3b8da26",
+    "tests/test_privacy.py": "0aba2bc55d5d2e52d0987f3b0a72f76650b7e06c279f3a483cb04e4438429bc6",
+    "tests/test_download_http.py": "9cf272b769718085c04a05ce24a090ea6cbc6cf8eb7eedb02d355f17f49a5c00",
+    "tests/test_routing_consumer.py": "9e33f95645f715dc9cd38c49f686ddc86f459d45ea3604b476addce367cbe72d",
+    "tests/test_reconcile_http.py": "6e6da0ccf23e7de20e403c6fbd65454f565b6f030655426de89af64e2f43ab79",
+    "tests/test_service_manager.py": "43c1212e3fdeac2b1fa3025c5a84fdb3c1b54433ba14ca78211e1a701579edc9",
+    "tests/test_credential_health.py": "32c9103a46f7abeda19171ef9492be477a00ac978da144c3a268756040da31e5"
+  },
+  "realDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "limits": [
+    "Frozen candidate only: pending E074 query bytes and active product unchanged",
+    "Synthetic providers and local SQLite, not real DingTalk paging/UI",
+    "Opaque official token is stored, never decoded or manufactured by bridge",
+    "4096 continuation checkpoints per window then explicit error; no unbounded inner request loop",
+    "Unsafe/failed pages preserve the original window and never advance watermark; page-limit without token raises",
+    "Zero-test orchestration run is not acceptance and is tracked separately for runner correction"
+  ]
+}
