@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E057",
+  "ok": true,
+  "checks": {
+    "old_source_two_failures_reproduced": true,
+    "old_installed_wheel_two_failures_reproduced": true,
+    "four_deterministic_scheduling_cancel_restart_tests": true,
+    "source_python314_full_184": true,
+    "installed_python314_full_184": true,
+    "installed_python311_full_184": true,
+    "frozen_wheel_and_install_match": true,
+    "doctor_live_passed": true,
+    "only_two_gateways_reloaded": true,
+    "transport_identity_unchanged": true,
+    "loaded_source_matches_install": true,
+    "config_bytes_preserved": true,
+    "original_observer_preserved": true,
+    "transport_healthy_after_reload": true,
+    "group_jobs_preserved": true,
+    "group_outbox_preserved": true,
+    "group_deliveries_preserved": true,
+    "group_events_preserved": true,
+    "group_session_and_logs_preserved": true,
+    "direct_jobs_preserved": true,
+    "direct_outbox_preserved": true,
+    "direct_deliveries_preserved": true,
+    "direct_events_preserved": true,
+    "direct_session_and_logs_preserved": true
+  },
+  "fullTestCount": 184,
+  "newRegressionMethods": 4,
+  "newNativeUITest": false,
+  "observerElapsedHours": 12.712,
+  "unavailableSamples": 7,
+  "logSha256": {
+    "invalid-fixture.log": "386df5c7f64b2b1b6ecae1d0aab54cca593c85c8b4565fb7d443c36654670475",
+    "before-fix.log": "381d4a1e3c99203dd8ebf4faddd17cd84aa700d56688cd6a2df668cf2353b8c8",
+    "old-installed-wheel.log": "f9a88ffa3950d7eef4a27a4c19d5ccca8d9ae62567283460a6d868545e95b3ea",
+    "after-fix.log": "b5fb8c841222849b3f81e9f665b36f7c86e97e0272b4221b3b09cd5decc5c085",
+    "full-py314.log": "3a065c436c4ca603cb715507159c46120806674056b0ca9ad57205f2bd66386d",
+    "installed-py314-tests.log": "e85596ad7c782fbb7f55dd89fede932b92c024ccc14ed36c272be63647d04970",
+    "installed-py311-tests.log": "7782452d38c2c6ee5fb9d51672dc2c2c859821175b7a8981fe1651a4a0aa5f38"
+  },
+  "limits": [
+    "Real local download threads with synthetic HTTP and runtime responses; no account data",
+    "Waiting-media restart can repeat read-only download, never the task or acknowledgement",
+    "A cancelled in-flight request retains the one-request bound until it finishes or times out",
+    "No new native UI, quoted-input UI or multi-file single-message acceptance",
+    "Historical manager shutdown errors and incomplete 24h remain"
+  ]
+}

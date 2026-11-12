@@ -1,6 +1,8 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E056之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E057之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+
+最新产品修复为[E057附件完成结果调度](74-media-completion-scheduling.md)：4个新增确定性回归，旧源码/wheel各2失败复现；源码及双Python已安装包各184项、24审计通过。仅两gateway空闲重载，传输与旧记录保持，无新UI结论。
 
 最新工具证据为[E056发送组合契约](73-official-send-composition-contract.md)：18个无账号dry-run、46审计9负向，重复file末项覆盖及9/10图片引用边界已核清；单消息普通多附件/原生类型未改绿，产品与现场保持。
 
@@ -15,11 +17,11 @@
 | 附件与媒体 | PDF/DOCX/XLSX/ZIP四方向；私聊TXT/CSV、原生PNG/JPEG、WAV/MP4 file、下载打开和实际工具 | 群TXT入站/CSV双向等仍缺；语音条/独立video不由文件替代；详见四方向矩阵 |
 | 长文、引用、组合 | UTF-16分段、完整长气泡UI、私聊出站引用、单条双PNG、分条多文件后续合并 | 私聊入站/群引用、其他单条多附件、群长文未过 |
 | 控制与失败 | 私聊status/cancel/new、实际取消、拒绝对账、模型错误保留、超限提示及新压缩任务 | 群控制等仍缺；未知先对账、从不静默重做 |
-| 运行与恢复 | manager、只读doctor、新venv六入口/19模块；E054 Python3.14/3.11隔离wheel各180项通过；manager私有诊断已补，历史关闭错误根因未解；短停机、history/Stream限定故障、自然access预刷新 | 真实失效refresh与完整24h未过；E027原during-shutdown诊断问题保留 |
+| 运行与恢复 | manager、只读doctor、新venv六入口/19模块；E057 Python3.14/3.11隔离wheel各184项通过；manager私有诊断已补，历史关闭错误根因未解；短停机、history/Stream限定故障、自然access预刷新 | 真实失效refresh与完整24h未过；E027原during-shutdown诊断问题保留 |
 | 官方办公 | 绑定liev的doc/todo/calendar/未发送draft、个人钉盘上传下载及合成语音听记真实任务与IM文件 | 独立会议、密送独立读证、外部场景按SHOULD保留 |
 | 文档与Git | 官方/补充边界、研究引用、合成fixture、只读审计、manifest/隐私门、分段本地提交 | 最终自检、封版和完成标签未做；未远程发布 |
 
-运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E055快照DM65任务/160outbox（159确认1旧拒绝）/169传输/235事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，08:09附近约12.545小时；累计7不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
+运行配置仍为两路精确liev profile，DM启用官方办公上下文、群关闭。E055快照DM65任务/160outbox（159确认1旧拒绝）/169传输/235事件；群3/7/12/76。manager控制传输和两gateway，历史ctl已退出。原观察起点11月11日19:36:08，08:19附近约12.712小时；累计7不可达、3poll_error和维护保留，最早11月12日19:36后评估24h，不能声称零中断。
 
 ## 用户从一开始要解决的问题
 

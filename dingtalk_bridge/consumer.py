@@ -61,9 +61,12 @@ class Inbox:
             if type(batch['next_cursor']) is not int or batch['next_cursor']!=last:raise ValueError('cursor_does_not_match_batch')
             self.db.execute('INSERT OR REPLACE INTO meta VALUES ("cursor",?)',(str(last),))
         return len(events)
-    def hydrate(self,download,include_self=False,limit=20,eligible=None):
+    def hydrate(self,download,include_self=False,limit=20,eligible=None,priority_message_id=None):
         if type(limit) is not int or limit<1:raise ValueError('Invalid hydration limit')
-        candidates=self.db.execute('SELECT * FROM inbox WHERE state IN ("pending_media","media_failed") ORDER BY attempts,seq')
+        # Consume the caller's outstanding result before the bounded candidate
+        # window. Otherwise newer zero-attempt rows can starve its owner.
+        candidates=self.db.execute('SELECT * FROM inbox WHERE state IN ("pending_media","media_failed") '
+            'ORDER BY (message_id=?) DESC,attempts,seq',(priority_message_id,))
         def selected(row):
             model=json.loads(row['model'])
             return (include_self or model['fromSelf'] is False) and (eligible is None or eligible(model))

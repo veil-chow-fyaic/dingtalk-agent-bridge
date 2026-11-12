@@ -425,6 +425,122 @@ class AgentGatewayTests(unittest.TestCase):
         self.assertTrue(self.g.media_slot['done'].wait(2));self.g.intake()
         self.assertTrue(self.g.execute_one());self.assertEqual(self.runtime.calls,1)
 
+    def _media_batch(self, count):
+        import hashlib
+        from test_routing_consumer import ref
+        ledgers = {}
+        messages = []
+        for seq in range(1, count + 1):
+            data = ('fixture-' + str(seq)).encode()
+            path = self.g.inbox.cache_root / 'batch' / (str(seq) + '.txt')
+            path.parent.mkdir(parents=True, exist_ok=True);path.write_bytes(data)
+            resource = ref('fileId', 'f' + str(seq))
+            item = event(seq, text='/agent 处理引用附件', sender='other', refs=[resource],
+                         quote={'conversationId': 'g', 'messageId': 'q' + str(seq),
+                                'text': '[文件] sample.txt fileId: f' + str(seq),
+                                'resourceRefs': [resource]})
+            messages.append(item)
+            ledgers[item['message_id']] = {'ok': True, 'downloads': [{
+                'resourceType': 'fileId', 'resourceId': 'f' + str(seq),
+                'localPath': str(path.relative_to(self.root.resolve())),
+                'sha256': hashlib.sha256(data).hexdigest(), 'sizeBytes': len(data)}]}
+        calls = []
+        original = self.api
+        def api(route, data=None):
+            if route == '/v1/attachments':
+                calls.append(data['message_id'])
+                return ledgers[data['message_id']]
+            return original(route, data)
+        return messages, calls, api
+
+    def _finished_media_threads(self):
+        from unittest.mock import patch
+        # Real download threads, deterministically finished before the next
+        # candidate in the same intake loop (as with a fast cache hit).
+        class FinishedThread(threading.Thread):
+            def start(self):
+                super().start();self.join(2)
+                if self.is_alive():raise AssertionError('download thread did not finish')
+        return patch('dingtalk_bridge.agent_gateway.threading.Thread', FinishedThread)
+
+    def test_fast_media_batch_retains_each_completion_once_across_restart(self):
+        messages, calls, api = self._media_batch(2)
+        self.api.events = messages;self.g.api = api
+        with self._finished_media_threads():
+            for _ in range(3):self.g.intake()
+        self.assertEqual(calls, [m['message_id'] for m in messages])
+        self.assertEqual(self.g.summary()['jobs'], {'queued': 2})
+        self.assertTrue(self.g.execute_one());self.assertTrue(self.g.execute_one());self.g.flush()
+        self.assertEqual(self.runtime.calls, 2)
+        old = [dict(r) for r in self.g.db.execute('SELECT * FROM jobs ORDER BY seq')]
+        self.g.close();self.g = Gateway(self.root, CFG, None, SETTINGS, api, self.runtime)
+        self.g.intake();self.assertFalse(self.g.execute_one());self.g.flush()
+        self.assertEqual(old, [dict(r) for r in self.g.db.execute('SELECT * FROM jobs ORDER BY seq')])
+        self.assertEqual(calls, [m['message_id'] for m in messages]);self.assertEqual(self.runtime.calls, 2)
+
+    def test_completed_media_owner_prioritized_over_twenty_new_candidates(self):
+        messages, calls, api = self._media_batch(22)
+        self.g.api = api;self.api.events = messages[:1]
+        with self._finished_media_threads():
+            self.g.intake()
+            # A previously failed download can have more attempts than a full
+            # newly arrived batch. Its completed result must still be consumed.
+            with self.g.inbox.db:self.g.inbox.db.execute('UPDATE inbox SET attempts=1 WHERE seq=1')
+            self.api.events = messages;self.g.intake()
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs WHERE seq=1').fetchone()[0], 'queued')
+        self.assertEqual(calls.count(messages[0]['message_id']), 1)
+        self.assertTrue(self.g.execute_one());self.assertEqual(self.runtime.calls, 1)
+
+    def test_waiting_media_restart_rehydrates_without_duplicate_ack_or_execution(self):
+        messages, calls, api = self._media_batch(1)
+        self.g.api = api;self.api.events = messages
+        with self._finished_media_threads():self.g.intake()
+        job_id = self.g.db.execute('SELECT id FROM jobs').fetchone()[0]
+        ack = [dict(r) for r in self.g.db.execute('SELECT * FROM outbox')]
+        self.assertEqual(len(ack), 1);self.assertEqual(self.runtime.calls, 0)
+        self.g.close();self.g = Gateway(self.root, CFG, None, SETTINGS, api, self.runtime)
+        with self._finished_media_threads():
+            self.g.intake();self.g.intake()
+        # Download is read-only and can be repeated after a restart; the task
+        # and acknowledgement retain their original identities.
+        self.assertEqual(calls, [messages[0]['message_id']] * 2)
+        self.assertEqual(ack, [dict(r) for r in self.g.db.execute('SELECT * FROM outbox')])
+        self.assertEqual(self.g.db.execute('SELECT id FROM jobs').fetchone()[0], job_id)
+        self.assertTrue(self.g.execute_one());self.assertFalse(self.g.execute_one())
+        self.assertEqual(self.runtime.calls, 1)
+
+    def test_cancelled_media_owner_drops_late_result_without_reviving_job(self):
+        messages, calls, original = self._media_batch(2)
+        entered = threading.Event();release = threading.Event()
+        def api(route, data=None):
+            if route == '/v1/attachments' and data['message_id'] == messages[0]['message_id']:
+                entered.set()
+                if not release.wait(3):raise AssertionError('release missing')
+            return original(route, data)
+        self.g.api = api;self.api.events = messages[:1]
+        self.g.intake();slot = self.g.media_slot
+        try:
+            self.assertTrue(entered.wait(1))
+            self.api.events.append(event(2, text='/agent cancel', sender='other'));self.g.intake()
+            self.assertEqual(self.g.db.execute('SELECT state FROM jobs WHERE seq=1').fetchone()[0], 'cancelled')
+        finally:
+            release.set();self.assertTrue(slot['done'].wait(2))
+        second = dict(messages[1]);second['seq'] = 3
+        # message_id stays distinct from the cancellation control's default ID.
+        second['message_id'] = 'late-second-file'
+        second['raw'] = {**second['raw'], 'messageId': second['message_id']}
+        def second_api(route, data=None):
+            if route == '/v1/attachments' and data['message_id'] == second['message_id']:
+                return original(route, {'message_id': messages[1]['message_id']})
+            return api(route, data)
+        self.g.api = second_api;self.api.events.append(second)
+        with self._finished_media_threads():
+            self.g.intake();self.g.intake()
+        self.assertTrue(self.g.execute_one());self.assertFalse(self.g.execute_one())
+        self.assertEqual(self.runtime.calls, 1)
+        self.assertEqual(self.g.db.execute('SELECT state FROM jobs WHERE seq=1').fetchone()[0], 'cancelled')
+        self.assertEqual(len(calls), 2)
+
     def test_original_attachment_name_survives_safe_local_path_and_unnamed_stays_unknown(self):
         import hashlib
         from test_routing_consumer import ref

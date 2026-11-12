@@ -126,11 +126,10 @@ class Gateway:
         # Only the network request runs on this daemon thread; SQLite stays on the intake thread.
         # A stalled attachment must not prevent status/cancel commands from being ingested.
         slot=self.media_slot
-        if slot and slot['done'].is_set():
+        if slot and slot['done'].is_set() and slot['id']==mid:
             self.media_slot=None
-            if slot['id']==mid:
-                if 'error' in slot:raise slot['error']
-                return slot['result']
+            if 'error' in slot:raise slot['error']
+            return slot['result']
         if self.media_slot is None:
             slot={'id':mid,'done':threading.Event()};self.media_slot=slot
             def download():
@@ -150,9 +149,17 @@ class Gateway:
     def intake(self):
         batch=self.api('/v1/events?'+urlencode({'after':self.inbox.cursor,'limit':200}))
         self.inbox.ingest(batch)
+        slot=self.media_slot
+        if slot and slot['done'].is_set():
+            owner=self.inbox.db.execute('SELECT model FROM inbox WHERE message_id=?',(slot['id'],)).fetchone()
+            # A cancelled task must not retain the only download slot. Keep an
+            # in-flight request bounded to one; discard its result once done.
+            if not owner or not self.needs_media(json.loads(owner['model'])):
+                self.media_slot=None
         self.inbox.hydrate(self.download_ready,
             include_self=self.settings.get('allowSelfCommands',False),
-            eligible=self.needs_media)
+            eligible=self.needs_media,
+            priority_message_id=self.media_slot['id'] if self.media_slot else None)
         # normalized includes explicitly authorized owner commands; Inbox.ready's general self filter stays intact.
         for row in self.inbox.db.execute('SELECT seq,model,state FROM inbox WHERE model!="null" ORDER BY seq'):
             model=json.loads(row['model']);command=command_for(model,self.settings)
