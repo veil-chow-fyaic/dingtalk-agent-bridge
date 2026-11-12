@@ -1,6 +1,6 @@
 # DingTalk Agent Bridge
 
-> E098/E099更新：群JPEG/WAV/MP4已完成原生UI、真实工具、下载/打开/SHA闭环，当前47/16/1；原AV failed保留。结果契约新增8方法、冻结源码/双Python299，尚未重载，现场仍E093。下一步受管重载gateway及群长文/控制。详见[本轮记录](docs/103-aic-group-media-and-result-contract.md)。下列E097计数为当时快照。
+> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。下一步CEO C02发送事实负例对照，C03/C04契约与余下UI缺口继续；心跳PAUSED、三服务运行。 见[本轮闭环](docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 

@@ -1,0 +1,36 @@
+{
+  "evidence": "E100",
+  "date": "2026-11-12",
+  "ok": true,
+  "checks": {
+    "one_job_per_unique_task": true,
+    "four_completed_one_cancelled": true,
+    "all_new_receipts_confirmed": true,
+    "long_input_exact": true,
+    "long_response_exact": true,
+    "download_staged_and_input_exact": true,
+    "artifact_digest_exact": true,
+    "two_chunks_reconstruct_exactly": true,
+    "long_actual_python": true,
+    "context_without_file_tools": true,
+    "cancel_was_real_python_child": true,
+    "cancel_no_process_or_late_file_after_deadline": true,
+    "cancel_dispatched_no_artifact": true,
+    "after_cancel_real_tool_result": true,
+    "new_generation_and_native_session_reset": true,
+    "old_jobs_unchanged": true,
+    "new_context_and_workspace_isolated": true,
+    "same_body_distinct_status_messages": true,
+    "status_saw_actual_running_job": true,
+    "other_routes_jobs_outbox_sessions_unchanged": true,
+    "managed_reload_preserved_transport_and_ledgers": true
+  },
+  "download": {
+    "bytes": 5699,
+    "sha256": "e70885f29ce5266ad94268e88e04e5505f65443c0ee79127d5396e23e4a9c10c"
+  },
+  "taskCount": 10,
+  "receiptCount": 18,
+  "cancelDeadlineElapsedSeconds": 182.58770990371704,
+  "scope": "Read-only local records and artifacts; native UI observations in docs/104, no DWS calls."
+}

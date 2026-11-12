@@ -1,12 +1,12 @@
 # 当前关键路径
 
-> E098/E099最新检查点：AIC群JPEG/WAV/MP4六方向已真实UI闭环，四下载件打开/SHA通过；AV原failed与独立只读交付保留。当前47/64通过、16blocked、1partial，8 MUST未完整。结果契约新代码冻结源码/双Python各299通过、21模块，尚未重载；现场仍E093。下一步仅受管重载idle gateway、transport保持，再补群长文与控制。见[docs/103](../../docs/103-aic-group-media-and-result-contract.md)。原24h观察已到期且有错误，需保留原记录作终检，不称健康24h。
+> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。下一步CEO C02发送事实负例对照，C03/C04契约与余下UI缺口继续；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
 
 E097按全部用户需求复盘，详见[总需求/进度/路线](../../docs/102-user-requirements-and-roadmap.md)。当前仍是DWS真人账号通道＋可替换Agent；Kimi已闭环，不等于Codex/Pi/OpenClaw已验。64格41通过/22blocked/1partial，14 MUST仍8项不完整；标准不变。
 
 ## 下一段执行顺序
 
-1. E098已补JPEG/WAV/MP4六格；先受管重载已验证E099 gateway，再在唯一授权的新AIC群补长文双向两格及上下文/status/cancel/new。每项真实UI输入、实际工具、同会话结果、下载/打开/摘要分别取证。PNG出站与TXT/CSV已过，不重做。
+1. E100已补群长文/控制，E099 gateway已重载；不得重做这些实测。先推进CEO C02负例对照，核已有真实发送契约，只有缺口才修改；未验证UI按第4项新入口推进。
 2. 按用户偏好优先采用[CEO C02–C04](../../docs/references/ceo-deep-dive.md)：发送事实负例对照、runtime能力/终态/失败契约、会话兼容性。仅实际差距才修改；Qwen通道事务专项继续保留。S1遇具体阻塞时直接推进这些独立代码项，不等密码、不重开恢复审批。
 3. Codex独立诊断及第二执行器闭环；Pi/OpenClaw以后逐一接同一契约。不能为四套runtime重造通道或把未来路线写成已支持。
 4. 其他14 blocked与1partial涉及原生协议/引用/组合，先找新入口。旧右键/坐标/快捷键/菜单及E056契约已loop guard，无新证据不反复试；平台缺口不能擅自从MUST删除。

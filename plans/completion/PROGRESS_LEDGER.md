@@ -269,3 +269,5 @@
 | 2026-11-12 E097需求与CEO | 复盘原聊天14条用户消息及本聊天全部纠偏；固定CEO新版31文件、Git blob/摘要/许可、发送事实/session/runtime源码和负例；更新统一需求/进度/路线，旧TODO按字节归档 | docs/102、references/ceo-deep-dive及index、requirements-ceo-review-validation.json | 产品21模块/测试/判据和通过状态不变，无真实DWS/UI/服务改动；先AIC待测8格和群控制，独立代码按CEO C02–C04实际差距窄采用；Codex独立，四runtime不冒称已接通。心跳仍PAUSED |
 
 | 2026-11-12 19:45 E098/E099媒体与契约 | JPEG/WAV/MP4六方向新增UI、四下载件/打开/SHA、16核验；AV原failed保留，独立只读交付。结果契约新增8方法，冻结源码/双Python299、9审计 | docs/103；local/aic-media-20261112、runtime-result-20261112 | 47/16/1，8 MUST不完整；代码尚未重载。下一段仅受管重载idle gateway，保留transport/session/失败，再群长文与控制。原24h已到期，现有只读review表明完整观察且有1059不可达/168poll_error，另作终检，绝非健康24h |
+
+| 2026-11-12T20:14:12+08:00 E100/E101闭环 | 两gateway受管加载e27547b、transport保持；群长文/上下文/status/cancel/new真实UI及21核验，10记录18confirmed；原24h13核验完整但有故障，旧run保留 | docs/104–105；E100/E101 | 49/14/1、7 MUST未完整；下一项CEO C02发送事实负例对照，C03/C04及新UI入口；不重发旧实验 |

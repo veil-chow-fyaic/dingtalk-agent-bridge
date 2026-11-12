@@ -334,3 +334,13 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E099 — runtime结果契约与可解释失败
 - [实现和边界](../../docs/103-aic-group-media-and-result-contract.md)、[9项冻结核验](../../evidence/2026-11-12/runtime-result-contract-validation.json)。CEO C03设计参考，新增8方法；冻结源码/双Python新wheel各299，21模块/六入口一致。typed错误、exact schema、无解释文字抽取、失败不重放、既有产物及session保留。
 - 实际E098触发问题，E099修复错误分类和操作指引，不能保证模型总能给合法JSON；原failed不迁移。当前检查点未重载gateway，真实UI仍E093；下一段仅管理器有界重载gateway、transport保持，再补群长文/控制。
+
+## E100 — E099受管重载及AIC群长文/控制闭环
+- [真实UI记录](../../docs/104-aic-group-long-text-and-controls.md)、[21项只读核验](../../evidence/2026-11-12/aic-group-controls-validation.json)。两idle gateway加载e27547b，transport身份/旧账本/session保持；无auth/doctor，未重跑原299。
+- veil原生2816字符命令，Kimi真实Python生成60行5699B TXT，5196字符回复分两段，AX全文/首尾视口、客户端下载/TextEdit打开/SHA一致。上下文无工具回答60/1830/2；三条相同status有不同消息ID。
+- 实际sleep Python执行中status=1，UI cancel及停止确认、两进程消失、182.588秒无晚文件；同会话下一实际Python1517。UI new后代次1/native session不同，真实Python检查空exports，旧口令不知；旧任务和其他路由不变。10任务/控制、18confirmed，取消保留。49/14/1，R08通过，仍7 MUST未完整。
+
+## E101 — 原24小时记录完整性终检
+- [记录与限制](../../docs/105-original-24h-observation.md)、[13项完整性核验](../../evidence/2026-11-12/reliability-original-24h-review.json)。原run达到24h结束，2878样本/205事件/52维护，最大gap30.748秒，0重复事件。
+- 1059 unavailable（681 URLError/378 HTTPError）和168 poll_error样本保留。378 HTTPError均仍有health但路由集与旧baseline不同、0事件捕获，符合旧群退出后冻结查询不再适用；原记录没有精确HTTP状态，不猜404或全部DWS宕机。
+- 未重置/启动新run；原事件最终账本对照未做、当前AIC部署没有24h覆盖。完整记录不是健康通过，R13仍未完成。

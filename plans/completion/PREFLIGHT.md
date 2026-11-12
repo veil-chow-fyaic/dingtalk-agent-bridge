@@ -1,6 +1,6 @@
 # 续作前置核对
 
-> E098/E099最新检查点：AIC群JPEG/WAV/MP4六方向已真实UI闭环，四下载件打开/SHA通过；AV原failed与独立只读交付保留。当前47/64通过、16blocked、1partial，8 MUST未完整。结果契约新代码冻结源码/双Python各299通过、21模块，尚未重载；现场仍E093。下一步仅受管重载idle gateway、transport保持，再补群长文与控制。见[docs/103](../../docs/103-aic-group-media-and-result-contract.md)。原24h观察已到期且有错误，需保留原记录作终检，不称健康24h。
+> E100/E101最新检查点：群长文双向、上下文/status/cancel/new完成真实UI与21项只读核验；49/64通过、14blocked、1partial，7 MUST未完整。两个gateway已加载E099/e27547b，transport保持E093身份；冻结源码/双Python各299项是E099原验证。原24h记录完整但有1059 unavailable/168 poll_error，不能称连续健康。下一步CEO C02发送事实负例对照，C03/C04契约与余下UI缺口继续；心跳PAUSED、三服务运行。 见[本轮闭环](../../docs/104-aic-group-long-text-and-controls.md)。下文旧阶段记录只代表当时版本。
 
 先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认同一checkout、codex/complete-bridge和未提交归属。不要从聊天空目录另做实现。
 
