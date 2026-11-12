@@ -1,0 +1,65 @@
+{
+  "evidence": "E086",
+  "ok": true,
+  "checks": {
+    "source_two_targeted_pass": true,
+    "py314_two_targeted_pass": true,
+    "py311_two_targeted_pass": true,
+    "frozen_tests_and_runner": true,
+    "E084_21_product_modules_unchanged": true,
+    "installed_origin_verified": true,
+    "twenty_existing_files_unchanged": true,
+    "pending_proposal_unchanged_no_query_record": true
+  },
+  "runs": [
+    {
+      "environment": "source",
+      "targetedTests": 2,
+      "passed": true,
+      "logSha256": "2a2137a1e578dd33dc180ca28e06dc4f5df7f77708cff61099104fd71df033f4"
+    },
+    {
+      "environment": "py314",
+      "targetedTests": 2,
+      "passed": true,
+      "logSha256": "6378de6b4ecf5ef37854ae0074d92c2b334445129a4dee7fa6cd0a7ca8fc3f24"
+    },
+    {
+      "environment": "py311",
+      "targetedTests": 2,
+      "passed": true,
+      "logSha256": "6eb64b82e008ef2f2509965e04e9b63f9b4112433635ceee391cb4d98f768cac"
+    }
+  ],
+  "installedOrigins": [
+    {
+      "target": "py314",
+      "fromSitePackages": true,
+      "modulesMatch": true,
+      "exitCode": 0
+    },
+    {
+      "target": "py311",
+      "fromSitePackages": true,
+      "modulesMatch": true,
+      "exitCode": 0
+    }
+  ],
+  "testSha256": "e614e353a5921425137575bf3d45d85d55a43d335bfa51a1e22f2d6dc8964e83",
+  "productChanged": false,
+  "newWheel": false,
+  "fullSuiteRerun": false,
+  "newRealDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "scenarios": [
+    "Legacy schema1 raw binary context upgraded before new task in retained synthetic native session; generated wrapper exits75 under persistent pause without invoking synthetic CLI",
+    "Disabled office capability removes only generated context on new task; original native session/generation, artifact, notes, completed and failed jobs, original outbox rows preserved",
+    "Reopening and repeated intake execute no historical task and resend no confirmed original outbox key"
+  ],
+  "limits": [
+    "Fake runtime obeys current context; actual Kimi/Codex saved conversation is not exercised",
+    "Generated files and guidance are not an OS sandbox and cannot erase old model memory or prevent intentional raw CLI invocation",
+    "No real workspace/session migration performed; resume requires separate approval and a new explicit task",
+    "E084 full262 stays historical; two targeted tests are not a new full271 run"
+  ]
+}

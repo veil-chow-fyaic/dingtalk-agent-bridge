@@ -271,3 +271,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E085 — 只读部署差异与账本清单
 - [说明](../../docs/96-history-deployment-review.md)、[11项核验](../../evidence/2026-11-12/history-deployment-review-validation.json)。7专项三环境；既有owner锁、无旁文件只读SQLite、原绑定/状态/hash、不覆盖/变更拒绝。
 - 本地两路六库0未完成/0未确认key、8历史非成功保留；20原文件字节/mtime/权限不变，私有清单可校验且无执行入口。无产品变更/新wheel/全量269/真实DWS/UI。
+
+## E086 — 旧官方上下文与持久会话升级
+- [说明/具体恢复顺序](../../docs/96-history-deployment-review.md)、[8项核验](../../evidence/2026-11-12/official-context-upgrade-validation.json)。2专项源码及E084安装包双Python通过；旧schema1刷新受管入口、暂停拒绝底层调用，关闭办公清理生成文件，原session/完成与失败任务/回执/用户文件保留。
+- 仅合成runtime，无真实会话迁移/UI/DWS、新wheel或全量重跑。真实模型旧记忆不由提示词消除；21模块、20原文件及待决提案保持。恢复分transport补读/停机核积压/按授权单路gateway，不自动全启。
