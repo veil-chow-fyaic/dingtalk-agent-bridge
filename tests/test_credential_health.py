@@ -15,6 +15,7 @@ from urllib.request import Request, build_opener, ProxyHandler
 from dingtalk_bridge.core import Bridge, BridgeError, DWS
 from dingtalk_bridge.doctor import diagnose
 from dingtalk_bridge.routing import Hub
+from dingtalk_bridge.dws_access import DWSAccess
 
 ROOT = Path(__file__).resolve().parents[1]
 ERROR = {'category': 'internal', 'code': 51, 'message':
@@ -67,16 +68,19 @@ state=json.loads(Path(group+'.json').read_text());print(json.dumps(state['data']
                 with self.assertRaises(BridgeError) as caught:DWS(self.root, self.routes[0]).call(['chat', '+chat-messages', '--group', 'a'])
                 self.assertNotEqual(type(caught.exception).__name__, 'DWSCredentialStoreUnavailable')
 
-    def test_routes_remain_independent_and_recovery_clears_details_without_duplicates(self):
+    def test_routes_share_credential_circuit_until_explicit_resume(self):
         hub = Hub(self.root, self.config);self.addCleanup(hub.close)
         hub.poll();rows = hub.health()['routes']
         self.assertEqual(rows[0]['poll_error_detail']['code'], CODE)
         self.assertIsNone(rows[0]['last_sync']);self.assertEqual(rows[0]['events'], 0)
-        self.assertIsNone(rows[1]['poll_error_detail']);self.assertEqual(rows[1]['events'], 1)
+        self.assertEqual(rows[1]['poll_error_detail']['code'], CODE);self.assertEqual(rows[1]['events'], 0)
         self.assertNotIn('private-marker', json.dumps(rows))
         rows[0]['poll_error_detail']['code']='caller-change'
         self.assertEqual(hub.health()['routes'][0]['poll_error_detail']['code'], CODE)
         self.set_response('a', {'error': {'message': 'other private-marker'}}, 51)
+        hub.poll();self.assertEqual(hub.health()['routes'][0]['poll_error_detail']['code'], CODE)
+        self.assertEqual(len((self.root / 'calls').read_text().splitlines()), 1)
+        DWSAccess(self.root).resume()
         hub.poll();self.assertIsNone(hub.health()['routes'][0]['poll_error_detail'])
         self.healthy('a');hub.poll();hub.poll()
         health = hub.health();self.assertFalse(health['poll_error'])
@@ -114,7 +118,7 @@ state=json.loads(Path(group+'.json').read_text());print(json.dumps(state['data']
         calls = [json.loads(line) for line in (self.root / 'calls').read_text().splitlines()]
         self.assertEqual(sum('+messages-send' in args for args in calls), 1)
 
-    def test_real_http_scheduler_reports_and_clears_credential_failure(self):
+    def test_real_http_scheduler_reports_and_explicitly_resumes_credential_failure(self):
         with socket.socket() as sock:sock.bind(('127.0.0.1', 0));port = sock.getsockname()[1]
         child = subprocess.Popen([sys.executable, '-m', 'dingtalk_bridge', '--port', str(port), '--poll-seconds', '5'],
             cwd=self.root, env={**os.environ, 'PYTHONPATH': str(ROOT)}, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -134,10 +138,11 @@ state=json.loads(Path(group+'.json').read_text());print(json.dumps(state['data']
                 time.sleep(.05)
             self.fail('Expected scheduler state did not appear')
         try:
-            failed = until(lambda h: h['poll_error'] and h['routes'][1]['events'] == 1)
+            failed = until(lambda h: h['poll_error'] and h['routes'][1]['events'] == 0)
             self.assertEqual(failed['routes'][0]['poll_error_detail']['code'], CODE)
             self.assertNotIn('private-marker', json.dumps(failed))
             self.healthy('a')
+            DWSAccess(self.root).resume()
             recovered = until(lambda h: not h['poll_error'] and h['routes'][0]['events'] == 1)
             self.assertTrue(all(r['poll_error_detail'] is None for r in recovered['routes']))
             self.assertNotIn('+messages-send', (self.root / 'calls').read_text())

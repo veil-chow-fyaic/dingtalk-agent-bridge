@@ -29,7 +29,7 @@
         "summary": "Bridge status; no runtime required",
         "responses": {
           "200": {
-            "description": "Route synchronization, scheduler and Stream status, not delivery acceptance. Each route has poll_error and additive poll_error_detail (null or a fixed sanitized diagnostic). credential_store_unavailable indicates the pinned DWS could not read its existing macOS Keychain login key; it does not establish token expiry or a locked keychain. Original provider error text is never included.",
+            "description": "Route synchronization, scheduler and Stream status, not delivery acceptance. Each route has poll_error and additive poll_error_detail (null or a fixed sanitized diagnostic). credential_store_unavailable indicates the pinned DWS could not read its existing macOS Keychain login key; it does not establish token expiry or a locked keychain. Original provider error text is never included. Workspace dws_access reports a persistent circuit: known credential-store failure, subprocess timeout or interrupted ownership suspends future bridge DWS calls, including other configured routes and the image companion. Explicit local operator resume is required; a successful concurrent call cannot clear the latch. It is not a guard for direct runtime CLI invocations or detached official event buses.",
             "content": {
               "application/json": {
                 "schema": {

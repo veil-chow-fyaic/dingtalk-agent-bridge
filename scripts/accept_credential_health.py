@@ -38,8 +38,8 @@ def audit():
             and not any(r['entrypoints'].values()) and r['exitCode'] == 0 for r in report['results']),
         'installed_suite_has_no_product_source_or_account_data': not (folder / 'installed-suite/dingtalk_bridge').exists()
             and {p.name for p in (folder / 'installed-suite/local').iterdir()} == {'test-evidence'},
-        'installed_final_regression_matches_public_test': (folder / 'installed-suite/tests/test_credential_health.py').read_bytes()
-            == (ROOT / 'tests/test_credential_health.py').read_bytes(),
+        'installed_final_regression_matches_frozen_test': digest((folder / 'installed-suite/tests/test_credential_health.py').read_bytes())
+            == '4d3a5bc3c7fe3372539da2a49309bf2400cffa12acf6fd9d1ae8c879b6007be3',
         'old_handoff_and_image_reaudits_use_frozen_source': all(read(folder / n)['ok']
             and read(folder / n)['currentProductMatchesFrozen'] is False
             for n in ('old-handoff-after.log', 'old-image-after.log')),

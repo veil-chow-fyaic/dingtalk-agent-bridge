@@ -2,6 +2,7 @@
 import hashlib
 import threading
 from .core import Bridge, DWSCredentialStoreUnavailable, credential_store_diagnostic
+from .dws_access import DWSAccess, DWSAccessSuspended, access_diagnostic
 
 
 def route_configs(config):
@@ -37,6 +38,7 @@ def route_configs(config):
 class Hub:
     def __init__(self,root,config,factory=Bridge):
         self.routes={};self.poll_errors={};self.poll_error_details={};self.status_lock=threading.Lock()
+        self.access=DWSAccess(root)
         try:
             for c,state in route_configs(config):
                 if c.get('receiveMode','history') not in {'history','stream_hint'}:
@@ -69,7 +71,7 @@ class Hub:
             try:
                 b.sync();error=None;detail=None
             except Exception as exc:
-                detail=credential_store_diagnostic() if isinstance(exc,DWSCredentialStoreUnavailable) else None
+                detail=access_diagnostic(exc.reason) if isinstance(exc,DWSAccessSuspended) else None
                 error=type(exc).__name__
             with self.status_lock:
                 self.poll_errors[key]=error;self.poll_error_details[key]=detail
@@ -82,8 +84,9 @@ class Hub:
                 detail=self.poll_error_details[key]
                 row.update(poll_error=self.poll_errors[key],poll_error_detail=dict(detail) if detail else None)
             rows.append(row)
-        if len(rows)==1:return {**rows[0],'route_count':1,'runtime_required':False}
+        if len(rows)==1:return {**rows[0],'route_count':1,'runtime_required':False,'dws_access':self.access.status()}
         return {'mode':'experimental','route_count':len(rows),'routes':rows,'runtime_required':False,
-                'events':sum(r['events'] for r in rows),'poll_error':any(r['poll_error'] for r in rows)}
+                'events':sum(r['events'] for r in rows),'poll_error':any(r['poll_error'] for r in rows),
+                'dws_access':self.access.status()}
     def close(self):
         for b in self.routes.values():b.close()

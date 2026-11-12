@@ -1,10 +1,8 @@
 # 需求回顾与当前真实进度
 
-E068补凭据存储故障的固定脱敏health/doctor诊断，精确官方错误前缀＋category/code才归类，不扩成过期/锁定；6新增方法含真实合成CLI/HTTP恢复、未知投递同key重启不重发，源码及新wheel双Python各207项、六入口19模块/20审计通过。尚未加载现场，原进程/配置/账本/观察保持，真实E065仍未恢复。 [证据](85-credential-store-health-diagnostics.md)
+当前现场：E071事故后三个服务保持停止。用户已确认密码弹窗停止，但真实DWS登录尚未恢复；不要重试doctor/auth/Keychain或自动重启。原24h中断样本保持。
 
-E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。 [故障证据](82-live-keychain-read-failure.md)
-
-E064修复图片补充构建器覆盖已有输出/生成测试文件的缺口；4新方法、源码及双Python已安装runtime连同公开构建器各201项、独立官方源码真实Go构建与22审计通过。官方binary/现场补充/配置不变，未部署、无新UI。 [构建证据](81-image-build-ownership.md)
+E070已实现群文件显式交办；E072补桥接DWS调用的持久暂停、最多两个并行调用与受管进程组清理。源码和Python3.14/3.11隔离安装包各228项通过，均未部署、无新UI验收。恢复前仍需解决官方Stream独立bus及Agent直接办公CLI绕过防护的边界。 [事故记录](87-authentication-popup-incident.md)、[防护与验收范围](88-dws-process-containment.md)。
 
 2026-11-12，E065之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 

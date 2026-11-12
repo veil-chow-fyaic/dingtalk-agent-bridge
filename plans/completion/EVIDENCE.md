@@ -219,3 +219,6 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E070/E071 — 群文件交办与事故停机
 - [E070实现与216项验证](../../docs/86-explicit-group-file-tasks.md)，早于事故的冻结快照不是当前在线证明。
 - [E071事故事实与边界](../../docs/87-authentication-popup-incident.md)，用户确认弹窗停止；认证未恢复，无新UI验收。
+
+## E072 — DWS受管调用防护
+- [实现/边界](../../docs/88-dws-process-containment.md)、[隔离安装](../../evidence/2026-11-12/dws-containment-install.json)、[冻结审计](../../evidence/2026-11-12/dws-containment-validation.json)。12新增方法、源码及双Python各228项；真实认证调用0、未部署/UI未测。独立bus和直接办公CLI仍是部署阻塞。

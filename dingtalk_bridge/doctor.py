@@ -18,6 +18,7 @@ from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_ope
 from .routing import route_configs
 from .agent_runtime import timeout_seconds
 from .core import credential_store_diagnostic
+from .dws_access import DWSAccess, REASONS, access_diagnostic
 
 
 def read(path):
@@ -77,6 +78,9 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
         add('transport', 'configuration', 'error', 'missing_or_invalid_config')
         return finish()
     add('transport', 'configuration', 'ok', {'routes': len(configs)})
+    access = DWSAccess(root).status()
+    if access['state'] == 'suspended':
+        add('transport', 'dws_access', 'error', access_diagnostic(access['reason']))
     for index, (cfg, state) in enumerate(configs, 1):
         scope = f'route-{index}'
         fields = ('accountId', 'profile', 'group', 'selfSenderId')
@@ -183,8 +187,9 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
                     fresh = False
                 add(f'live-route-{index}', 'complete_recent_sync', 'ok' if fresh else 'error')
                 detail = row.get('poll_error_detail')
-                if row.get('poll_error') and isinstance(detail, dict) and detail.get('code') == 'credential_store_unavailable':
-                    detail = credential_store_diagnostic()
+                if (row.get('poll_error') and isinstance(detail, dict) and isinstance(detail.get('code'),str)
+                        and detail['code'] in REASONS):
+                    detail = access_diagnostic(detail['code'])
                 else:
                     detail = None
                 add(f'live-route-{index}', 'poll_error', 'error' if row.get('poll_error') else 'ok', detail)

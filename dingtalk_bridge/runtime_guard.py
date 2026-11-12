@@ -14,7 +14,7 @@ if __package__ in (None, ''):
 from dingtalk_bridge.agent_runtime import stop_owned_group, wait_unreaped
 
 
-def supervise(lifetime_fd, command):
+def supervise(lifetime_fd, command, quiet=False):
     stopping = False
     def stop(*_):
         nonlocal stopping
@@ -48,19 +48,21 @@ def supervise(lifetime_fd, command):
         finally:
             selector.close()
             os.close(lifetime_fd)
-        print(json.dumps({'runtime_guard': reason, 'cleanup_complete': True}), file=sys.stderr, flush=True)
+        if not quiet:
+            print(json.dumps({'runtime_guard': reason, 'cleanup_complete': True}), file=sys.stderr, flush=True)
     return process.returncode if process.returncode >= 0 else 128 - process.returncode
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--lifetime-fd', type=int, required=True)
+    parser.add_argument('--quiet', action='store_true', help='Preserve the supervised CLI stderr protocol')
     parser.add_argument('command', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
     if not command:
         parser.error('A local CLI command is required')
-    raise SystemExit(supervise(args.lifetime_fd, command))
+    raise SystemExit(supervise(args.lifetime_fd, command, args.quiet))
 
 
 if __name__ == '__main__':

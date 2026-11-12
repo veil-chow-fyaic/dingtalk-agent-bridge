@@ -271,14 +271,14 @@ class Tests(unittest.TestCase):
         with self.assertRaises(BridgeError): Bridge(self.root, CFG, self.fake)
     def test_cli_envelope_and_stderr_error(self):
         cli=DWS(self.root,CFG)
-        with patch('subprocess.run', return_value=SimpleNamespace(returncode=0,stdout=json.dumps({'ok':True,'outcome':'pending','data':{'success':True,'result':{'openTaskId':'t'}}}),stderr='')):
+        with patch('dingtalk_bridge.core.run_dws', return_value=SimpleNamespace(returncode=0,stdout=json.dumps({'ok':True,'outcome':'pending','data':{'success':True,'result':{'openTaskId':'t'}}}),stderr='')):
             self.assertEqual(cli.call([])['result']['openTaskId'],'t')
-        with patch('subprocess.run', return_value=SimpleNamespace(returncode=1,stdout='',stderr=json.dumps({'error':{'server_error_code':'CONFLICT_ERROR'}}))):
+        with patch('dingtalk_bridge.core.run_dws', return_value=SimpleNamespace(returncode=1,stdout='',stderr=json.dumps({'error':{'server_error_code':'CONFLICT_ERROR'}}))):
             with self.assertRaisesRegex(BridgeError,'CONFLICT_ERROR'): cli.call([])
     def test_string_false_business_failure(self):
         cli=DWS(self.root,CFG)
         for response in ({'success':'false'}, {'ok':True,'outcome':'completed','data':{'success':'false'}}):
-            with patch('subprocess.run',return_value=SimpleNamespace(returncode=0,stdout=json.dumps(response),stderr='')):
+            with patch('dingtalk_bridge.core.run_dws',return_value=SimpleNamespace(returncode=0,stdout=json.dumps(response),stderr='')):
                 with self.assertRaises(BridgeError):cli.call([])
 
 if __name__=='__main__': unittest.main()

@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E072",
+  "ok": true,
+  "wheelSha256": "b0171f50390559cef9ece942bf5d831ae81eb270f3a652fcb4c070c5867f6d4a",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "573ac526d77a88f5d7050962fab3678ede93a8daf04cf2cff7ec5db0f84e991d",
+    "runtime_guard.py": "62a566cb491c4ceae836e125d2c0b8732a727580a605ee998212900139e55b28",
+    "agent_runtime.py": "ff924520762ef0300aea4f40854e825e2d4da935fe237011296bf8d61def2c00",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "9960085a87b78f29f1cab2581a66370ee256b2ee190d2041d19e3a30e3e9f203",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "fffa654bdcfc5fda587430df98c922bedfc28cdf2b871ff88cf30ea2dac9902f",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "58a1b7a707c3254de2ef7c2b4d40f601cc8b58fa9c27c7647135d786955d9741",
+    "cli.py": "b6039cde8b9ffd9e6c58d64fe30f30dc1b27d160909beb891bb2f45f37f64381",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "58f7af819b5948fd2b0313ddb1e104e5251d132a4fb608aae39346e737982909",
+    "doctor.py": "a390d906eca3526bb1e4be9c8736a6c7d08552610a4d829b7560634808c0d9ba",
+    "__main__.py": "15d7544b96ba84cba99b73f286f4ee4ec18c1b793e2af7ac1e9e361aaed67c34",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "results": [
+    {
+      "python": "py314",
+      "exitCode": 0,
+      "entrypoints": {
+        "dab": 0,
+        "dab-bridge": 0,
+        "dab-agent": 0,
+        "dab-consume": 0,
+        "dab-doctor": 0,
+        "dab-service": 0
+      },
+      "sourcePackageAbsent": true,
+      "modulesMatch": true
+    },
+    {
+      "python": "py311",
+      "exitCode": 0,
+      "entrypoints": {
+        "dab": 0,
+        "dab-bridge": 0,
+        "dab-agent": 0,
+        "dab-consume": 0,
+        "dab-doctor": 0,
+        "dab-service": 0
+      },
+      "sourcePackageAbsent": true,
+      "modulesMatch": true
+    }
+  ],
+  "deployed": false
+}

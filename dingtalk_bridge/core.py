@@ -13,24 +13,12 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
 from .rejection import read_length_rejection
-
-
-class BridgeError(Exception):
-    pass
-
-
-class DWSCredentialStoreUnavailable(BridgeError):
-    """The pinned official CLI could not read its existing local login key."""
-    def __init__(self):
-        super().__init__('credential_store_unavailable')
+from .dws_access import (BridgeError, DWSCredentialStoreUnavailable, DWSAccessSuspended,
+                         DWSAccess, access_diagnostic, credential_failure, run_dws)
 
 
 def credential_store_diagnostic():
-    # Construct public diagnostics ourselves; provider text can contain secrets.
-    return {'code': 'credential_store_unavailable', 'component': 'dws',
-            'action': 'inspect_existing_keychain_access',
-            'message': 'DWS cannot read its existing macOS Keychain login key. '
-                       'This does not establish token expiry or a locked keychain.'}
+    return access_diagnostic('credential_store_unavailable')
 
 
 class DWSRequestRejected(BridgeError):
@@ -44,29 +32,31 @@ class DWS:
     def __init__(self, root, config):
         self.root, self.config = Path(root), config
         self.binary = str((self.root / config['binary']).resolve())
+        self.access = DWSAccess(self.root)
+        self.stop = threading.Event()
 
     def call(self, args):
-        try:
-            p = subprocess.run([self.binary, *args, '--profile', self.config['profile'],
-                                '--format', 'json'], cwd=self.root, capture_output=True,
-                               text=True, timeout=90)
-        except subprocess.TimeoutExpired as e:
-            raise BridgeError('DWS timeout; reconcile before retry') from e
-        try:
-            data = json.loads(p.stdout or p.stderr)
-        except ValueError as e:
-            raise BridgeError('DWS returned no valid JSON') from e
+        with self.access.lease(self.stop) as lease:
+            try:
+                p = run_dws([self.binary, *args, '--profile', self.config['profile'],
+                             '--format', 'json'], cwd=self.root, stop=self.stop)
+            except DWSAccessSuspended as exc:
+                lease.block(exc.reason);raise
+            try:
+                data = json.loads(p.stdout or p.stderr)
+            except ValueError as e:
+                lease.complete()
+                raise BridgeError('DWS returned no valid JSON') from e
+            if credential_failure(data):
+                lease.block('credential_store_unavailable')
+                raise DWSCredentialStoreUnavailable()
+            lease.complete()
         if not isinstance(data, dict):
             raise BridgeError('DWS returned no JSON object')
         if p.returncode or data.get('success') in (False, 'false') or data.get('ok') is False:
             error = data.get('error', {})
             if not isinstance(error, dict):
                 raise BridgeError('DWS business failure')
-            message = error.get('message')
-            if (error.get('category') == 'internal' and type(error.get('code')) is int and error['code'] == 51
-                    and isinstance(message, str) and message.startswith(
-                        'resolve access token: load access token: load from keychain: read DEK from macOS Keychain:')):
-                raise DWSCredentialStoreUnavailable()
             if error.get('reason') == 'invalid_request' and error.get('server_error_code') == 'PARAM_ERROR':
                 raise DWSRequestRejected({'reason': 'invalid_request', 'server_error_code': 'PARAM_ERROR'})
             raise BridgeError(str(error.get('server_error_code') or error.get('reason') or 'DWS business failure'))
@@ -83,6 +73,7 @@ class DWS:
         if not binary:
             raise BridgeError('Native image upload is not configured')
         uploader = DWS(self.root, {**self.config, 'binary': binary})
+        uploader.stop = self.stop
         data = uploader.call(['chat', 'bridge-image-upload', '--file', relative_path, '--yes'])
         media_id = data.get('mediaIdV2')
         if (not isinstance(media_id, str) or not media_id.startswith('$') or
@@ -540,6 +531,7 @@ class Bridge:
         self.process_lock.close()
 
     def stop_waiters(self):
+        if isinstance(self.dws,DWS):self.dws.stop.set()
         with self.event_condition:
             self.stopping=True
             self.event_condition.notify_all()

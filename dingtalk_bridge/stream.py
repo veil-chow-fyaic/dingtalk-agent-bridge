@@ -6,11 +6,14 @@ import selectors
 import subprocess
 import threading
 import time
+from contextlib import ExitStack
+from .dws_access import DWSAccess, DWSAccessSuspended, SupervisedDWS, credential_failure
 
 
 class StreamListener:
     def __init__(self,root,config,wake):
         self.root=Path(root);self.config=config;self.wake=wake;self.lock=threading.Lock()
+        self.access=DWSAccess(root)
         self.state={'enabled':True,'state':'stopped','ready':False,'ever_ready':False,'accepted_hints':0,'rejected_lines':0,'connections':0}
 
     def status(self):
@@ -49,53 +52,79 @@ class StreamListener:
         # event content as potentially descriptive only. Committed history dedups it.
         self.wake()
 
-    def run_once(self,stop,duration=3600):
+    def run_once(self,stop,duration=3600,handshake_timeout=90):
+        lease_stack=ExitStack()
+        lease=lease_stack.enter_context(self.access.lease(stop))
         self.update(state='connecting',ready=False)
         with self.lock:self.state['connections']+=1
-        process=subprocess.Popen(self.command(duration),cwd=self.root,stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        sel=selectors.DefaultSelector();buffers={};terminating=None
-        for stream,pipe in [('stdout',process.stdout),('stderr',process.stderr)]:
-            os.set_blocking(pipe.fileno(),False);sel.register(pipe,selectors.EVENT_READ,stream);buffers[stream]=b''
-        deadline=time.monotonic()+duration+30
+        owned=None;sel=selectors.DefaultSelector();buffers={};terminating=None
+        captured={'stdout':b'','stderr':b''};handshake=True
+        started=time.monotonic()
+        def consume(stream, raw):
+            nonlocal handshake
+            self.line(stream, raw.decode('utf-8', errors='replace'))
+            if handshake and self.status()['ready']:
+                lease.complete();lease_stack.close();handshake=False
         try:
+            owned=SupervisedDWS(self.command(duration),self.root,keep_stdin_open=True);process=owned.process
+            for stream,pipe in [('stdout',process.stdout),('stderr',process.stderr)]:
+                os.set_blocking(pipe.fileno(),False);sel.register(pipe,selectors.EVENT_READ,stream);buffers[stream]=b''
+            deadline=time.monotonic()+duration+30
             while sel.get_map():
                 now=time.monotonic()
-                if (stop.is_set() or now>=deadline) and terminating is None:
-                    if process.poll() is None:process.terminate()
-                    terminating=now
-                if terminating is not None and now-terminating>30 and process.poll() is None:
-                    self.update(state='cleanup_pending',ready=False)
-                    raise RuntimeError('DWS did not gracefully stop; no force-kill or reconnect')
+                suspended=self.access.status()['state']=='suspended'
+                if handshake and now-started>=handshake_timeout:
+                    lease.block('dws_timeout');suspended=True
+                if (stop.is_set() or suspended or now>=deadline) and terminating is None:
+                    owned.stop();terminating=now
+                if terminating is not None and now-terminating>15:
+                    lease.block('dws_cleanup_incomplete')
+                    raise DWSAccessSuspended('dws_cleanup_incomplete')
                 for key,_ in sel.select(.2):
                     chunk=os.read(key.fileobj.fileno(),65536);stream=key.data
                     if not chunk:
-                        if buffers[stream]:self.line(stream,buffers[stream].decode('utf-8',errors='replace'))
+                        if buffers[stream]:consume(stream,buffers[stream])
                         buffers[stream]=b'';sel.unregister(key.fileobj);continue
+                    captured[stream]=(captured[stream]+chunk)[-65536:]
                     buffers[stream]+=chunk
                     if len(buffers[stream])>1024*1024:
-                        process.terminate();terminating=now;buffers[stream]=b''
+                        owned.stop();terminating=now;buffers[stream]=b''
                         self.update(state='oversized_event');continue
                     while b'\n' in buffers[stream]:
                         raw,buffers[stream]=buffers[stream].split(b'\n',1)
-                        self.line(stream,raw.decode('utf-8',errors='replace'))
-            code=process.wait(timeout=30)
+                        consume(stream,raw)
+            code=process.wait(timeout=15)
+            for raw in captured.values():
+                # The official CLI may emit pretty-printed JSON on stderr.
+                # Decode only whole objects beginning at a line boundary.
+                text=raw.decode('utf-8',errors='replace')
+                for offset in [0]+[i+1 for i,c in enumerate(text) if c=='\n']:
+                    try:data,_=json.JSONDecoder().raw_decode(text[offset:].lstrip())
+                    except ValueError:continue
+                    if credential_failure(data):lease.block('credential_store_unavailable')
+            if self.access.status()['state']=='suspended':
+                raise DWSAccessSuspended(self.access.status()['reason'])
+            if handshake:lease.complete()
             self.update(state='stopped' if stop.is_set() or code==0 else 'disconnected',ready=False,exit_code=code)
             return code
         finally:
             sel.close()
-            if process.poll() is None:
-                process.terminate()
-                try:process.wait(timeout=30)
-                except subprocess.TimeoutExpired:
-                    self.update(state='cleanup_pending',ready=False)
-            for pipe in (process.stdin,process.stdout,process.stderr):pipe.close()
+            try:
+                if owned is not None:owned.close()
+            except DWSAccessSuspended as exc:
+                lease.block(exc.reason);raise
+            finally:lease_stack.close()
 
     def run(self,stop):
         delay=1
         while not stop.is_set():
             started=time.monotonic()
             try:self.run_once(stop)
+            except DWSAccessSuspended as exc:
+                self.update(state='suspended',ready=False,error=exc.reason)
+                while not stop.wait(.5):
+                    if self.access.status()['state']=='ready':break
+                continue
             except Exception as exc:
                 if self.status()['state']=='cleanup_pending':return
                 self.update(state='error',ready=False,error=type(exc).__name__)

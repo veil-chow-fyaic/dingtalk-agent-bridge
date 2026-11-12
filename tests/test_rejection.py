@@ -134,7 +134,7 @@ class RejectionTests(unittest.TestCase):
                                 ({'reason': 'timeout', 'server_error_code': 'PARAM_ERROR'}, False),
                                 ({'reason': 'invalid_request', 'server_error_code': 'UNKNOWN'}, False)]:
             response = SimpleNamespace(returncode=1, stdout=json.dumps({'ok': False, 'error': error}), stderr='')
-            with patch('subprocess.run', return_value=response):
+            with patch('dingtalk_bridge.core.run_dws', return_value=response):
                 with self.assertRaises(BridgeError) as raised: DWS(self.root, self.cfg).call(['chat', '+messages-send'])
                 self.assertEqual(isinstance(raised.exception, DWSRequestRejected), rejected)
 
