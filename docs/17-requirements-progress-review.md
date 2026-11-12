@@ -1,8 +1,10 @@
 # 需求回顾与当前真实进度
 
-2026-11-12，E060之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
+2026-11-12，E061之后。交付目标与MUST/SHOULD未变。当前是已接通本地Kimi的普通账号IM实验产品，能实际承接已授权会话中的任务与文件；**整个项目尚未验收完成**。唯一活动清单是[plans/completion](../plans/completion/INIT.md)，逐项判定以[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准，不用历史测试数量替代当前结果。
 
-最新测试入口：[E060](77-manager-test-evidence-retention.md)。E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。
+最新恢复核验：[E061](78-route-process-recovery.md)。E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。
+
+测试入口：[E060](77-manager-test-evidence-retention.md)。E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。
 
 最新产品修复为[E059清单原子提交](76-atomic-download-manifest.md)：E059清单原子提交：真实子进程短写复现旧缓存损坏，同目录0600临时文件写入/fsync/replace后冷/热缓存恢复、提交前SIGKILL保旧通过；2新方法、源码及双Python安装包191项、50缓存57资源只读与28审计，三进程空闲加载。首次全量仍有1个manager关闭身份错误，其精确ps因测试清理丢失，未宣称解决；无新UI。
 

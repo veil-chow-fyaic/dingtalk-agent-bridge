@@ -177,3 +177,7 @@
 ## E060 — 测试清理前诊断留存
 - E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。
 - [docs/77](../../docs/77-manager-test-evidence-retention.md)、[29项核验](../../evidence/2026-11-12/manager-test-evidence-validation.json)；`PYTHONPATH=. python3 scripts/accept_manager_test_evidence.py`。原观察13.229h/7不可达；原始日志local/manager-shutdown-20261112，新诊断local/test-evidence，均不入Git。
+
+## E061 — 路由进程锁与新关闭故障
+- E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。
+- [docs/78](../../docs/78-route-process-recovery.md)、[23项审计](../../evidence/2026-11-12/route-process-recovery-validation.json)。私有local/route-process-20261112，观察13.354h/7不可达。

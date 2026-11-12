@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E061",
+  "ok": true,
+  "checks": {
+    "two_real_child_scenarios_passed": true,
+    "product_still_matches_frozen_E059": true,
+    "live_manager_unchanged_and_running": true,
+    "same_original_observer": true,
+    "healthy_after_tests": true,
+    "confirmed_crash_boundary_reached": true,
+    "confirmed_same_route_refused_and_other_route_independent": true,
+    "confirmed_actual_owner_sigkill": true,
+    "confirmed_different_scope_refused_without_sending": true,
+    "confirmed_resume_twice_keeps_state_no_resend_no_duplicate": true,
+    "uncertain_crash_boundary_reached": true,
+    "uncertain_same_route_refused_and_other_route_independent": true,
+    "uncertain_actual_owner_sigkill": true,
+    "uncertain_different_scope_refused_without_sending": true,
+    "uncertain_resume_twice_keeps_state_no_resend_no_duplicate": true,
+    "source_195_passed_with_diagnostics": true,
+    "py314_195_passed_with_diagnostics": true,
+    "py314_installed_product_unchanged": true,
+    "py311_195_retains_one_new_manager_failure": true,
+    "new_failure_same_decision_retained": true,
+    "py311_installed_product_unchanged": true,
+    "group_all_previous_records_and_sessions_preserved": true,
+    "direct_all_previous_records_and_sessions_preserved": true
+  },
+  "fullTestCount": 195,
+  "installedPython311FullSuitePassed": false,
+  "newManagerFailureCaptured": true,
+  "newTestMethods": 2,
+  "productChanged": false,
+  "newNativeUITest": false,
+  "observerElapsedHours": 13.354,
+  "unavailableSamples": 7,
+  "logSha256": {
+    "targeted.log": "e337ace2f50f0511a37826ba72b73bdb47c79c524ed8829a178f09777b732349",
+    "actual-processes.json": "588ad7cf2e62dc7c2403819525464ac6cef1d8144cecc86b02726da9a3852a4b",
+    "source-tests.log": "5a65e61a93f5290c34dccbba595ec394200cb7656de6f20f2bf06753e26f4d72",
+    "py314-tests.log": "3d3e6a50e1e79f74385e010e14cdb58ebe7dea8ad922a70151d747f2beb5661e",
+    "py311-tests.log": "67ff4662c8557108cc0449e9b268ab39f8a47ebde67f4882374339881e459773"
+  },
+  "limits": [
+    "Real independent processes and kernel locks with a synthetic provider; not a new DingTalk fault or UI test",
+    "Exactly one synthetic send entry per case is asserted in the tests; recovery does not infer external delivery",
+    "An executing reservation becomes outcome_unknown, never successful by assumption",
+    "No live service restart, credential changes or existing message replay",
+    "Python3.11 full suite has one new manager error: same-start-time ?Es (python3.11) after TERM; exact decision retained",
+    "This observed exiting transition is not proof of every historical error cause; real 24h is incomplete"
+  ]
+}

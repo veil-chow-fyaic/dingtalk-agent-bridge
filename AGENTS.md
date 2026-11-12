@@ -4,7 +4,7 @@
 
 只在`/Users/veil/Projects/dingtalk-agent-bridge`修改本项目；聊天入口目录不是代码库。沿用当前checkout与`codex/complete-bridge`分支，不修改`/Users/veil/Projects/wecom-bridge`等参考库，不复制其账号数据，不远程发布。
 
-每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–77。
+每轮先读`plans/completion/`中的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志。需求级别以01-PRD为准，逐格结果以ACCEPTANCE_MATRIX为准。文档13/17和README是当前摘要；历史检查点见[原文存档](docs/history/through-E035/README.md)，不要将历史“下一步”当新任务或重复开测。按实际关键路径再读对应阶段文档，最近为docs/52–78。
 
 交付通用普通账号IM工具＋真实本地Agent接入：群聊/私聊交办、文件原件、实际工具执行、多轮上下文及同会话交付。CLI/HTTP/consumer不绑定组织或runtime。至少一个本地执行器即可；Kimi真实Read/Write/Bash已满足，Codex请求超时单独跟踪，不额外制造双runtime门槛。
 
@@ -42,3 +42,5 @@ E046新真实私聊已验证仅SIGKILL gateway后独立守护自动清理CLI/同
 3. 代码修复有相应回归/验证；按功能/验收小步本地提交，更新当前状态、证据与manifest。共享核验`verify_handoff.py --write-manifest`后再次只读核验；`verify_privacy.py`扫描暂存blob。私密账号ID、令牌、OAuth、签名URL、原始聊天、AX及截图只留local，绝不入Git/公开上传；合成fixture可共享。
 4. 每轮约45分钟目标上限，实际推进代码/工具/真实UI，不只巡检或重制定计划；完成一段继续无依赖项。相同路径两轮无新证据触发loop guard。入站引用旧右键/坐标/Command+Up/设置/侧按钮路径已无新结果；只有明确新入口再试。E027 during-shutdown身份保护错误仍未定位，E030只修pre-signal退出竞态，不混称已修。
 5. 单Agent，不自行派子Agent。正常未变化时安静；仅实质里程碑、失败、完成或必要用户动作汇报。MUST、完整自检与真实24h全部满足才标完成并停用heartbeat；当前未完成。SHOULD缺口保留原级别。
+
+最新E061：E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。 下一段只据本次同启动时间E退出过渡修复已发TERM后的等待；其他身份变化仍拒绝，不能把E当已退出。
