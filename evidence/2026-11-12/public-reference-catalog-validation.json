@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E092",
+  "date": "2026-11-12",
+  "scope": "Public upstream reference selection and project documentation organization",
+  "catalog": "docs/references/catalog.json",
+  "catalogSha256": "359c9fe1b2116ad676e717c6f00b881c4a765afddb8db7081541e76516a63bb8",
+  "checks": [
+    {
+      "name": "public_catalog_scope",
+      "passed": true,
+      "details": "13 public references; earlier local WeCom snapshots excluded"
+    },
+    {
+      "name": "selected_snapshot_integrity",
+      "passed": true,
+      "details": {
+        "files": 69,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "fixed_public_source_urls",
+      "passed": true,
+      "details": {
+        "repositories": 12,
+        "dated_official_document_sets": 1,
+        "errors": [],
+        "officialDocumentRepresentation": "app-server page, Markdown representation at app-server.md"
+      }
+    },
+    {
+      "name": "license_snapshots_present",
+      "passed": true,
+      "details": {
+        "projects": 9,
+        "unknown_or_unlicensed": "documentation/design only; no implementation adoption"
+      }
+    },
+    {
+      "name": "no_upstream_implementation_adoption",
+      "passed": true,
+      "details": "Selected upstream tests are source references, not executed or counted as passes"
+    },
+    {
+      "name": "product_tests_and_acceptance_unchanged",
+      "passed": true,
+      "details": {
+        "baselineCommit": "4f546eac4fb02d75057756107b2f9d30dad09ede",
+        "changedPaths": [],
+        "productModules": 21
+      }
+    }
+  ],
+  "ok": true,
+  "execution": {
+    "realDwsCalls": 0,
+    "upstreamTestsRun": 0,
+    "newUiTests": 0,
+    "newRuntimeAdapters": 0,
+    "backgroundRestored": false,
+    "approvalExpanded": false
+  },
+  "limits": [
+    "Not a third-party runtime certification",
+    "No claim that auth login or cross-device credentials are repaired",
+    "No change to existing incomplete MUST/UI matrix"
+  ],
+  "next": "Review one public Qwen DWS component dependency boundary and specific attachment/quote gap; compare CEO file receipts; adopt only justified parts with source attribution and corresponding tests",
+  "validationCorrections": [
+    {
+      "initialResult": "5/6 checks; official document URL equality rejected the .md representation",
+      "resolution": "Verified exact official page and Markdown URL pair; no snapshot or source digest changed",
+      "initialReport": "local/reference-organization-github-20261112/validation-first.json"
+    }
+  ]
+}

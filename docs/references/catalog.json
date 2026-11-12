@@ -1,0 +1,605 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-11-12",
+  "identityDecision": "DWS ordinary human account; no automatic bot fallback",
+  "snapshotKind": "selected reference files, not runnable full checkouts",
+  "entries": [
+    {
+      "id": "dws",
+      "repo": "DingTalk-Real-AI/dingtalk-workspace-cli",
+      "commit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+      "license": "Apache-2.0",
+      "role": "ordinary-account transport authority",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "1d951e8ca1019e1ad6fc14b8450df1b7ba788b9f242002873ca79df70ee376fd",
+          "bytes": 10098,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/LICENSE"
+        },
+        {
+          "path": "NOTICE",
+          "sha256": "b7d8a7d7c3c61cb0d4d78fa422fb81028c76d0e7ff1a23b1be68f058a9920d80",
+          "bytes": 5474,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/NOTICE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "19c4c54c69baf95430bb74b7c9999069e00cfc35af4b195566a569f47700790e",
+          "bytes": 54000,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/README.md"
+        },
+        {
+          "path": "internal/shortcut/chat/unified_send.go",
+          "sha256": "01859e34a48b8b5f5c4668e3f102666464671d27d1b666c5eba46487f7e83611",
+          "bytes": 38147,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/shortcut/chat/unified_send.go"
+        },
+        {
+          "path": "skills/multi/dingtalk-chat/references/chat/message-media.md",
+          "sha256": "f63e29affce5fa9be29bef2cbbf07505d01cdc51a4305047006c7726affd6688",
+          "bytes": 5820,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/skills/multi/dingtalk-chat/references/chat/message-media.md"
+        },
+        {
+          "path": "skills/multi/dingtalk-event/references/event-im-keys.md",
+          "sha256": "4768da2552ab2e6b2cdc9dc8598efb23ef7cabf853727907f1b540a1132253c2",
+          "bytes": 2609,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/63a7c4906c7dee10750011ea309b9eb78abb7eb0/skills/multi/dingtalk-event/references/event-im-keys.md"
+        }
+      ],
+      "snapshotRoot": "local/references/dws/63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+      "executionStatus": "reference_only_not_executed",
+      "category": "primary_dws",
+      "priority": "P0",
+      "implementationAdopted": false
+    },
+    {
+      "id": "qwen-dws",
+      "repo": "QwenLM/qwen-code",
+      "commit": "41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0",
+      "license": "Apache-2.0",
+      "role": "primary ordinary-account channel reference",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "55367b61ccd2a016a0159ad886bd66a3ee6cb5e873d0c75c803c897dd245b075",
+          "bytes": 11361,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/LICENSE"
+        },
+        {
+          "path": "docs/users/features/channels/dws.md",
+          "sha256": "6a29871b94214829ee0b814661b4f2620801771416fb817132cb60cfb411ee39",
+          "bytes": 10812,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/docs/users/features/channels/dws.md"
+        },
+        {
+          "path": "packages/channels/dws/src/dws-channel.test.ts",
+          "sha256": "ef78da133bdbd81b699425d4d6e163a6fd0b31f225a48322ab60c81e0dc73f63",
+          "bytes": 325098,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-channel.test.ts"
+        },
+        {
+          "path": "packages/channels/dws/src/dws-channel.ts",
+          "sha256": "df63682b72c489e78880d0dd4b6a2d29c991ebb16f76823d6b2683baf8e6d027",
+          "bytes": 114474,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-channel.ts"
+        },
+        {
+          "path": "packages/channels/dws/src/dws-client-process.test.ts",
+          "sha256": "0c3d4c1dc4b564f16504243a3e36ad0749cfdf40453a59e63e43409d30a8d307",
+          "bytes": 1478,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-client-process.test.ts"
+        },
+        {
+          "path": "packages/channels/dws/src/dws-client.ts",
+          "sha256": "30e00301bd6583df30f36a86cab22408576090bf1a2e306786989566c7f9b30f",
+          "bytes": 33253,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-client.ts"
+        },
+        {
+          "path": "packages/channels/dws/src/dws-event-stream.ts",
+          "sha256": "7f7cc2f1878b7397a0bb0e9246c2a97464193482f135a60f1172d0c45b99bd97",
+          "bytes": 7031,
+          "sourceUrl": "https://raw.githubusercontent.com/QwenLM/qwen-code/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-event-stream.ts"
+        }
+      ],
+      "snapshotRoot": "local/references/qwen-dws/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0",
+      "executionStatus": "reference_only_not_executed",
+      "category": "primary_dws",
+      "priority": "P0",
+      "implementationAdopted": false
+    },
+    {
+      "id": "ceo-agent-service",
+      "repo": "callzhang/ceo-agent-service",
+      "commit": "bd3de36b136abfd5e3dc571347358ea5b1be69c1",
+      "license": "MIT",
+      "role": "secondary ordinary-account DWS source: file delivery, receipts, history recovery; exclude CEO business workflow",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85",
+          "bytes": 1087,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "41382a52a4ad713704c0fdb072611d5b7d39549210d0a5f8436403c14f028547",
+          "bytes": 75013,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/README.md"
+        },
+        {
+          "path": "app/dingtalk_file_delivery.py",
+          "sha256": "fcd6b7dc15592975737468cd8ed5cf4856e8eac1e506fc34a46b2a641545110b",
+          "bytes": 4023,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/app/dingtalk_file_delivery.py"
+        },
+        {
+          "path": "app/dingtalk_send_evidence.py",
+          "sha256": "eba30fa84e8eede4d1734a62de433424e89ac1b47e33b8e0e63c41a28c0e2df1",
+          "bytes": 18024,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/app/dingtalk_send_evidence.py"
+        },
+        {
+          "path": "app/dws_client.py",
+          "sha256": "e6f97e97cf10001bc7d1558bfdb555ac955b162351d9e3df168b27e10db57179",
+          "bytes": 231712,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/app/dws_client.py"
+        },
+        {
+          "path": "docs/architecture.md",
+          "sha256": "54194db2248a98f49b49f9c584aab2fe91a5e08549c5519064d6af64327201c2",
+          "bytes": 364027,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/docs/architecture.md"
+        },
+        {
+          "path": "docs/message-routing-rules.md",
+          "sha256": "888c119394b71f94195aa5b37ddcd0f8f98e9f668fdf524c04058d2be25bbba6",
+          "bytes": 8397,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/docs/message-routing-rules.md"
+        },
+        {
+          "path": "tests/test_dingtalk_file_delivery.py",
+          "sha256": "48fae1b04fe1788015919ff2db9d20447fb02077f2e2ac2759aa862f5a9e38fa",
+          "bytes": 10897,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/tests/test_dingtalk_file_delivery.py"
+        },
+        {
+          "path": "tests/test_dingtalk_send_evidence.py",
+          "sha256": "be65d798e737d926b5da50c1e48a7a0628e89ff546dc7bd72c3021f59fb1e83c",
+          "bytes": 24826,
+          "sourceUrl": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1/tests/test_dingtalk_send_evidence.py"
+        }
+      ],
+      "snapshotRoot": "local/references/ceo-agent-service/bd3de36b136abfd5e3dc571347358ea5b1be69c1",
+      "executionStatus": "reference_only_not_executed",
+      "category": "focused_dws",
+      "priority": "P1",
+      "implementationAdopted": false
+    },
+    {
+      "id": "dsh-dingtalk-self",
+      "repo": "MinEagle/dsh-dingtalk-self",
+      "commit": "706283968d2606b68261f0f4adaf189b10e8e791",
+      "license": "MIT",
+      "role": "ordinary-account DM reference; not group middleware baseline",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "bbdc7f6b2cb9c845e5919d59dca15e47956f3f8954415d219f1fda6ddebedc1a",
+          "bytes": 1065,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "bd50d3ae80aef5cd9ebdeefd848d3034ca07b709008623b74d989c9cc72d1960",
+          "bytes": 24805,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/README.md"
+        },
+        {
+          "path": "lib/core/attachments.js",
+          "sha256": "013396ca43220b7c97ea4396e63ebb22f93f4d32f1c048a72c088af3932edc46",
+          "bytes": 3843,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/lib/core/attachments.js"
+        },
+        {
+          "path": "lib/core/dws.js",
+          "sha256": "492abba501602af5337b54070d630f60e6751ead693528439e73a04e86e1fbf8",
+          "bytes": 6258,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/lib/core/dws.js"
+        },
+        {
+          "path": "lib/core/pipeline.js",
+          "sha256": "a8e7c013c0312fa2d4785f1e92430abc228c477cd91398f73332c90a961a26e1",
+          "bytes": 19389,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/lib/core/pipeline.js"
+        },
+        {
+          "path": "lib/core/state.js",
+          "sha256": "a032ed1eb3f840c0046ef85dff49abbde19b1babdc8b4f27c699fdccb205ba2d",
+          "bytes": 2994,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/lib/core/state.js"
+        },
+        {
+          "path": "package.json",
+          "sha256": "c681829b2d6c8542437b7db8ef2b7cc06628ad23a1fc641623129c127f7b21ef",
+          "bytes": 1673,
+          "sourceUrl": "https://raw.githubusercontent.com/MinEagle/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791/package.json"
+        }
+      ],
+      "snapshotRoot": "local/references/dsh-dingtalk-self/706283968d2606b68261f0f4adaf189b10e8e791",
+      "executionStatus": "reference_only_not_executed",
+      "category": "partial_dws",
+      "priority": "P2",
+      "implementationAdopted": false
+    },
+    {
+      "id": "dws-message-cache",
+      "repo": "kerrmoulton/dws-message-cache",
+      "commit": "cbfde38c12ce559509ac9bd35371e5356e54bdbf",
+      "license": "not-confirmed",
+      "role": "read-side design reference only; not full bidirectional channel",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "a6de7fd19692e223d08a7a375e2821bfc2484a887a0261adb9243a9a2ba8c0fd",
+          "bytes": 7543,
+          "sourceUrl": "https://raw.githubusercontent.com/kerrmoulton/dws-message-cache/cbfde38c12ce559509ac9bd35371e5356e54bdbf/README.md"
+        },
+        {
+          "path": "VERIFICATION.md",
+          "sha256": "19fd0f364e25bf04eebb8da41240f1fcf587b12b8b71408b5d23665c32c42628",
+          "bytes": 1587,
+          "sourceUrl": "https://raw.githubusercontent.com/kerrmoulton/dws-message-cache/cbfde38c12ce559509ac9bd35371e5356e54bdbf/VERIFICATION.md"
+        },
+        {
+          "path": "docs/DESIGN.md",
+          "sha256": "4a437408cc2a74a7b17b7353ece5d5056cb8f1c0fb346762646d0b7c0022f04f",
+          "bytes": 4629,
+          "sourceUrl": "https://raw.githubusercontent.com/kerrmoulton/dws-message-cache/cbfde38c12ce559509ac9bd35371e5356e54bdbf/docs/DESIGN.md"
+        },
+        {
+          "path": "pyproject.toml",
+          "sha256": "a8994de33471f1fdce16429d678b3ed633774b2b55aecb1f5b01e6ec840f7d1f",
+          "bytes": 386,
+          "sourceUrl": "https://raw.githubusercontent.com/kerrmoulton/dws-message-cache/cbfde38c12ce559509ac9bd35371e5356e54bdbf/pyproject.toml"
+        }
+      ],
+      "snapshotRoot": "local/references/dws-message-cache/cbfde38c12ce559509ac9bd35371e5356e54bdbf",
+      "executionStatus": "reference_only_not_executed",
+      "category": "partial_dws",
+      "priority": "P2",
+      "implementationAdopted": false
+    },
+    {
+      "id": "dsh-superagent-dws",
+      "repo": "Shuai-S/dsh-superagent-dws",
+      "commit": "4f63160e10440396472ec00667365a5be78af5ac",
+      "license": "not-confirmed",
+      "role": "documentation-only candidate; real payload and end-to-end verification explicitly pending upstream",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "91620a70f40e2a6630c1d6b7fa09f818020d9f4002513cde273e206135a38a4c",
+          "bytes": 5950,
+          "sourceUrl": "https://raw.githubusercontent.com/Shuai-S/dsh-superagent-dws/4f63160e10440396472ec00667365a5be78af5ac/README.md"
+        },
+        {
+          "path": "package.json",
+          "sha256": "b9a703bd65cec298b48e444db1f18a21082198d9e67c175835e93521056dd8dc",
+          "bytes": 1713,
+          "sourceUrl": "https://raw.githubusercontent.com/Shuai-S/dsh-superagent-dws/4f63160e10440396472ec00667365a5be78af5ac/package.json"
+        }
+      ],
+      "snapshotRoot": "local/references/dsh-superagent-dws/4f63160e10440396472ec00667365a5be78af5ac",
+      "executionStatus": "reference_only_not_executed",
+      "category": "provisional_dws",
+      "priority": "P3",
+      "implementationAdopted": false
+    },
+    {
+      "id": "openclaw",
+      "repo": "openclaw/openclaw",
+      "commit": "7b303779c41f9b67ba4291f646ce447e01fad868",
+      "license": "MIT",
+      "role": "channel SDK, Slack/Telegram behavior and runtime protocol reference",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "9efd316ecf1c4c60f6fd5d26433142fff2b6794d7d328e9bc6179b29bf9c82a4",
+          "bytes": 1076,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/LICENSE"
+        },
+        {
+          "path": "docs/gateway/openresponses-http-api.md",
+          "sha256": "7776d8f77e52e20ce752538274ce5f372818e32a2bc13a5cd7551d57d57c2ba1",
+          "bytes": 20631,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/docs/gateway/openresponses-http-api.md"
+        },
+        {
+          "path": "docs/gateway/protocol.md",
+          "sha256": "05eb28fcf01ce304b1ac159a6f491b009c1ffcffb148ff2a0b2c62bc4b55cb13",
+          "bytes": 8145,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/docs/gateway/protocol.md"
+        },
+        {
+          "path": "docs/plugins/sdk-channel-inbound.md",
+          "sha256": "390b38228fc139a19142136e11d2beb9ccf6caf7e634600acab6117ad32e543f",
+          "bytes": 22091,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/docs/plugins/sdk-channel-inbound.md"
+        },
+        {
+          "path": "docs/plugins/sdk-channel-outbound.md",
+          "sha256": "82d49aeb7b1fd4e96808d920bc18741e21cbfeae6457ac6f602823ec426c1004",
+          "bytes": 36907,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/docs/plugins/sdk-channel-outbound.md"
+        },
+        {
+          "path": "docs/plugins/sdk-channel-plugins.md",
+          "sha256": "36310f195e716d8248b3ffb44a22c812f93bfadab4dc6b4df36e564b0e17029a",
+          "bytes": 71838,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/docs/plugins/sdk-channel-plugins.md"
+        },
+        {
+          "path": "extensions/slack/src/conversation-route-owner.ts",
+          "sha256": "9a960877f621302f6302effae6e256b2f23e69b5341559b88a1411ae19bcd3fb",
+          "bytes": 7052,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/slack/src/conversation-route-owner.ts"
+        },
+        {
+          "path": "extensions/slack/src/send.reconcile.test.ts",
+          "sha256": "f105ddf4c104b1674225ba2ee064e038aab1795bc7d592638c66267aa2dc3852",
+          "bytes": 13133,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/slack/src/send.reconcile.test.ts"
+        },
+        {
+          "path": "extensions/telegram/src/chunk-delivery.test.ts",
+          "sha256": "f1261720b23f7c96965efb3a255efe0290463c84f30f7135a6fb5df2cc24ee9d",
+          "bytes": 1422,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/telegram/src/chunk-delivery.test.ts"
+        },
+        {
+          "path": "extensions/telegram/src/message-dispatch-dedupe.ts",
+          "sha256": "e9fe98eee87dd7f80fe54a90427c419934111dc78b44f893d1ed095535150b25",
+          "bytes": 6817,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/telegram/src/message-dispatch-dedupe.ts"
+        },
+        {
+          "path": "extensions/telegram/src/thread-bindings-persistence.ts",
+          "sha256": "04eafab20d789916d907e9c7ac977c327865f1962ffad57b67dd6126b10b2c17",
+          "bytes": 5057,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/telegram/src/thread-bindings-persistence.ts"
+        },
+        {
+          "path": "extensions/telegram/src/thread-bindings.test.ts",
+          "sha256": "0e811912a1295be9d1f391cce744df7c7341ec0935c2219c503b8d5cc1ebdc32",
+          "bytes": 33192,
+          "sourceUrl": "https://raw.githubusercontent.com/openclaw/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868/extensions/telegram/src/thread-bindings.test.ts"
+        }
+      ],
+      "snapshotRoot": "local/references/openclaw/7b303779c41f9b67ba4291f646ce447e01fad868",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "official-dingtalk-openclaw",
+      "repo": "DingTalk-Real-AI/dingtalk-openclaw-connector",
+      "commit": "88df00ee594072e9941ef3f71da90a37f3291ad3",
+      "license": "MIT",
+      "role": "bot channel UI/dispatch reference only; do not inherit bot identity",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "1ac7dc187e28d6fff17d8296b0e7072231310363edb422f0d27f182fcb3ad3a2",
+          "bytes": 1075,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-openclaw-connector/88df00ee594072e9941ef3f71da90a37f3291ad3/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "943c0482bf04acfe50791c6a0d43c0b46c6f78ec4bd3055556d5d568d2378df4",
+          "bytes": 7382,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-openclaw-connector/88df00ee594072e9941ef3f71da90a37f3291ad3/README.md"
+        },
+        {
+          "path": "src/channel.ts",
+          "sha256": "492356035241dcd2e24644c87a1f9e3d60f76831515f629bd833eb6f8c6b9fa9",
+          "bytes": 21694,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-openclaw-connector/88df00ee594072e9941ef3f71da90a37f3291ad3/src/channel.ts"
+        },
+        {
+          "path": "src/message-context.ts",
+          "sha256": "add1930c5bbcd02445e4b508b56398ff02519d94ef126e72113bb84f8484a672",
+          "bytes": 275,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-openclaw-connector/88df00ee594072e9941ef3f71da90a37f3291ad3/src/message-context.ts"
+        },
+        {
+          "path": "src/reply-dispatcher.ts",
+          "sha256": "dbc5b9cfa6803b1269ece23e6aa5a429a8188941cde8e573ec4f9a886c51119b",
+          "bytes": 50160,
+          "sourceUrl": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-openclaw-connector/88df00ee594072e9941ef3f71da90a37f3291ad3/src/reply-dispatcher.ts"
+        }
+      ],
+      "snapshotRoot": "local/references/official-dingtalk-openclaw/88df00ee594072e9941ef3f71da90a37f3291ad3",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "soimy-dingtalk",
+      "repo": "soimy/openclaw-channel-dingtalk",
+      "commit": "63956bc8ed9c168045a671271abb2ee1530c123d",
+      "license": "MIT",
+      "role": "secondary bot channel design reference, not default transport",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "2d03eb01fe95925e7d352ba760798ffc0ea0ffc337aea168821a063f9cd699c5",
+          "bytes": 1081,
+          "sourceUrl": "https://raw.githubusercontent.com/soimy/openclaw-channel-dingtalk/63956bc8ed9c168045a671271abb2ee1530c123d/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "df39607f73111de05fb9bec9398d0432c13fcdd4d2a358caa3aabb045870d834",
+          "bytes": 7611,
+          "sourceUrl": "https://raw.githubusercontent.com/soimy/openclaw-channel-dingtalk/63956bc8ed9c168045a671271abb2ee1530c123d/README.md"
+        },
+        {
+          "path": "src/channel.ts",
+          "sha256": "b60060bae3f0805e4670ee4eb7f4d9ca02fc5831f28ea5c34828968c7c0d61e7",
+          "bytes": 5349,
+          "sourceUrl": "https://raw.githubusercontent.com/soimy/openclaw-channel-dingtalk/63956bc8ed9c168045a671271abb2ee1530c123d/src/channel.ts"
+        }
+      ],
+      "snapshotRoot": "local/references/soimy-dingtalk/63956bc8ed9c168045a671271abb2ee1530c123d",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "dws-codex-example",
+      "repo": "fireairforce/dws-codex-bridge",
+      "commit": "60a0a649630c1cd17da38972b7c9356f952dcd9b",
+      "license": "UNLICENSED",
+      "role": "documentation-only digital-employee example; no implementation copied",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "912d854ef5dd93beaa8617322481fbd5c142b5399ac1d57d21921ff3eccc6352",
+          "bytes": 12286,
+          "sourceUrl": "https://raw.githubusercontent.com/fireairforce/dws-codex-bridge/60a0a649630c1cd17da38972b7c9356f952dcd9b/README.md"
+        }
+      ],
+      "snapshotRoot": "local/references/dws-codex-example/60a0a649630c1cd17da38972b7c9356f952dcd9b",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "codex-official-docs",
+      "sourceUrl": "https://learn.chatgpt.com/docs/app-server",
+      "snapshotRoot": "local/references/codex-official-docs/2026-11-12",
+      "license": "documentation-reference-only",
+      "role": "official protocol authority; timestamped snapshot, not installed-binary schema",
+      "executionStatus": "reference_only_not_executed",
+      "files": [
+        {
+          "path": "app-server.md",
+          "sha256": "b9e75507755ba0be2ebc615ca1f4399a54a386125f3935f615405ea93efe77f2",
+          "bytes": 106105,
+          "sourceUrl": "https://learn.chatgpt.com/docs/app-server.md"
+        }
+      ],
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "pi",
+      "repo": "earendil-works/pi",
+      "commit": "ab74d46243e741e20077d244d30d2d673de40b5f",
+      "license": "MIT",
+      "role": "official RPC contract; resolve former badlogic/pi-mono and earendil-works/pi-mono",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "0457f5bcec3b3b211605dfb5d1a49042fd638f3686a410fe099c24a25af13c48",
+          "bytes": 1069,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/LICENSE"
+        },
+        {
+          "path": "packages/coding-agent/docs/json.md",
+          "sha256": "f103191816fdcf3627dfc98b89acad8a28eee737697130ddaeb2581131213543",
+          "bytes": 11106,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/docs/json.md"
+        },
+        {
+          "path": "packages/coding-agent/docs/rpc-commands.md",
+          "sha256": "4deeee367852f4633ef594bc079f9e9fb14640a4e3ba8a69b7c89b6f54740838",
+          "bytes": 21482,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/docs/rpc-commands.md"
+        },
+        {
+          "path": "packages/coding-agent/docs/rpc.md",
+          "sha256": "54e29df00e080c962df4fbb516dc441a9ce6805287bea61d45f3c99f92078446",
+          "bytes": 9459,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/docs/rpc.md"
+        },
+        {
+          "path": "packages/coding-agent/src/modes/rpc/jsonl.ts",
+          "sha256": "95723d349fcebad1f1da7ce103d02ba7d5e2c876b7d178d41d8b56beedbd93e0",
+          "bytes": 1503,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/src/modes/rpc/jsonl.ts"
+        },
+        {
+          "path": "packages/coding-agent/src/modes/rpc/rpc-client.ts",
+          "sha256": "a34c9eb4937bf3b526128c9a2032cc3295504996a14bf204e4a17e5bb55dcf7f",
+          "bytes": 18720,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/src/modes/rpc/rpc-client.ts"
+        },
+        {
+          "path": "packages/coding-agent/src/modes/rpc/rpc-types.ts",
+          "sha256": "be06a1d53916e03e9274cce9e4833692b235494e4047f1f7139d7f0147daae1a",
+          "bytes": 10456,
+          "sourceUrl": "https://raw.githubusercontent.com/earendil-works/pi/ab74d46243e741e20077d244d30d2d673de40b5f/packages/coding-agent/src/modes/rpc/rpc-types.ts"
+        }
+      ],
+      "snapshotRoot": "local/references/pi/ab74d46243e741e20077d244d30d2d673de40b5f",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    },
+    {
+      "id": "kimi-code",
+      "repo": "MoonshotAI/kimi-code",
+      "commit": "410814349d4677fc2844ad79069b0ad4a751303a",
+      "license": "MIT",
+      "role": "current official Kimi ACP/CLI contract; legacy kimi-cli archived",
+      "files": [
+        {
+          "path": "LICENSE",
+          "sha256": "23cc68e17992e0b512ae2e80afc5787d7d8e0fbfbdb4fff54ec0245508fa400e",
+          "bytes": 1068,
+          "sourceUrl": "https://raw.githubusercontent.com/MoonshotAI/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a/LICENSE"
+        },
+        {
+          "path": "README.md",
+          "sha256": "50ea102c7003c746244c69cb78cbd5b1e9158311e5e4e028aee8a2afee698c4c",
+          "bytes": 5334,
+          "sourceUrl": "https://raw.githubusercontent.com/MoonshotAI/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a/README.md"
+        },
+        {
+          "path": "docs/en/guides/migration.md",
+          "sha256": "c6f6efbbdedc82ba88dca86681cb9dadadad51deb060616ad17796e4e8cdd51a",
+          "bytes": 2262,
+          "sourceUrl": "https://raw.githubusercontent.com/MoonshotAI/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a/docs/en/guides/migration.md"
+        },
+        {
+          "path": "docs/en/reference/kimi-acp.md",
+          "sha256": "f3dad9c59f1b2a717fbf410a97f8812cc01590292e40deb2d9b7e54029acda75",
+          "bytes": 6939,
+          "sourceUrl": "https://raw.githubusercontent.com/MoonshotAI/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a/docs/en/reference/kimi-acp.md"
+        },
+        {
+          "path": "docs/en/reference/kimi-command.md",
+          "sha256": "e8fd6fbd01bb1b529b0469f038f11d3158118786f32b38ccf70daaff605b82bc",
+          "bytes": 24502,
+          "sourceUrl": "https://raw.githubusercontent.com/MoonshotAI/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a/docs/en/reference/kimi-command.md"
+        }
+      ],
+      "snapshotRoot": "local/references/kimi-code/410814349d4677fc2844ad79069b0ad4a751303a",
+      "executionStatus": "reference_only_not_executed",
+      "category": "secondary_channel_and_runtime",
+      "priority": "secondary",
+      "implementationAdopted": false
+    }
+  ],
+  "selectionPolicy": "Public GitHub and DingTalk official implementations first; local WeCom references excluded from active selection",
+  "executionStatus": "Sources and selected tests reviewed only; no upstream installation or test execution; no real DWS calls"
+}

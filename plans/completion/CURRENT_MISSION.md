@@ -8,6 +8,8 @@ E071事故后用户确认弹窗停止；三个真实服务及operator_suspended�
 
 E091已完成[主线与现成channel复用核对](../../docs/98-channel-mainline-and-reuse-review.md)：DWS是已验基础通讯底座，bridge负责通用任务/会话/附件及可靠交付；Qwen Code普通账号DWS channel是主要参考，bot/数字员工路线明确分开。保留当前实现，只补具体验收缺口，不再增加恢复审批工具或用离线数量代替UI。心跳保持既有PAUSED状态。
 
+E092按用户纠偏，当前优先公开GitHub/钉钉官方现成DWS真人账号通道；停止以本地WeCom/本地Agent适配器为选型主线。[公开目录](../../docs/references/README.md)固定13来源/69文件、许可和采用边界；Qwen为通道主体参照，CEO为文件交付/回执专项，bot仅辅助设计。先按[采用清单](../../docs/references/adoption-plan.md)核上游组件与实际缺口，再实现窄补充；Codex/OpenClaw/Pi/Kimi协议资料为后续扩展，未新增adapter或部署。默认身份决策不等于跨组织/外部群API已验。
+
 原veil/liev私聊授权保持。历史曾授权原3人群；当前聊天入口要求多人实测暂跳过，后续按最新用户指示核对。身份白名单不扩大，不加第三人、建bot、改权限。没有缺第二账号的问题。
 
 代码：E070群文件关联、E072进程/暂停、E073官方办公入口已提交未部署；E074既有history双路与一次核验方案通过离线验证。共享Stream bus无独占退出权，候选后台恢复用history-only 15秒补读，现场配置尚未修改。后台恢复需另行明确允许。

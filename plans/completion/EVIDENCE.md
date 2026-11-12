@@ -295,3 +295,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E091 — 主线与现成 channel 一手复核
 - [决策说明](../../docs/98-channel-mainline-and-reuse-review.md)、[来源与边界](../../evidence/2026-11-12/channel-mainline-source-review.json)。Qwen固定41a3b9f文档/两源码/许可及社区Codex固定60a0a64 README与本轮main读取相同；区分普通账号、bot、数字员工和MCP工具。
 - DWS基础通讯可作底座，群完整矩阵未过；E089只证一次读取，auth login/根因/跨设备仍未证。用户回复是澄清要求不是E090许可；三个服务/暂停保持，无真实调用/新UI/产品修改。
+
+## E092 — 公开 DWS 真人账号参考与项目资料整理
+- [公开参考目录](../../docs/references/README.md)、[固定来源及摘要](../../docs/references/catalog.json)、[采用清单](../../docs/references/adoption-plan.md)、[架构/身份](../../docs/architecture/dingtalk-agent-middleware.md)、[6项资料核验](../../evidence/2026-11-12/public-reference-catalog-validation.json)。12公开仓库及1套官方协议文档、69文件；逐文件SHA/字节/固定来源、许可文件及21产品模块/原验收不变已核。官方网页与Markdown表示的URL首轮相等断言失败已保留并按精确URL对修正，源字节未变。
+- 用户纠正本地研究优先级后，活动catalog移除两份本地WeCom参考；Qwen DWS为通道主体参照，CEO文件/原生回执专项、DSH/缓存部分参考，bot不替换真人身份。第三方实现未移入、上游测试未执行、真实DWS/UI为0；新四runtime适配器未实现，群/auth login缺口保持。README旧E074待决已纠正到E089一次成功与E090未授权；服务/配置/暂停未改。
