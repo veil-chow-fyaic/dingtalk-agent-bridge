@@ -229,3 +229,6 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E074 — history双路和单次核验准备
 - [方案](../../docs/90-guarded-recovery-read-plan.md)、[安装验证](../../evidence/2026-11-12/recovery-plan-installed.json)、[15项冻结审计](../../evidence/2026-11-12/recovery-plan-validation.json)。7新增方法、源码/双Python已安装产品各244项，复用E073同wheel和21模块；准备计划未执行，真实DWS调用0、服务全停、暂停保持。
 - 原始local/recovery-plan-20261112；只读复核`PYTHONPATH=. python3 scripts/accept_recovery_plan.py`。真实一次查询的许可独立于后台恢复，不把离线测试标UI通过。
+
+## E075 — 停机期间冻结交接
+- [交接说明](../../docs/80-offline-handoff-export.md)、[8项核验](../../evidence/2026-11-12/handoff-e075-validation.json)。f0d2911归档/539manifest、21模块与E073wheel、全部Python测试与E074冻结套件一致；三套244为既有结果，本次未重跑、真实DWS为0。payload仅local/handoff-f0d2911-20261112/bundle。

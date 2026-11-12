@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E075",
+  "sourceCommit": "f0d2911574368c034b720de69eb9bcc7c48cefc0",
+  "ok": true,
+  "checks": {
+    "safe_archive_members": true,
+    "all_539_manifest_files_match": true,
+    "source_wheel_installed_validation_same_21_modules": true,
+    "wheel_hash_matches_e074_installed_tests": true,
+    "every_exported_python_test_matches_e074_frozen_suite": true,
+    "recovery_checker_matches_prepared_tested_digest": true,
+    "frozen_e074_audit_passes_and_retains_244_results": true,
+    "no_known_private_values": true
+  },
+  "sourceArchiveSha256": "c25d4500fccfeaca21b1c6ed5afb922936d2fa270597c29d021ce948f320c656",
+  "wheelSha256": "e84c029bade4ee0770c1e491c67a9b8e2376414486a8fd751b833942ce8bbd43",
+  "testsPerSuiteReused": 244,
+  "testsRerun": false,
+  "productModules": 21,
+  "productReusedFrom": "E073",
+  "testsReusedFrom": "E074",
+  "fullProjectAccepted": false,
+  "liveKeychainFailureResolved": false,
+  "realDwsCalls": 0,
+  "limits": [
+    "Frozen source at f0d2911 with identical previously tested E073 runtime wheel and E074 test suite; no tests rerun",
+    "Bundle only is shareable; parent and other local directories remain private",
+    "No new deployment, credential read, UI or completed 24-hour claim; pending read permission remains separate"
+  ]
+}

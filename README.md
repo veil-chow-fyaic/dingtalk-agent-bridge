@@ -38,7 +38,7 @@ E052真实UI：[并发对账终态保护与真实私聊交付](docs/69-monotonic
 
 E053：[异常消息隔离](docs/70-malformed-message-isolation.md)，防止坏引用/附件结构阻塞整批入站。双Python各179项及302条旧官方事件等价回放通过；无新UI发送。
 
-最新交接验证：E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。 [离线交接](docs/80-offline-handoff-export.md)
+最新交接：E075已导出固定提交f0d2911及已验证E073同一wheel，539项manifest、21模块和E074冻结测试一致，8项核验通过；沿用三套244项结果，本次没有重跑。payload仅local/handoff-f0d2911-20261112/bundle，不含私有配置、账号或待决查询计划。后台仍停止、真实查询未执行，不是最终验收。 [离线交接](docs/80-offline-handoff-export.md)
 
 产品修复与验证：E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。 [证据](docs/79-manager-exiting-transition.md)
 

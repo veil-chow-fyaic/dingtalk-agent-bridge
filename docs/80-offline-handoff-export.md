@@ -36,3 +36,11 @@ PYTHONPATH=. python3 scripts/accept_clean_handoff.py
 2026-11-12 10:23。E069已重新导出提交a83d3fd的源码和已验证E068同一wheel；512项冻结manifest、19模块及归档/安装包摘要匹配，无已知私有值。沿用源码与双Python安装包各207项结果，本次没有重跑测试或宣称新部署/UI通过。最新交接payload仅local/handoff-a83d3fd-20261112/bundle；E063旧包保持历史记录。
 
 [本次六项核验](../evidence/2026-11-12/handoff-refresh-validation.json)。当前真实Keychain故障仍未恢复，余下群聊/UI和24h验收未通过；这是一份可保存的检查点，不是完整项目验收。该包固定a83d3fd，此页的更新在后续提交，不能说已包含在包内。
+
+## E075 停机期间的冻结交接更新
+
+2026-11-12。等待单次真实查询许可期间，导出固定提交f0d2911，不包含.git/local或符号链接。539项冻结manifest、全部Python测试与E074隔离测试快照、21模块与E073同一wheel摘要均匹配，8项核验通过，未发现本机已知私有值。沿用E074源码和双Python安装包各244项结果，本次未重跑测试。
+
+最新payload仅local/handoff-f0d2911-20261112/bundle，包含source.tar、原E073 wheel、verification.json、README.txt和SHA256SUMS；各文件摘要已独立重读核对。父目录和其他local内容不能交接，真实查询计划及暂停状态未复制进bundle。原E063/E069归档保持。
+
+[8项核验](../evidence/2026-11-12/handoff-e075-validation.json)。该包是未完成验收的检查点，不能宣称正式发布、认证恢复或UI通过；源码固定f0d2911，本段后写的说明不在归档内。真实DWS调用为0，后台停止，单次核验许可仍待决，不重复询问。
