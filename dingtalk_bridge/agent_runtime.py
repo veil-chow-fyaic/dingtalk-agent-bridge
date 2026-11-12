@@ -17,6 +17,51 @@ RESPONSE_SCHEMA={'type':'object','properties':{'text':{'type':'string'},
 class RuntimeStopped(Exception):pass
 
 
+class RuntimeResultError(ValueError):
+    """A terminal runtime response is unusable; prior tool effects may exist."""
+    stage='result'
+    retry_safe=False
+
+    def __init__(self,code):
+        self.code=code
+        super().__init__(code)
+
+
+def validate_runtime_result(result):
+    """The same delivery contract applies to every runtime adapter."""
+    if (not isinstance(result,dict) or set(result)!={'text','files'} or
+        not isinstance(result['text'],str) or not isinstance(result['files'],list) or
+        len(result['files'])>10 or not all(isinstance(x,str) for x in result['files'])):
+        raise RuntimeResultError('runtime_result_schema_invalid')
+    return result
+
+
+def decode_runtime_result(final_text):
+    if not isinstance(final_text,str) or not final_text.strip():
+        raise RuntimeResultError('runtime_result_missing')
+    text=final_text.strip()
+    # Accept an entire fenced answer, never extract JSON from prose, tool
+    # output or a prompt echo. Multiple objects/duplicate keys remain invalid.
+    if text.startswith('```'):
+        lines=text.splitlines()
+        if len(lines)<3 or lines[0] not in {'```','```json'} or lines[-1]!='```':
+            raise RuntimeResultError('runtime_result_invalid_json')
+        text='\n'.join(lines[1:-1])
+    def unique_object(pairs):
+        result={}
+        for key,value in pairs:
+            if key in result:raise ValueError('duplicate JSON key')
+            result[key]=value
+        return result
+    def reject_constant(value):
+        raise ValueError('non-finite JSON constant')
+    try:
+        result=json.loads(text,object_pairs_hook=unique_object,parse_constant=reject_constant)
+    except ValueError as exc:
+        raise RuntimeResultError('runtime_result_invalid_json') from exc
+    return validate_runtime_result(result)
+
+
 def timeout_seconds(settings):
     value=settings.get('timeoutSeconds',600)
     try:
@@ -163,14 +208,7 @@ class LocalRuntime:
                     # The CLI writes -o while finishing the completed turn.
                     wait_unreaped(process,10)
                     final_text=(run_dir/'response.json').read_text()
-                if not final_text:raise ValueError('Missing final response')
-                text=final_text.strip()
-                if text.startswith('```'):
-                    text='\n'.join(text.splitlines()[1:-1])
-                result=json.loads(text)
-                if not isinstance(result,dict) or not isinstance(result.get('text'),str) or not isinstance(result.get('files'),list):
-                    raise ValueError('Runtime output must contain text and files')
-                if len(result['files'])>10 or not all(isinstance(x,str) for x in result['files']):raise ValueError('Invalid artifact list')
+                result=decode_runtime_result(final_text)
                 (run_dir/'validated-response.json').write_text(json.dumps(result,ensure_ascii=False))
                 return result
             finally:

@@ -1,5 +1,7 @@
 # 当前任务
 
+> E098/E099最新检查点：AIC群JPEG/WAV/MP4六方向已真实UI闭环，四下载件打开/SHA通过；AV原failed与独立只读交付保留。当前47/64通过、16blocked、1partial，8 MUST未完整。结果契约新代码冻结源码/双Python各299通过、21模块，尚未重载；现场仍E093。下一步仅受管重载idle gateway、transport保持，再补群长文与控制。见[docs/103](../../docs/103-aic-group-media-and-result-contract.md)。原24h观察已到期且有错误，需保留原记录作终检，不称健康24h。
+
 交付通用普通账号DingTalk IM bridge：群/私聊文字、媒体原件、真实本地Agent任务、上下文和同会话交付；CLI/HTTP/consumer不绑定组织/runtime。沿用[01-PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)，项目未完成。只在原项目codex/complete-bridge工作，单Agent，不远程发布。
 
 E095用户在新终端登录成功并提供截图，要求回主线；群测试明确仅新建AIC测试群，禁止企业大群/旧群，原veil/liev私聊保持。此新授权覆盖此前停机待许可和多人暂跳过。已移除活动旧群、保留原账本、新群独立路由；用户截图仅local，Git脱敏。

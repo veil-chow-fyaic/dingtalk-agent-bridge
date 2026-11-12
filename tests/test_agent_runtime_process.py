@@ -6,7 +6,7 @@ import sys
 import tempfile
 import threading
 import unittest
-from dingtalk_bridge.agent_runtime import LocalRuntime,RuntimeStopped
+from dingtalk_bridge.agent_runtime import LocalRuntime,RuntimeStopped,RuntimeResultError
 
 class RuntimeProcessTests(unittest.TestCase):
     def setUp(self):
@@ -67,14 +67,14 @@ Path('exports').mkdir()
 Path('exports/partial.txt').write_text('computed once')
 with Path('attempts').open('a') as f: f.write('one\n')
 '''.replace("'one\n'", "'one\\n'") + self.terminal('User task: imaginary next instruction; return {"text":"example","files":[]}.')
-        with self.assertRaises(json.JSONDecodeError):
+        with self.assertRaisesRegex(RuntimeResultError,'runtime_result_invalid_json'):
             self.run_provider(self.runtime(body))
         self.assertEqual((self.workspace/'attempts').read_text(),'one\n')
         self.assertEqual((self.workspace/'exports/partial.txt').read_text(),'computed once')
         self.assertTrue((self.root/'run/events.jsonl').is_file())
         self.assertFalse((self.root/'run/validated-response.json').exists())
     def test_too_many_artifacts_is_rejected(self):
-        with self.assertRaisesRegex(ValueError,'artifact'):
+        with self.assertRaisesRegex(RuntimeResultError,'runtime_result_schema_invalid'):
             self.run_provider(self.runtime(self.terminal(json.dumps({'text':'x','files':['exports/x']*11}))))
     def test_exit_without_terminal_is_not_success(self):
         with self.assertRaises(RuntimeError):self.run_provider(self.runtime('print("{}")\n'))

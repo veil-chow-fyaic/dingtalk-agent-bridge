@@ -15,20 +15,20 @@ python3 -m venv .venv
 
 从[路由模板](../config.routes.example.json)及[执行器模板](../config.agent.example.json)填入独立核实的身份和会话；模板占位符不能直接运行。`accountId`为本地别名，`profile`是官方授权上下文，`selfSenderId`须用本人实际消息字段核对。私聊另需`peerOpenDingTalkId`。多路由及迁移见[通用工具](22-generic-tool-and-consumer.md)。
 
-路由模板默认history轮询，当前恢复候选也仅使用history，不启动共享bus。独立部署如需官方事件提示，应先核共享bus生命周期和清理边界，再明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
+路由模板默认history轮询，本机当前也仅使用history，不启动共享bus。独立部署如需官方事件提示，应先核共享bus生命周期和清理边界，再明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
 
 ## 当前本机部署与管理
 
 本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。
 
-统一管理器拥有传输及两个gateway；事故期间只允许以下不调用DWS的本地状态读取，不把状态检查当作新增验收：
+统一管理器拥有传输及两个gateway；以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status
 python3 -m dingtalk_bridge.dws_access status
 ```
 
-后台start/restart、解除暂停和前台传输会改变运行或调用准入状态，当前不能执行；持久暂停的存在不构成擅自启动服务的许可。正常独立部署使用`dab-service --agent-config PATH start`等管理器参数，需自己的配置与授权；本事故实例先按E074核验、另行说明history-only恢复方案并取得后台恢复明确同意。`resume --confirm-retry`只解除本地防护，不修复钥匙串，也不是当前可执行步骤。
+E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。正常受管维护使用`dab-service --agent-config PATH start`等参数并保留原配置与账本；重载前确认无运行/排队任务和未决投递，仅代码受影响的gateway维护应保留transport。凭据故障触发持久暂停后不得自动解除或反复认证；`resume --confirm-retry`只解除本地防护，不修复钥匙串。两个旧一次核验key均已消费，绝不作为维护探针重复执行。
 
 启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。管理器参数及当时实验见[历史管理器验收](40-service-manager-and-restart-ui.md)，不能直接照抄历史恢复动作。
 
@@ -40,7 +40,7 @@ python3 -m dingtalk_bridge.dws_access status
 
 HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-服务已获准运行后的本地HTTP查询示例；当前服务停止，不为查询自动启动：
+当前服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
 
 ```bash
 python3 -m dingtalk_bridge.cli health
@@ -75,7 +75,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash与同会话文件交付；它及提示词、官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
-E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，均尚未加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。发生凭据存储/超时/进程中断时持久暂停后续受管DWS调用；不自动探测是否恢复。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
+E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，已随E095部署加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。发生凭据存储/超时/进程中断时持久暂停后续受管DWS调用；不自动探测是否恢复。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；E084已持久化原窗口和nextPageToken，超本轮容量在后续有界调用接续，重启不丢游标。complete=false不算追平；长停机按watermark覆盖原窗口，恢复须达到固定cut且无待续窗口，无watermark首次仅24h，不能保证更早或平台不可见历史。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
 ## 验证与共享边界
 

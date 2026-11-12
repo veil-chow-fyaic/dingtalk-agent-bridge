@@ -1,5 +1,7 @@
 # 续作前置核对
 
+> E098/E099最新检查点：AIC群JPEG/WAV/MP4六方向已真实UI闭环，四下载件打开/SHA通过；AV原failed与独立只读交付保留。当前47/64通过、16blocked、1partial，8 MUST未完整。结果契约新代码冻结源码/双Python各299通过、21模块，尚未重载；现场仍E093。下一步仅受管重载idle gateway、transport保持，再补群长文与控制。见[docs/103](../../docs/103-aic-group-media-and-result-contract.md)。原24h观察已到期且有错误，需保留原记录作终检，不称健康24h。
+
 先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认同一checkout、codex/complete-bridge和未提交归属。不要从聊天空目录另做实现。
 
 E095当前三个受管服务运行、双路history-only；新AIC测试群是唯一群测试目标，原企业群已退出活动配置，私聊不变。实际操作前核精确会话/profile/白名单和原key账本，不按旧PID控制进程。不要重复resume、重启服务或消耗两个历史一次查询key。心跳PAUSED与服务运行分清。

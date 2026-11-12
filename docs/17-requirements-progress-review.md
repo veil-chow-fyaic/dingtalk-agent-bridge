@@ -1,5 +1,7 @@
 # 需求回顾与当前真实进度
 
+> E098/E099更新：群JPEG/WAV/MP4已完成原生UI、真实工具、下载/打开/SHA闭环，当前47/16/1；原AV failed保留。结果契约新增8方法、冻结源码/双Python299，尚未重载，现场仍E093。下一步受管重载gateway及群长文/控制。详见[本轮记录](103-aic-group-media-and-result-contract.md)。下列E097计数为当时快照。
+
 E097已完整复盘全部用户输入，当前总入口为[需求/进度/路线](102-user-requirements-and-roadmap.md)与[CEO深挖](references/ceo-deep-dive.md)。下列是部署/验收摘要；活动次序见关键路径。
 
 用户要把钉钉作为本地Agent的群聊/私聊工作入口，承接任务、文件、多轮补充和结果交付，并有可复用的官方能力/自研边界、开通经验、验证和Git历史。通用IM层不绑定组织或runtime，Kimi已满足至少一个本地执行器；不是要求新建bot或一整套管理平台。

@@ -1,5 +1,7 @@
 # 用户需求总复盘、当前进度与后续路线
 
+> E098/E099更新：群JPEG/WAV/MP4已完成原生UI、真实工具、下载/打开/SHA闭环，当前47/16/1；原AV failed保留。结果契约新增8方法、冻结源码/双Python299，尚未重载，现场仍E093。下一步受管重载gateway及群长文/控制。详见[本轮记录](103-aic-group-media-and-result-contract.md)。下列E097计数为当时快照。
+
 2026-11-12，E097。复盘原聊天 `01a1bfcf-e2c8-7331-880e-781e1fe2f64c` 的全部14条用户消息，以及本聊天的需求、纠偏、授权和事故处理。原聊天已直接读取，不只依赖此前助手总结。本文整合解释；[PRD](../plans/completion/01-PRD.md) 的17项需求及MUST/SHOULD等级、[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)保持原标准。
 
 ## 你实际要交付的产品

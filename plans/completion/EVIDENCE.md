@@ -326,3 +326,11 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [统一需求/进度/路线](../../docs/102-user-requirements-and-roadmap.md)、[CEO深挖](../../docs/references/ceo-deep-dive.md)、[31文件来源](../../docs/references/ceo-deep-dive-index.json)、[资料与不变性核验](../../evidence/2026-11-12/requirements-ceo-review-validation.json)。直接读取原聊天全部14条用户消息，并结合本聊天纠偏/授权；真人账号、通用runtime、官方/GitHub优先、真实UI和新AIC专用范围统一，不新增验收门槛。
 - CEO固定92e360ed，31公开文件逐一核Git blob/大小/SHA；旧bd3de36采用和MIT保持。深入发送事实/文件回执、session归属与兼容性、runtime能力/失败分类及Codex环境，明确已有flock/摘要不能误报缺失；宽松发送审核、业务重试、认证协调和部分清理不采用。C02–C04为下一窄接缝，未复制新产品代码、未运行上游测试或服务。
 - 活动TODO旧停机阶段按HEAD原字节归档，架构/采用表/PRD证据列和当前计划一致更新。21产品模块、所有现有测试、配置模板、原17判据和等级不变；矩阵仍41/22/1、MUST6通过/5部分/3未完成。没有新DWS、UI、部署或健康证据，没有改变心跳/服务。当前未完成。
+
+## E098 — AIC群JPEG/WAV/MP4双向闭环
+- [真实UI/失败记录](../../docs/103-aic-group-media-and-result-contract.md)、[16项只读核验](../../evidence/2026-11-12/aic-group-media-validation.json)。JPEG真实读图/Pillow旋转，WAV wave/MP4 ffprobe实际分析，原件一致；原生图片/音视频卡片、客户端下载、Quick Look及报告TextEdit通过。新增六格，47/16/1，8 MUST仍不完整。
+- AV原任务JSONDecodeError保持failed、无产物发送；独立UI只读交付任务核SHA后交三现有产物。三任务10confirmed；原配置不变。JPEG模型内部两次Pillow调用及客户端.jpg.png命名差异保留，不宣称原生语音/video协议。
+
+## E099 — runtime结果契约与可解释失败
+- [实现和边界](../../docs/103-aic-group-media-and-result-contract.md)、[9项冻结核验](../../evidence/2026-11-12/runtime-result-contract-validation.json)。CEO C03设计参考，新增8方法；冻结源码/双Python新wheel各299，21模块/六入口一致。typed错误、exact schema、无解释文字抽取、失败不重放、既有产物及session保留。
+- 实际E098触发问题，E099修复错误分类和操作指引，不能保证模型总能给合法JSON；原failed不迁移。当前检查点未重载gateway，真实UI仍E093；下一段仅管理器有界重载gateway、transport保持，再补群长文/控制。

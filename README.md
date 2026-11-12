@@ -1,5 +1,7 @@
 # DingTalk Agent Bridge
 
+> E098/E099更新：群JPEG/WAV/MP4已完成原生UI、真实工具、下载/打开/SHA闭环，当前47/16/1；原AV failed保留。结果契约新增8方法、冻结源码/双Python299，尚未重载，现场仍E093。下一步受管重载gateway及群长文/控制。详见[本轮记录](docs/103-aic-group-media-and-result-contract.md)。下列E097计数为当时快照。
+
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
 选型优先采用公开GitHub/钉钉官方实现：**官方DWS做通讯底座，Qwen作通道组件参照，CEO作任务/交付/执行器契约参照**。默认DWS授权真人账号；bot项目仅参考可拆交互。[统一需求与路线](docs/102-user-requirements-and-roadmap.md) · [CEO源码深挖](docs/references/ceo-deep-dive.md) · [参考目录](docs/references/README.md) · [文档导航](docs/README.md)
