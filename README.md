@@ -1,5 +1,7 @@
 # DingTalk Agent Bridge
 
+E068补凭据存储故障的固定脱敏health/doctor诊断，精确官方错误前缀＋category/code才归类，不扩成过期/锁定；6新增方法含真实合成CLI/HTTP恢复、未知投递同key重启不重发，源码及新wheel双Python各207项、六入口19模块/20审计通过。尚未加载现场，原进程/配置/账本/观察保持，真实E065仍未恢复。 [证据](docs/85-credential-store-health-diagnostics.md)
+
 E065当前真实故障：09:25后两路history失败，官方退出51为macOS Keychain读取DWS登录密钥失败；doctor退出0但auth fail，默认钥匙串/网络检查pass。未注入、未改凭据或重启；等待用户恢复现有密钥访问，恢复后核原进程自动同步/旧账本不重放。原观察09:39快照14.047h、7不可达、30poll_error（继续累计），未满24h。 [故障证据](docs/82-live-keychain-read-failure.md)
 
 E064修复图片补充构建器覆盖已有输出/生成测试文件的缺口；4新方法、源码及双Python已安装runtime连同公开构建器各201项、独立官方源码真实Go构建与22审计通过。官方binary/现场补充/配置不变，未部署、无新UI。 [构建证据](docs/81-image-build-ownership.md)

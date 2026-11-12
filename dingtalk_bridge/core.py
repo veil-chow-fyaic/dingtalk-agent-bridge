@@ -19,6 +19,20 @@ class BridgeError(Exception):
     pass
 
 
+class DWSCredentialStoreUnavailable(BridgeError):
+    """The pinned official CLI could not read its existing local login key."""
+    def __init__(self):
+        super().__init__('credential_store_unavailable')
+
+
+def credential_store_diagnostic():
+    # Construct public diagnostics ourselves; provider text can contain secrets.
+    return {'code': 'credential_store_unavailable', 'component': 'dws',
+            'action': 'inspect_existing_keychain_access',
+            'message': 'DWS cannot read its existing macOS Keychain login key. '
+                       'This does not establish token expiry or a locked keychain.'}
+
+
 class DWSRequestRejected(BridgeError):
     """Explicit server invalid-request response, never a timeout inference."""
     def __init__(self, diagnostic):
@@ -42,8 +56,17 @@ class DWS:
             data = json.loads(p.stdout or p.stderr)
         except ValueError as e:
             raise BridgeError('DWS returned no valid JSON') from e
+        if not isinstance(data, dict):
+            raise BridgeError('DWS returned no JSON object')
         if p.returncode or data.get('success') in (False, 'false') or data.get('ok') is False:
             error = data.get('error', {})
+            if not isinstance(error, dict):
+                raise BridgeError('DWS business failure')
+            message = error.get('message')
+            if (error.get('category') == 'internal' and type(error.get('code')) is int and error['code'] == 51
+                    and isinstance(message, str) and message.startswith(
+                        'resolve access token: load access token: load from keychain: read DEK from macOS Keychain:')):
+                raise DWSCredentialStoreUnavailable()
             if error.get('reason') == 'invalid_request' and error.get('server_error_code') == 'PARAM_ERROR':
                 raise DWSRequestRejected({'reason': 'invalid_request', 'server_error_code': 'PARAM_ERROR'})
             raise BridgeError(str(error.get('server_error_code') or error.get('reason') or 'DWS business failure'))

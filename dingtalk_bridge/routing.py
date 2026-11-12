@@ -1,6 +1,7 @@
 """Runtime-neutral routing. An account is a provider auth context, not a product tenant."""
 import hashlib
-from .core import Bridge
+import threading
+from .core import Bridge, DWSCredentialStoreUnavailable, credential_store_diagnostic
 
 
 def route_configs(config):
@@ -35,7 +36,7 @@ def route_configs(config):
 
 class Hub:
     def __init__(self,root,config,factory=Bridge):
-        self.routes={};self.poll_errors={}
+        self.routes={};self.poll_errors={};self.poll_error_details={};self.status_lock=threading.Lock()
         try:
             for c,state in route_configs(config):
                 if c.get('receiveMode','history') not in {'history','stream_hint'}:
@@ -43,6 +44,7 @@ class Hub:
                 key=(c['accountId'],c['group'])
                 self.routes[key]=factory(root,c,state_name=state)
                 self.poll_errors[key]=None
+                self.poll_error_details[key]=None
         except Exception:
             self.close();raise
     def select(self,account_id=None,conversation_id=None):
@@ -64,11 +66,22 @@ class Hub:
     def poll(self,stop=None):
         for key,b in self.routes.items():
             if stop is not None and stop.is_set():break
-            try:b.sync();self.poll_errors[key]=None
-            except Exception as exc:self.poll_errors[key]=type(exc).__name__
+            try:
+                b.sync();error=None;detail=None
+            except Exception as exc:
+                detail=credential_store_diagnostic() if isinstance(exc,DWSCredentialStoreUnavailable) else None
+                error=type(exc).__name__
+            with self.status_lock:
+                self.poll_errors[key]=error;self.poll_error_details[key]=detail
     def health(self):
-        rows=[{**route,**self.routes[(route['account_id'],route['conversation_id'])].health(),
-            'poll_error':self.poll_errors[(route['account_id'],route['conversation_id'])]} for route in self.conversations()]
+        rows=[]
+        for route in self.conversations():
+            key=(route['account_id'],route['conversation_id'])
+            row={**route,**self.routes[key].health()}
+            with self.status_lock:
+                detail=self.poll_error_details[key]
+                row.update(poll_error=self.poll_errors[key],poll_error_detail=dict(detail) if detail else None)
+            rows.append(row)
         if len(rows)==1:return {**rows[0],'route_count':1,'runtime_required':False}
         return {'mode':'experimental','route_count':len(rows),'routes':rows,'runtime_required':False,
                 'events':sum(r['events'] for r in rows),'poll_error':any(r['poll_error'] for r in rows)}

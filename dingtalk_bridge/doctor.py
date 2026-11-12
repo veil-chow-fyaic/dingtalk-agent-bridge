@@ -17,6 +17,7 @@ from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_ope
 
 from .routing import route_configs
 from .agent_runtime import timeout_seconds
+from .core import credential_store_diagnostic
 
 
 def read(path):
@@ -181,7 +182,12 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
                 except (ValueError, KeyError, TypeError):
                     fresh = False
                 add(f'live-route-{index}', 'complete_recent_sync', 'ok' if fresh else 'error')
-                add(f'live-route-{index}', 'poll_error', 'error' if row.get('poll_error') else 'ok')
+                detail = row.get('poll_error_detail')
+                if row.get('poll_error') and isinstance(detail, dict) and detail.get('code') == 'credential_store_unavailable':
+                    detail = credential_store_diagnostic()
+                else:
+                    detail = None
+                add(f'live-route-{index}', 'poll_error', 'error' if row.get('poll_error') else 'ok', detail)
         except HTTPError as exc:
             add('transport', 'loopback_health', 'error', 'authentication_rejected' if exc.code == 401 else 'http_failure')
             exc.close()

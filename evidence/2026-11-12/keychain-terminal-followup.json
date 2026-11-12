@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E067-terminal-followup",
+  "userReportedRunCompleted": true,
+  "terminalDoctor": {
+    "at": "2026-11-12T02:07:10.047260+00:00",
+    "exitCode": 0,
+    "summary": {
+      "fail": 1,
+      "pass": 3,
+      "warn": 1
+    },
+    "checks": [
+      {
+        "name": "auth",
+        "status": "fail",
+        "message": "无法读取 macOS Keychain 中的登录密钥，无法判断登录状态"
+      },
+      {
+        "name": "keychain",
+        "status": "pass",
+        "message": "macOS 默认钥匙串可用"
+      },
+      {
+        "name": "runtime_context",
+        "status": "pass",
+        "message": "Runtime context ready"
+      },
+      {
+        "name": "network",
+        "status": "pass",
+        "message": "https://mcp.dingtalk.com 可达 (延迟 357ms)"
+      },
+      {
+        "name": "version",
+        "status": "warn",
+        "message": "有新版本 (当前 v1.0.67, 最新 v1.0.68)"
+      }
+    ]
+  },
+  "resolved": false,
+  "backgroundOnlyHypothesisSupported": false,
+  "resetPerformed": false,
+  "keychainItemDeleted": false,
+  "permissionsChanged": false,
+  "resetScopeFromPinnedSource": "DeleteAllTokenData sweeps all auth-token entries and profile registry; auth reset also deletes app credentials and MCP configuration; not a liev-only or DEK-only repair",
+  "officialRecoveryReference": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/pull/1430",
+  "next": "A user-arranged Mac restart is a possible non-deleting system diagnostic; not yet authorized or performed and not a guaranteed fix",
+  "rawSha256": {
+    "terminal-doctor.stdout": "ac674a3c8532ed29e1f7007e6b259596270a2778ceeead0ca6b82d8cc1583236",
+    "terminal-doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal-doctor-summary.json": "b971a319efa2e7b9b9869c13b27cdb3692ab556bed42bd56fcc063cb2c6a73b1"
+  }
+}

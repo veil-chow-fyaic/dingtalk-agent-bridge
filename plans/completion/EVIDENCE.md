@@ -205,3 +205,9 @@
 ## E067 — 钥匙串UI和用户输入密码后的核对
 - 已定位dws-cli条目、未显示密码/改访问设置；Apple只读status=7，用户输入系统密码后官方auth仍fail；原记录保持。单次系统读取stdout丢弃/51且无stderr，不猜根因。
 - [docs/84](../../docs/84-keychain-ui-followup.md)、[证据](../../evidence/2026-11-12/keychain-user-followup.json)。原始local/sync-failure-20261112；Terminal UI被工具安全限制拒绝，无绕行；已请用户手动执行准备好的官方只读诊断，结果待到达。
+
+E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../../evidence/2026-11-12/keychain-terminal-followup.json)，不再按后台专属问题处理。官方reset范围已核，未执行；重启Mac仅可选用户安排，尚未发生。
+
+## E068 — 凭据存储故障脱敏诊断
+- E068补凭据存储故障的固定脱敏health/doctor诊断，精确官方错误前缀＋category/code才归类，不扩成过期/锁定；6新增方法含真实合成CLI/HTTP恢复、未知投递同key重启不重发，源码及新wheel双Python各207项、六入口19模块/20审计通过。尚未加载现场，原进程/配置/账本/观察保持，真实E065仍未恢复。
+- [docs/85](../../docs/85-credential-store-health-diagnostics.md)、[安装](../../evidence/2026-11-12/credential-health-install.json)、[20审计](../../evidence/2026-11-12/credential-health-validation.json)；`PYTHONPATH=. python3 scripts/accept_credential_health.py`。原始local/credential-health-20261112；E063/E064冻结审计修正/2负向通过，旧报告字节保持。

@@ -29,7 +29,7 @@
         "summary": "Bridge status; no runtime required",
         "responses": {
           "200": {
-            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "description": "Route synchronization, scheduler and Stream status, not delivery acceptance. Each route has poll_error and additive poll_error_detail (null or a fixed sanitized diagnostic). credential_store_unavailable indicates the pinned DWS could not read its existing macOS Keychain login key; it does not establish token expiry or a locked keychain. Original provider error text is never included.",
             "content": {
               "application/json": {
                 "schema": {

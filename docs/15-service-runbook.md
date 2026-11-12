@@ -76,7 +76,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash与同会话文件交付；它及提示词、官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
-poll_error出现时保留账本，检查日志、官方授权及选定会话只读请求，修复后补读；不改组织或扩监听范围。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
+当前源码E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。该版本尚未加载现场，详见[诊断](85-credential-store-health-diagnostics.md)。poll_error出现时保留账本，检查日志、官方授权及选定会话只读请求，修复后补读；不改组织或扩监听范围。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；complete=false不算追平，超窗口或超容量仍可能漏。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
 ## 验证与共享边界
 

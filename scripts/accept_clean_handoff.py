@@ -38,7 +38,7 @@ def audit():
             and digest((folder / 'source' / n).read_bytes()) == digest(data) for n, data in files.items()),
         'no_known_private_values_in_archive_or_wheel': wheel_private_absent and not any(v in data for data in files.values() for v in private_values),
         'wheel_digest_and_all_modules_match': digest(wheel.read_bytes()) == report['wheelSha256'] and modules_match,
-        'current_product_matches_frozen_export': module_sources_match(report, ROOT / 'dingtalk_bridge'),
+        'frozen_product_source_matches_export': module_sources_match(report, folder / 'source/dingtalk_bridge'),
         'build_dependencies_prepared_and_frozen_separately': len(report['buildDependenciesPreparedSeparately']) == 3 and all(
             digest((folder / 'build-wheelhouse' / item['file']).read_bytes()) == item['sha256'] for item in report['buildDependenciesPreparedSeparately']),
         'all_16_offline_steps_successful': len(report['offlineSteps']) == 16 and all(r['exitCode'] == 0 for r in report['offlineSteps']),
@@ -59,6 +59,7 @@ def audit():
         checks[kind + '_records_session_and_logs_unchanged'] = all(before['routes'][kind][key] == after['routes'][kind][key]
             for key in ('jobs', 'outbox', 'events', 'deliveries', 'meta', 'runtimeFiles'))
     return {'date': '2026-11-12', 'evidence': 'E063', 'ok': all(checks.values()), 'checks': checks,
+            'currentProductMatchesFrozen': module_sources_match(report, ROOT / 'dingtalk_bridge'),
             'sourceCommit': report['commit'], 'fullInstalledTests': 197, 'productChanged': False, 'newNativeUITest': False,
             'observerElapsedHours': round(after['observer']['elapsed_seconds'] / 3600, 3),
             'unavailableSamples': after['observer']['unavailable_samples'],

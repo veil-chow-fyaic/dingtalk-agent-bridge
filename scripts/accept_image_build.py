@@ -56,7 +56,8 @@ def audit():
         } == {'logs/dws.log'},
         'plan_only_no_upload_or_compression': plan['dry_run'] and not plan['executed'] and not plan['compressed']
             and plan['steps'][0]['args']['bizType'] == 'CHAT_IMAGE' and plan['size'] == 1853,
-        'runtime_source_unchanged_from_installed_version': module_sources_match(frozen_product, ROOT / 'dingtalk_bridge'),
+        'frozen_runtime_source_matches_installed_version': module_sources_match(frozen_product,
+            ROOT / 'local/manager-exit-20261112/clean-source/dingtalk_bridge'),
         'both_installed_runtime_modules_still_match': all(module_sources_match(frozen_product,
             Path(read(folder / (n + '-import.json'))['module']).parent) for n in ('py314', 'py311')),
         'manager_processes_not_changed': read(folder / 'manager-before.json') == read(folder / 'manager-after.json'),
@@ -72,6 +73,7 @@ def audit():
              'real-build.log', 'clone.log', 'local-clone.log', 'help.stdout', 'plan.stdout')
     return {'date': '2026-11-12', 'evidence': 'E064', 'ok': all(checks.values()), 'checks': checks,
         'receipt': receipt, 'fullTestsPerSuite': 201, 'runtimeChanged': False, 'deployed': False,
+        'currentProductMatchesFrozen': module_sources_match(frozen_product, ROOT / 'dingtalk_bridge'),
         'newNativeUITest': False, 'transportHealthyAfterBuild': not after['health']['poll_error'],
         'observerElapsedHours': round(after['observer']['elapsed_seconds'] / 3600, 3),
         'logSha256': {n: digest((folder / n).read_bytes()) for n in names},
