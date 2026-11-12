@@ -1,12 +1,12 @@
 # READY_WITH_WARNINGS
 
-2026-11-12，E061之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
+2026-11-12，E062之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
 
 - 同一仓库/分支codex/complete-bridge；基线166b11b、tag baseline/ui-2026-11-11。单Agent，未远程发布。
 - 精确liev profile、veil原生客户端及两人私聊授权保持。原群增至3人，新增群实验等待已发问题的范围答复；不影响私聊/独立工作。
 - 固定DWS v1.0.67；PNG/JPEG隔离上传补充已启用，原版binary不改。HTTP/SQLite＋stream_hint/history和两个Kimi gateway已运行；DM官方办公上下文开、群关。
 - 当前manager归属：传输27650、群gateway27711、私聊gateway27725。只读status验证实际归属，不按旧PID直接发信号；旧ctl不再管理。无开机自启。
-- E059 Python3.14/3.11隔离wheel各191项及六入口19模块通过；E039历史manager错误根因仍未解；live doctor通过，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/atomic-manifest-install.json。守护自身SIGKILL/恶意脱组不在保证内。
+- E062 Python3.14/3.11隔离wheel各197项及六入口19模块通过；E039历史manager错误根因仍未解；live doctor通过，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/manager-exit-install.json。守护自身SIGKILL/恶意脱组不在保证内。
 - E055快照：DM65任务160outbox（159确认1旧拒绝）169传输235事件；群3/7/12/76。已确认实验只读复核，不重发；所有旧失败与错结论保持。
 - PNG/PDF/DOCX/XLSX/ZIP等证据分层保留；JPEG私聊实际旋转、超2MiB PNG file、21MiB超限后新压缩任务均有UI/原件证据。不是所有格式/四方向均完成，逐格见ACCEPTANCE_MATRIX。
 - E023 history故障、E024 Stream断连恢复、E028自然access轮换已验；真实失效refresh凭据恢复未验，不复制/改写token或撤授权。Kimi不是OS沙箱，Codex超时可选跟踪。
@@ -36,3 +36,5 @@
 - E060新增清理前诊断测试入口；源码与E059同一已安装产品在Python3.14/3.11各193项通过，每套7份预期负向拒绝记录均保住同次观察，29项审计通过。16次限定真实合成进程复核未复现E059关闭错误，根因仍未解；产品/现网未改、无新UI。 以后全量优先run_tests_with_evidence.py，原观察13.229h/7不可达。
 
 - E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。 下一步按本次退出过渡证据修复，原观察13.354h/7不可达。
+
+- E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。 原观察13.421h/7不可达；下一段当前commit离线导出/交接自检，不重复已过UI或有界探针。

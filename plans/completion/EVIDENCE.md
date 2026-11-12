@@ -181,3 +181,7 @@
 ## E061 — 路由进程锁与新关闭故障
 - E061两个真实独立进程恢复用例通过：同路由锁拒绝、不同路由并行、持锁进程SIGKILL后confirmed保持/执行中转unknown，同key两次重开均不重发。源码/3.14安装包195项通过，3.11全量195项有1个新manager错误，已保住同次ps：TERM后同启动时间的?Es及括号短命令；未改产品/现场或新增UI。
 - [docs/78](../../docs/78-route-process-recovery.md)、[23项审计](../../evidence/2026-11-12/route-process-recovery-validation.json)。私有local/route-process-20261112，观察13.354h/7不可达。
+
+## E062 — 已观察退出过渡窄修复
+- E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。
+- [docs/79](../../docs/79-manager-exiting-transition.md)、[安装](../../evidence/2026-11-12/manager-exit-install.json)、[26项审计](../../evidence/2026-11-12/manager-exit-transition-validation.json)。raw local/manager-exit-20261112；原观察13.421h/7不可达。

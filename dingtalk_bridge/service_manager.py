@@ -222,6 +222,16 @@ class Manager:
             time.sleep(.2)
         raise RuntimeError('Component startup did not become ready; inspect private manager logs')
 
+    def exiting_after_signal(self, record):
+        # macOS ps can lose argv while the same process is exiting (?Es).
+        # This permits waiting only, never signalling or claiming it is gone.
+        observation = self.observations.get(record['pid'], {})
+        fields = observation.get('stdout', '').split(None, 6)
+        expected = record['identity'].split(None, 5)
+        return (observation.get('returncode') == 0 and observation.get('pid') == record['pid']
+                and len(fields) == 7 and len(expected) == 6 and 'E' in fields[0][1:]
+                and fields[1:6] == expected[:5])
+
     def stop_component(self, record, timeout):
         status = self.component_status(record)
         if status == 'ownership_mismatch':
@@ -251,7 +261,7 @@ class Manager:
             if state == 'stopped':
                 self.journal('stopped', record['name'])
                 return
-            if state == 'ownership_mismatch':
+            if state == 'ownership_mismatch' and not self.exiting_after_signal(record):
                 self.ownership_error(record, 'stop-after-signal', 'PID changed during shutdown; no further signal sent')
             time.sleep(.2)
         raise RuntimeError('Graceful shutdown still pending; no force kill performed')
