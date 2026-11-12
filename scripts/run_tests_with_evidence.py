@@ -67,10 +67,14 @@ def run_suite(suite, folder, stream):
 
     with evidence.capture():
         result = unittest.TextTestRunner(stream=stream, verbosity=2, resultclass=Result).run(suite)
+    # unittest treats an empty discovery as successful. A typo or wrong working
+    # directory must not become a green acceptance report with no execution.
+    validation_errors = [] if result.testsRun > 0 else ['no_tests_executed']
+    passed = result.wasSuccessful() and not validation_errors
     report = {'testsRun': result.testsRun, 'failures': len(result.failures), 'errors': len(result.errors),
-              'suitePassed': result.wasSuccessful(), 'refusals': evidence.records,
+              'suitePassed': passed, 'refusals': evidence.records, 'validationErrors': validation_errors,
               'retentionErrors': evidence.write_errors,
-              'ok': result.wasSuccessful() and not evidence.write_errors}
+              'ok': passed and not evidence.write_errors}
     folder = Path(folder);folder.mkdir(parents=True, exist_ok=True, mode=0o700)
     with (folder / 'summary.json').open('x') as output:
         os.fchmod(output.fileno(), 0o600)

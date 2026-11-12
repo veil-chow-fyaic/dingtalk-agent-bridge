@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E081",
+  "ok": true,
+  "checks": {
+    "old-runner.log": true,
+    "source-final.log": true,
+    "py314-final.log": true,
+    "py311-final.log": true,
+    "frozen_runner_and_tests_match": true,
+    "installed_suite_has_no_product_package": true,
+    "21_active_modules_and_checker_match_pending_plan": true,
+    "single_read_not_attempted": true
+  },
+  "runs": {
+    "old-runner.log": {
+      "testsRun": 4,
+      "passed": false,
+      "failures": 2,
+      "errors": 0,
+      "logSha256": "c566e835d58543413520c0f5ef5dcab4c75e0c1cf5eb92f64d6cd58e896e2b6c"
+    },
+    "source-final.log": {
+      "testsRun": 4,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "9a2c28d19da898e2ebdd3728418a878acf071f0533593df0c383ed61d6761330"
+    },
+    "py314-final.log": {
+      "testsRun": 4,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "df5ae1dede70a424011e383ce6320c661efecfa1376d8b56768fd6c4532d74e4"
+    },
+    "py311-final.log": {
+      "testsRun": 4,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "28c6e37ebc0cab9c06242375517f9e94b030b83a510080c057a77a1df067e9be"
+    }
+  },
+  "runnerSha256": "2db3c5d2d05af4bc6c049a7f6d23217fcf8e7a4b3024ca7d32ae5c84ad57d346",
+  "testSha256": "7619a2a9f858295b73a3955d7ec79b01d6d3d713685cb76d50eb7008f94cd927",
+  "newTestMethods": 2,
+  "targetedMethodsPerEnvironment": 4,
+  "productChanged": false,
+  "newWheel": false,
+  "fullSuiteRerun": false,
+  "realDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "limits": [
+    "Old zero-discovery result and two regression failures retained",
+    "CLI no-match now exits 1 and summary has no_tests_executed; normal actual execution still passes",
+    "Installed checks use frozen new runner/tests with E073 product in Python 3.14/3.11",
+    "E080 259 belongs to frozen candidate and earlier runner; this change has targeted validation only, no 261-suite claim",
+    "No current product update, background startup or recovery-plan replacement"
+  ]
+}

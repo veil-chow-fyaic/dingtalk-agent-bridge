@@ -2,6 +2,7 @@ import io
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -13,6 +14,34 @@ from dingtalk_bridge.service_manager import Manager
 
 
 class TestEvidenceTests(unittest.TestCase):
+    def test_empty_suite_is_rejected_but_executed_suite_still_passes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            empty = run_suite(unittest.TestSuite(), root / 'empty', io.StringIO())
+            self.assertFalse(empty['ok'])
+            self.assertFalse(empty['suitePassed'])
+            self.assertEqual(empty['testsRun'], 0)
+            self.assertEqual(empty['validationErrors'], ['no_tests_executed'])
+            executed = []
+            suite = unittest.TestSuite([unittest.FunctionTestCase(lambda: executed.append(True))])
+            actual = run_suite(suite, root / 'actual', io.StringIO())
+            self.assertEqual(executed, [True])
+            self.assertTrue(actual['ok']);self.assertTrue(actual['suitePassed'])
+            self.assertEqual(actual['validationErrors'], [])
+
+    def test_unmatched_cli_pattern_fails_with_retained_empty_summary(self):
+        root = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as temp:
+            p = subprocess.run([sys.executable, str(root / 'scripts/run_tests_with_evidence.py'),
+                                '--start-directory', temp, '--pattern', 'not_a_test_*.py'],
+                               cwd=root, capture_output=True, text=True, timeout=15)
+        result = json.loads(p.stdout.splitlines()[-1])
+        self.assertEqual(p.returncode, 1)
+        self.assertFalse(result['ok']);self.assertEqual(result['testsRun'], 0)
+        summary = json.loads((Path(result['evidence']) / 'summary.json').read_text())
+        self.assertFalse(summary['suitePassed']);self.assertFalse(summary['ok'])
+        self.assertEqual(summary['validationErrors'], ['no_tests_executed'])
+
     def test_original_failure_and_exact_observation_survive_fixture_cleanup(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp);fixture = root / 'fixture';output = root / 'evidence'
