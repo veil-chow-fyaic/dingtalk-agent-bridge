@@ -195,7 +195,9 @@ class AgentGatewayTests(unittest.TestCase):
                 self.api.events.append(event(seq,text='/agent 生成图片',sender='self'))
                 self.g.intake();self.g.execute_one();self.g.flush()
                 row=self.g.db.execute('SELECT payload FROM outbox WHERE key LIKE ? ORDER BY rowid DESC LIMIT 1',('%-file-0',)).fetchone()
-                self.assertEqual(set(json.loads(row[0])),{field})
+                payload=json.loads(row[0])
+                self.assertEqual(set(payload),{field,'expected_sha256'})
+                self.assertEqual(payload['expected_sha256'],__import__('hashlib').sha256((self.root/payload[field]).read_bytes()).hexdigest())
 
     def test_crashed_execution_is_not_replayed(self):
         self.api.events=[event(text='/agent 工作',sender='self')];self.g.intake()

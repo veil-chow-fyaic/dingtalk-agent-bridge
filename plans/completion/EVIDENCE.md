@@ -299,3 +299,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E092 — 公开 DWS 真人账号参考与项目资料整理
 - [公开参考目录](../../docs/references/README.md)、[固定来源及摘要](../../docs/references/catalog.json)、[采用清单](../../docs/references/adoption-plan.md)、[架构/身份](../../docs/architecture/dingtalk-agent-middleware.md)、[6项资料核验](../../evidence/2026-11-12/public-reference-catalog-validation.json)。12公开仓库及1套官方协议文档、69文件；逐文件SHA/字节/固定来源、许可文件及21产品模块/原验收不变已核。官方网页与Markdown表示的URL首轮相等断言失败已保留并按精确URL对修正，源字节未变。
 - 用户纠正本地研究优先级后，活动catalog移除两份本地WeCom参考；Qwen DWS为通道主体参照，CEO文件/原生回执专项、DSH/缓存部分参考，bot不替换真人身份。第三方实现未移入、上游测试未执行、真实DWS/UI为0；新四runtime适配器未实现，群/auth login缺口保持。README旧E074待决已纠正到E089一次成功与E090未授权；服务/配置/暂停未改。
+
+## E093 — 采用社区文件摘要门槛并验证中间件接缝
+- [采用记录](../../docs/references/artifact-digest-adoption.md)、[11新增/三环境291与12冻结核验](../../evidence/2026-11-12/artifact-digest-adoption-validation.json)。Qwen消息/引用接口不足以替代现有原件模型，未整体搬入；CEO固定bd3de36的MIT摘要校验适配到gateway/CLI/HTTP/Bridge，许可证按字节保留并随wheel打包。
+- 旧代码已复现排队后修改文件仍confirmed；新任务绑定原SHA，旧未终态队列只采用原任务证据，缺证不发送；新不符请求不上传/预留，原key则回执优先并只对账。文件/原生图片、重启、回执丢失、源件删除、并发、真实合成HTTP/CLI均已验。首轮5专项断言错误/三套290的3失败/并发探针失败保留；最终独立冻结源、测试、wheel三套各291通过，21模块与六入口匹配。
+- 无真实DWS/auth/UI/现场账本迁移，E090旧提案及真实配置未改、未授权恢复。矩阵与PRD未改，新增离线验证不抵消UI缺项；新代码未部署。

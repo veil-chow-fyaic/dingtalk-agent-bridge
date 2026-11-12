@@ -3,6 +3,7 @@ import hashlib
 import fcntl
 import json
 import os
+import re
 from pathlib import Path
 import sqlite3
 import subprocess
@@ -26,6 +27,12 @@ class DWSRequestRejected(BridgeError):
     def __init__(self, diagnostic):
         super().__init__('PARAM_ERROR')
         self.diagnostic = diagnostic
+
+
+class ArtifactIntegrityError(ValueError):
+    """The intended bytes changed before any new delivery was reserved."""
+    def __init__(self):
+        super().__init__('artifact_integrity_mismatch')
 
 
 class DWS:
@@ -305,11 +312,14 @@ class Bridge:
                             'AND state NOT IN ("confirmed","failed","rejected")', (str(error), key))
         return self.delivery(key)
 
-    def send(self, key, text=None, file=None, image=None, reply_to=None):
+    def send(self, key, text=None, file=None, image=None, reply_to=None, expected_sha256=None):
         if not isinstance(key, str) or not key or len(key) > 128:
             raise ValueError('A stable idempotency key is required (1-128 chars)')
         if sum(x is not None for x in (text, file, image)) != 1:
             raise ValueError('Provide exactly one of text, file or image')
+        if expected_sha256 is not None and (text is not None or not isinstance(expected_sha256, str)
+                or re.fullmatch(r'[0-9a-f]{64}', expected_sha256) is None):
+            raise ValueError('expected_sha256 requires file/image and 64 lowercase hex characters')
         if reply_to is not None and (text is None or not isinstance(reply_to, str) or
                                      not reply_to.strip() or reply_to != reply_to.strip() or len(reply_to) > 2048):
             raise ValueError('reply_to requires text and a nonempty message ID (up to 2048 chars)')
@@ -326,15 +336,46 @@ class Bridge:
                 raise ValueError('File must be a safe project relative path')
             source = (self.root / f).resolve()
             allowed = [(self.root / 'fixtures').resolve(), (self.root / 'local/outbox').resolve()]
-            if not any(source.is_relative_to(p) for p in allowed) or not source.is_file():
+            if not any(source.is_relative_to(p) for p in allowed):
+                raise ValueError('Only files in fixtures/ or local/outbox/ can be sent')
+            if image is not None and source.suffix.lower() not in {'.png', '.jpg', '.jpeg'}:
+                raise ValueError('Image mode accepts PNG/JPEG only')
+            stage_name = 'image' + source.suffix.lower() if image is not None else source.name
+            def file_payload(digest):
+                stage = self.local / 'staged' / digest / stage_name
+                return {'kind': 'image' if image is not None else 'file', 'sha256': digest, 'name': source.name,
+                        'staged': str(stage.relative_to(self.root))}
+            def replay_expected_file():
+                # A prior send owns these intended bytes. Reconcile its original
+                # receipt even if the producer file has since changed/disappeared.
+                intended = json.dumps(file_payload(expected_sha256), sort_keys=True, ensure_ascii=False)
+                with self.lock:
+                    row = self.db.execute('SELECT fingerprint FROM deliveries WHERE key=?', (key,)).fetchone()
+                    if row:
+                        if row[0] != hashlib.sha256(intended.encode()).hexdigest():
+                            raise ValueError('Idempotency key already belongs to another payload')
+                        return {**self.delivery(key), 'replayed': True}
+                return None
+            if expected_sha256 is not None:
+                replay = replay_expected_file()
+                if replay is not None: return replay
+            if not source.is_file():
                 raise ValueError('Only files in fixtures/ or local/outbox/ can be sent')
             if source.stat().st_size > 20 * 1024 * 1024:
                 raise ValueError('Experimental service file limit is 20 MiB')
             content = source.read_bytes()
             digest = hashlib.sha256(content).hexdigest()
-            if image is not None and source.suffix.lower() not in {'.png', '.jpg', '.jpeg'}:
-                raise ValueError('Image mode accepts PNG/JPEG only')
-            stage_name = 'image' + source.suffix.lower() if image is not None else source.name
+            # Digest gate adapted from CEO Agent Service DingTalkFileHandler.dispatch
+            # (bd3de36b); MIT, Copyright (c) 2026 CEO Agent Service contributors.
+            # See licenses/ceo-agent-service.txt and docs/references/artifact-digest-adoption.md.
+            if expected_sha256 is not None and digest != expected_sha256:
+                # A concurrent request may have reserved/sent this same key
+                # while we read. Its authoritative receipt still takes priority.
+                replay = replay_expected_file()
+                if replay is not None: return replay
+                raise ArtifactIntegrityError()
+            if len(content) > 20 * 1024 * 1024:
+                raise ValueError('Experimental service file limit is 20 MiB')
             stage = self.local / 'staged' / digest / stage_name
             stage.parent.mkdir(parents=True, exist_ok=True)
             if not stage.exists():
@@ -342,8 +383,7 @@ class Bridge:
                 stage.chmod(0o600)
             if stage.is_symlink() or hashlib.sha256(stage.read_bytes()).hexdigest() != digest:
                 raise ValueError('Staged file integrity mismatch; no upload or send attempted')
-            payload = {'kind': 'image' if image is not None else 'file', 'sha256': digest, 'name': source.name,
-                       'staged': str(stage.relative_to(self.root))}
+            payload = file_payload(digest)
         serialized = json.dumps(payload, sort_keys=True, ensure_ascii=False)
         fingerprint = hashlib.sha256(serialized.encode()).hexdigest()
         with self.lock:

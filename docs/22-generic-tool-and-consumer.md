@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-2026-11-12，E077当前停机边界更新。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI只用于用户视角验收，不是自动发送后端。liev普通账号与veil两人私聊、原两人群均有实际证据；历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；不把它固定成产品组织。旧运行入口已[按字节存档](history/through-E076/README.md)。当前真实服务停机、operator_suspended保持；下文是接口契约，不授权执行真实查询/发送或启动后台，E074一次核验许可仍待决。
+2026-11-12，E093接口更新。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI只用于用户视角验收，不是自动发送后端。liev普通账号与veil两人私聊、原两人群均有实际证据；历史原3人群曾获许可，最新聊天入口要求多人实测暂跳过；不把它固定成产品组织。旧运行入口已[按字节存档](history/through-E076/README.md)。当前真实服务停机、operator_suspended保持；下文是接口契约，不授权执行真实查询/发送或启动后台。E089一次读取已成功且许可已履行；E090后台恢复仍未授权。
 
 ## 调用方式
 
@@ -28,6 +28,8 @@ python3 -m dingtalk_bridge.cli --account-id A --conversation-id C sync --deep
 ```
 
 这些send是互斥的独立用法示例，不能用同一个业务键轮流发送不同内容。全局选择参数在子命令前；`--text`、`--text-stdin`、`--file`、`--image`四选一，stdin读至EOF。`--reply-to`只配纯文本，且原消息已在选定路由观察、发送者已知。文件/图片是服务工作目录的允许相对路径，不是HTTP上传；文件≤20MiB、原生PNG/JPEG≤2MiB且需图片补充配置。
+
+E093增加文件/图片的可选`--expected-sha256`，HTTP/Python字段为`expected_sha256`：小写64位hex，与真正交给发送快照的字节核对。新请求不一致返回409 `artifact_integrity_mismatch` / `delivery_attempted:false`，不上传或创建投递；已存在相同key与原定摘要则返回原回执并允许对账，不因生产者文件后来变动/删除而重发。新Agent结果自动携带任务完成时的原摘要，旧未终态队列只能从原任务已存摘要补齐，无证据时保持未决。普通调用者未传此字段仍使用当次文件字节，不能声称绑定更早的版本。[采用与验证](references/artifact-digest-adoption.md)
 
 成功HTTP响应以JSON输出；HTTP错误以非0退出。202仍会退出0，必须检查state，不能自动重试未知结果。status只读已有投递；reconcile查询原task，或显式用匹配的本机官方日志完成窄拒绝审计，均不发送。repair重新下载原件到新目录并更新缓存清单，旧件不覆盖。完整输入见[OpenAPI](../api/openapi.json)，未知发送与恢复规则见运行手册。
 

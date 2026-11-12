@@ -204,6 +204,28 @@
           },
           "413": {
             "description": "JSON body Content-Length is negative or exceeds 1 MiB."
+          },
+          "409": {
+            "description": "artifact_integrity_mismatch: file/image differs from expected_sha256; this request created no delivery reservation or DWS call. Existing matching keys return their stored receipt instead.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "const": "artifact_integrity_mismatch"
+                    },
+                    "delivery_attempted": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "delivery_attempted"
+                  ]
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -239,6 +261,11 @@
                     "minLength": 1,
                     "maxLength": 2048,
                     "description": "Optional quote of a message already observed in the selected route with a known sender. Text only. Source is part of the idempotency fingerprint. DWS revalidates source and recipient."
+                  },
+                  "expected_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$",
+                    "description": "Optional expected SHA256 for file/image. Reject changed bytes before a new delivery reservation; replay an existing matching key from its original receipt even if the producer file changed or disappeared. Text cannot use this field."
                   }
                 },
                 "required": [
@@ -307,7 +334,35 @@
                   "reply_to": [
                     "text"
                   ]
-                }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "required": [
+                        "expected_sha256"
+                      ]
+                    },
+                    "then": {
+                      "oneOf": [
+                        {
+                          "required": [
+                            "file"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "image"
+                          ]
+                        }
+                      ],
+                      "not": {
+                        "required": [
+                          "text"
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }

@@ -20,3 +20,6 @@ dab-service = "dingtalk_bridge.service_manager:main"
 
 [tool.setuptools]
 packages = ["dingtalk_bridge"]
+
+[tool.setuptools.package-data]
+dingtalk_bridge = ["licenses/*.txt"]

@@ -6,6 +6,7 @@
 
 - [中间件架构与真人身份决策](../architecture/dingtalk-agent-middleware.md)
 - [具体采用/改造清单](adoption-plan.md)
+- [首项代码采用：排队文件的原定摘要校验](artifact-digest-adoption.md)
 - [四类 Agent 的官方接入面](../architecture/agent-integration-map.md)，属于通道选型之后的工作
 - [固定版本及文件 SHA256](catalog.json)
 - [现有验收矩阵](../../plans/completion/ACCEPTANCE_MATRIX.md)，不把参考项目的声明计入本项目通过项

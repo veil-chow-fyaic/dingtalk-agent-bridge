@@ -257,3 +257,5 @@
 | 2026-11-12 E091主线纠偏 | 用户要求说明DWS够不够、群测完没有、登录根因及现成项目；核Qwen普通账号channel源码、官方bot入口及社区Codex数字员工；完成保留/参考/差异映射 | docs/98、channel-mainline-source-review.json | 用户未授权E090；撤销新增恢复审批工具计划，只补具体产品缺口。auth login仍未重测/根因未知，群矩阵不改绿；心跳原PAUSED保持，无真实DWS/产品/UI变更 |
 
 | 2026-11-12 E092公开项目优先 | 用户明确DWS真人账号优先，并纠正本地WeCom/runtime研究偏题；公开源码筛选后固定13来源/69文件、许可/摘要，Qwen主体＋CEO文件回执专项，新增文档导航/架构/采用清单；6资料核验通过，非上游测试 | docs/references、docs/architecture、public-reference-catalog-validation.json | 无产品/配置/真实调用/UI变化，未移入第三方实现；下一代码段先核公开Qwen组件依赖与附件/引用缺口，CEO补交付契约，不先造四runtime或重复研究本地旧项目。E090未获许可，PAUSED保持 |
+
+| 2026-11-12 E093社区代码首项采用 | Qwen接口对照后保留原件模型；CEO原定摘要校验改造，复现并修排队文件变化仍发送、并发回执优先；11新增专项，最终源码/双Python291、21模块/六入口与12审计，MIT随包 | docs/references/artifact-digest-adoption、artifact-digest-adoption-validation.json；local/artifact-digest-final-20261112 | 旧失败/首轮wheel和测试保留，未部署/真实迁移/DWS/UI。下一独立项核Qwen admitted/completed与任务入库事务，只补有证据缺口；E090旧E084提案不能部署当前版本，PAUSED及账号边界不变 |

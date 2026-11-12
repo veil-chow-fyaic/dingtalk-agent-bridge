@@ -176,7 +176,15 @@
       "executionStatus": "reference_only_not_executed",
       "category": "focused_dws",
       "priority": "P1",
-      "implementationAdopted": false
+      "implementationAdopted": true,
+      "adoption": {
+        "evidence": "E093",
+        "scope": "digest-before-dispatch gate adapted to core.send and gateway outbox; not the full business handler",
+        "sourcePath": "app/dingtalk_file_delivery.py",
+        "licensePath": "dingtalk_bridge/licenses/ceo-agent-service.txt",
+        "document": "docs/references/artifact-digest-adoption.md",
+        "deployed": false
+      }
     },
     {
       "id": "dsh-dingtalk-self",
@@ -601,5 +609,5 @@
     }
   ],
   "selectionPolicy": "Public GitHub and DingTalk official implementations first; local WeCom references excluded from active selection",
-  "executionStatus": "Sources and selected tests reviewed only; no upstream installation or test execution; no real DWS calls"
+  "executionStatus": "Selected source references not executed as upstream services; E093 adapts one digest gate with separate bridge tests"
 }

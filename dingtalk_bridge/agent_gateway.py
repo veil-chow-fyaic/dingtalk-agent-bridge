@@ -15,6 +15,7 @@ from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from .agent_runtime import LocalRuntime,RuntimeStopped,timeout_seconds
 from .consumer import Inbox,HydrationPending
+from .core import ArtifactIntegrityError
 from .message_model import media_parts
 from .routing import route_configs
 from .text_limits import reply_chunks
@@ -154,7 +155,16 @@ class Gateway:
         else:data={**data,**self.scope}
         req=Request('http://127.0.0.1:18768'+path,headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'},
             data=None if data is None else json.dumps(data).encode())
-        with urlopen(req,timeout=120) as r:return json.load(r)
+        try:
+            with urlopen(req,timeout=120) as r:return json.load(r)
+        except HTTPError as exc:
+            if exc.code == 409:
+                with exc:
+                    try: error = json.load(exc)
+                    except (ValueError, TypeError): error = None
+                if error == {'error': 'artifact_integrity_mismatch', 'delivery_attempted': False}:
+                    raise ArtifactIntegrityError() from exc
+            raise
 
     def emit(self,job_id,label,payload):
         key='agent-'+job_id+'-'+label
@@ -334,7 +344,8 @@ class Gateway:
                     native_image=(self.route.get('imageUploadBinary') and
                                   path.suffix.lower() in {'.png','.jpg','.jpeg'} and
                                   path.stat().st_size <= 2*1024*1024)
-                    self.emit(job['id'],'file-'+str(index),{'image' if native_image else 'file':item['file']})
+                    self.emit(job['id'],'file-'+str(index),{'image' if native_image else 'file':item['file'],
+                                                         'expected_sha256':item['sha256']})
                 self.db.execute('UPDATE jobs SET state="completed",result=? WHERE id=?',
                     (json.dumps({'response':result,'artifacts':outputs},ensure_ascii=False),job['id']))
         except Exception as exc:
@@ -352,8 +363,24 @@ class Gateway:
         with self.lock:rows=self.db.execute('SELECT * FROM outbox WHERE state IN ("pending","submitted","outcome_unknown") ORDER BY rowid LIMIT 20').fetchall()
         for row in rows:
             try:
+                payload = json.loads(row['payload'])
+                artifact = payload.get('file') or payload.get('image')
+                if artifact and 'expected_sha256' not in payload:
+                    # Upgrade only from the task's already-persisted proof, never
+                    # hash today's producer file to bless potentially changed bytes.
+                    with self.lock,self.db:
+                        job = self.db.execute('SELECT result FROM jobs WHERE id=?', (row['job_id'],)).fetchone()
+                        result = json.loads(job[0]) if job and job[0] else {}
+                        proofs = [a.get('sha256') for a in result.get('artifacts', [])
+                                  if isinstance(a,dict) and a.get('file') == artifact]
+                        if (len(proofs) == 1 and isinstance(proofs[0],str)
+                                and re.fullmatch(r'[0-9a-f]{64}', proofs[0])):
+                            payload['expected_sha256'] = proofs[0]
+                            self.db.execute('UPDATE outbox SET payload=? WHERE key=?', (json.dumps(payload,ensure_ascii=False),row['key']))
+                        else:
+                            raise ValueError('artifact_digest_unavailable')
                 # A lost HTTP response is retried with the identical bridge idempotency key/payload.
-                receipt=self.api('/v1/send',{'idempotency_key':row['key'],**json.loads(row['payload'])})
+                receipt=self.api('/v1/send',{'idempotency_key':row['key'],**payload})
                 if receipt['state'] in {'submitted','outcome_unknown'}:
                     receipt=self.api('/v1/reconcile',{'idempotency_key':row['key']})
                 with self.lock,self.db:
@@ -363,6 +390,14 @@ class Gateway:
                         self.emit(row['job_id'],'delivery-issue',{'text':'[Agent] 任务 '+row['job_id'][:8]
                             +' 的部分回复未送达（发送被拒绝或投递失败）。已保留任务结果；不会自动重发失败内容。'
                             +'可发送 /agent status 查看状态。'})
+            except ArtifactIntegrityError:
+                # The bridge only emits this before a new send reservation. An
+                # existing key returns its receipt instead, including unknowns.
+                with self.lock,self.db:
+                    self.db.execute('UPDATE outbox SET state="failed",error="artifact_integrity_mismatch" WHERE key=?',
+                                    (row['key'],))
+                    self.emit(row['job_id'],'delivery-issue',{'text':'[Agent] 任务 '+row['job_id'][:8]
+                        +' 的结果文件在排队后发生变化，未发送该文件。原任务和摘要已保留，未自动重做或改发其他内容。'})
             except Exception as exc:
                 with self.lock,self.db:self.db.execute('UPDATE outbox SET error=? WHERE key=?',(type(exc).__name__,row['key']))
 

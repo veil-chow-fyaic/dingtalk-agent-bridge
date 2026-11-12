@@ -9,7 +9,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse, parse_qs, unquote
-from .core import BridgeError
+from .core import BridgeError, ArtifactIntegrityError
 from .routing import Hub
 from .stream import StreamListener
 
@@ -110,13 +110,16 @@ def main():
                 if write and u.path == '/v1/sync':
                     return self.respond(200, bridge.sync(deep=data.get('deep') is True))
                 if write and u.path == '/v1/send':
-                    value = bridge.send(data.get('idempotency_key'), data.get('text'), data.get('file'), data.get('image'), data.get('reply_to'))
+                    value = bridge.send(data.get('idempotency_key'), data.get('text'), data.get('file'), data.get('image'),
+                                        data.get('reply_to'), data.get('expected_sha256'))
                     return self.respond(200 if value['state'] == 'confirmed' else 202, value)
                 if write and u.path == '/v1/reconcile':
                     return self.respond(200, bridge.reconcile(data['idempotency_key'], data.get('rejection_evidence')))
                 if write and u.path == '/v1/attachments':
                     return self.respond(200, bridge.download(data['message_id'],repair=data.get('repair') is True))
                 self.respond(404, {'error': 'not_found'})
+            except ArtifactIntegrityError:
+                self.respond(409, {'error': 'artifact_integrity_mismatch', 'delivery_attempted': False})
             except (ValueError, KeyError, TypeError) as e:
                 self.respond(400, {'error': str(e)})
             except BridgeError as e:
