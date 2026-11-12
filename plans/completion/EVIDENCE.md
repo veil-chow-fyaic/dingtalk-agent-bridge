@@ -211,3 +211,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E068 — 凭据存储故障脱敏诊断
 - E068补凭据存储故障的固定脱敏health/doctor诊断，精确官方错误前缀＋category/code才归类，不扩成过期/锁定；6新增方法含真实合成CLI/HTTP恢复、未知投递同key重启不重发，源码及新wheel双Python各207项、六入口19模块/20审计通过。尚未加载现场，原进程/配置/账本/观察保持，真实E065仍未恢复。
 - [docs/85](../../docs/85-credential-store-health-diagnostics.md)、[安装](../../evidence/2026-11-12/credential-health-install.json)、[20审计](../../evidence/2026-11-12/credential-health-validation.json)；`PYTHONPATH=. python3 scripts/accept_credential_health.py`。原始local/credential-health-20261112；E063/E064冻结审计修正/2负向通过，旧报告字节保持。
+
+## E069 — 当前源码与安装包交接更新
+- E069已重新导出提交a83d3fd的源码和已验证E068同一wheel；512项冻结manifest、19模块及归档/安装包摘要匹配，无已知私有值。沿用源码与双Python安装包各207项结果，本次没有重跑测试或宣称新部署/UI通过。最新交接payload仅local/handoff-a83d3fd-20261112/bundle；E063旧包保持历史记录。
+- [docs/80](../../docs/80-offline-handoff-export.md)、[六项核验](../../evidence/2026-11-12/handoff-refresh-validation.json)。实际payload的SHA256SUMS再次独立核验通过；不是最终交付，E065/UI/24h保留。

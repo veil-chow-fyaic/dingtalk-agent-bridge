@@ -30,3 +30,9 @@ PYTHONPATH=. python3 scripts/accept_clean_handoff.py
 ```
 
 [构建/源码摘要](../evidence/2026-11-12/clean-handoff-build.json)、[19项审计](../evidence/2026-11-12/clean-handoff-validation.json)。下一段核图片上传补充的独立构建与覆盖边界，不修改官方原版或现场配置。
+
+## E069 当前检查点更新
+
+2026-11-12 10:23。E069已重新导出提交a83d3fd的源码和已验证E068同一wheel；512项冻结manifest、19模块及归档/安装包摘要匹配，无已知私有值。沿用源码与双Python安装包各207项结果，本次没有重跑测试或宣称新部署/UI通过。最新交接payload仅local/handoff-a83d3fd-20261112/bundle；E063旧包保持历史记录。
+
+[本次六项核验](../evidence/2026-11-12/handoff-refresh-validation.json)。当前真实Keychain故障仍未恢复，余下群聊/UI和24h验收未通过；这是一份可保存的检查点，不是完整项目验收。该包固定a83d3fd，此页的更新在后续提交，不能说已包含在包内。

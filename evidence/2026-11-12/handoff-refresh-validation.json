@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E069",
+  "sourceCommit": "a83d3fdae0871f2622833de10a4a5ffc1a7e9852",
+  "ok": true,
+  "checks": {
+    "safe_archive_members": true,
+    "all_512_manifest_files_match": true,
+    "source_wheel_and_installed_validation_same_19_modules": true,
+    "wheel_hash_matches_installed_tests": true,
+    "retains_six_regression_methods_and_207_test_evidence": true,
+    "no_known_private_values": true
+  },
+  "sourceArchiveSha256": "e54afeb55918400e2a496ca4ef1167dedb1034b4b38016665d4ec12acc6535ea",
+  "wheelSha256": "a1149f4c56638c4269f8b140dc7a2da5dc92ac1acca4be70e4a0f03bd0708c08",
+  "testsPerSuiteReused": 207,
+  "testsRerun": false,
+  "fullProjectAccepted": false,
+  "liveKeychainFailureResolved": false,
+  "limits": [
+    "Current Git source plus previously verified identical E068 runtime wheel; tests are reused, not rerun",
+    "Shared payload is bundle only; parent and other local directories remain private",
+    "No new deployment, UI or completed 24h claim"
+  ]
+}
