@@ -1,0 +1,184 @@
+{
+  "date": "2026-11-12",
+  "evidence": "E078",
+  "ok": true,
+  "checks": {
+    "source-evidence.log_two_tests_passed": true,
+    "source-evidence.log_three_boundaries_recorded": true,
+    "py314-tests.log_two_tests_passed": true,
+    "py314-tests.log_three_boundaries_recorded": true,
+    "py311-tests.log_two_tests_passed": true,
+    "py311-tests.log_three_boundaries_recorded": true,
+    "initial_fixture_flag_failures_retained": true,
+    "all_21_product_modules_unchanged": true,
+    "frozen_test_matches_current": true,
+    "suite_has_no_product_or_account_configuration": true
+  },
+  "testsPerTarget": 2,
+  "targets": [
+    "source Python 3.14",
+    "isolated E073 Python 3.14",
+    "isolated E073 Python 3.11"
+  ],
+  "cases": {
+    "source-evidence.log": [
+      {
+        "case": "late_history",
+        "oldTaskState": "blocked",
+        "lateFileDidNotReviveTask": true,
+        "newExplicitTaskCompleted": true,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 4,
+        "sum": 7
+      },
+      {
+        "case": "before_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "before_binding",
+          "cursor": 2,
+          "jobs": 0,
+          "outbox": 0
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      },
+      {
+        "case": "after_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "after_binding",
+          "cursor": 2,
+          "jobs": 1,
+          "outbox": 1
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      }
+    ],
+    "py314-tests.log": [
+      {
+        "case": "late_history",
+        "oldTaskState": "blocked",
+        "lateFileDidNotReviveTask": true,
+        "newExplicitTaskCompleted": true,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 4,
+        "sum": 7
+      },
+      {
+        "case": "before_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "before_binding",
+          "cursor": 2,
+          "jobs": 0,
+          "outbox": 0
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      },
+      {
+        "case": "after_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "after_binding",
+          "cursor": 2,
+          "jobs": 1,
+          "outbox": 1
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      }
+    ],
+    "py311-tests.log": [
+      {
+        "case": "late_history",
+        "oldTaskState": "blocked",
+        "lateFileDidNotReviveTask": true,
+        "newExplicitTaskCompleted": true,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 4,
+        "sum": 7
+      },
+      {
+        "case": "before_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "before_binding",
+          "cursor": 2,
+          "jobs": 0,
+          "outbox": 0
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      },
+      {
+        "case": "after_binding",
+        "childExitCode": -9,
+        "checkpoint": {
+          "phase": "after_binding",
+          "cursor": 2,
+          "jobs": 1,
+          "outbox": 1
+        },
+        "replayedTransportEvents": 0,
+        "downloads": 1,
+        "runtimeCalls": 1,
+        "syntheticProviderSends": 3,
+        "confirmedOutbox": 3,
+        "restartRecordsUnchanged": true,
+        "sum": 7
+      }
+    ]
+  },
+  "testSha256": "c41c7b20b8894d489b361b6234028ae26aace9df6467712891db7c7768a65e8d",
+  "logSha256": {
+    "source-evidence.log": "19fa8d9604991ac0db667099d47e7fde171bd0135aa73f2d06a6c17746ece6f9",
+    "py314-tests.log": "e747af4785f82b001b90fe3b2f0bf9e427a600a0507a9ae4ad3402b44cde200a",
+    "py311-tests.log": "80bb0ad7587e47ae9edd8c15df56ed88b98fabdde9ce21a4a84cf6384afd2db7"
+  },
+  "productReusedFrom": "E073",
+  "priorFullSuite": {
+    "evidence": "E074",
+    "testsPerSuite": 244
+  },
+  "fullSuiteRerun": false,
+  "productChanged": false,
+  "realDwsCalls": 0,
+  "newUIEvidence": false,
+  "limits": [
+    "Actual local SQLite and child SIGKILL, synthetic DWS provider/runtime and in-process API adapter; not DingTalk, HTTP server or Kimi acceptance",
+    "No new runtime wheel or full 251-test suite claim",
+    "Blocked task never revived; a separate explicit synthetic user message is new intent, not an unknown-send retry",
+    "No deployment or group testing authorization change"
+  ]
+}
