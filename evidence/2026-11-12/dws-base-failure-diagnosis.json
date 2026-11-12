@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E094",
+  "date": "2026-11-12",
+  "productCommit": "661b67c",
+  "productModified": false,
+  "officialVersion": "v1.0.67",
+  "officialCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "realDwsCalls": 0,
+  "realKeychainCalls": 0,
+  "servicesStarted": 0,
+  "authLoginRetested": false,
+  "systemLogReview": {
+    "readOnly": true,
+    "windowLocal": [
+      "2026-11-12 09:10:00+08:00",
+      "2026-11-12 09:30:00+08:00"
+    ],
+    "exitCode": 0,
+    "macOS": "26.5.1",
+    "rawRemainsLocal": true,
+    "rawSha256": "8daabe52579235a9167d02316e6a57a70cf9f449e7c9fa2db7f16bf56138ae83",
+    "stderrBytes": 0,
+    "lastHistoricalGroupSync": "09:25:18+08:00",
+    "lastHistoricalDirectSync": "09:25:19+08:00",
+    "lastSyncSource": "docs/82-live-keychain-read-failure.md",
+    "events": [
+      {
+        "time": "09:25:14.616960+08:00",
+        "process": "CUALockScreenGuardian",
+        "fact": "connection event"
+      },
+      {
+        "time": "09:25:20.816139+08:00",
+        "process": "loginwindow",
+        "fact": "invalid param(s)"
+      },
+      {
+        "time": "09:25:20.816147+08:00",
+        "process": "loginwindow",
+        "fact": "invalid param(s)"
+      },
+      {
+        "time": "09:25:20.816152+08:00",
+        "process": "loginwindow",
+        "fact": "screen unlock succeeded with password; attempting login keychain unlock"
+      },
+      {
+        "time": "09:25:20.968420+08:00",
+        "process": "loginwindow",
+        "fact": "unable to unlock keychain from screen unlock; SecKeychainLogin returned -25293"
+      }
+    ],
+    "classification": "system_login_keychain_unlock_failure_observed",
+    "computerUseCausation": "unproven; matching temporal signature, no controlled comparison"
+  },
+  "officialTimeoutProbe": {
+    "upstreamCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "sourceSha256": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+    "workerBlockSha256": "db820d8d2d1d40356fd53a07d95b4758c0ab9cda872f20e07a1c808b20a703e2",
+    "workerBlockVerbatim": true,
+    "probeSha256": "4271204873056959e6fad047c83718b71bd031251be2969f361f36f5919954b1",
+    "realDwsCalls": 0,
+    "realKeychainCalls": 0,
+    "v68SourceSha256": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+    "v67V68SourceByteEqual": true,
+    "passedTests": 2,
+    "skippedHelpers": 1,
+    "defectReproduced": true,
+    "normalCompletionControlPassed": true,
+    "ownedSyntheticChildReaped": true,
+    "realSecurityBinaryInvoked": false,
+    "officialTestMainInvoked": false,
+    "timeoutScaleMilliseconds": 30,
+    "officialDefaultTimeoutSeconds": 5,
+    "errorWrapperStub": true,
+    "probeLogSha256": "cb9d785f36ccc11d82029d0802cc9f8d80a818a0e6042bd0cb79e355ec4c324c",
+    "licenseSha256": "1d951e8ca1019e1ad6fc14b8450df1b7ba788b9f242002873ca79df70ee376fd"
+  },
+  "sourceFindings": {
+    "workerDeadlineDoesNotCancelUnderlyingOperation": true,
+    "defaultKeychainPrecheckOutsideWorkerDeadline": true,
+    "goKeyringVersion": "v0.2.8",
+    "goKeyringGetUsesExecCommandWithoutContext": true,
+    "goKeyringFailedGetDiscardsCombinedOutputExceptNotFoundClassification": true,
+    "goKeyringDarwinSha256": "8fd983f3af38bfd64b62949788b0ad5f7e03d24c87fde9a994b1e1a582ba2792"
+  },
+  "publicSources": [
+    {
+      "url": "https://github.com/openai/codex/issues/60687",
+      "stateAtReview": "open",
+      "createdAt": "2026-11-10T23:59:36Z",
+      "authorRole": "user report; no maintainer fix confirmed"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/pull/1430",
+      "role": "unclassified Keychain reads still fail closed before login exchange"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/214",
+      "role": "sandbox compatibility; insufficient alone to explain ordinary Terminal failure"
+    },
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68",
+      "role": "latest release checked; Darwin source unchanged"
+    },
+    {
+      "url": "https://github.com/zalando/go-keyring/blob/v0.2.8/keyring_darwin.go",
+      "role": "dependency implementation"
+    }
+  ],
+  "claims": {
+    "rootOSFailureLayerLocated": true,
+    "computerUseRootCauseProven": false,
+    "dwsOAuthBugProven": false,
+    "badUserPasswordProven": false,
+    "authLoginFixed": false,
+    "credentialStabilityAfterIncidentProven": false,
+    "bridgeContainmentDeployed": false,
+    "newUIPass": false
+  },
+  "historicalEvidencePreserved": {
+    "preexpiryRefresh": "E028 observed natural rollover and sync beyond old expiry, before incident",
+    "postIncidentRead": "E089 one ordinary query succeeded, not auth login or long-run validation"
+  },
+  "nextPriority": "DWS credential/base reliability before additional channel/runtime features; no new live calls without explicit authorization"
+}

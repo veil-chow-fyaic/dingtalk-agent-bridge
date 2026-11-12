@@ -11,3 +11,5 @@
 提交前执行verify_handoff写manifest再只读核对、verify_privacy扫描暂存blob及git diff --check。原24h观察不得重置，当前停机不等于没有失败样本。新工具`review_acceptance.py --require-covered`返回2是当前27格/9 MUST仍有缺口的正确结果，不是平台故障或最终完成门。
 
 历史阶段快照和已失效的待密码/解锁指令见[归档](../../docs/history/through-E076/README.md)，不能当当前操作步骤。
+
+E094已用只读系统日志定位本机登录钥匙串解锁失败，官方worker合成复现仅2测试通过/1helper跳过；不是新的真实认证许可。只读系统日志不等于读取钥匙串密钥，本轮没有后者。故障窗口和原件已固定，不重复收集；新真实核验仍按AGENTS要求明确授权，禁止通过锁屏/重启/停系统守护复现新issue。

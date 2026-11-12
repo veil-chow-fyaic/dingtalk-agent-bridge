@@ -304,3 +304,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [采用记录](../../docs/references/artifact-digest-adoption.md)、[11新增/三环境291与12冻结核验](../../evidence/2026-11-12/artifact-digest-adoption-validation.json)。Qwen消息/引用接口不足以替代现有原件模型，未整体搬入；CEO固定bd3de36的MIT摘要校验适配到gateway/CLI/HTTP/Bridge，许可证按字节保留并随wheel打包。
 - 旧代码已复现排队后修改文件仍confirmed；新任务绑定原SHA，旧未终态队列只采用原任务证据，缺证不发送；新不符请求不上传/预留，原key则回执优先并只对账。文件/原生图片、重启、回执丢失、源件删除、并发、真实合成HTTP/CLI均已验。首轮5专项断言错误/三套290的3失败/并发探针失败保留；最终独立冻结源、测试、wheel三套各291通过，21模块与六入口匹配。
 - 无真实DWS/auth/UI/现场账本迁移，E090旧提案及真实配置未改、未授权恢复。矩阵与PRD未改，新增离线验证不抵消UI缺项；新代码未部署。
+
+### E094｜DWS底座分层定位与官方超时复现
+
+- [诊断](../../docs/99-dws-base-failure-diagnosis.md)、[脱敏证据](../../evidence/2026-11-12/dws-base-failure-diagnosis.json)、[独立Go复现](../../evidence/2026-11-12/dws-keychain-timeout-probe_test.go)。公开OpenAI #60687是用户报告，无已核维护者修复；本机只读日志09:25:20屏幕解锁后SecKeychainLogin -25293，紧邻原两路最后成功同步和Guardian活动。系统故障层已定位，Computer Use因果未定。
+- 原字节官方worker/合成子进程复现等待超时但子进程仍活，最后自清理；正常完成对照通过，共2通过/1helper跳过，v1.0.68同Darwin源。未运行官方TestMain/DWS/security，未修改参考仓库或产品，未重跑291项全量。
+- 原始系统日志留local/dws-base-diagnosis-20261112，仅固定事件/摘要入Git。真实DWS/Keychain0、未启动服务/心跳；auth login未重测，长期稳定未验收。E028事故前自然预刷新、E089事故后一次成功都保留原范围。优先底座，不新增审批工具或扩上层功能。
