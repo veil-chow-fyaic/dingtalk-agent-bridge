@@ -12,6 +12,8 @@ E071事故后用户已确认弹窗停止，要求回到主线；三个真实服�
 
 E082：用户已明确允许并执行原key `dab-auth-read-20261112`的一次查询；官方因不支持脚本强加的`--as`返回validation/unknown_flag、退出3，receipt为failed且attempted=true。这是命令准备错误，认证是否恢复仍未知；三个服务和operator_suspended保持。原key已消耗，禁止重试/换key/删receipt，不能把一次许可扩成修正后再查或后台恢复。当前不再等待这次许可答复，也不再执行docs/90旧准备命令；先离线修官方参数契约，再说明具体方案，任何新真实调用或后台恢复均需明确允许。详见[失败与边界](docs/94-single-read-unsupported-flag.md)。
 
+修正后的追加核验已单独向用户提问（明确包含允许新记录dab-auth-read-fixed-20261112），目前待答复，不重复询问。提案仅local/recovery-proposals/fixed-arguments-20261112.json，尚未创建新query key。只有明确允许追加这一次及新记录，才核提案/当前代码与配置、先查新key receipt，再创建匹配计划并执行最多一次；原失败key永不重试/覆盖，成功也不恢复后台。
+
 E072持久暂停/最多两调用/进程守护、E073办公入口防护及E074history双路方案已离线验证，尚未部署。官方Stream bus按身份共享且Setsid脱组，不能杀共享bus；foreground只运行bus，不能当消费修复。候选恢复用既有history-only、15秒补读，实际配置仍stream_hint、尚未改动。当前包装器不是OS沙箱，不能覆盖恶意脱组、守护本身被杀或系统失效。
 
 ## 身份与范围
