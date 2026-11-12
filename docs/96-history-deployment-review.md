@@ -42,3 +42,13 @@ python3 scripts/prepare_history_deployment.py --key history-deployment-20261112 
 6. 新明确私聊任务先核生成上下文、实际runtime工具、原会话回复及UI下载打开。只有真实证据通过才能更新相应矩阵格；E070群关联仍待范围允许时实测。后续群worker恢复须服从最新授权，不能复用旧三人群许可。
 
 当前只制定顺序，没有执行配置变更、resume、服务启动或真实上下文迁移。下一独立项是只读预览本地尚未消费事件与候选任务，补上E085只核已入库任务的盲区；无法读取的远端停机消息明确保持未知。
+
+## E087：补查尚未消费的本地事件
+
+scripts/review_local_backlog.py以E085冻结清单为前提，持已有owner锁、拒绝SQLite旁文件，只读检查每路consumer cursor、全部已入inbox消息及cursor之后的transport events。复用当前normalize/command_for/file_request做分类，不构造worker，不下载、执行、投递、改cursor或修改session。既有job按原ID与状态单列；它们的未终态审查仍由E085承担，不重复当新任务。
+
+输出区分原任务、任务策略忽略、控制命令、普通文本候选、附件候选、显式文件选择待审、内容阻塞和quarantine。它不模拟cancel/new的队列先后效应、不声称文件选择一定成功、不预先批准群任务；条目只写私有ID/状态/hash，不导出消息正文、command/model或session值。若cursor大于本地最大seq，明确列出而不自动纠正。源snapshot、inbox身份/范围或cursor不一致会拒绝；输出只写一次，不覆盖。
+
+当前实际私有预览local/backlog-reviews/local-backlog-20261112/preview.json：两路本地未消费事件0、新任务或通知候选0、quarantine0；20原文件内容/mtime/权限保持。**远端未同步停机消息仍为unknown**，这些0不是恢复后台的授权。E085的8个历史非成功任务继续保留。
+
+[6专项三环境与11项核验](../evidence/2026-11-12/local-backlog-review-validation.json)包括群普通聊天/私聊任务差异、白名单/自身回复过滤、status/cancel/new、文件待审、旧failed去重、坏事件隔离、过期/旁文件拒绝、cursor异常、跨scope拒绝和真实合成CLI私有写一次。首轮5项中1失败/2错误是fixture使用macOS未规范化临时目录绝对路径；改为规范路径并使负向断言匹配具体拒绝原因，未放宽路径防护。新增跨scope用例后最终6项在源码/E084双Python已安装产品均通过，无新wheel/全量重跑/真实DWS或UI。

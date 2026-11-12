@@ -1,0 +1,78 @@
+{
+  "evidence": "E087",
+  "ok": true,
+  "checks": {
+    "source-initial.log": true,
+    "source-final.log": true,
+    "py314.log": true,
+    "py311.log": true,
+    "frozen_tool_tests_runner_match": true,
+    "both_installed_E084_origins": true,
+    "21_product_modules_unchanged": true,
+    "twenty_existing_files_unchanged": true,
+    "actual_two_routes_zero_local_candidates_remote_unknown": true,
+    "private_output_permissions_and_no_raw_models": true,
+    "pending_single_read_proposal_unchanged": true
+  },
+  "runs": [
+    {
+      "log": "source-initial.log",
+      "testsRun": 5,
+      "passed": false,
+      "failures": 1,
+      "errors": 2,
+      "logSha256": "01e91d76992c19192bc823bfdc1f8a834d3756ce9bdb23a7eccc0bf12494b8bf"
+    },
+    {
+      "log": "source-final.log",
+      "testsRun": 6,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "af8484eac6449c34a5928ec564d6d9c4b90a73d09b77823bdceb5330edd61130"
+    },
+    {
+      "log": "py314.log",
+      "testsRun": 6,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "90e51cb52468bd3c60a5df30fd4c688e4d86283fc200ee3d5acb432dbdd45931"
+    },
+    {
+      "log": "py311.log",
+      "testsRun": 6,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "logSha256": "efefab0d34d5da973a6025f9745df65deaca3a76e05e4a8debd79f22e05561e5"
+    }
+  ],
+  "newTestMethods": 6,
+  "targetedTestsPerEnvironment": 6,
+  "reviewerSha256": "ad37e755100d3d47a50d78fde40cd1031e759d57a1f3df68917166d45dc73254",
+  "testSha256": "c4ccb9b2bc979d44c1c19528568a0201909f195fcaf3467f37295e59049ed668",
+  "privatePreviewSha256": "91b1e97aa628a73f5dd518113ca30fd43353d7995385a9cebeeaeb3596f7857f",
+  "localSummary": {
+    "ok": true,
+    "routeCount": 2,
+    "unconsumedLocalEvents": 0,
+    "candidateTasksOrNotices": 0,
+    "quarantinedLocalMessages": 0,
+    "remoteUnsyncedMessages": "unknown",
+    "executionAllowed": false,
+    "newDwsCallsAllowed": false
+  },
+  "productChanged": false,
+  "newWheel": false,
+  "fullSuiteRerun": false,
+  "newRealDwsCalls": 0,
+  "newNativeUIEvidence": false,
+  "limits": [
+    "Local candidate preview only; remote messages absent from transport remain unknown",
+    "Candidate classes do not simulate control ordering, explicit file selection, hydration or runtime outcomes",
+    "Existing jobs retain original state and are assessed for nonterminal work in E085, not counted again as new candidates",
+    "No actual gateway/bridge/inbox construction, credential access, cursor update, task execution or re-send",
+    "Two E086 and six E087 targeted additions are not a new whole-suite count"
+  ]
+}

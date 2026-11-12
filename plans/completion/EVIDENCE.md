@@ -275,3 +275,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E086 — 旧官方上下文与持久会话升级
 - [说明/具体恢复顺序](../../docs/96-history-deployment-review.md)、[8项核验](../../evidence/2026-11-12/official-context-upgrade-validation.json)。2专项源码及E084安装包双Python通过；旧schema1刷新受管入口、暂停拒绝底层调用，关闭办公清理生成文件，原session/完成与失败任务/回执/用户文件保留。
 - 仅合成runtime，无真实会话迁移/UI/DWS、新wheel或全量重跑。真实模型旧记忆不由提示词消除；21模块、20原文件及待决提案保持。恢复分transport补读/停机核积压/按授权单路gateway，不自动全启。
+
+## E087 — 尚未消费本地事件只读预览
+- [说明](../../docs/96-history-deployment-review.md)、[11项核验](../../evidence/2026-11-12/local-backlog-review-validation.json)。6专项三环境，复用当前纯分类逻辑、原ID去重/控制和文件待审、冻结/旁文件/cursor/scope拒绝；不构造worker或执行任务。
+- 当前两路0未消费本地事件/0新候选/0quarantine，远端未补消息仍unknown；20原文件、E084产品、追加核验提案保持。原5项首轮1失败/2错误保留，最终6项无新全量/UI/真实DWS。
