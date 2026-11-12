@@ -265,3 +265,5 @@
 | 2026-11-12 E095 AIC限定恢复及真实文件 | 用户登录截图归local；精确新群/两成员核对，旧企业群退出三库不变，私聊配置不变；E09321模块部署，history先补/cut审查后三服务运行。群TXT/CSV→唯一Kimi任务43→两个结果下载/Numbers及TextEdit；私聊493/JSON下载快速查看；22只读核验 | docs/100、aic-resume-validation.json；原件local/aic-resume-20261112 | 新增3格/R05补齐，40/64通过，8 MUST不完整。仅新AIC群及原私聊，心跳PAUSED。下一段群PNG出站/JPEG/WAV/MP4和长文/控制；旧key不重放、旧群禁测、原24h故障不重置 |
 
 | 2026-11-12 E096 AIC原生PNG | 唯一群任务，Kimi实际Pillow+读图，640×360/4762B；liev原生image、查看器、客户端下载/Finder快速查看与SHA一致，九项只读核验 | docs/101、aic-group-png-validation.json；原件local/aic-png-20261112 | 群PNG出站由部分转通过，41/64/22blocked/1partial；8 MUST未完整。无产品改动/重跑。下一段AIC群JPEG/WAV/MP4和长文/控制，企业群禁测 |
+
+| 2026-11-12 E097需求与CEO | 复盘原聊天14条用户消息及本聊天全部纠偏；固定CEO新版31文件、Git blob/摘要/许可、发送事实/session/runtime源码和负例；更新统一需求/进度/路线，旧TODO按字节归档 | docs/102、references/ceo-deep-dive及index、requirements-ceo-review-validation.json | 产品21模块/测试/判据和通过状态不变，无真实DWS/UI/服务改动；先AIC待测8格和群控制，独立代码按CEO C02–C04实际差距窄采用；Codex独立，四runtime不冒称已接通。心跳仍PAUSED |

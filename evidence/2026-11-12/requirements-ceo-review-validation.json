@@ -1,0 +1,48 @@
+{
+  "evidence": "E097",
+  "at": "2026-11-12T10:51:45.700163+00:00",
+  "scope": "Documentation/source provenance and unchanged acceptance/product audit only; no upstream tests, live DWS, UI, service health or deployment validation",
+  "reviewBaseline": "361e94bb0b4960cb5fddfc25a9963a35d9954157",
+  "productBaseline": "661b67c",
+  "ceoSourceCommit": "92e360ed1eb35f006afee738916cc9b735c1deb5",
+  "checks": {
+    "pinned_sources_31_unique": true,
+    "every_source_matches_git_blob_size_sha256_and_url": true,
+    "MIT_license_in_snapshot": true,
+    "previous_E093_reference_catalog_unchanged": true,
+    "previous_adoption_record_unchanged": true,
+    "criteria_and_levels_all_17_unchanged": true,
+    "acceptance_schema_valid": true,
+    "ui_counts_unchanged_41_22_1": true,
+    "MUST_counts_unchanged_6_5_3": true,
+    "all_directional_cells_unchanged": true,
+    "product_21_modules_equal_HEAD_and_E093": true,
+    "existing_tests_unchanged": true,
+    "configuration_templates_unchanged": true,
+    "old_TODO_archive_exact_HEAD_bytes": true,
+    "project_remains_incomplete": true
+  },
+  "checkCount": 15,
+  "ok": true,
+  "sourceFiles": 31,
+  "productModules": 21,
+  "existingTestFiles": 41,
+  "criteriaSha256": "472ab6c0ee9b1734f6201b954eab1cfabd73f6839c6d9d8666e62013b6ee6a51",
+  "archivedTodoSha256": "d2de87159d16ab4715c53a258ffa1f25a0d15ab8a39aaddd54799a85c96ab27d",
+  "mustStateCounts": {
+    "partial": 5,
+    "passed": 6,
+    "open": 3
+  },
+  "uiStateCounts": {
+    "passed": 41,
+    "blocked": 22,
+    "partial": 1
+  },
+  "limitations": [
+    "Sources selected, not a full runnable upstream checkout",
+    "Source/test review depth is recorded per file; no upstream test execution",
+    "Historical UI evidence retained, not repeated or independently recertified this turn",
+    "No whole-project completion or continuous healthy 24h claim"
+  ]
+}

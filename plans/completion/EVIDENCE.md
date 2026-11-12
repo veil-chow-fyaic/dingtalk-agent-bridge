@@ -321,3 +321,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [UI/原件记录](../../docs/101-aic-group-native-png.md)、[九项只读核验](../../evidence/2026-11-12/aic-group-png-validation.json)。veil原生发送唯一任务，Kimi实际Python/Pillow生成640×360/4762B PNG并ReadMediaFile；image payload绑定原SHA，三个confirmed。
 - liev普通账号原生图片气泡/独立查看器、客户端下载成功、Finder快速查看实际打开，标记/21/22/TOTAL43可见，下载件与产物字节一致。工具超时/0尺寸截图及保存面板输入问题按现场复核，没有重投或配置修改。
 - 群PNG出站由部分转通过，当前41/64通过、22blocked、1部分；8 MUST仍有缺口。无产品修改/全量重跑，范围仍仅新AIC群和原私聊。
+
+## E097 — 全部用户需求复盘与CEO源码深挖
+- [统一需求/进度/路线](../../docs/102-user-requirements-and-roadmap.md)、[CEO深挖](../../docs/references/ceo-deep-dive.md)、[31文件来源](../../docs/references/ceo-deep-dive-index.json)、[资料与不变性核验](../../evidence/2026-11-12/requirements-ceo-review-validation.json)。直接读取原聊天全部14条用户消息，并结合本聊天纠偏/授权；真人账号、通用runtime、官方/GitHub优先、真实UI和新AIC专用范围统一，不新增验收门槛。
+- CEO固定92e360ed，31公开文件逐一核Git blob/大小/SHA；旧bd3de36采用和MIT保持。深入发送事实/文件回执、session归属与兼容性、runtime能力/失败分类及Codex环境，明确已有flock/摘要不能误报缺失；宽松发送审核、业务重试、认证协调和部分清理不采用。C02–C04为下一窄接缝，未复制新产品代码、未运行上游测试或服务。
+- 活动TODO旧停机阶段按HEAD原字节归档，架构/采用表/PRD证据列和当前计划一致更新。21产品模块、所有现有测试、配置模板、原17判据和等级不变；矩阵仍41/22/1、MUST6通过/5部分/3未完成。没有新DWS、UI、部署或健康证据，没有改变心跳/服务。当前未完成。

@@ -4,6 +4,7 @@
 
 | 目的 | 入口 |
 |---|---|
+| 用户需求、真实进度、接下来做什么 | [E097统一复盘与路线](102-user-requirements-and-roadmap.md) · [CEO源码深挖](references/ceo-deep-dive.md) |
 | 先看现成项目与采用顺序 | [公开参考目录](references/README.md) · [逐项采用清单](references/adoption-plan.md) · [固定来源 catalog](references/catalog.json) |
 | 了解中间件和身份边界 | [架构与真人账号](architecture/dingtalk-agent-middleware.md) · [Agent 官方接入面](architecture/agent-integration-map.md) |
 | 查当前任务与操作范围 | [AGENTS](../AGENTS.md) · [CURRENT_MISSION](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) |

@@ -4,7 +4,7 @@
 
 只在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不自行派生、不另开实现或改参考仓库。聊天目录仅为入口。先读 plans/completion 的 CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志；验收以01-PRD和ACCEPTANCE_MATRIX为准。历史阶段和旧“下一步”不作为当前指令。
 
-交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文与同会话交付。官方DWS负责身份、通讯、历史、资源和办公；bridge补路由、白名单、任务、会话、幂等、文件及恢复。至少一个本地执行器即可；Kimi真实工具已满足，Codex超时独立跟踪。优先采用公开官方/GitHub项目，Qwen普通账号通道、CEO文件/回执为主要参考，见docs/references；不转成本地WeCom考古或为四runtime重造中间件。
+交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文与同会话交付。官方DWS负责身份、通讯、历史、资源和办公；bridge补路由、白名单、任务、会话、幂等、文件及恢复。至少一个本地执行器即可；Kimi真实工具已满足，Codex超时独立跟踪。公开官方/GitHub优先，E097按用户偏好深挖CEO任务/交付/runtime契约，Qwen继续作通道参照，见docs/references；不转成本地WeCom考古或为四runtime重造中间件。
 
 ## 最新授权与当前现场（E095）
 
@@ -45,3 +45,5 @@ liev是显式profile绑定的真人普通账号，veil为客户端真人用户�
 账号ID、凭据、原聊天/截图/AX/数据库/日志与下载件仅local，不整包交接。最终MUST/UI、真实观察/失败处置、隐私/检出/交接自检全部满足才完成并停心跳。正常未变安静，只汇报实质里程碑、失败、完成或必要用户动作。
 
 E096补齐群PNG出站原生气泡/查看器/下载/Quick Look及SHA一致，九项只读核验；已有样本不重做。下一项只补JPEG/WAV/MP4和群长文/控制，见[记录](docs/101-aic-group-native-png.md)。
+
+E097已复盘原聊天14条用户消息及本聊天全部纠偏，统一入口为[需求与路线](docs/102-user-requirements-and-roadmap.md)。当前8格群媒体/长文尚待测试，另外14 blocked涉及协议/引用/组合、1partial；总41/22/1不变。独立代码工作优先[CEO C02–C04](docs/references/ceo-deep-dive.md)，真实差距才采用；31文件研究不是新UI或上游测试通过。活动TODO已清理，旧停机阶段原文归档，不能重开旧许可流程。

@@ -2,7 +2,7 @@
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
-选型优先采用公开 GitHub/钉钉官方已有实现：**官方 DWS 做通讯底座，Qwen DWS channel 做通道主体参照，CEO Agent Service 补文件交付与回执设计**。默认使用 DWS 授权真人账号；bot 项目仅参考可拆出的交互设计。[参考目录](docs/references/README.md) · [采用清单](docs/references/adoption-plan.md) · [全部文档导航](docs/README.md)
+选型优先采用公开GitHub/钉钉官方实现：**官方DWS做通讯底座，Qwen作通道组件参照，CEO作任务/交付/执行器契约参照**。默认DWS授权真人账号；bot项目仅参考可拆交互。[统一需求与路线](docs/102-user-requirements-and-roadmap.md) · [CEO源码深挖](docs/references/ceo-deep-dive.md) · [参考目录](docs/references/README.md) · [文档导航](docs/README.md)
 
 **项目尚未完整验收；当前普通账号群聊和私聊已恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
@@ -25,7 +25,7 @@ veil是客户端真人用户，liev经显式profile绑定的DWS普通账号回�
 |---|---|
 | 当前任务、授权、禁止项 | [AGENTS](AGENTS.md) · [关键路径](plans/completion/CRITICAL_PATH.md) |
 | 需求与逐格证据 | [PRD](plans/completion/01-PRD.md) · [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) |
-| 当前进度 | [执行摘要](docs/13-roadmap-and-backlog.md) · [需求回顾](docs/17-requirements-progress-review.md) |
+| 当前进度 | [E097需求/进度/规划总复盘](docs/102-user-requirements-and-roadmap.md) · [活动任务表](plans/completion/TODO.md) |
 | 安装、运行、恢复 | [运行手册](docs/15-service-runbook.md) · [通用工具契约](docs/22-generic-tool-and-consumer.md) |
 | 官方与自研边界 | [边界研究](docs/25-official-boundary-and-scenarios.md) · [办公入口及共享bus](docs/89-supervised-official-office-entrypoint.md) |
 | 公开参考与执行器接入 | [官方/GitHub参考](docs/references/README.md) · [中间件架构](docs/architecture/dingtalk-agent-middleware.md) · [官方Agent接口](docs/architecture/agent-integration-map.md) |

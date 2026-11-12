@@ -9,3 +9,5 @@ E095当前三个受管服务运行、双路history-only；新AIC测试群是唯�
 21模块与E093冻结版相同且已部署；代码修复才执行对应回归，文档以链接/摘要/隐私验证为主，不重跑已过全量凑进度。原账号/聊天/截图/日志/下载件仅local。未知投递原key对账，不UI补发，旧失败不删。
 
 提交前verify_handoff写manifest并复核、verify_privacy扫描暂存blob、git diff --check。review_acceptance只核声明，当前未满足require-covered是正确缺口结果，不是最终认证。原24h观察及维护不重置。
+
+续作以E097统一需求及精简TODO为准；through-E096归档仅历史。CEO新版31文件是只读参考，不运行其登录/后台/测试脚本，不把它作为可直接部署的checkout。

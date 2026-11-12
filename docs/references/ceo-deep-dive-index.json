@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E097",
+  "retrievedAt": "2026-11-12T10:49:18.813129+00:00",
+  "repository": "https://github.com/callzhang/ceo-agent-service",
+  "commit": "92e360ed1eb35f006afee738916cc9b735c1deb5",
+  "previousAdoptionCommit": "bd3de36b136abfd5e3dc571347358ea5b1be69c1",
+  "license": "MIT",
+  "sourceMethod": "GitHub connector: pinned raw files plus recursive Git tree; exact byte/Git blob verification",
+  "scope": "Selected public sources only, not a runnable checkout; not imported into product; upstream tests and service not run; no new UI coverage",
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/README.md",
+      "bytes": 75013,
+      "sha256": "41382a52a4ad713704c0fdb072611d5b7d39549210d0a5f8436403c14f028547",
+      "gitBlobSha1": "4c39971a523bcc8b6cedbdca385102b5ec3bc1a5",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "pyproject.toml",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/pyproject.toml",
+      "bytes": 1517,
+      "sha256": "5c1d4fa53b1fe175c9a62b7d1a120b117d92a243474ddeb1e78821d60f1716a1",
+      "gitBlobSha1": "dcd254c94b68e85ddd1838758d03325ef282e724",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/LICENSE",
+      "bytes": 1087,
+      "sha256": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85",
+      "gitBlobSha1": "e37ae6e04b5372befb448bea294153a0c6c39bfd",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/agent_runtime_contracts.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/agent_runtime_contracts.py",
+      "bytes": 4616,
+      "sha256": "a81783c9d51649b206242d681ae5bb57911b2bebe1181c9383b226eaaaa4b9fe",
+      "gitBlobSha1": "426be2d1541c287b6fd61e5509a36a62ef7d1537",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/dingtalk_send_evidence.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dingtalk_send_evidence.py",
+      "bytes": 18024,
+      "sha256": "eba30fa84e8eede4d1734a62de433424e89ac1b47e33b8e0e63c41a28c0e2df1",
+      "gitBlobSha1": "ca7d7d36e18485f292faa1dae74d62aa7d4a849b",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "docs/dingtalk-delivery-verification.md",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/docs/dingtalk-delivery-verification.md",
+      "bytes": 10611,
+      "sha256": "1b63a6feee69453e67992a205f860d97e43dd23657cacafc124bdb72b36f112e",
+      "gitBlobSha1": "87f35f9ec898439f74e7c9cb7cc1fce636e8ec4b",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/task_agent_session.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/task_agent_session.py",
+      "bytes": 3943,
+      "sha256": "c14c6473bc28310fd79f7666a891e382be175d2b9514c95245dcfefe74524f3e",
+      "gitBlobSha1": "25d640bfec1f94de1ca2e9e5f0a0698b5c10afd9",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "docs/direct-agent-session-serialization.md",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/docs/direct-agent-session-serialization.md",
+      "bytes": 1429,
+      "sha256": "cd39fd683c179304e40ea86734582e99cf01d8ea7dcaad6a095423934566b96a",
+      "gitBlobSha1": "3365f274f0808cc6ee2ae05637aa54efd7e324c9",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/dingtalk_file_delivery.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dingtalk_file_delivery.py",
+      "bytes": 4023,
+      "sha256": "fcd6b7dc15592975737468cd8ed5cf4856e8eac1e506fc34a46b2a641545110b",
+      "gitBlobSha1": "d4287f91e6a3c14d6c13ec33bd22fd39c7446432",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/dingtalk_models.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dingtalk_models.py",
+      "bytes": 3308,
+      "sha256": "01035cf12852beebd6f073fb5c73735b473b976d6202765c053d74579cc6f230",
+      "gitBlobSha1": "a9d443392b6ed0950f33162f7fffa74cc1eb4903",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/codex_runtime_adapter.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/codex_runtime_adapter.py",
+      "bytes": 18065,
+      "sha256": "25e75b4b70fcff6e855045326e03b870d035f72d7f5e60cb2a368fba675180d9",
+      "gitBlobSha1": "1992221d01786ceff2b766a0b591f459c09403d5",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/native_agent_output.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/native_agent_output.py",
+      "bytes": 12595,
+      "sha256": "d4bf0c5100041dabafa226b6042118945b48ca17c3b3f4356dd85d69be96fbf3",
+      "gitBlobSha1": "fd1766e18c8339b1b2070403b8c2f00c84def5c1",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/bounded_process.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/bounded_process.py",
+      "bytes": 2044,
+      "sha256": "e9461ada6af5aff5c8bd0b4d6f30e4433b843c1763c094572aacd8ed2fd85c50",
+      "gitBlobSha1": "569d1b13628d99765e0d6b5bfe0376bce2824e5f",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/process_runner.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/process_runner.py",
+      "bytes": 6690,
+      "sha256": "b81ce382bde1ec89b7683dc1214fd546ce8c8edd3ad8149d69e0b4eff6492d6a",
+      "gitBlobSha1": "d514a3fce23fb87e14f73dce3865f8753ed512ae",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/runtime_environment.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/runtime_environment.py",
+      "bytes": 735,
+      "sha256": "a07b00b38ac12fb1d5765a2032c151d018ff13fee6003e4d225e33231725ebe4",
+      "gitBlobSha1": "796801760f7fd3ca10c468a5632b13b2f215093e",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/dingtalk_delivery_repair.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dingtalk_delivery_repair.py",
+      "bytes": 32092,
+      "sha256": "809bed81530ead8b33323506f2c29ec7a18121903520521b71b17727f548503f",
+      "gitBlobSha1": "183d7c6e6c2129cf5ae84db25fedbcfbf522de5a",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/consumer_agent.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/consumer_agent.py",
+      "bytes": 81172,
+      "sha256": "8219aa1fbb40f4a7fc79e8f133e6b3f499c5e436c9591bfae52b2088a843bd77",
+      "gitBlobSha1": "dd5a6e33c1d9baefd97cb6fc8e5853e272d2ba9e",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "app/dws_client.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dws_client.py",
+      "bytes": 231712,
+      "sha256": "e6f97e97cf10001bc7d1558bfdb555ac955b162351d9e3df168b27e10db57179",
+      "gitBlobSha1": "900b8bced4781f70e85efad16040050662377e90",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "tests/test_dingtalk_file_delivery.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_dingtalk_file_delivery.py",
+      "bytes": 10897,
+      "sha256": "48fae1b04fe1788015919ff2db9d20447fb02077f2e2ac2759aa862f5a9e38fa",
+      "gitBlobSha1": "e2eef2589b78209b09d6412b53e9f4907c11c1bc",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_dingtalk_send_evidence.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_dingtalk_send_evidence.py",
+      "bytes": 24826,
+      "sha256": "be65d798e737d926b5da50c1e48a7a0628e89ff546dc7bd72c3021f59fb1e83c",
+      "gitBlobSha1": "4b41d6b7aeadfaa21cc40c2aac36be39e29b4f25",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_dingtalk_delivery_verification.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_dingtalk_delivery_verification.py",
+      "bytes": 10826,
+      "sha256": "a540e0b9f8aafa70a665a490898623d13b43cd6348b2bf6f68216e21c8dc2eb9",
+      "gitBlobSha1": "e0b92686331b9e83965bbee3723a93818a327112",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_task_agent_session.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_task_agent_session.py",
+      "bytes": 5515,
+      "sha256": "6ec255d373c5010c11f00f5dfce93c2dacd5c537690e766144be69e667bef3da",
+      "gitBlobSha1": "9a796b4ad7cd309e917fcc03ddab186e585ac725",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_consumer_session_prompt_fingerprint.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_consumer_session_prompt_fingerprint.py",
+      "bytes": 5613,
+      "sha256": "684d974ef1098889fa24886bd9a987a52965545fa36987aa405ff310f38d2f70",
+      "gitBlobSha1": "12921de40aaa7a05bc5748c84f7700aec5d73685",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_codex_runtime_adapter.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_codex_runtime_adapter.py",
+      "bytes": 31867,
+      "sha256": "6d901047a9ab9f28d4d305603dd383abad6e9c87e36890cac4adad8508c432a1",
+      "gitBlobSha1": "a8d43503671c1f7899efb5abddf3b76372bc9c21",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_native_reply_reconciliation.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_native_reply_reconciliation.py",
+      "bytes": 9789,
+      "sha256": "3583b3a7a29a00cca0f607bb885b9c4027eec3d26ee62f72655aa387b696b55a",
+      "gitBlobSha1": "8bca4111444455d15d0d355e718846348c203424",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "tests/test_external_retry.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_external_retry.py",
+      "bytes": 3445,
+      "sha256": "1a12f85ef01a529e1852a6510bf68a5e76e3fd43e5fed83a1eda160409d80c16",
+      "gitBlobSha1": "71cf5a14ab3748e0835f89ec7a7b4d15891fbd26",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    },
+    {
+      "path": "app/external_retry.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/external_retry.py",
+      "bytes": 4063,
+      "sha256": "e316554f8161350d6f88dc229a104aa619aa0669cc956c6dff60622090847853",
+      "gitBlobSha1": "1409fa32d30ed4eb51b2eb3cecf12a4108fe0f48",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/action_delivery_storage.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/action_delivery_storage.py",
+      "bytes": 40294,
+      "sha256": "ff34dcadb62e3ffdda190ef2994fa375a06baffbd35f25d07f5adbb02d74c8d1",
+      "gitBlobSha1": "840339141eb88f4796168d7b977209b50c30c86d",
+      "reviewDepth": "migration boundary only",
+      "executed": false
+    },
+    {
+      "path": ".github/workflows/quality.yml",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/.github/workflows/quality.yml",
+      "bytes": 2266,
+      "sha256": "0055da496c635ca75952468210798fca70efe11c2fa313807c8f30324ca74b83",
+      "gitBlobSha1": "5d0004ec8fc2b41cc56f291ae0d7a086f130f3f5",
+      "reviewDepth": "full short module/document",
+      "executed": false
+    },
+    {
+      "path": "app/agent_effect_guard.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/app/agent_effect_guard.py",
+      "bytes": 5399,
+      "sha256": "3e15d494ed1337f4b26688efe3c5b5b86b8971e1677ada3df34830b96d8f8d00",
+      "gitBlobSha1": "cee08c504bdd85784c679f69753c4c2f5f356248",
+      "reviewDepth": "selected interfaces, branches and documentation sections",
+      "executed": false
+    },
+    {
+      "path": "tests/test_consumer_skill_session_contract.py",
+      "url": "https://raw.githubusercontent.com/callzhang/ceo-agent-service/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_consumer_skill_session_contract.py",
+      "bytes": 5684,
+      "sha256": "10771aa06d06f3dfb6a5c261634a4ec1abbdc63ef2670fbb2f2c927f2924c918",
+      "gitBlobSha1": "ff8342d1a4eba7c2f23d8d83423aeeffbdca49e2",
+      "reviewDepth": "selected test cases and assertions",
+      "executed": false
+    }
+  ]
+}
