@@ -4,7 +4,9 @@
 
 工作区为/Users/veil/Projects/dingtalk-agent-bridge，分支codex/complete-bridge，模式build，单Agent。本计划是唯一活动计划，不重新实现或修改参考仓库，不远程发布。需求与结束条件保持[01-PRD](01-PRD.md)；结果见[矩阵](ACCEPTANCE_MATRIX.md)，详细错误与阶段事实见EVIDENCE、PROGRESS_LEDGER及99-执行偏差日志。
 
-E071事故后用户确认弹窗停止；三个真实服务及operator_suspended保持停机状态。真实DWS、auth、doctor、Keychain和系统恢复操作禁用，不能以继续任务为由自动恢复。E082用户已允许并执行原key一次查询，因脚本错误追加--as而validation/unknown_flag失败；attempt已保留，不重试/换key。E089修正后追加一次已获准且exit0/目标匹配，当前一次读取可用；两个许可均已履行，不再待答复或重试。E090私聊恢复提案尚无后台许可。
+E071事故后用户确认弹窗停止；三个真实服务及operator_suspended保持停机状态。真实DWS、auth、doctor、Keychain和系统恢复操作禁用，不能以继续任务为由自动恢复。E082用户已允许并执行原key一次查询，因脚本错误追加--as而validation/unknown_flag失败；attempt已保留，不重试/换key。E089修正后追加一次已获准且exit0/目标匹配，当前一次读取可用；两个许可均已履行，不再待答复或重试。E090私聊恢复提案尚无后台许可；用户已回复方向和故障问题，不是启动许可。auth login与底层故障根因仍未证解决。
+
+E091已完成[主线与现成channel复用核对](../../docs/98-channel-mainline-and-reuse-review.md)：DWS是已验基础通讯底座，bridge负责通用任务/会话/附件及可靠交付；Qwen Code普通账号DWS channel是主要参考，bot/数字员工路线明确分开。保留当前实现，只补具体验收缺口，不再增加恢复审批工具或用离线数量代替UI。心跳保持既有PAUSED状态。
 
 原veil/liev私聊授权保持。历史曾授权原3人群；当前聊天入口要求多人实测暂跳过，后续按最新用户指示核对。身份白名单不扩大，不加第三人、建bot、改权限。没有缺第二账号的问题。
 

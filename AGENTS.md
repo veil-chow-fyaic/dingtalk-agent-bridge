@@ -12,7 +12,9 @@ E071事故后用户已确认弹窗停止，要求回到主线；三个真实服�
 
 E082：用户已明确允许并执行原key `dab-auth-read-20261112`的一次查询；官方因不支持脚本强加的`--as`返回validation/unknown_flag、退出3，receipt为failed且attempted=true。这是命令准备错误，认证是否恢复仍未知；三个服务和operator_suspended保持。原key已消耗，禁止重试/换key/删receipt，不能把一次许可扩成修正后再查或后台恢复。当前不再等待这次许可答复，也不再执行docs/90旧准备命令；先离线修官方参数契约，再说明具体方案，任何新真实调用或后台恢复均需明确允许。详见[失败与边界](docs/94-single-read-unsupported-flag.md)。
 
-E089：用户已明确允许追加一次及新记录dab-auth-read-fixed-20261112，核冻结提案后执行1次，官方exit0/targetMatched/readable，暂停未变且三个服务仍停止。此次许可已履行，不再待答复；两个key都禁止重试/覆盖/换key。一次凭据读取可用不等于后台或所有API恢复。E090已准备私聊分阶段恢复方案（docs/97及local/deployment-proposals/private-chat-recovery-20261112），已单独向用户提出E090后台许可问题，待答复且不重复询问；当前尚未取得许可，不能写活动配置、resume或启动服务。
+E089：用户已明确允许追加一次及新记录dab-auth-read-fixed-20261112，核冻结提案后执行1次，官方exit0/targetMatched/readable，暂停未变且三个服务仍停止。此次许可已履行，不再待答复；两个key都禁止重试/覆盖/换key。一次凭据读取可用不等于auth login已解决、后台或所有API恢复。E090私聊恢复方案（docs/97）仍未授权；用户的回复要求先讲清主线、DWS边界、群验收、认证原因及现成channel，不是允许启动，也不是未收到答复。E091已核一手资料并写入docs/98；不重复催问，不再新增等待许可的审批/巡检工具。不能写活动配置、resume或启动服务。
+
+E091复用决策：Qwen Code官方DWS channel是普通账号群/私聊的主要设计参考，源码已核；它的附件契约、队列丢弃和长文截断不能直接替代本项目原件交付与保留失败记录。DWS dev connect及钉钉官方OpenClaw connector属于bot路线；社区dws-codex-bridge为数字员工/指定群且UNLICENSED，不直接复制。保留当前runtime通用实现，只补明确产品缺口；不将基础通讯能力已通等同于全体验收。心跳当前PAUSED，保持该状态。
 
 E072持久暂停/最多两调用/进程守护、E073办公入口防护及E074history双路方案已离线验证，尚未部署。官方Stream bus按身份共享且Setsid脱组，不能杀共享bus；foreground只运行bus，不能当消费修复。候选恢复用既有history-only、15秒补读，实际配置仍stream_hint、尚未改动。当前包装器不是OS沙箱，不能覆盖恶意脱组、守护本身被杀或系统失效。
 

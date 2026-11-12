@@ -1,0 +1,99 @@
+{
+  "evidence": "E091",
+  "kind": "read_only_primary_source_review",
+  "date": "2026-11-12",
+  "userReplyDisposition": "questions_about_scope_and_evidence_not_E090_authorization",
+  "productDecision": "Keep the runtime-neutral ordinary-account bridge; benchmark Qwen DWS channel; only implement specific acceptance gaps.",
+  "sources": [
+    {
+      "key": "qwen_dws_doc",
+      "url": "https://github.com/QwenLM/qwen-code/blob/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/docs/users/features/channels/dws.md",
+      "matchedMainRead": true
+    },
+    {
+      "key": "qwen_channel_source",
+      "url": "https://github.com/QwenLM/qwen-code/blob/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-channel.ts",
+      "matchedMainRead": true
+    },
+    {
+      "key": "qwen_client_source",
+      "url": "https://github.com/QwenLM/qwen-code/blob/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-client.ts",
+      "matchedMainRead": true
+    },
+    {
+      "key": "qwen_license",
+      "url": "https://github.com/QwenLM/qwen-code/blob/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/LICENSE",
+      "matchedMainRead": true
+    },
+    {
+      "key": "codex_bridge_readme",
+      "url": "https://github.com/fireairforce/dws-codex-bridge/blob/60a0a649630c1cd17da38972b7c9356f952dcd9b/README.md",
+      "matchedMainRead": true
+    },
+    {
+      "key": "official_dws_readme",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/main/README.md",
+      "reviewed": "dev connect bot route; auth fail-closed categories; platform storage boundaries"
+    },
+    {
+      "key": "official_auth_pr",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/pull/1430",
+      "mergeCommit": "7cc805fa9d3bf18530170a68af209b5678b952f6",
+      "reviewed": "confirmed missing/mismatch differs from transient or unclassified Keychain read failure"
+    },
+    {
+      "key": "latest_release",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68",
+      "publishedAt": "2026-11-11T08:50:17Z",
+      "notProofOfIncidentFix": true
+    },
+    {
+      "key": "official_openclaw_connector",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-openclaw-connector/blob/main/README.md",
+      "identity": "bot"
+    },
+    {
+      "key": "community_private_chat",
+      "url": "https://github.com/cuyua9/openclaw-dingtalk-auto-reply/blob/main/README.md",
+      "identity": "ordinary account",
+      "scope": "private chat; README review only"
+    },
+    {
+      "key": "mcp_adapter",
+      "url": "https://github.com/sputnicyoji/dingtalk-workspace/blob/main/README.md",
+      "scope": "stateless tool adapter, not a full inbound task channel"
+    }
+  ],
+  "auth": {
+    "existingCredentialRead": "E089 one successful target-matched read",
+    "authLoginRetested": false,
+    "underlyingExit51RootCause": "unknown",
+    "crossDeviceValidated": false
+  },
+  "acceptance": {
+    "newNativeUIEvidence": false,
+    "newPassedCells": 0,
+    "groupCompletion": false,
+    "previousDeclarationAudit": "E076: 37/64 passed, 25 blocked, 2 partial; 9/14 MUST not fully covered",
+    "retainsOriginalRequirements": true
+  },
+  "actions": {
+    "newRealDwsInvocations": 0,
+    "keychainOperations": 0,
+    "backgroundStarted": false,
+    "thirdPartyCodeInstalledOrExecuted": false,
+    "productCodeChanged": false,
+    "privateReceiptsOrProposalChanged": false
+  },
+  "automation": {
+    "observedStatus": "PAUSED",
+    "desiredStatus": "PAUSED",
+    "reason": "Preserve existing status; revise continuation prompt only."
+  },
+  "limitations": [
+    "Source/document review is not execution or UI verification.",
+    "Qwen scope is not evidence that every attachment type and durability requirement passes.",
+    "No authorization to restore E090 or repeat either consumed query key.",
+    "No confirmed authentication root-cause repair or guarantee for other devices."
+  ]
+}

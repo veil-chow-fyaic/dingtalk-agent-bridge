@@ -291,3 +291,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E090 — 仅私聊分阶段恢复提案
 - [具体方案](../../docs/97-private-chat-recovery-proposal.md)、[7项静态核验](../../evidence/2026-11-12/private-chat-recovery-proposal-validation.json)。私有候选仅激活原direct/history，群transport/gateway停用、原数据保留；身份/白名单/runtime/账本位置不变。
 - 待后台明确许可；阶段一最多300秒观察后停机核cut/未决/候选，全部满足才恢复私聊gateway。15秒轮询与90秒RPC/15秒清理分清；原配置未改、无真实调用/UI或新增测试。
+
+## E091 — 主线与现成 channel 一手复核
+- [决策说明](../../docs/98-channel-mainline-and-reuse-review.md)、[来源与边界](../../evidence/2026-11-12/channel-mainline-source-review.json)。Qwen固定41a3b9f文档/两源码/许可及社区Codex固定60a0a64 README与本轮main读取相同；区分普通账号、bot、数字员工和MCP工具。
+- DWS基础通讯可作底座，群完整矩阵未过；E089只证一次读取，auth login/根因/跨设备仍未证。用户回复是澄清要求不是E090许可；三个服务/暂停保持，无真实调用/新UI/产品修改。

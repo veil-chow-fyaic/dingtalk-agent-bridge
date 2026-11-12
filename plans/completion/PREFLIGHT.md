@@ -2,7 +2,7 @@
 
 读取当前AGENTS与任务/模式/关键路径/任务池/证据/账本/偏差日志，确认仍在同一checkout和codex/complete-bridge；不要从聊天空目录另建实现。先辨认未提交工作归属，不覆盖已有改动。
 
-当前默认真实DWS禁用、三个服务停止、operator_suspended保持。不要为preflight运行doctor、auth、history、Keychain、锁定/解锁或启动服务；不再索取系统密码、弹窗名称或第二账号。E082原key已执行并以参数错误失败，receipt已有attempt；只读复核结果，不再执行、不换key或顺带恢复后台。E089修正后追加一次已获准成功，两个key均有attempt；一次读取可用不等于后台授权。下一步只按E090具体方案取得后台明确同意。
+当前默认真实DWS禁用、三个服务停止、operator_suspended保持。不要为preflight运行doctor、auth、history、Keychain、锁定/解锁或启动服务；不再索取系统密码、弹窗名称或第二账号。E082原key已执行并以参数错误失败，receipt已有attempt；只读复核结果，不再执行、不换key或顺带恢复后台。E089修正后追加一次已获准成功，两个key均有attempt；一次读取可用不等于后台授权或auth login已修复。用户对E090要求先澄清方向，E091/docs98已记录；不得解释为允许启动或重复催问。心跳PAUSED保持。
 
 当前聊天入口要求多人实测暂跳过；veil/liev私聊既有授权保持。真实UI恢复后仍核最新范围、精确会话/profile/白名单与原key账本，禁止第三人、bot、权限修改或远程发布。未知投递先对账，已有成功实验只读复核。
 

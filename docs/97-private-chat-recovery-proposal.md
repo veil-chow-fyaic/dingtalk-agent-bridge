@@ -2,6 +2,8 @@
 
 E089修正后一次会话查询已成功。当前仍operator_suspended、三个服务停止；这份提案不授权任何后台调用。原E082失败、E089成功两个key均已attempt，只可复核。按事故后的AGENTS约定，恢复后台需要用户另行明确同意。
 
+E091更新：用户已经回复，但内容是要求讲清主线、DWS能力/群验收/认证与现成项目，不是许可。[澄清与复用决定](98-channel-mainline-and-reuse-review.md)已记录；本提案继续未执行，不重复催问、不新增恢复审批工具。下面保留原冻结方案供后续明确授权时审查。
+
 私有提案在local/deployment-proposals/private-chat-recovery-20261112/proposal.json，候选配置在同目录candidate-service-config.json；[7项静态核验和摘要](../evidence/2026-11-12/private-chat-recovery-proposal-validation.json)。原活动配置未改。提案固定E084的21模块、原配置/私聊Agent配置、E089成功receipt、原失败receipt、DWS环境、官方binary/图片补充摘要及E085/E087审查材料，执行前全部复核；任一不一致不能静默替换计划。
 
 ## 具体变化
@@ -22,4 +24,4 @@ E089修正后一次会话查询已成功。当前仍operator_suspended、三个�
 
 目前仅静态验证单私聊候选与原路由存储/身份相同、产品版本匹配、成功回执绑定和私有文件权限；没有新后台或UI结果，没有新增测试数量主张。原reliability-20261111保留全部故障与本次维护，不重置为健康24h。
 
-该具体方案已于提交36ebaa1后单独向用户申请后台许可，目前待答复；未答复不构成授权，不重复询问，不提前应用候选。私有提案SHA256为8c7e23032fbed7d3cec53fe7ea5d1e8133bba93005fa5b6b5ee5ea2865236ae2；候选配置SHA256为f52b30d7e3ede8955188c86aa1f489bc92b236d097fb2d818e89e54aa9945831。
+该具体方案已于提交36ebaa1后单独向用户申请后台许可；用户随后要求澄清产品与故障问题，尚未授权。不重复询问，不提前应用候选。私有提案SHA256为8c7e23032fbed7d3cec53fe7ea5d1e8133bba93005fa5b6b5ee5ea2865236ae2；候选配置SHA256为f52b30d7e3ede8955188c86aa1f489bc92b236d097fb2d818e89e54aa9945831。
