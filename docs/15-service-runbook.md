@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-2026-11-12，E050核对、E054更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E050核对、E062后续更新。本文描述当前操作方式；旧部署命令、计数和阶段追加已[按字节存档](history/through-E049/README.md)。当前版本仍为实验交付，完整验收未完成，逐格结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 安装与工作目录
 
@@ -33,7 +33,7 @@ python3 -m dingtalk_bridge.service_manager --agent-config local/agent-config.jso
 
 启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。详情见[管理器与恢复](40-service-manager-and-restart-ui.md)。
 
-没有开机自启；机器重启后从同一工作目录按上述显式配置启动。status只说明归属和存活，doctor不证明模型可调用或真实UI成功。现存历史manager关闭身份保护错误尚未定位；若再次发生，先读私有诊断及status，不放宽保护或按旧PID强杀，见[诊断边界](57-manager-identity-diagnostics.md)。
+没有开机自启；机器重启后从同一工作目录按上述显式配置启动。status只说明归属和存活，doctor不证明模型可调用或真实UI成功。E062已修复实际捕获的TERM后同启动时间E退出过渡：只继续有界观察，不追加信号或提前判已停止。其他身份变化仍拒绝，未观察的历史错误不能断言同因；若再次发生，先读同次私有诊断及status，不按旧PID强杀，见[退出过渡修复](79-manager-exiting-transition.md)与[诊断边界](57-manager-identity-diagnostics.md)。
 
 前台诊断先停止受管实例，再运行`python3 -m dingtalk_bridge --config local/service-config.json --port 18768 --poll-seconds 15`；前台退出后才恢复管理器。传输可单独改`--port`用于隔离诊断，**随包CLI、gateway、consumer及管理器使用127.0.0.1:18768，没有统一改端口参数**。
 
@@ -72,7 +72,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 明确长度拒绝可显式提供`rejection_evidence`：它是服务工作目录`local/`下的官方日志JSON路径（解析符号链接后仍须位于local内）；需匹配原uuid/目标/执行窗口/实际长度并核验持久payload摘要，不接受聊天附件自证。有task ID不能仅凭状态查询报错推成发送拒绝。该操作只把符合条件的未知记录审计为rejected，不发消息；细节见[拒绝对账](39-rejection-reconciliation-and-feedback.md)。
 
-附件缓存丢失或摘要变化会报错；核对后可显式`attachments --repair`取回原件，新目录/manifest替换缓存指向，旧文件保留。不要删除仍被消费者引用的文件。
+附件缓存丢失或摘要变化会报错；核对后可显式`attachments --repair`取回原件，新目录/manifest替换缓存指向，旧文件保留。首次与缓存共用完整性校验；成功清单通过同目录0600临时文件、文件fsync及原子replace发布，写失败保住旧好清单，崩溃遗留临时文件不用于读取。未fsync目录，不宣称掉电持久保证。见[原子清单验证](76-atomic-download-manifest.md)。不要删除仍被消费者引用的文件。
 
 可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash与同会话文件交付；它及提示词、官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
@@ -80,14 +80,14 @@ poll_error出现时保留账本，检查日志、官方授权及选定会话只�
 
 ## 验证与共享边界
 
-E054当前产品在Python3.14及最低3.11隔离已安装wheel各180项、六入口/19模块通过；包括并发对账、异常消息隔离及既有历史审计工具测试。当前任务与记录数以[当前状态](17-requirements-progress-review.md)和实时只读结果为准。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
+最近验证的版本、完整测试结果及保留的失败以[当前状态](17-requirements-progress-review.md)为准；本文不再固定易过期的测试计数。旧实验复核检查各自冻结安装，不拿当前源码替换历史被测版本。
 
 ```bash
-python3 -m unittest discover -s tests
+python3 scripts/run_tests_with_evidence.py
 python3 scripts/verify_handoff.py
 ```
 
-单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
+诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
 
 产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；没有通用任意命令代理或新增bot。
 
