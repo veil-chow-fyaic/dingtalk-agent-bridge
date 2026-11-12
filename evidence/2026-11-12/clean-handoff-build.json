@@ -1,0 +1,120 @@
+{
+  "date": "2026-11-12",
+  "commit": "82e1c2af41dd5663f9ead1a57ed8514d901f13f7",
+  "ok": true,
+  "sourceArchiveSha256": "65a6471dc2d15d73bb8f1a3784fe0ba3be5ec1a98afa871b9c95017ea509156f",
+  "wheelSha256": "fee9b878ae522c54c92156aabf9e6f751754d0f49e7dea55b37feccedc6f624f",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "runtime_guard.py": "44723e0cbd157a2f07471a2553ded5097483197762e537224bdb255a8878da02",
+    "agent_runtime.py": "ff924520762ef0300aea4f40854e825e2d4da935fe237011296bf8d61def2c00",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "7092390cd6036dc07eaee582054c460f5dffe5d25231d0fc389ba5e384a31d89",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "2710f0eb3b79b4fee523ec95a800af2bd4b5840cc2f3331f50ba5b42cdcad0de",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "84db108afcd631e1965769b90d03b7f5f4eb51c4e4157821e59d831481db8a3b",
+    "cli.py": "b6039cde8b9ffd9e6c58d64fe30f30dc1b27d160909beb891bb2f45f37f64381",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "361597872a3c87461471115e972355592c244372d1f2a848cdd9991b00e0c764",
+    "official_tools.py": "58f7af819b5948fd2b0313ddb1e104e5251d132a4fb608aae39346e737982909",
+    "doctor.py": "f09dd9aeff87f36bb3199371da67f1fb624fb92e1df25b10ce8f4a3ae0f0ac89",
+    "__main__.py": "15d7544b96ba84cba99b73f286f4ee4ec18c1b793e2af7ac1e9e361aaed67c34",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "offlineSteps": [
+    {
+      "step": "export-manifest-before",
+      "exitCode": 0
+    },
+    {
+      "step": "build-venv",
+      "exitCode": 0
+    },
+    {
+      "step": "offline-build-tools",
+      "exitCode": 0
+    },
+    {
+      "step": "offline-build",
+      "exitCode": 0
+    },
+    {
+      "step": "runtime-venv",
+      "exitCode": 0
+    },
+    {
+      "step": "offline-install",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-help",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-bridge-help",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-agent-help",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-consume-help",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-doctor-help",
+      "exitCode": 0
+    },
+    {
+      "step": "dab-service-help",
+      "exitCode": 0
+    },
+    {
+      "step": "empty-service-status",
+      "exitCode": 0
+    },
+    {
+      "step": "installed-import",
+      "exitCode": 0
+    },
+    {
+      "step": "installed-tests",
+      "exitCode": 0
+    },
+    {
+      "step": "export-manifest-after",
+      "exitCode": 0
+    }
+  ],
+  "sourceGitAndLocalAbsent": true,
+  "installedSuiteSourcePackageAbsent": true,
+  "knownPrivateValuesAbsent": true,
+  "runtimeDependencies": [],
+  "fullInstalledTests": 197,
+  "newNativeUITest": false,
+  "buildDependenciesPreparedSeparately": [
+    {
+      "file": "packaging-26.3-py3-none-any.whl",
+      "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+    },
+    {
+      "file": "setuptools-84.2.1-py3-none-any.whl",
+      "sha256": "ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"
+    },
+    {
+      "file": "wheel-0.48.0-py3-none-any.whl",
+      "sha256": "3217dcc807155e45db462d7ef2431f5ddda0d7273b700d05a67b271ceb1287ab"
+    }
+  ],
+  "limits": [
+    "Build dependency preparation used package download before the offline proof",
+    "pip no-index and local wheels enforce the build/install scope; this is not an OS network sandbox",
+    "Only source.tar, wheels and sanitized report are handoff payload; raw diagnostics and verification directories are private",
+    "No service restart or new UI acceptance; only a read-only view of an existing conversation; task remains incomplete"
+  ]
+}

@@ -185,3 +185,7 @@
 ## E062 — 已观察退出过渡窄修复
 - E062修复已捕获的TERM后同启动时间E退出过渡误拒：只继续有界观察，不追加信号或提前当作停止；其他身份变化/发信号前/超时保持拒绝。旧源码/wheel各2失败，精确原始观察旧拒绝/新待退出均只1次TERM；源码及新wheel双Python各197项、六入口19模块与26审计通过。manager按次执行，现场三进程无需重启；无新UI，未观察历史错误不回填根因。
 - [docs/79](../../docs/79-manager-exiting-transition.md)、[安装](../../evidence/2026-11-12/manager-exit-install.json)、[26项审计](../../evidence/2026-11-12/manager-exit-transition-validation.json)。raw local/manager-exit-20261112；原观察13.421h/7不可达。
+
+## E063 — Git离线交接核验
+- E063已从Git提交82e1c2a导出不含.git/local的源码，492项manifest前后匹配；单独准备构建依赖后，16步离线构建/新3.11安装、六入口及197项通过，19审计通过。产品/现网/旧记录保持，交接包与私有日志分开；无新增UI验收，原观察13.621h/7不可达。
+- [docs/80](../../docs/80-offline-handoff-export.md)、[构建](../../evidence/2026-11-12/clean-handoff-build.json)、[19审计](../../evidence/2026-11-12/clean-handoff-validation.json)。raw local/clean-handoff-20261112；只bundle子目录为脱敏交接payload。
