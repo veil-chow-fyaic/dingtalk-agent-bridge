@@ -1,0 +1,36 @@
+{
+  "evidence": "E096",
+  "at": "2026-11-12T09:05:13.515151+00:00",
+  "scope": "AIC测试群 outbound native PNG only",
+  "sourceBaseline": "E093/661b67c product; no product changes",
+  "checks": {
+    "completed": true,
+    "three_confirmed": true,
+    "native_image_payload": true,
+    "expected_sha_bound": true,
+    "download_matches_original": true,
+    "png_signature": true,
+    "dimensions_640x360": true,
+    "python_pillow_called": true,
+    "runtime_read_image_called": true
+  },
+  "artifact": {
+    "name": "aic-e096-client.png",
+    "bytes": 4762,
+    "sha256": "e8cc5413642ea555574090133bfb4ceefd74dfa60a788384185b31a2d4a7ba4d",
+    "dimensions": [
+      640,
+      360
+    ]
+  },
+  "uiObservations": {
+    "source": "native CUA observation in this chat, separate from automatic checks",
+    "group": "liev native image bubble and image viewer",
+    "download": "DingTalk viewer download success; Finder Quick Look shows AIC-E096-PNG, 21, 22, TOTAL 43, blue/orange; original file hash matches"
+  },
+  "limitations": [
+    "One outbound PNG sample only.",
+    "No JPEG/audio/video or inbound new coverage.",
+    "No continuous 24h health claim."
+  ]
+}

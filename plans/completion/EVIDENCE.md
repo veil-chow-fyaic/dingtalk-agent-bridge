@@ -316,3 +316,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - veil原生上传TXT/CSV为两消息，普通内容0任务；显式关联唯一Kimi任务，Bash/Python实际求和43，liev回同群四个confirmed回执。CSV/TXT客户端下载、Numbers/TextEdit打开，输入和输出SHA一致。新增群TXT入站/CSV双向三格通过，不称单消息多附件。
 - 私聊唯一新任务Python493、72B JSON三回执confirmed，钉钉下载/Finder快速查看及SHA通过；旧8非成功任务保留，实际办公上下文schema2生成，不冒称本轮重测办公API。恢复停transport中断较新history窗口已记录，完成原窗口一次而非删游标。
 - 本轮无产品修改/全量重跑；当前40/64格通过、22blocked、2部分，R05补齐后8 MUST仍不完整。原24h故障/维护与两个历史query key保留；心跳PAUSED、服务运行；企业群禁止再测。
+
+## E096 — AIC群原生PNG出站闭环
+- [UI/原件记录](../../docs/101-aic-group-native-png.md)、[九项只读核验](../../evidence/2026-11-12/aic-group-png-validation.json)。veil原生发送唯一任务，Kimi实际Python/Pillow生成640×360/4762B PNG并ReadMediaFile；image payload绑定原SHA，三个confirmed。
+- liev普通账号原生图片气泡/独立查看器、客户端下载成功、Finder快速查看实际打开，标记/21/22/TOTAL43可见，下载件与产物字节一致。工具超时/0尺寸截图及保存面板输入问题按现场复核，没有重投或配置修改。
+- 群PNG出站由部分转通过，当前41/64通过、22blocked、1部分；8 MUST仍有缺口。无产品修改/全量重跑，范围仍仅新AIC群和原私聊。

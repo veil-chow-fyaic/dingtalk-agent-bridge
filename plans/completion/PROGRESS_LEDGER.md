@@ -263,3 +263,5 @@
 | 2026-11-12 16:01 E094底座优先 | 用户追问DWS本体与本机用法，新增系统只读日志定位09:25:20钥匙串解锁-25293/Computer Use特征；固定官方worker合成复现超时残留，2通过/1helper跳过，v68同源 | docs/99、dws-base-failure-diagnosis.json；原始local/dws-base-diagnosis-20261112 | 系统故障层已证、Computer Use因果未定；真实DWS/Keychain0，产品未改/未部署，auth login与持续调用未验收。Qwen下一项后置，先限定底座串行核验（需明确允许），不恢复后台、不重复同窗口日志或旧查询，不增审批工具 |
 
 | 2026-11-12 E095 AIC限定恢复及真实文件 | 用户登录截图归local；精确新群/两成员核对，旧企业群退出三库不变，私聊配置不变；E09321模块部署，history先补/cut审查后三服务运行。群TXT/CSV→唯一Kimi任务43→两个结果下载/Numbers及TextEdit；私聊493/JSON下载快速查看；22只读核验 | docs/100、aic-resume-validation.json；原件local/aic-resume-20261112 | 新增3格/R05补齐，40/64通过，8 MUST不完整。仅新AIC群及原私聊，心跳PAUSED。下一段群PNG出站/JPEG/WAV/MP4和长文/控制；旧key不重放、旧群禁测、原24h故障不重置 |
+
+| 2026-11-12 E096 AIC原生PNG | 唯一群任务，Kimi实际Pillow+读图，640×360/4762B；liev原生image、查看器、客户端下载/Finder快速查看与SHA一致，九项只读核验 | docs/101、aic-group-png-validation.json；原件local/aic-png-20261112 | 群PNG出站由部分转通过，41/64/22blocked/1partial；8 MUST未完整。无产品改动/重跑。下一段AIC群JPEG/WAV/MP4和长文/控制，企业群禁测 |

@@ -15,3 +15,5 @@
 目录分工：`architecture/` 保存现行设计，`references/` 保存公开参考选型及固定来源，编号文档保存阶段研究/实现/验证，`../evidence/` 保存脱敏结果，`../plans/completion/` 保存唯一活动任务。源代码仍在 `../dingtalk_bridge/`；参考源选摘在不入 Git 的 `local/references/`，不移动运行数据或账号配置。
 
 E095已部署本项目E093冻结源码并恢复两路，新增群TXT/CSV真实UI证据；用户提供登录成功截图。没有部署第三方整套channel，跨设备长期认证与全部MUST仍未完成。
+
+最新原生图片验收：[E096 AIC群PNG](101-aic-group-native-png.md)，真实工具、原生气泡、查看器、下载/系统打开与原件摘要分别取证。

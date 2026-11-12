@@ -10,7 +10,7 @@
 - E095实际加载E093/661b67c的21模块，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
 - E092整理13项公开参考来源、69份选摘文件的固定版本/摘要/许可，明确采用边界；没有运行上游服务/测试、移入其实现或新增UI通过项。本地WeCom资料不作为当前选型依据。
 - E093实际采用社区的[文件摘要校验](docs/references/artifact-digest-adoption.md)，补上排队后产物变更缺口。新任务file/image携带原定SHA256，已发送原key继续对账；MIT许可随包保留。11项新增专项，最终源码/双Python安装包各291项、12项冻结核验通过；E095部署同一源码，本轮未重跑全量。
-- E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。当前矩阵64格：40通过、22阻塞、2部分；14项MUST仍8项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
+- E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。当前矩阵64格：41通过、22阻塞、1部分；14项MUST仍8项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。
 - E075交接包固定f0d2911，包含已验E073 wheel和当时539项manifest；未包含后续变更。仅local/handoff-f0d2911-20261112/bundle为payload，父目录与其他local内容不得分享。[冻结交接](docs/80-offline-handoff-export.md)
 
 ## 使用与事实边界
@@ -42,3 +42,5 @@ python3 scripts/verify_handoff.py
 产品回归使用`python3 scripts/run_tests_with_evidence.py`，仅在变更需要时运行。旧UI实验按各自冻结版本只读复核，不重复发送。原reliability-20261111的故障和维护全部保留，真实时长届满仍需判定完整性与失败处置，不能宣称连续健康24h。
 
 代码、合成fixtures、脱敏evidence与文档可入Git；身份、凭据、原聊天/AX/截图、日志、数据库和下载件只留local。未知投递同key对账，禁止换key或UI补发。当前分支codex/complete-bridge，无远程发布；MUST/UI与完整自检未全部满足前不标完成、不停heartbeat。
+
+E096又补齐AIC群[原生PNG交付](docs/101-aic-group-native-png.md)：Kimi实际Pillow生成、原生图片气泡/查看器、客户端下载/Quick Look、原件SHA一致。群JPEG/WAV/MP4、长文/控制和其他原生协议缺口继续保留。
