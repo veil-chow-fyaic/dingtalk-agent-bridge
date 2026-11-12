@@ -48,8 +48,21 @@ class RecoveryOnceTests(unittest.TestCase):
         self.assertEqual(result['state'],'readable');self.assertTrue(result['suspensionUnchanged'])
         for _ in range(3):self.assertTrue(check.execute(self.root,'once',allow_credential_read=True)['replayed'])
         self.assertEqual((self.root/'calls').read_text(),'one\n')
-        self.assertEqual(json.loads((self.root/'args.json').read_text()),['chat','+conversation-info','--group','synthetic-conversation','--profile','synthetic-corp:synthetic-user','--as','user','--format','json'])
+        self.assertEqual(json.loads((self.root/'args.json').read_text()),['chat','+conversation-info','--group','synthetic-conversation','--profile','synthetic-corp:synthetic-user','--format','json'])
         self.assertEqual(self.access.block_path.read_bytes(),self.before)
+
+    def test_direct_arguments_and_failed_attempt_remain_consumed_after_code_change(self):
+        route={'conversationType':'direct','peerOpenDingTalkId':'synthetic-peer','profile':'synthetic-corp:synthetic-user'}
+        self.assertEqual(check.conversation_info_arguments(route), ['chat','+conversation-info','--open-dingtalk-id',
+                         'synthetic-peer','--profile','synthetic-corp:synthetic-user','--format','json'])
+        self.program('print(\'{"error":{"category":"validation","code":3,"reason":"unknown_flag"}}\');raise SystemExit(3)')
+        check.prepare(self.root,'old-failure');result=check.execute(self.root,'old-failure',allow_credential_read=True)
+        self.assertEqual(result['state'],'failed')
+        receipt=check.directory(self.root,'old-failure')/'receipt.json';before=receipt.read_bytes()
+        with patch.object(check,'current_plan',side_effect=AssertionError('must not revalidate a consumed call')):
+            replay=check.execute(self.root,'old-failure',allow_credential_read=True)
+        self.assertTrue(replay['replayed']);self.assertEqual(replay['state'],'failed')
+        self.assertEqual(receipt.read_bytes(),before);self.assertEqual((self.root/'calls').read_text(),'one\n')
 
     def test_rejected_malformed_and_wrong_identity_are_not_healthy_or_retried(self):
         cases=[(51,{'error':{'message':'private-marker'}}),(0,'bad-json'),

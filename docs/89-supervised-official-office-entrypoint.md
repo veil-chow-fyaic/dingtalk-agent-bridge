@@ -1,5 +1,7 @@
 # E073 运行器官方办公工具统一受管入口
 
+**E083纠正：原实现错误地把--as user作为通用办公参数，E082一次真实核验暴露此问题；现已移除强加参数并用固定官方声明树验证。以下E073测试/包为历史版本，未证明官方参数成立，见[修复与官方契约](95-official-argument-contract.md)。**
+
 已消除生成上下文直接暴露原DWS binary的调用路径：schemaVersion 2的binary指向工作区0700私有入口，固定原路由profile、--as user和JSON输出，通过官方CLI完成业务。没有改原版DWS、复制凭据或调用私有协议。
 
 受管入口复用E072的工作区暂停状态、两并发槽位及独立进程守护。支持当前已交付的doc、todo、calendar、mail、drive、minutes六类；命令族放在首参数。其余业务参数、原始stdout/stderr字节、退出码和当前工作目录保持。超时取已验证的runtime预算，默认600秒；听记现有180秒等待不被削为90秒。profile/as/format只能匹配固定值；auth、event、dev、mcp、账号配置及直接凭据覆盖参数不经该办公入口执行。

@@ -259,3 +259,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E082 — 一次许可已履行，官方参数失败
 - [失败/边界](../../docs/94-single-read-unsupported-flag.md)、[脱敏回执](../../evidence/2026-11-12/single-read-unsupported-flag.json)。用户明确允许后原key仅执行1次；未知--as导致validation/unknown_flag、exit3，未取得会话结果；暂停保持，三服务停止。
 - 命令准备错误和合成测试遗漏由bridge承担；认证仍未知，原attempt与raw不改，禁止重试/换key。下一离线项修核验/办公参数并用固定官方树校验，再继续候选与只读部署工具。
+
+## E083 — 官方命令参数契约修复
+- [说明](../../docs/95-official-argument-contract.md)、[14项冻结审计](../../evidence/2026-11-12/official-argument-contract-validation.json)。移除核验/办公入口强加--as，profile/json绑定保持；新增failed原key跨代码变更不重调回归。源码/双Python新wheel各254、六入口21模块通过。
+- 独立固定官方声明树：旧8参数组unknown_flag失败、新8通过；六族518命令解析、11无解析导航占位单列。只有ParseFlags，不执行CLI/鉴权/业务。原E082 raw/receipt字节保持，新增真实调用0、未部署。

@@ -55,18 +55,18 @@ class OfficialProxyTests(unittest.TestCase):
                 self.assertEqual(result.stderr,b'\xfeprivate stderr')
                 received=json.loads((self.workspace/'received.json').read_text())
                 self.assertEqual(Path(received['cwd']).resolve(),self.workspace.resolve())
-                self.assertEqual(received['args'],arguments+['--profile',self.route['profile'],'--format','json','--as','user'])
+                self.assertEqual(received['args'],arguments+['--profile',self.route['profile'],'--format','json'])
         self.assertEqual(DWSAccess(self.root).status()['state'],'ready')
 
     def test_explicit_identity_is_preserved_and_invalid_requests_never_start_cli(self):
         self.program("import json,sys\nfrom pathlib import Path\nPath('calls').write_text(json.dumps(sys.argv[1:]))\nprint('{}')")
-        args=['doc','--help','--profile='+self.route['profile'],'--format=json','--as=user']
+        args=['doc','--help','--profile='+self.route['profile'],'--format=json']
         self.assertEqual(self.invoke(*args).returncode,0)
         self.assertEqual(json.loads((self.workspace/'calls').read_text()),args)
         previous=(self.workspace/'calls').read_bytes()
         cases=[[],['auth','login'],['event','consume'],['dev','connect'],['mcp'],['config','set'],
                ['doc','--profile','other:account'],['doc','--profile',self.route['profile'],'--profile='+self.route['profile']],
-               ['doc','--format','text'],['doc','--as','app'],['doc','--token=private-marker'],
+               ['doc','--format','text'],['doc','--as','app'],['doc','--as=user'],['doc','--as','user'],['doc','--token=private-marker'],
                ['doc','--client-secret','private-marker'],['doc','--'],['doc','--profile']]
         for args in cases:
             with self.subTest(arguments=args):

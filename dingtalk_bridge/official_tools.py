@@ -16,7 +16,8 @@ INSTRUCTIONS = '''# 已授权会话的官方 DWS 办公工具
 本上下文由宿主配置显式启用。读取 .dab-official-dws.json；每次用其中的 binary，
 并显式追加 --profile 对应的 profile 和 --format json，不使用全局默认账号。
 binary是受管入口：支持doc/todo/calendar/mail/drive/minutes，命令族必须放在参数首位。
-保留官方参数、工作目录、原始输出和退出码；固定本会话profile及--as user。
+保留官方参数、工作目录、原始输出和退出码；通过显式profile固定本会话已授权身份。
+办公命令没有通用--as参数，不追加event命令的--as user。
 不要绕过它调用原binary。故障暂停后停止该项，不自行resume、登录或反复尝试；
 宿主处理恢复。此入口不提供auth/event/dev/mcp或账号配置动作。
 认证与令牌由官方 DWS 负责，不读取、复制或回传凭据。文件读写仍仅限当前工作区。

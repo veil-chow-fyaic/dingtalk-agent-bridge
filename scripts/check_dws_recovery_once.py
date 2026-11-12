@@ -28,6 +28,13 @@ def write_private(path, value):
     private_file(path,json.dumps(value,ensure_ascii=False,indent=2)+'\n')
 
 
+def conversation_info_arguments(route):
+    # This shortcut binds identity through --profile; --as belongs to event,
+    # and is rejected by the pinned official conversation-info flag parser.
+    target=['--open-dingtalk-id',route['peerOpenDingTalkId']] if route.get('conversationType')=='direct' else ['--group',route['group']]
+    return ['chat','+conversation-info',*target,'--profile',route['profile'],'--format','json']
+
+
 def directory(root,key):
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,63}',key):raise ValueError('Invalid recovery key')
     path=Path(root).resolve()/'local/recovery-checks'/key
@@ -89,8 +96,7 @@ def execute(root,key,*,allow_credential_read=False):
                 os.chmod(handle.name,0o600);fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
             before=access.status()
             write_private(receipt,{'state':'checking','attempted':True,'automaticRetry':False})
-            target=['--open-dingtalk-id',route['peerOpenDingTalkId']] if route.get('conversationType')=='direct' else ['--group',route['group']]
-            command=[str(binary),'chat','+conversation-info',*target,'--profile',route['profile'],'--as','user','--format','json']
+            command=[str(binary),*conversation_info_arguments(route)]
             try:
                 result=dws_access.run_dws(command,cwd=root,timeout=plan['timeoutSeconds'],text=False)
                 raw=folder/'raw-result.json'

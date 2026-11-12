@@ -27,10 +27,12 @@ def pinned_arguments(arguments, profile):
             raise ValueError('official_proxy_command_not_enabled')
     # No account/credential mutation or detached event/dev/mcp process is an
     # office command. Explicit identity always stays bound to this task route.
-    forbidden={'--token','--access-token','--client-id','--client-secret'}
+    # v1.0.67 office commands inherit --profile, but not event's --as flag.
+    # Reject an explicit --as rather than silently changing the caller's intent.
+    forbidden={'--token','--access-token','--client-id','--client-secret','--as'}
     if any(arg.split('=',1)[0] in forbidden for arg in args):
         raise ValueError('official_proxy_credential_override_forbidden')
-    for flag,expected in (('--profile',profile),('--format','json'),('--as','user')):
+    for flag,expected in (('--profile',profile),('--format','json')):
         found=[]
         for index,arg in enumerate(args):
             if arg==flag:
