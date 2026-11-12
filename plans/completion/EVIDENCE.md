@@ -164,3 +164,8 @@
 | E056 | 2026-11-12 | 固定DWS发送组合18个无账号dry-run；重复file末项覆盖、互斥、9/10图引用及audio/video=file，46审计9负向，现网与E054产品保持 | [报告](../../docs/73-official-send-composition-contract.md)、[合成CLI计划](../../evidence/2026-11-12/send-contract-probe.json)、[审计](../../evidence/2026-11-12/send-contract-audit.json)；`PYTHONPATH=. python3 scripts/accept_send_contract.py`；原始首次类别失败与快照local/send-contract-20261112 | CLI计划不是UI，单消息普通附件/原生媒体未改绿，原观察约12.545h未满24h |
 
 | E057 | 2026-11-12 | 快速附件完成结果仅原消息消费/优先候选/取消清理；4新回归，旧源码/wheel各2失败，源码与双Python已安装wheel各184项、24审计 | [报告](../../docs/74-media-completion-scheduling.md)、[审计](../../evidence/2026-11-12/media-slot-validation.json)、[安装](../../evidence/2026-11-12/media-slot-install.json)；`PYTHONPATH=. python3 scripts/accept_media_slot.py`；raw local/media-slot-20261112 | 仅双gateway空闲加载，原记录/传输/观察保持；无新UI，原观察12.712h未满24h |
+
+## E058 — 首次下载完整性
+- [docs/75](../../docs/75-fresh-download-integrity.md)；22坏首次/3部分/4坏缓存/失败repair保旧及本地HTTP 502→同消息200→命中缓存，5新方法；旧源码16失败10错误、旧wheel18失败10错误保留。
+- 源码/双Python已安装wheel各189项、六入口19模块；50既有缓存57资源只读禁网、24审计通过，三进程空闲加载。配置/旧账本/session/运行日志及原观察保持；12.921h/7不可达，无新UI。
+- [安装](../../evidence/2026-11-12/fresh-download-install.json)、[审计](../../evidence/2026-11-12/fresh-download-validation.json)；`PYTHONPATH=. python3 scripts/accept_fresh_download.py`，raw local/fresh-download-20261112。

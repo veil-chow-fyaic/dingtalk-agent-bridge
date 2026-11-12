@@ -410,6 +410,40 @@ class Bridge:
         with self.download_lock:
             return self._download(message_id,repair)
 
+    def _verify_download_ledger(self, ledger, folder, cached=False):
+        label = 'Cached attachment' if cached else 'Downloaded attachment'
+        try:
+            if (not isinstance(ledger, dict) or type(ledger.get('ok')) is not bool or
+                    type(ledger.get('partial', False)) is not bool or
+                    type(ledger.get('failedCount', 0)) is not int or ledger.get('failedCount', 0) < 0 or
+                    not isinstance(ledger.get('downloads'), list)):
+                raise ValueError('invalid ledger')
+            if cached and (not ledger['ok'] or ledger.get('partial') or ledger.get('failedCount')):
+                raise ValueError('incomplete cache')
+            actual = set(); verified = []
+            for entry in ledger['downloads']:
+                if (not isinstance(entry, dict) or entry.get('resourceType') not in {'fileId', 'mediaId'} or
+                        not isinstance(entry.get('resourceId'), str) or not entry['resourceId'] or
+                        not isinstance(entry.get('localPath'), str) or not entry['localPath']):
+                    raise ValueError('invalid resource entry')
+                identity = entry['resourceType'], entry['resourceId']
+                if identity in actual:raise ValueError('duplicate resource')
+                actual.add(identity)
+                path = (self.root / entry['localPath']).resolve()
+                if not path.is_relative_to(folder.resolve()) or not path.is_file():
+                    raise ValueError('unsafe or missing file')
+                content = path.read_bytes(); sha = hashlib.sha256(content).hexdigest()
+                if type(entry.get('sizeBytes')) is not int or entry['sizeBytes'] != len(content):
+                    raise ValueError('size mismatch')
+                if cached and entry.get('sha256') != sha:raise ValueError('digest mismatch')
+                verified.append((entry, sha))
+            # Only attach locally verified digests after the entire ledger passes.
+            for entry, sha in verified:entry['sha256'] = sha
+            return actual
+        except (ValueError, TypeError, KeyError, OSError, RuntimeError) as exc:
+            raise BridgeError(label + ' manifest or file integrity is invalid; '
+                              + ('repair local cache explicitly' if cached else 'download was not cached')) from exc
+
     def _download(self, message_id, repair=False):
         with self.lock:
             row = self.db.execute('SELECT body FROM events WHERE message_id=?', (message_id,)).fetchone()
@@ -421,39 +455,25 @@ class Bridge:
         if manifest.exists() and not repair:
             try:
                 cached = json.loads(manifest.read_text())
-                downloads = cached.get('downloads') if isinstance(cached, dict) else None
-                if (not isinstance(downloads, list) or cached.get('ok') is not True or
-                        cached.get('partial') or cached.get('failedCount') or
-                        any(not isinstance(entry, dict) for entry in downloads)):
-                    raise ValueError('incomplete manifest')
-                actual={(entry.get('resourceType'),entry.get('resourceId')) for entry in downloads}
-                if expected-actual:raise ValueError('missing expected resources')
-            except (ValueError, TypeError) as exc:
+            except (ValueError, OSError) as exc:
                 raise BridgeError('Cached attachment manifest is invalid or incomplete; repair local cache explicitly') from exc
-            for entry in downloads:
-                p = (self.root / entry['localPath']).resolve()
-                if not p.is_relative_to((self.root / folder).resolve()) or not p.is_file():
-                    raise BridgeError('Cached attachment is missing; repair local cache explicitly')
-                data = p.read_bytes()
-                if (hashlib.sha256(data).hexdigest() != entry.get('sha256') or
-                        type(entry.get('sizeBytes')) is not int or len(data) != entry['sizeBytes']):
-                    raise BridgeError('Cached attachment integrity mismatch')
+            actual = self._verify_download_ledger(cached, self.root / folder, cached=True)
+            if expected-actual:
+                raise BridgeError('Cached attachment manifest is incomplete; repair local cache explicitly')
             return cached
         attempt_folder = folder + '/attempt-' + uuid.uuid4().hex
         data = self.dws.call(['chat', '+messages-mget', '--msg-ids', message_id,
                              '--download-resources', '--output-dir', attempt_folder])
-        messages=data.get('messages',[])
-        if len(messages)!=1 or messages[0].get('messageId')!=message_id or messages[0].get('conversationId')!=self.config['group']:
+        messages=data.get('messages') if isinstance(data,dict) else None
+        if (not isinstance(messages,list) or len(messages)!=1 or not isinstance(messages[0],dict) or
+                messages[0].get('messageId')!=message_id or messages[0].get('conversationId')!=self.config['group']):
             raise BridgeError('Downloaded message identity mismatch')
         ledger = data.get('resourceDownloads', {})
-        for entry in ledger.get('downloads', []):
-            p = (self.root / entry['localPath']).resolve()
-            if not p.is_relative_to((self.root / folder).resolve()):
-                raise BridgeError('Unexpected download destination')
-            entry['sha256'] = hashlib.sha256(p.read_bytes()).hexdigest()
-        actual={(r.get('resourceType'),r.get('resourceId')) for r in ledger.get('downloads',[])}
+        actual = self._verify_download_ledger(ledger, self.root / attempt_folder)
         if expected-actual:
             ledger={**ledger,'ok':False,'partial':True,'bridgeError':'missing_expected_resources'}
+        elif ledger.get('partial') or ledger.get('failedCount'):
+            ledger={**ledger,'ok':False}
         if ledger.get('ok') is True and not ledger.get('partial') and not ledger.get('failedCount'):
             manifest.parent.mkdir(parents=True, exist_ok=True)
             manifest.write_text(json.dumps(ledger, ensure_ascii=False))

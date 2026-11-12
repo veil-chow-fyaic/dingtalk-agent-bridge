@@ -31,6 +31,8 @@ python3 -m dingtalk_bridge.cli --account-id A --conversation-id C sync --deep
 
 成功HTTP响应以JSON输出；HTTP错误以非0退出。202仍会退出0，必须检查state，不能自动重试未知结果。status只读已有投递；reconcile查询原task，或显式用匹配的本机官方日志完成窄拒绝审计，均不发送。repair重新下载原件到新目录并更新缓存清单，旧件不覆盖。完整输入见[OpenAPI](../api/openapi.json)，未知发送与恢复规则见运行手册。
 
+附件接口的200返回资源清单，需检查`ok`、`partial`、`failedCount`。首次下载与缓存命中均核资源标识/唯一性、路径、字节数；首次计算SHA，缓存还比对已存SHA。坏首次响应返回502且不写成功清单；合法部分结果或缺少必要资源返回`ok:false`，后续只读下载可重试。坏缓存必须显式repair；repair的新响应若校验失败，原好清单和旧文件保留。[验证边界](75-fresh-download-integrity.md)
+
 ## 配置、发现与状态隔离
 
 [路由模板](../config.routes.example.json)可配置多个账号/会话。`accountId`为稳定本地别名，`profile`为DWS认证上下文；同别名不能映射多个profile。`conversationId`为稳定原生ID，name只展示。group使用openConversationId，direct另需真实`peerOpenDingTalkId`并调用官方私聊参数，不塞进group参数。

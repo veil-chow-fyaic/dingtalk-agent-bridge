@@ -1,16 +1,16 @@
 # READY_WITH_WARNINGS
 
-2026-11-12，E057之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
+2026-11-12，E058之后。当前入口只写当前状态；原逐阶段检查点已按字节归档到[历史PREFLIGHT](../../docs/history/through-E035/PREFLIGHT.md.txt)，不作为现行操作命令。
 
 - 同一仓库/分支codex/complete-bridge；基线166b11b、tag baseline/ui-2026-11-11。单Agent，未远程发布。
 - 精确liev profile、veil原生客户端及两人私聊授权保持。原群增至3人，新增群实验等待已发问题的范围答复；不影响私聊/独立工作。
 - 固定DWS v1.0.67；PNG/JPEG隔离上传补充已启用，原版binary不改。HTTP/SQLite＋stream_hint/history和两个Kimi gateway已运行；DM官方办公上下文开、群关。
-- 当前manager归属：传输99285、群gateway13713、私聊gateway13718。只读status验证实际归属，不按旧PID直接发信号；旧ctl不再管理。无开机自启。
-- E057 Python3.14/3.11隔离wheel各184项及六入口19模块通过；E039历史manager错误根因仍未解；live doctor通过，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/media-slot-install.json。守护自身SIGKILL/恶意脱组不在保证内。
+- 当前manager归属：传输20893、群gateway20948、私聊gateway20952。只读status验证实际归属，不按旧PID直接发信号；旧ctl不再管理。无开机自启。
+- E058 Python3.14/3.11隔离wheel各189项及六入口19模块通过；E039历史manager错误根因仍未解；live doctor通过，保留历史失败警告。E046守护已加载且真实SIGKILL私聊UI验证自动清理/无晚写/不重做；E047另验实际90秒超时及同gateway后续任务，已精确恢复原600秒；E048已补启动前无效时限拒绝，当前版本摘要见evidence/2026-11-12/fresh-download-install.json。守护自身SIGKILL/恶意脱组不在保证内。
 - E055快照：DM65任务160outbox（159确认1旧拒绝）169传输235事件；群3/7/12/76。已确认实验只读复核，不重发；所有旧失败与错结论保持。
 - PNG/PDF/DOCX/XLSX/ZIP等证据分层保留；JPEG私聊实际旋转、超2MiB PNG file、21MiB超限后新压缩任务均有UI/原件证据。不是所有格式/四方向均完成，逐格见ACCEPTANCE_MATRIX。
 - E023 history故障、E024 Stream断连恢复、E028自然access轮换已验；真实失效refresh凭据恢复未验，不复制/改写token或撤授权。Kimi不是OS沙箱，Codex超时可选跟踪。
-- 原观察run=reliability-20261111、PID97881、起点11月11日19:36:08保持。08:09附近1505样本约12.545h，累计7不可达及3poll_error，维护另记；**未满24h**，最早11月12日19:36后终检。每轮确认采样新鲜和进程归属，不重置。
+- 原观察run=reliability-20261111、PID97881、起点11月11日19:36:08保持。08:31附近1550样本约12.921h，累计7不可达及3poll_error，维护另记；**未满24h**，最早11月12日19:36后终检。每轮确认采样新鲜和进程归属，不重置。
 - E049五个旧UI审计已改核各自冻结源码/wheel/安装模块；当前代码不相同独立展示。旧报告SHA保持，10负向与双Python各3专项通过；本E049阶段无新增消息或重启，产品此后已升E052。
 - E050修当前运行/通用工具文档与HTTP拒绝对账/错误契约；两份旧全文与Git逐字节归档。隔离安装18帮助及33既有测试通过，25核验通过；产品/三进程/全部旧记录保持，无新UI。
 - E051中文/空格工作目录与TMPDIR的64既有测试、新同wheel中文安装六入口/只读doctor及23核验通过；不扩大平台或真实UI结论，现场保持。
@@ -28,3 +28,5 @@
 - E056固定官方18个无账号dry-run、46审计9负向通过；重复file最后值、互斥、9/10图引用、audio/video有效file已核对。两路旧记录、三个manager进程、配置与E054代码保持；无新原生通过。
 
 - E057快速完成结果调度：4新增回归、旧源码/wheel两项失败复现、源码及双Python安装包184项、24审计；仅两gateway空闲加载，transport/配置/会话/旧记录保持，无新UI。原观察08:19附近12.712h、7不可达不变。
+
+- E058统一首次/缓存完整性：5新方法、坏清单/部分结果/repair保旧/实际本地HTTP恢复；源码与双Python安装包189项、50现场缓存57资源只读及24审计通过。三进程空闲重载，配置/旧记录/原观察保持，无新消息或UI；原观察12.921h、7不可达。

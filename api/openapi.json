@@ -441,7 +441,7 @@
         "summary": "Download originals from an observed message; repair creates a new cache attempt",
         "responses": {
           "200": {
-            "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
+            "description": "Resource download ledger: check ok, partial and failedCount. Successful fresh/cache entries are checked for resource identity, uniqueness, path, exact byte count and local SHA256. Partial or missing-resource results are not cached as success; read-only download may be retried.",
             "content": {
               "application/json": {
                 "schema": {
@@ -458,7 +458,7 @@
             "description": "Bearer token required"
           },
           "502": {
-            "description": "Upstream error"
+            "description": "DWS failure or invalid attachment manifest/file integrity. Invalid fresh results are not cached. An invalid existing cache requires explicit repair; failed validation of the repair preserves the previous manifest and files."
           },
           "500": {
             "description": "Unexpected internal error; response body does not expose internal exception details."

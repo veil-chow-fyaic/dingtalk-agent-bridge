@@ -1,8 +1,10 @@
 # 执行摘要与剩余验收
 
-2026-11-12，E057之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
+2026-11-12，E058之后。活动任务只有[plans/completion](../plans/completion/INIT.md)；本页提供摘要，不创建第二套计划。需求见[总状态](17-requirements-progress-review.md)，精确通过/部分/阻塞结果见[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。
 
 ## 最近实质结果
+
+- E058：首次/缓存统一校验，坏响应不写成功清单，repair失败保旧；5新增方法、真实本地HTTP恢复，双Python安装包189项、50现场缓存57资源只读/24审计通过，三进程空闲重载。[证据](75-fresh-download-integrity.md)
 
 - E057：快速附件结果仅原消息消费，优先处理已有slot，取消后清理；4个新增回归、旧源码/wheel各2失败复现，双Python已安装包各184项及24审计通过，仅两gateway空闲重载。[证据](74-media-completion-scheduling.md)
 
@@ -32,7 +34,7 @@
 
 - E037：EXIF=6 JPEG原件完整保留，实际归正PNG、完整短回复及报告下载打开；47审计/4负向。[闭环](55-exif-orientation-ui.md)
 
-E057 Python3.14/3.11隔离wheel各184项及六入口19模块通过；E039两次manager历史错误保持；传输保持，两个gateway已加载E057，私聊600秒保持，原24h观察器未重启。DM65/160/169/235，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
+E058 Python3.14/3.11隔离wheel各189项及六入口19模块通过；E039两次manager历史错误保持；三个进程已加载E058，私聊600秒保持，原24h观察器未重启。DM65/160/169/235，群3/7/12/76为本阶段快照。旧阶段数量不是当前总数。
 
 ## 仍需完成
 
