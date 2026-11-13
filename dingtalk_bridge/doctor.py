@@ -16,7 +16,7 @@ from urllib.error import HTTPError
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from .routing import route_configs
-from .agent_runtime import timeout_seconds
+from .agent_runtime import timeout_seconds, runtime_environment
 from .core import credential_store_diagnostic
 from .dws_access import DWSAccess, REASONS, access_diagnostic
 
@@ -134,6 +134,12 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
             valid = isinstance(allowed, list) and bool(allowed) and all(isinstance(v, str) and v and '<' not in v for v in allowed)
             add(scope, 'explicit_allowlist', 'ok' if valid else 'error')
             runtime = settings['runtime']
+            try:
+                runtime_environment(runtime)
+                environment_valid = True
+            except ValueError:
+                environment_valid = False
+            add(scope, 'runtime_environment', 'ok' if environment_valid else 'error')
             try:
                 timeout_seconds(runtime)
                 timeout_valid = True

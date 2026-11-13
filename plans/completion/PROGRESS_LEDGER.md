@@ -297,3 +297,5 @@
 | 2026-11-13 E113 | 按用户要求统一主线/产出/路线与DWS风险、根因未定和恢复方案；纠正当前入口停在E097–E107及CEO已完成仍列待办 | docs/102、114、11；mainline-risk-review-sources/validation | 下一段通用runtime环境及安全错误信封，随后当前部署长期观察；本轮文档整理无DWS/认证/系统/UI操作，不声称新健康或新测试通过 |
 
 | 2026-11-13 E114 | 用户要求安排长过程；恢复原bridge心跳ACTIVE/30分钟，原聊天及授权不变，补明确里程碑与逐段退出条件 | long-run-resume；09-执行时序与里程碑 | 下一执行段先实现通用runtime启动环境，不重新规划或恢复旧实验；本轮调度不算业务恢复/新UI通过 |
+
+| 2026-11-13 E115 | runtime网络环境持久配置、DWS结构化错误诊断；冻结源/同wheel双Python357，16新增/11核验；无真实认证操作 | docs/115；runtime-environment-diagnostics-validation | 下一立即受管部署：先停空闲gateway、封新调用排空后停transport，固定cut补读停机核账本再起三服务；新UI任务检验持久环境及文件交付 |

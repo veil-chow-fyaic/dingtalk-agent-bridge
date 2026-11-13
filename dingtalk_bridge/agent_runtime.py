@@ -8,6 +8,7 @@ import signal
 import subprocess
 import sys
 import time
+from urllib.parse import urlsplit
 
 
 RESPONSE_SCHEMA={'type':'object','properties':{'text':{'type':'string'},
@@ -111,6 +112,55 @@ def timeout_seconds(settings):
     return value
 
 
+NETWORK_ENV = {'HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'NO_PROXY'}
+
+
+def runtime_environment(settings, inherited=None):
+    """Apply explicit network settings to this child only; never change identity.
+
+    An absent/empty map preserves legacy inheritance. Values are private config,
+    not runtime capability/session identity or diagnostic output. Both common
+    casings are set together so a stale lowercase value cannot win after restart.
+    """
+    values = settings.get('environment', {})
+    if not isinstance(values, dict):
+        raise ValueError('runtime_environment_invalid')
+    normalized = {}
+    for key, value in values.items():
+        if not isinstance(key, str) or key not in NETWORK_ENV | {x.lower() for x in NETWORK_ENV}:
+            raise ValueError('runtime_environment_key_not_allowed')
+        name = key.upper()
+        if value is not None and (not isinstance(value, str) or len(value) > 4096 or
+                                 any(ord(c) < 32 or ord(c) == 127 for c in value)):
+            raise ValueError('runtime_environment_invalid')
+        value = value.strip() if isinstance(value, str) else None
+        if name in normalized and normalized[name] != (value or None):
+            raise ValueError('runtime_environment_alias_conflict')
+        if value and name != 'NO_PROXY':
+            try:
+                url = urlsplit(value)
+                valid = (url.scheme in {'http', 'https', 'socks5', 'socks5h'} and url.hostname
+                         and url.path in ('', '/') and not url.query and not url.fragment
+                         and not any(c.isspace() for c in value))
+                if url.port is not None and not 1 <= url.port <= 65535:valid = False
+            except ValueError:
+                valid = False
+            if not valid:raise ValueError('runtime_environment_proxy_invalid')
+        normalized[name] = value or None
+    env = dict(os.environ if inherited is None else inherited)
+    for name, value in normalized.items():
+        for alias in (name, name.lower()):
+            if value is None:env.pop(alias, None)
+            else:env[alias] = value
+    if normalized:
+        bypass = list(dict.fromkeys(part.strip() for key in ('NO_PROXY', 'no_proxy')
+                                   for part in env.get(key, '').split(',') if part.strip()))
+        for host in ('localhost', '127.0.0.1', '::1'):
+            if host not in bypass:bypass.append(host)
+        env['NO_PROXY'] = env['no_proxy'] = ','.join(bypass)
+    return env
+
+
 def wait_unreaped(process,timeout):
     """Observe exit while retaining the owned leader's PID/process-group identity."""
     deadline=time.monotonic()+timeout
@@ -160,6 +210,7 @@ class LocalRuntime:
         self.settings=settings;self.kind=settings['kind']
         runtime_manifest(settings);require_capabilities(settings)
         timeout_seconds(settings)
+        runtime_environment(settings)
 
     def command(self,workspace,run_dir,session_id,images=()):
         executable=self.settings['binary']
@@ -180,6 +231,7 @@ class LocalRuntime:
 
     def run(self,prompt,workspace,run_dir,session_id,cancel,on_session,images=()):
         timeout=timeout_seconds(self.settings)
+        environment=runtime_environment(self.settings)
         require_capabilities(self.settings)
         if session_id is not None:checked_session(session_id)
         workspace=Path(workspace);run_dir=Path(run_dir)
@@ -198,7 +250,7 @@ class LocalRuntime:
                 guard=[sys.executable,str(Path(__file__).with_name('runtime_guard.py')),
                     '--lifetime-fd',str(lifetime_read),'--',*args]
                 process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind=='codex' else subprocess.DEVNULL,
-                    stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,))
+                    stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,),env=environment)
             except BaseException:
                 os.close(lifetime_write)
                 raise

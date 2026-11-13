@@ -38,6 +38,19 @@ class SessionCompatibilityTests(unittest.TestCase):
         self.assertEqual(self.runtime.sessions,[None,'native-session'])
         self.assertEqual(self.g.summary()['jobs'],{'completed':2})
 
+    def test_network_configuration_restart_preserves_session_history_and_receipts(self):
+        self.task('first');before=self.meta()
+        jobs=[dict(r) for r in self.g.db.execute('SELECT * FROM jobs')]
+        receipts=[dict(r) for r in self.g.db.execute('SELECT * FROM outbox')]
+        settings={**self.settings,'runtime':{**self.settings['runtime'],
+                  'environment':{'HTTPS_PROXY':'http://127.0.0.1:9876'}}}
+        self.restart(settings)
+        self.assertEqual(self.meta(),before)
+        self.assertEqual([dict(r) for r in self.g.db.execute('SELECT * FROM jobs')],jobs)
+        self.assertEqual([dict(r) for r in self.g.db.execute('SELECT * FROM outbox')],receipts)
+        self.task('second');self.assertEqual(self.runtime.sessions,[None,'native-session'])
+        self.assertEqual(self.meta()['session_contract'],before['session_contract'])
+
     def test_model_change_blocks_before_tools_keeps_history_and_new_is_explicit(self):
         self.task('first');old=self.meta();old_job=dict(self.g.db.execute('SELECT * FROM jobs').fetchone())
         old_out=[dict(r) for r in self.g.db.execute('SELECT * FROM outbox')]

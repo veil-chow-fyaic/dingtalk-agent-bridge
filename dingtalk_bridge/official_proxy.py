@@ -6,11 +6,12 @@ from pathlib import Path
 import signal
 import sys
 import threading
+import time
 
 if __package__ in (None, ''):
     sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from dingtalk_bridge.dws_access import (BridgeError, DWSAccess, DWSAccessSuspended,
-                                       credential_failure, run_dws)
+                                       credential_failure, response_failed, run_dws)
 from dingtalk_bridge.agent_runtime import timeout_seconds
 
 OFFICE_COMMANDS=('doc','todo','calendar','mail','drive','minutes')
@@ -50,16 +51,26 @@ def execute(root, binary, profile, arguments, *, timeout=600, stop=None):
     args=pinned_arguments(arguments,profile)
     access=DWSAccess(root)
     with access.lease(stop,operation='office') as lease:
+        started=time.monotonic()
         try:
+            lease.stage('invoking')
             # Preserve the runtime's working directory for local file paths;
             # root selects only the bridge-wide circuit and concurrency slots.
             result=run_dws([str(Path(binary).resolve()),*args],cwd=Path.cwd(),
                            timeout=timeout,stop=stop,text=False)
         except DWSAccessSuspended as exc:
+            lease.result(None,None,started,phase='process',reason=exc.reason)
             lease.block(exc.reason);raise
+        except OSError:
+            lease.result(None,None,started,phase='spawn',reason='spawn_failed')
+            raise
         try:data=json.loads(result.stdout or result.stderr)
         except (ValueError,UnicodeError):data=None
-        if credential_failure(data):lease.block('credential_store_unavailable')
+        observed=data
+        if isinstance(data,dict) and 'outcome' in data and isinstance(data.get('data'),dict) and not response_failed(data,result.returncode):
+            observed=data['data']
+        lease.result(observed,result.returncode,started,phase='response' if isinstance(observed,dict) else 'decode')
+        if credential_failure(observed):lease.block('credential_store_unavailable')
         lease.complete()
         return result
 

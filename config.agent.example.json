@@ -9,6 +9,7 @@
   "runtime": {
     "kind": "kimi",
     "binary": "<absolute path to logged-in kimi>",
-    "timeoutSeconds": 600
+    "timeoutSeconds": 600,
+    "environment": {}
   }
 }

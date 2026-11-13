@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
 from .rejection import read_length_rejection
 from .dws_access import (BridgeError, DWSCredentialStoreUnavailable, DWSAccessSuspended,
-                         DWSAccess, access_diagnostic, credential_failure, run_dws,operation_kind)
+                         DWSAccess, access_diagnostic, credential_failure, run_dws,operation_kind,response_failed)
 
 
 def credential_store_diagnostic():
@@ -27,6 +27,14 @@ class DWSRequestRejected(BridgeError):
     def __init__(self, diagnostic):
         super().__init__('PARAM_ERROR')
         self.diagnostic = diagnostic
+
+
+class DWSBusinessError(BridgeError):
+    def __init__(self, diagnostic):
+        self.diagnostic=diagnostic
+        reason=next((diagnostic.get(key) for key in ('server_error_code','reason')
+                     if diagnostic.get(key) not in (None,'unclassified')), 'DWS business failure')
+        super().__init__(reason)
 
 
 class ArtifactIntegrityError(ValueError):
@@ -84,34 +92,43 @@ class DWS:
 
     def call(self, args):
         with self.access.lease(self.stop,operation=operation_kind(args)) as lease:
+            started=time.monotonic()
             try:
                 lease.stage('invoking')
                 p = run_dws([self.binary, *args, '--profile', self.config['profile'],
                              '--format', 'json'], cwd=self.root, stop=self.stop)
             except DWSAccessSuspended as exc:
+                lease.result(None,None,started,phase='process',reason=exc.reason)
                 lease.block(exc.reason);raise
+            except OSError:
+                lease.result(None,None,started,phase='spawn',reason='spawn_failed')
+                raise BridgeError('dws_spawn_failed') from None
             try:
                 data = json.loads(p.stdout or p.stderr)
             except ValueError as e:
+                lease.result(None,p.returncode,started,phase='decode',reason='invalid_response')
                 lease.complete()
                 raise BridgeError('DWS returned no valid JSON') from e
+            if not isinstance(data,dict):
+                lease.result(None,p.returncode,started,phase='decode',reason='invalid_response')
+                lease.complete()
+                raise BridgeError('DWS returned no JSON object')
+            # Keep the exact envelope owning the failure. Do not recursively
+            # inspect chat bodies, referenced messages or office tool prose.
+            if not response_failed(data,p.returncode) and 'outcome' in data and isinstance(data.get('data'),dict):
+                data=data['data']
+            diagnostic=lease.result(data,p.returncode,started)
             if credential_failure(data):
                 lease.block('credential_store_unavailable')
                 raise DWSCredentialStoreUnavailable()
             lease.complete()
-        if not isinstance(data, dict):
-            raise BridgeError('DWS returned no JSON object')
-        if p.returncode or data.get('success') in (False, 'false') or data.get('ok') is False:
+        if response_failed(data,p.returncode):
             error = data.get('error', {})
             if not isinstance(error, dict):
-                raise BridgeError('DWS business failure')
+                raise DWSBusinessError(diagnostic)
             if error.get('reason') == 'invalid_request' and error.get('server_error_code') == 'PARAM_ERROR':
                 raise DWSRequestRejected({'reason': 'invalid_request', 'server_error_code': 'PARAM_ERROR'})
-            raise BridgeError(str(error.get('server_error_code') or error.get('reason') or 'DWS business failure'))
-        if 'outcome' in data and isinstance(data.get('data'), dict):
-            data = data['data']
-        if data.get('success') in (False, 'false') or data.get('ok') is False:
-            raise BridgeError('DWS inner business failure')
+            raise DWSBusinessError(diagnostic)
         return data
 
     def upload_image(self, relative_path):

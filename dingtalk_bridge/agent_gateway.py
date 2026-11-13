@@ -14,7 +14,8 @@ from urllib.parse import urlencode,quote
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from .agent_runtime import (LocalRuntime,RuntimeStopped,RuntimeFailure,RuntimeSessionError,RuntimeResultError,
-                            timeout_seconds,validate_runtime_result,runtime_manifest,checked_session,require_capabilities)
+                            timeout_seconds,validate_runtime_result,runtime_manifest,checked_session,require_capabilities,
+                            runtime_environment)
 from .consumer import Inbox,HydrationPending
 from .core import ArtifactIntegrityError
 from .message_model import media_parts
@@ -128,6 +129,7 @@ def stage_outputs(root,workspace,job_id,result):
 class Gateway:
     def __init__(self,root,route,state_name,settings,api=None,runtime=None):
         timeout_seconds(settings['runtime'])
+        runtime_environment(settings['runtime'])
         self.root=Path(root).resolve();self.route=route;self.settings=settings
         official_tools_enabled(settings)
         if not settings.get('allowedSenderIds'):raise ValueError('Configure allowedSenderIds before executing local tasks')

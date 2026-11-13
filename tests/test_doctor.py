@@ -82,6 +82,21 @@ class DoctorTests(unittest.TestCase):
                 self.assertEqual(before,{str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
                 self.assertNotIn('private-',json.dumps(report))
 
+    def test_network_settings_are_checked_offline_without_values_or_side_effects(self):
+        settings={'accountId':self.route['accountId'],'conversationId':self.route['conversationId'],
+                  'allowedSenderIds':['private-allowed'],'runtime':{'kind':'kimi','binary':str(self.binary)}}
+        path=self.root/'local/agent.json'
+        for value,valid in [({'HTTPS_PROXY':'http://private-host:1234'},True),
+                            ({'HOME':'private-home'},False),({'HTTP_PROXY':'private-invalid'},False)]:
+            settings['runtime']['environment']=value;path.write_text(json.dumps(settings))
+            before={str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+            with patch('subprocess.Popen',side_effect=AssertionError('offline check must not execute')):
+                report=self.report(agents=['local/agent.json'])
+            self.assertEqual(report['ok'],valid)
+            self.assertIn({'scope':'agent-1','check':'runtime_environment','status':'ok' if valid else 'error'},report['checks'])
+            self.assertEqual(before,{str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+            self.assertNotIn('private-',json.dumps(report))
+
     def test_live_checks_exact_scope_freshness_completeness_and_errors(self):
         self.assertTrue(self.report(live=True, health_reader=lambda *_: self.health())['ok'])
         variants = []

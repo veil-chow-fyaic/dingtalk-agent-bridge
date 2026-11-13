@@ -50,7 +50,7 @@ with DWSAccess(sys.argv[1]).lease(operation='history') as lease:
         binary=self.root/'provider';binary.write_text('#!'+sys.executable+'\nprint(\'{"success":true}\')\n');binary.chmod(0o700)
         DWS(self.root,{'binary':str(binary),'profile':'SECRET_PROFILE:SECRET_CORP'}).call(
             ['chat','+chat-messages','--group','SECRET_CONVERSATION','--text','SECRET_BODY'])
-        rows=self.rows();self.assertEqual([x['event'] for x in rows],['reserving','reserved','invoking','released'])
+        rows=self.rows();self.assertEqual([x['event'] for x in rows],['reserving','reserved','invoking','result','released'])
         self.assertEqual(len({x['attempt'] for x in rows}),1)
         self.assertEqual({x['pid'] for x in rows},{os.getpid()});self.assertEqual({x['operation'] for x in rows},{'history'})
         raw=(self.access.directory/'dws-call-audit.ndjson').read_text()

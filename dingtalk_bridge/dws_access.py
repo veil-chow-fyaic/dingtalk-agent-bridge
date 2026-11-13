@@ -19,6 +19,48 @@ class BridgeError(Exception):
 REASONS = {'credential_store_unavailable', 'dws_timeout', 'dws_process_interrupted',
            'dws_cleanup_incomplete', 'dws_access_state_invalid', 'operator_suspended'}
 OPERATIONS={'history','send','send_status','download','upload','office','stream','other'}
+ERROR_CATEGORIES={'api','auth','validation','discovery','internal','partial_failure','permission'}
+ERROR_REASONS={'request_timeout','invalid_request','unknown_flag','confirmation_required',
+               'permission_denied','unauthorized','rate_limited','network_error','token_expired',
+               'credential_store_unavailable','invalid_response','spawn_failed'} | REASONS
+SERVER_CODES={'PARAM_ERROR','CONFLICT_ERROR','SYSTEM_ERROR','FORBIDDEN','UNAUTHORIZED',
+              'TOO_MANY_REQUESTS','INVALID_ACCESS_TOKEN','ACCESS_TOKEN_EXPIRED'}
+ERROR_ORIGINS={'client','mcp_gateway','dingtalk_api','server','local','transport'}
+ERROR_STAGES={'request','response','preflight','validation','dispatch','execute',
+              'authorization','authentication','transport','decode'}
+
+
+def response_failed(data, returncode=0):
+    return (returncode != 0 or not isinstance(data, dict) or
+            data.get('success') in (False, 'false') or data.get('ok') is False or
+            isinstance(data.get('error'), dict))
+
+
+def safe_dws_diagnostic(data, returncode, elapsed, *, phase='response', reason=None):
+    """Closed vocabulary: provider messages/IDs/URLs/unknown codes never escape.
+
+    response_ok means a valid CLI response, NOT confirmed delivery or task
+    success. Provider retry guidance is observational, never an instruction.
+    """
+    error=data.get('error') if isinstance(data,dict) else None
+    error=error if isinstance(error,dict) else {}
+    phase=phase if phase in {'response','decode','process','spawn'} else 'process'
+    record={'phase':phase,'outcome':('response_error' if response_failed(data,returncode) else 'response_ok')
+            if phase=='response' else 'invalid_response' if phase=='decode' else 'process_error',
+            'elapsedMs':max(0,round(elapsed*1000)),
+            'exitCode':returncode if type(returncode) is int and -255<=returncode<=255 else None,
+            'automaticRetry':False}
+    for field,allowed in (('category',ERROR_CATEGORIES),('reason',ERROR_REASONS),
+                          ('server_error_code',SERVER_CODES),('origin',ERROR_ORIGINS),('stage',ERROR_STAGES)):
+        value=error.get(field)
+        if value is not None:record[field]=value if isinstance(value,str) and value in allowed else 'unclassified'
+    if reason in ERROR_REASONS:record['reason']=reason
+    if credential_failure(data):record['reason']='credential_store_unavailable'
+    value=error.get('code')
+    if type(value) is int and 0<=value<=255:record['providerCode']=value
+    for source,target in (('execution_started','providerExecutionStarted'),('retryable','providerRetryable')):
+        if type(error.get(source)) is bool:record[target]=error[source]
+    return record
 
 
 def operation_kind(args):
@@ -102,12 +144,13 @@ class DWSAccess:
         finally:
             if os.path.exists(name):os.unlink(name)
 
-    def audit(self,event,*,attempt=None,slot=None,operation='other',reason=None,error_type=None):
+    def audit(self,event,*,attempt=None,slot=None,operation='other',reason=None,error_type=None,diagnostic=None):
         """Diagnostic journal; failure must not erase receipts or alter the latch."""
         record={'schemaVersion':1,'at':time.time(),'pid':os.getpid(),'event':event,
                 'attempt':attempt,'slot':slot,'operation':operation if operation in OPERATIONS else 'other'}
         if reason in REASONS:record['reason']=reason
         if error_type:record['errorType']=error_type
+        if diagnostic is not None:record['diagnostic']=diagnostic
         try:
             fd=os.open(self.directory/'dws-call-audit.ndjson',os.O_CREAT|os.O_WRONLY|os.O_APPEND,0o600)
             with os.fdopen(fd,'wb') as output:
@@ -215,6 +258,11 @@ class DWSLease:
 
     def stage(self,event,**details):
         self.access.audit(event,attempt=self.attempt,slot=self.slot,operation=self.operation,**details)
+
+    def result(self,data,returncode,started,**details):
+        diagnostic=safe_dws_diagnostic(data,returncode,time.monotonic()-started,**details)
+        self.stage('result',diagnostic=diagnostic)
+        return diagnostic
 
     def complete(self):
         try:self.access.write({'state':'ready'},self.path)

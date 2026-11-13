@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E115",
+  "recordedAt": "2026-11-13T17:00:57.513265+08:00",
+  "ok": true,
+  "checks": {
+    "install_report_ok": true,
+    "product_21_modules": true,
+    "workspace_matches_frozen": true,
+    "same_frozen_test_bytes": true,
+    "source-tests-correct-layout.log_passed": true,
+    "py314-tests.log_passed": true,
+    "py311-tests.log_passed": true,
+    "wheel_same_21_modules": true,
+    "license_packaged": true,
+    "installed_site_packages_twice": true,
+    "six_entrypoints_twice": true
+  },
+  "tests": [
+    {
+      "environment": "source-tests-correct-layout.log",
+      "testsRun": 357,
+      "passed": true
+    },
+    {
+      "environment": "py314-tests.log",
+      "testsRun": 357,
+      "passed": true
+    },
+    {
+      "environment": "py311-tests.log",
+      "testsRun": 357,
+      "passed": true
+    }
+  ],
+  "newTestMethods": 16,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "62a566cb491c4ceae836e125d2c0b8732a727580a605ee998212900139e55b28",
+    "agent_runtime.py": "61328c555ebdbac4ab33cb0c800203fe71d85350ce9aba4ee8a79a2a79ca93f6",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "ed824427797636f410e681f90cca10949e4bdf17e733d87c7d716772d6e80fd6",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "8ed834f87e04669f87f9ebe9296a8e3431813527d621b61ff3b0746e7e0cf62e",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "b43836bcf8563ce68ca54bc85620b4d63520bb2e7931d589c40f5606d2188a13",
+    "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "wheelSha256": "6317fce394ff98b5e18d44cbadadd269b68f619f7338294abbc7a4b96b616ff2",
+  "testLogSha256": {
+    "source-tests-correct-layout.log": "2301c84f6854a3f2a20aab369e1c63799e6eca75d5ba79caf8537509dd6f3d57",
+    "py314-tests.log": "8cf64c264c8a4878862f406e8b57e714a686d8f2d52ae1155d5e4d28fb641c80",
+    "py311-tests.log": "cd132ca8baec4f41acf254b3ff3f2a7a181ea139de9ea3f6d7c51bac3a00f378"
+  },
+  "deployed": false,
+  "realDwsCallsForProductTests": 0,
+  "privateEvidence": "local/runtime-env-diagnostics-20261113",
+  "limitations": [
+    "Synthetic errors do not establish original Keychain cause",
+    "Initial focused diagnostics 2 failures corrected; initial full run retained 2 failures",
+    "First frozen-source harness layout failed 15 assertions and 2 errors; corrected layout uses identical frozen modules/tests",
+    "No claim of natural credential refresh or 24h health",
+    "UI/deployment follow separately"
+  ]
+}

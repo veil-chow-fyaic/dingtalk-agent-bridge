@@ -406,3 +406,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E114 — 原长任务心跳恢复与阶段执行门槛
 - 用户要求安排长过程闭环；复用bridge，官方工具update为ACTIVE、每30分钟，并读回原target/配置核实；没有重复任务、新线程、子Agent或另一目标系统。[调度证据](../../evidence/2026-11-13/long-run-resume.json)。
 - Rose文件化续作沿用本目录，M1环境、M2错误、M3观察、M4剩余UI、M5执行器、M6封版及阻塞转项/退出条件见[里程碑](09-执行时序与里程碑.md)。本轮仅安排执行，无新DWS/产品/UI验收，最后业务现场仍E112，原49/14/1及7 MUST不完整。
+
+## E115 — runtime环境持久配置与DWS安全错误诊断
+- runtime.environment只配置子进程网络变量，大小写统一/空值清除/回环绕过/合法性校验，原身份和session保持；聊天及办公受管日志增加安全结果分类、exit/耗时，不改变回执与自动重试策略。
+- [说明](../../docs/115-runtime-environment-and-dws-diagnostics.md)、[冻结证据](../../evidence/2026-11-13/runtime-environment-diagnostics-validation.json)：16新增方法；冻结源码/同wheel Python3.14及3.11各357通过，11核验、21模块/六入口/许可一致。初轮2产品失败已修；冻结测试布局15失败/2错误已纠正，原日志保留。
+- 尚未部署，本段之后立即按当前授权受管重载及两路真实UI任务/文件下载打开。旧Keychain根因和长期可靠性未关闭，测试不产生真实DWS调用。
