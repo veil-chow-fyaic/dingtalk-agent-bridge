@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E121",
+  "recordedAt": "2026-11-13T10:18:05.352103+00:00",
+  "ok": true,
+  "checks": {
+    "archive_safe_paths": true,
+    "archive_no_known_private_values": true,
+    "manifest_683_exact": true,
+    "same_21_validated_modules": true,
+    "tests_same_frozen_bytes": true,
+    "scripts_same_frozen_bytes": true,
+    "fixtures_same_frozen_bytes": true,
+    "integrations_same_frozen_bytes": true,
+    "same_packaging_configuration": true,
+    "all_product_and_license_bytes_match_prior_wheel": true,
+    "wheel_known_private_absent": true,
+    "license_packaged": true,
+    "empty_status_no_state_writes": true,
+    "site_packages_21_match": true,
+    "no_runtime_dependencies": true,
+    "export_unmodified_by_build": true,
+    "all_offline_steps_pass": true,
+    "prior_frozen_tests_374_pass": true,
+    "working_tree_unchanged": true
+  },
+  "sourceCommit": "982ae492607f3161319df4e21089f906a573f9e4",
+  "productCommit": "0c6f2da",
+  "sourceArchiveSha256": "28994ddc390c870b3ae008ef1c1c7b73bf385f30f43e4ace09a3bd511720b525",
+  "manifestFiles": 683,
+  "wheelSha256": "37d9ad6b9a0494ba15a944103873a7408a85ef4ebf42fd6f6e2577b523ab2c9c",
+  "priorE119WheelSha256": "154db8c4afb47b4f22a45d35ce93efecba12f8bd1a1a4c2419efed84b7874579",
+  "productModules": 21,
+  "licenses": [
+    "dingtalk_bridge/licenses/ceo-agent-service.txt"
+  ],
+  "offlineSteps": [
+    {
+      "name": "manifest-before",
+      "exitCode": 0,
+      "sha256": "1fa4e5ce5f42c97a928c733483833f35140999f632df1806b4e0d86c1790dc4b"
+    },
+    {
+      "name": "offline-build",
+      "exitCode": 0,
+      "sha256": "3420e46eadd660303f4b3e748dde0be16b58cdc673492f36c498f9b240d9110b"
+    },
+    {
+      "name": "fresh-venv",
+      "exitCode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "offline-install",
+      "exitCode": 0,
+      "sha256": "eae8987b71fcf3ca9b0600863a025347bc0f23e8f762a223948ae1f85ef38a2f"
+    },
+    {
+      "name": "dab-help",
+      "exitCode": 0,
+      "sha256": "f308a9b40f1d06dde42edd5e0d0a371a33023989b34a96c76b4e543747f195ed"
+    },
+    {
+      "name": "dab-bridge-help",
+      "exitCode": 0,
+      "sha256": "c12aef42fce9c075881ff84af090291c882324de8304f597d6bcbf8c2d948262"
+    },
+    {
+      "name": "dab-agent-help",
+      "exitCode": 0,
+      "sha256": "90635ab0854632aecdfb2e04f15c3b66fd1ac9b59e2911779bb7af419ebc136f"
+    },
+    {
+      "name": "dab-consume-help",
+      "exitCode": 0,
+      "sha256": "3013b17496ddf2efd9209c5462adead269d9b99e909e64e64dbb221b66966968"
+    },
+    {
+      "name": "dab-doctor-help",
+      "exitCode": 0,
+      "sha256": "e6ff6d0141effffa0acb3a5ed11fece31d2a4ca714123cf480c09f2d0a08d6f6"
+    },
+    {
+      "name": "dab-service-help",
+      "exitCode": 0,
+      "sha256": "195c806501b6a4da17de72d38da2b4a0d359d6026e8a1584ae93a55194092ec0"
+    },
+    {
+      "name": "service-status",
+      "exitCode": 0,
+      "sha256": "96ff5efdcc8987805f5838b5dc65f3b192dee7bc2de67a7020baa73313fd606b"
+    },
+    {
+      "name": "installed-import",
+      "exitCode": 0,
+      "sha256": "e06f1455e210d0a0a7c3238dd0e3249f67c0144b61274ff68207a19ec3a17f6a"
+    },
+    {
+      "name": "manifest-after",
+      "exitCode": 0,
+      "sha256": "1fa4e5ce5f42c97a928c733483833f35140999f632df1806b4e0d86c1790dc4b"
+    }
+  ],
+  "testsReused": {
+    "evidence": "E119",
+    "testsPerEnvironment": 374,
+    "environments": 3,
+    "allProductTestsScriptsFixturesIntegrationsExact": true,
+    "newFullTestRuns": 0
+  },
+  "newNativeUITests": 0,
+  "privateBundle": "local/handoff-982ae49-20261113/bundle",
+  "limitations": [
+    "Artifact frozen at982ae49; later audit documents are separate",
+    "New wheel metadata includes updated README; all product and license bytes identical to E119 wheel",
+    "Fresh offline Python3.11 install/import/six CLI help/empty status verified; prior Python3.14 and3.11 full suites reused by exact bytes, not claimed rerun",
+    "Rollback guide provided; no destructive database rollback or new failure injection",
+    "Not final project acceptance: media and long-term MUST remain; no credential/OS commands/live service modification"
+  ]
+}

@@ -26,3 +26,5 @@ architecture保存设计，references保存公开选型及固定来源，编号�
 - [E119 Codex原生中断与有限清理](120-codex-native-interrupt.md)
 
 - [E120 Codex部署与真实私聊验收](121-codex-deployment-and-ui.md)
+
+- [E121当前版干净交接与回滚边界](122-current-clean-handoff.md)
