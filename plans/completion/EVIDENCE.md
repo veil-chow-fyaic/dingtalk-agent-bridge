@@ -375,3 +375,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E108 — 调用归属日志与有界恢复准备
 - [实现/恢复次序](../../docs/111-dws-interruption-recovery.md)、[9冻结核验](../../evidence/2026-11-13/dws-call-journal-validation.json)：6新增方法、源码/同wheel双Python各341，21模块一致。真实合成SIGKILL及释放落盘失败复现active残留；不外推为本次最初中断根因。
 - 用户明确授权本轮恢复，三服务已受管停止、任务/会话备份，0未决投递/执行；仅同AIC/原私聊。当前未清闩/调用，下一步固定cut补读、停机积压审查、原session迁移及UI。
+
+
+## E109 — AIC/私聊真实恢复及契约部署
+- [恢复记录](../../docs/111-dws-interruption-recovery.md)、[25项当前状态核验](../../evidence/2026-11-13/dws-recovery-deployment-validation.json)。用户最新指令授权执行；首次只完成旧窗口，误用last_sync.at判定cut；停机审查本地零积压后提前启动gateway。后续按持久watermark核实两路已覆盖cut且无未完窗口，旧82任务仍全部未变；原门槛失败保留。
+- 审查E103原进程/旧E099配置后显式迁移两session，82任务/旧回执保持；三个服务加载997e9fa冻结21模块，DWS ready。两个新合成出站均confirmed，官方history正文/自身身份一致，consumer已收且无新任务；28真实调用短时检查点无新故障。
+- CUA重置后仍图像创建错误，未取得新客户端UI；未冒称veil入站任务或新版下载打开通过。旧矩阵/长期故障保留，下一步工具恢复后新任务真实UI，不重复探针、resume、登录或钥匙串。

@@ -1,6 +1,6 @@
 # 运行器终态与会话兼容性
 
-2026-11-13，E104。落实CEO C03/C04，产品只改`agent_runtime.py`、`agent_gateway.py`；不引入CEO的业务模型、Pydantic依赖、自动切路由或重试。该检查点未重载真实服务；transport仍E102、gateway仍E099。没有新增UI通过格或第二运行器可用声明。
+2026-11-13，E104。后续E109已部署并显式迁移两个原会话，详见[恢复实证](111-dws-interruption-recovery.md)；下文“未部署”均指E104历史检查点。落实CEO C03/C04，产品只改`agent_runtime.py`、`agent_gateway.py`；不引入CEO的业务模型、Pydantic依赖、自动切路由或重试。该检查点未重载真实服务；transport仍E102、gateway仍E099。没有新增UI通过格或第二运行器可用声明。
 
 ## 复现与修复
 

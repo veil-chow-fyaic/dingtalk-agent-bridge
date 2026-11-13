@@ -1,8 +1,6 @@
 # build
 
-E107当前（2026-11-13）：三个进程running，但DWS调用已持久暂停（dws_process_interrupted，闩mtime09:33:56），两路history有未完窗口，远端积压未知。不得称正常收发，不自动清闩/恢复或要求密码；先补只含调用类别/归属/阶段的诊断并用合成中断验证。E104候选c5ee1fe未部署；E105 Codex60秒仍超时；E106205采到事件与旧账本一致但不证明原截止全量。CUA两次图像错误路径停止，心跳PAUSED。 [当前证据](../../docs/110-interrupted-history-current-state.md)。
-
-E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+E109当前（2026-11-13）：按用户本轮明确恢复指令，三服务已部署997e9fa（含E104/E108）；两路history与gateway已恢复，DWS为ready；初次cut门槛误用了调用时间，随后按持久watermark核实已覆盖cut，旧任务无变化，偏差保留。群/私聊各一条真实出站探针confirmed，官方历史回读及consumer入库一致，自身消息未生成任务；82旧任务、旧回执和两个原session保持。25项当前部署核验通过（原阶段门槛不通过），源码/同wheel双Python各341。UI工具重置后仍failedToCreateImageDestination，新版veil发任务/客户端下载打开尚未验；不能称UI完成。心跳PAUSED，当前项目未完成。 [恢复与边界](../../docs/111-dws-interruption-recovery.md)。
 
 同一需求与验收，单Agent，原项目codex/complete-bridge小步本地提交。E103三服务运行、心跳PAUSED；唯一群范围AIC测试群，原两人私聊保持。当前回执修复已部署并真实UI通过，不待旧恢复许可。
 

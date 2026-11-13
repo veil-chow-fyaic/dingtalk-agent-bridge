@@ -1,8 +1,6 @@
 # 当前任务池
 
-E107当前（2026-11-13）：三个进程running，但DWS调用已持久暂停（dws_process_interrupted，闩mtime09:33:56），两路history有未完窗口，远端积压未知。不得称正常收发，不自动清闩/恢复或要求密码；先补只含调用类别/归属/阶段的诊断并用合成中断验证。E104候选c5ee1fe未部署；E105 Codex60秒仍超时；E106205采到事件与旧账本一致但不证明原截止全量。CUA两次图像错误路径停止，心跳PAUSED。 [当前证据](../../docs/110-interrupted-history-current-state.md)。
-
-E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+E109当前（2026-11-13）：按用户本轮明确恢复指令，三服务已部署997e9fa（含E104/E108）；两路history与gateway已恢复，DWS为ready；初次cut门槛误用了调用时间，随后按持久watermark核实已覆盖cut，旧任务无变化，偏差保留。群/私聊各一条真实出站探针confirmed，官方历史回读及consumer入库一致，自身消息未生成任务；82旧任务、旧回执和两个原session保持。25项当前部署核验通过（原阶段门槛不通过），源码/同wheel双Python各341。UI工具重置后仍failedToCreateImageDestination，新版veil发任务/客户端下载打开尚未验；不能称UI完成。心跳PAUSED，当前项目未完成。 [恢复与边界](../../docs/111-dws-interruption-recovery.md)。
 
 > E103历史检查点：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
@@ -27,14 +25,15 @@ E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../.
 
 - [x] E102 C02发送事实负例映射及窄修复：旧冻结8方法22失败，新冻结源码/双Python各307；只改core，未知不重发。
 - [x] E103只重载transport，实际Python1387/两确认/UI、15核验；其他组件/账本保留。
-- [x] E104 C03能力/终态离线实现：非终态/错session/异常退出拒绝，不切runtime或重放；候选未部署，真实UI待验。
-- [x] E104 C04冻结任务契约/显式续接兼容性，合成迁移、旧历史保留和new归档通过；真实旧会话迁移待执行。
+- [x] E104 C03能力/终态离线实现：非终态/错session/异常退出拒绝，不切runtime或重放；E109已部署，真实UI待验。
+- [x] E104 C04冻结任务契约/显式续接兼容性，合成迁移、旧历史保留和new归档通过；E109真实旧会话已按固定证据显式迁移，原ID保持。
 - [ ] Qwen admitted/completed与inbox/job入库事务专项对照仍保留；现实现已有同等证据则不重复改写。
 - [ ] C05多宿主租约仅在有实际场景时采用；当前flock有效，不能将候选计为现有缺陷。
 
 详见[CEO深挖与验收](../../docs/references/ceo-deep-dive.md)。S1被具体UI/平台条件阻塞时转S2，不循环同路径。
 
-- [ ] E104候选部署：核旧gateway版本/配置与空闲账本，备份并明确迁移原session契约，再受管重载及真实UI；CUA恢复前不盲发。
+- [x] E109部署E104/E108：两路同步、原session显式迁移、三个受管服务、两个出站探针；首次cut门槛错误保留，后续watermark已核，25项当前状态核验。
+- [ ] 新部署真实UI：veil新任务→Kimi实际工具/相同session→liev文字/文件→客户端下载打开；CUA截图失败未解决，两个API探针不计UI通过。
 
 ## S3/S4 — 扩展与受限入口
 

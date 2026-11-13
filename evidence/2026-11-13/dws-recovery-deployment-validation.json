@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E109",
+  "productCommit": "997e9fa",
+  "ok": true,
+  "checks": {
+    "frozen_21_modules": true,
+    "same_configs": true,
+    "three_owned_processes": true,
+    "same_deployed_processes": true,
+    "dws_ready": true,
+    "two_live_history_routes": true,
+    "agent-1_old_jobs_kept": true,
+    "agent-1_old_outbox_kept": true,
+    "agent-1_same_session_and_migrated_contract": true,
+    "agent-2_old_jobs_kept": true,
+    "agent-2_old_outbox_kept": true,
+    "agent-2_same_session_and_migrated_contract": true,
+    "group_old_events_kept": true,
+    "group_old_deliveries_kept": true,
+    "group_confirmed_and_history_echo": true,
+    "group_self_echo_consumed_no_new_job": true,
+    "direct_old_events_kept": true,
+    "direct_old_deliveries_kept": true,
+    "direct_confirmed_and_history_echo": true,
+    "direct_self_echo_consumed_no_new_job": true,
+    "no_new_interruption_or_credential_fault": true,
+    "real_calls_journaled": true,
+    "current_persisted_watermarks_cover_cut": true,
+    "current_no_pending_history_window": true,
+    "initial_gate_error_preserved": true
+  },
+  "realOutboundProbes": 2,
+  "actualUiPass": false,
+  "uiBlocker": "failedToCreateImageDestination",
+  "oldJobsPreserved": 82,
+  "runtimeSessionIdsPreserved": 2,
+  "historyRoutes": 2,
+  "guardState": {
+    "state": "ready"
+  },
+  "noAuthOrKeychainOperations": true,
+  "limits": [
+    "Original interruption initiator cannot be reconstructed from old reason-only state",
+    "Outgoing receipt and history echo are not client UI or veil-to-liev inbound task validation",
+    "Original interrupted reliability observation remains unchanged",
+    "The initial stage-one gate was wrong; current watermark coverage cannot retroactively validate that gate"
+  ],
+  "privateEvidence": "local/history-recovery-20261113",
+  "operationalDeviation": {
+    "initialRecoveryCutGate": "invalid: compared last_sync.at rather than persisted watermark",
+    "gatewayStartedBeforeCoverageWasProven": true,
+    "subsequentCoverageVerified": true,
+    "oldJobsUnchanged": true,
+    "originalReportRetainedLocally": true
+  },
+  "validationScope": "Current deployment state after correcting the audit; does not certify the original recovery sequence",
+  "initialRecordedAt": "2026-11-13T12:29:09.452339+08:00",
+  "correctionRecordedAt": "2026-11-13T12:32:50.971925+08:00",
+  "journalCompletedCallsAtInitialCheckpoint": 28,
+  "journalInFlightCallsAtInitialCheckpoint": 0,
+  "oldJobsStillUnchangedAtCorrection": true
+}
