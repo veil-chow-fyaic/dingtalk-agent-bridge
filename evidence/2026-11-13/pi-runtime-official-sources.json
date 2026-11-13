@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E122",
+  "sources": [
+    {
+      "key": "release",
+      "url": "https://api.github.com/repos/DingTalk-Real-AI/dingtalk-workspace-cli/releases/latest",
+      "tag": "v1.0.68",
+      "publishedAt": "2026-11-11T08:50:17Z"
+    },
+    {
+      "key": "dws_head",
+      "url": "https://api.github.com/repos/DingTalk-Real-AI/dingtalk-workspace-cli/commits/main",
+      "commit": "c4be030ea0470457faea167760613372d761fc5c"
+    },
+    {
+      "key": "dws_media_head",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/c4be030ea0470457faea167760613372d761fc5c/skills/mono/references/products/chat.md"
+    },
+    {
+      "key": "pi_tag",
+      "url": "https://api.github.com/repos/earendil-works/pi/git/ref/tags/v0.84.2",
+      "commit": "914cf1472e715297caa30db4b9535d534a9eb718"
+    }
+  ],
+  "piVersion": "0.84.2",
+  "piFixedCommit": "914cf1472e715297caa30db4b9535d534a9eb718",
+  "dwsBusinessBinaryUpgraded": false,
+  "findings": [
+    "DWS latest release v1.0.68; new main applicationToken work is not an IM media API.",
+    "Fixed main chat documentation still describes audio/video as file aliases and one local attachment per invocation.",
+    "Pi installed version has no aborted field on agent_settled; final assistant stopReason is required.",
+    "Pi uses native SIGTERM cleanup of tracked detached shell tools in print mode."
+  ],
+  "limitations": [
+    "No new DWS native media/UI entry found in this bounded review; not an exhaustive community absence proof.",
+    "No real DWS auth/doctor/Keychain operation performed."
+  ]
+}

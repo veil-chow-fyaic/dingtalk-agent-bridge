@@ -1,5 +1,7 @@
 # 当前任务池
 
+E122：Pi 0.84.2接入相同runtime契约，22新增方法；最终冻结源码/同wheel Python3.14和3.11各396通过。原Codex超时fixture启动竞态已修，三套旧失败保留。Pi本地Read/Write续接及实际Python取消、延迟230秒无late/4自有进程退出已证；前两轮没有运行Python，不冒称计算工具通过。原生new归档Codex后显式迁移私聊binding，94旧任务保持；三服务当前因部署停机，下一固定cut补读/停机核账本，再Pi新私聊UI。AIC保持Kimi，原24h观察记维护不重置。见[Pi契约](../../docs/123-pi-runtime-contract.md)。
+
 E120当前状态（2026-11-13）：0c6f2da已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊显式迁移Codex。89旧任务保持，新实际Python1829及同session1836、JSON/TXT客户端下载Quick Look/SHA、真实cancel回复通过；90秒工具延迟后观察104秒无late、4进程退出，9回复confirmed/history回读，30部署/UI核验。E119冻结源码/同wheel双Python各374通过。首次启动api/request_timeout 3.87秒保留，环境不变下一次有界恢复成功；不据此称认证故障或系统根治。E117官方取消候选已成稿但未集成部署；原24h观察保留混用/维护，不重置。下一项剩余协议新入口、当前版干净检出/回滚交接或Pi/OpenClaw同契约；不重跑E120。见[最新UI](../../docs/121-codex-deployment-and-ui.md)。
 
 E121：固定982ae49干净交接已完成（683 manifest/同21模块/新wheel离线安装/六入口/许可/空状态/19核验）；复用E119精确相同冻结测试，不虚报新374运行。下一优先剩余消息新入口或Pi/OpenClaw契约，原24h观察持续；不重复打包或E120样本。见[交接边界](../../docs/122-current-clean-handoff.md)。

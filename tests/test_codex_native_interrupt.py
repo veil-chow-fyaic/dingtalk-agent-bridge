@@ -8,6 +8,7 @@ import tempfile
 import threading
 import time
 import unittest
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from dingtalk_bridge.agent_runtime import LocalRuntime, RuntimeStopped
@@ -78,9 +79,18 @@ while True:time.sleep(.1)
         self.assert_native_cleanup()
 
     def test_timeout_uses_native_interrupt(self):
-        self.settings['timeoutSeconds'] = 1
-        with self.assertRaisesRegex(RuntimeStopped, 'timeout'):
-            LocalRuntime(self.settings).run('synthetic', self.workspace, self.root / 'run', None, threading.Event(), lambda _: None)
+        # Expire the host deadline after the synthetic CLI installed its
+        # handler. A one-second cold Python startup deadline may terminate it
+        # before the handler exists, which exercises a different boundary.
+        self.settings['timeoutSeconds'] = 30
+        offset = [0]
+        def ready(_):
+            self.wait_ready()
+            offset[0] = 31
+        clock = SimpleNamespace(monotonic=lambda: time.monotonic() + offset[0], sleep=time.sleep)
+        with patch('dingtalk_bridge.agent_runtime.time', clock):
+            with self.assertRaisesRegex(RuntimeStopped, 'timeout'):
+                LocalRuntime(self.settings).run('synthetic', self.workspace, self.root / 'run', None, threading.Event(), ready)
         self.assert_native_cleanup()
 
     def test_cancellation_output_is_drained_before_pipe_closes(self):

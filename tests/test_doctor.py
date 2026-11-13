@@ -82,6 +82,17 @@ class DoctorTests(unittest.TestCase):
                 self.assertEqual(before,{str(p):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
                 self.assertNotIn('private-',json.dumps(report))
 
+    def test_pi_configuration_is_validated_without_executing_runtime(self):
+        settings = {'accountId': self.route['accountId'], 'conversationId': self.route['conversationId'],
+                    'allowedSenderIds': ['private-allowed'], 'runtime': {'kind': 'pi', 'binary': str(self.binary)}}
+        (self.root / 'local/agent.json').write_text(json.dumps(settings))
+        before = {str(p): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        with patch('subprocess.Popen', side_effect=AssertionError('offline configuration only')):
+            report = self.report(agents=['local/agent.json'])
+        self.assertTrue(report['ok'])
+        self.assertIn({'scope': 'agent-1', 'check': 'runtime_executable', 'status': 'ok'}, report['checks'])
+        self.assertEqual(before, {str(p): p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
     def test_network_settings_are_checked_offline_without_values_or_side_effects(self):
         settings={'accountId':self.route['accountId'],'conversationId':self.route['conversationId'],
                   'allowedSenderIds':['private-allowed'],'runtime':{'kind':'kimi','binary':str(self.binary)}}

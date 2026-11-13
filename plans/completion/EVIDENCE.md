@@ -433,3 +433,5 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 | E120 | L4/L5 | 0c6f2da部署，AIC Kimi/私聊Codex；89旧任务保持，实际Python1829/同session1836、两文件客户端下载打开SHA、取消104秒无late/4进程退出；9回执history、30核验 | docs/121；codex-deployment-ui-validation | 首次DWS启动API超时保留，原观察维护/混用；非认证根治/自然刷新/24h；七MUST仍缺 |
 
 | E121 | L3 | 固定982ae49干净683manifest、新wheel离线安装/六入口/许可/空状态；与E119产品/测试/scripts/fixtures/integrations逐字节相同，19核验/13离线步骤 | docs/122；current-clean-handoff-validation | 复用374×3不声称新跑，非最终项目验收或真实破坏性回滚；现场不变 |
+
+| E122 | L3/L4 | Pi 0.84.2原生JSON/session/settled/退出契约，22新方法；最终396×3/21模块；本地Read/Write续接与真实Python取消、延迟230秒/4进程；94旧任务binding迁移保持 | docs/123；pi-runtime-validation | 三服务部署停机，待补读与Pi UI；旧fixture失败保留，图片/OpenClaw未验 |

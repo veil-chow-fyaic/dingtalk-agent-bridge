@@ -147,7 +147,7 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
                 timeout_valid = False
             add(scope, 'runtime_timeout_seconds', 'ok' if timeout_valid else 'error')
             binary = runtime.get('binary')
-            supported = runtime['kind'] in ('kimi', 'codex') and isinstance(binary, str)
+            supported = runtime['kind'] in ('kimi', 'codex', 'pi') and isinstance(binary, str)
             # Runtime cwd is its task workspace, so root-relative binaries do
             # not have the same meaning as DWS's root-relative binary path.
             supported = supported and (Path(binary).is_absolute() or '/' not in binary)

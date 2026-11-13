@@ -8,6 +8,7 @@ import signal
 import subprocess
 import sys
 import time
+import uuid
 from urllib.parse import urlsplit
 
 
@@ -42,12 +43,14 @@ class RuntimeResultError(RuntimeFailure,ValueError):
 def runtime_manifest(settings):
     """Reviewed adapter surface, not a probe of this installation or account."""
     kind=settings['kind']
-    if kind not in {'codex','kimi'}:raise ValueError('Unknown local runtime')
+    if kind not in {'codex','kimi','pi'}:raise ValueError('Unknown local runtime')
     capabilities=['text','workspace_files','image_files','tool_execution','resume','cancel','structured_result']
     if kind=='codex':capabilities.append('native_image_arguments')
+    if kind=='pi':capabilities.remove('image_files')
     return {'kind':kind,'adapterContract':'local-cli-v1','resultContract':'text-files-v1',
-            'capabilities':sorted(capabilities),'imageInput':'native-argument' if kind=='codex' else 'workspace-file',
-            'completion':'turn.completed-and-exit-zero' if kind=='codex' else 'assistant-then-session.resume_hint',
+            'capabilities':sorted(capabilities),'imageInput':{'codex':'native-argument','kimi':'workspace-file','pi':'unsupported'}[kind],
+            'completion':{'codex':'turn.completed-and-exit-zero','kimi':'assistant-then-session.resume_hint',
+                          'pi':'agent_settled-final-stop-and-exit-zero'}[kind],
             'health':'unknown'}
 
 
@@ -65,6 +68,47 @@ def checked_session(value,expected=None):
     if expected is not None and value!=expected:
         raise RuntimeSessionError('runtime_session_mismatch')
     return value
+
+
+def checked_pi_session(value, expected=None):
+    checked_session(value, expected)
+    try:
+        if str(uuid.UUID(value)) != value:raise ValueError('not canonical')
+    except (ValueError, AttributeError) as exc:
+        raise RuntimeSessionError('runtime_session_invalid') from exc
+    return value
+
+
+class PiCompletion:
+    """Pi JSON wire v0.84.2: settlement is distinct from agent_end/retries."""
+    def __init__(self, expected, on_session):
+        self.session=expected;self.on_session=on_session;self.header=False
+        self.final_text=None;self.stop_reason=None;self.completed=False
+    def consume(self, event):
+        if not isinstance(event,dict):raise RuntimeFailure('runtime_protocol_invalid')
+        kind=event.get('type')
+        if self.completed and kind in {'agent_start','message_end','agent_settled'}:
+            raise RuntimeFailure('runtime_terminal_conflict')
+        if kind=='session':
+            if self.header:raise RuntimeFailure('runtime_session_duplicate')
+            self.session=checked_pi_session(event.get('id'),self.session)
+            self.on_session(self.session);self.header=True
+        elif kind=='message_end':
+            message=event.get('message')
+            if not isinstance(message,dict):raise RuntimeFailure('runtime_protocol_invalid')
+            if message.get('role')!='assistant':return
+            content=message.get('content')
+            self.stop_reason=message.get('stopReason');self.final_text=None
+            if isinstance(content,list) and all(isinstance(x,dict) for x in content):
+                texts=[x.get('text') for x in content if x.get('type')=='text']
+                if texts and all(isinstance(x,str) for x in texts):self.final_text=''.join(texts)
+        elif kind=='agent_settled':
+            if not self.header:raise RuntimeSessionError('runtime_session_missing')
+            # v0.84.2 does not include aborted. Newer wires may; accept only false.
+            if ('aborted' in event and event['aborted'] is not False) or self.stop_reason!='stop':
+                raise RuntimeFailure('runtime_turn_failed','unknown')
+            if self.final_text is None:raise RuntimeResultError('runtime_result_missing')
+            self.completed=True
 
 
 def validate_runtime_result(result):
@@ -234,6 +278,14 @@ class LocalRuntime:
 
     def command(self,workspace,run_dir,session_id,images=()):
         executable=self.settings['binary']
+        if self.kind=='pi':
+            if images:raise RuntimeFailure('runtime_capability_unsupported','capability')
+            sessions=workspace/'.pi-sessions'
+            args=[executable,'--mode','json','--print','--session-dir',str(sessions),
+                  '--no-extensions','--no-skills','--no-prompt-templates','--no-themes']
+            if session_id:args+=['--session',checked_pi_session(session_id)]
+            if self.settings.get('model'):args+=['--model',self.settings['model']]
+            return args
         if self.kind=='codex':
             schema=run_dir/'response-schema.json';schema.write_text(json.dumps(RESPONSE_SCHEMA))
             args=[executable,'exec']
@@ -253,7 +305,8 @@ class LocalRuntime:
         timeout=timeout_seconds(self.settings)
         environment=runtime_environment(self.settings)
         require_capabilities(self.settings)
-        if session_id is not None:checked_session(session_id)
+        if session_id is not None:
+            (checked_pi_session if self.kind=='pi' else checked_session)(session_id)
         workspace=Path(workspace);run_dir=Path(run_dir)
         # Never truncate an earlier attempt or consume its -o file as this turn.
         try:run_dir.mkdir(parents=True,exist_ok=False,mode=0o700)
@@ -264,6 +317,7 @@ class LocalRuntime:
             args+=['--prompt',prompt]
         deadline=time.monotonic()+timeout
         final_text=None;completed=False;observed_session=session_id;buffer=b'';terminal_error=False
+        pi=PiCompletion(session_id,on_session) if self.kind=='pi' else None
         with (run_dir/'events.jsonl').open('wb') as log,(run_dir/'stderr.log').open('wb') as errors:
             lifetime_read,lifetime_write=os.pipe()
             try:
@@ -271,7 +325,7 @@ class LocalRuntime:
                     '--lifetime-fd',str(lifetime_read)]
                 if self.kind=='codex':guard.append('--native-interrupt')
                 guard+=['--',*args]
-                process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind=='codex' else subprocess.DEVNULL,
+                process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind in {'codex','pi'} else subprocess.DEVNULL,
                     stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,),env=environment)
             except BaseException:
                 os.close(lifetime_write)
@@ -282,9 +336,15 @@ class LocalRuntime:
             def consume(line):
                 nonlocal observed_session,completed,terminal_error,final_text
                 try:event=json.loads(line)
-                except ValueError:return
-                if not isinstance(event,dict):return
-                if self.kind=='codex':
+                except ValueError as exc:
+                    if self.kind=='pi':raise RuntimeFailure('runtime_protocol_invalid') from exc
+                    return
+                if not isinstance(event,dict):
+                    if self.kind=='pi':raise RuntimeFailure('runtime_protocol_invalid')
+                    return
+                if self.kind=='pi':
+                    pi.consume(event);completed=pi.completed;final_text=pi.final_text;observed_session=pi.session
+                elif self.kind=='codex':
                     if event.get('type')=='thread.started':
                         observed_session=checked_session(event.get('thread_id'),observed_session);on_session(observed_session)
                     if event.get('type')=='turn.completed':completed=True
@@ -299,7 +359,7 @@ class LocalRuntime:
                 os.set_blocking(process.stdout.fileno(),False)
                 sel.register(process.stdout,selectors.EVENT_READ)
                 pending_input=memoryview(prompt.encode())
-                if self.kind=='codex':
+                if self.kind in {'codex','pi'}:
                     os.set_blocking(process.stdin.fileno(),False)
                     sel.register(process.stdin,selectors.EVENT_WRITE)
                 while sel.get_map():
@@ -314,7 +374,9 @@ class LocalRuntime:
                             continue
                         data=os.read(key.fileobj.fileno(),65536)
                         if not data:
-                            if buffer:consume(buffer);buffer=b''
+                            if buffer:
+                                if self.kind=='pi':raise RuntimeFailure('runtime_protocol_unterminated')
+                                consume(buffer);buffer=b''
                             sel.unregister(key.fileobj);continue
                         log.write(data);log.flush();buffer+=data
                         if len(buffer)>4*1024*1024:raise ValueError('Oversized runtime event')
@@ -322,18 +384,19 @@ class LocalRuntime:
                             line,buffer=buffer.split(b'\n',1);consume(line)
                     # Kimi 2.1.1 can retain background handles after its terminal resume hint.
                     # The terminal event follows the saved response; terminate only this owned CLI.
-                    if completed or terminal_error:break
+                    if terminal_error or (completed and self.kind!='pi'):break
                 if terminal_error:raise RuntimeFailure('runtime_turn_failed','unknown')
                 if not completed:raise RuntimeFailure('runtime_terminal_missing')
                 if not observed_session:raise RuntimeSessionError('runtime_session_missing')
-                if self.kind=='codex':
+                if self.kind in {'codex','pi'}:
                     # The CLI writes -o while finishing the completed turn.
                     try:wait_unreaped(process,10)
                     except subprocess.TimeoutExpired as exc:raise RuntimeFailure('runtime_terminal_without_exit') from exc
                     stop_owned_group(process)
                     if process.returncode!=0:raise RuntimeFailure('runtime_exit_nonzero')
-                    try:final_text=(run_dir/'response.json').read_text()
-                    except (OSError,UnicodeError) as exc:raise RuntimeResultError('runtime_result_missing') from exc
+                    if self.kind=='codex':
+                        try:final_text=(run_dir/'response.json').read_text()
+                        except (OSError,UnicodeError) as exc:raise RuntimeResultError('runtime_result_missing') from exc
                 result=decode_runtime_result(final_text)
                 (run_dir/'validated-response.json').write_text(json.dumps(result,ensure_ascii=False))
                 return result
