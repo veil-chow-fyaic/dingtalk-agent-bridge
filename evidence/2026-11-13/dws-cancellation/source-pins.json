@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "dwsCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+  "dwsVersion": "v1.0.67",
+  "keyringVersion": "v0.2.8",
+  "uuidVersion": "v1.6.0",
+  "sources": {
+    "dws": {
+      "LICENSE": "1d951e8ca1019e1ad6fc14b8450df1b7ba788b9f242002873ca79df70ee376fd",
+      "internal/keychain/auth_entries_file.go": "720a740145004e3c3054ce716447464a0b639dddaff1837f30296ec8602b782c",
+      "internal/keychain/file_dek.go": "e94d725aca1166f8c5189cb518f85846728b3d3d502b3525947a4162df88ea3c",
+      "internal/keychain/keychain.go": "6b6bcd5ce05c06a28940c3fc749a492c001968840f983a17d058370f315b002e",
+      "internal/keychain/keychain_darwin.go": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+      "internal/keychain/migration_darwin.go": "37837653ed2b2870705b8cffa78b3cf8b1bff44aa0c92052d36998d807c1209a"
+    },
+    "keyring": {
+      "LICENSE": "14bc00f1a298eb6af250216b9e60027a4386c8a84fa2c7ddc2b5c10908e06d0d",
+      "internal/shellescape/LICENSE": "01a4609ac3c7ac0a26d65a967c26c0deb146aa01bdcc8531048a70be52695556",
+      "internal/shellescape/shellescape.go": "efea683605dbcb43091acfec5c220e24930e3807d68cac65ad2f63dea47f265f",
+      "keyring.go": "4a84f1a1eefb009a398a39e7950e3476991e79f80f39d8bd053c9ec322cadd7e",
+      "keyring_darwin.go": "8fd983f3af38bfd64b62949788b0ad5f7e03d24c87fde9a994b1e1a582ba2792",
+      "keyring_fallback.go": "422abfaeb1545ad8c3f08e02ab1de4924ad4d383e82955ba38e8896326bf39ca"
+    },
+    "uuid": {
+      "LICENSE": "0a8d61ed3cbfd5312326e8126c31ce9c627a283adc99131b56896d29ada04b2d",
+      "dce.go": "6a4b89e7f6165a673e76f00bebaabf8d0d7eb4356a672c6cb771d95a45fb2695",
+      "doc.go": "0b286e2af61ede9f58d2455781ea254284c477b7fce2447aab3203992cc51f9f",
+      "go.mod": "73da47b6338b00a082fd451aa35a3273d3adc09b8e9bba98dab01091e402af6e",
+      "hash.go": "afe975c3f3e8b9a972c66165f06e978cc5c2f8ea5a4809dae4c46b4cfebbadce",
+      "marshal.go": "933eb226d049268e17809fd37f777c650b9ec8cb3fa988534b792610a64dcc43",
+      "node.go": "73a93d192ca24078e0f93b8c1675e13adb442421252d3974d697b0821c4832cf",
+      "node_js.go": "334b6ac9f50339341696319aaf9b912ea8007d0aacf0e909a48a0bb02d982d6d",
+      "node_net.go": "78e274b465de8da8690f4ab06281f41025b142c1d093e337fda1d6726b35662b",
+      "null.go": "791638f42d54fcf07ac752df6b2df92593f7da308f944465e2cda443dc3346cf",
+      "sql.go": "29281b11e8f97f1ddf73d087854cb401ba42a87c4f59ce45fc69763a4d927f2f",
+      "time.go": "e07999a07de5b667dd1dd5792b544ea933e7e839eca03b3469527f86a8bc2881",
+      "util.go": "755f50afafb13dd89ae6177da7eb6dc31ae650ece2f9ba52821021e9f8de044e",
+      "uuid.go": "0edec8e34c6b6fe0db31b71a29069a09ed832e3fd04ee0175916b58f2b60e5c1",
+      "version1.go": "38a2c229a2aad4bb72d45529304f210b1f31e8ef60bbd2605690a10f0d8a8242",
+      "version4.go": "f252aeb4028659d83cbf7b037d4524f7c9b76cde1fdca1f6f7de310dab6f4dcd",
+      "version6.go": "013cc9f4a9e606746d38d53f8e651b9222f5042fde567484588ec1d7a0c54905",
+      "version7.go": "8002748cc22a032c3782b42f7653a947189b8566c50d246b4a3beb2e075f8d62"
+    }
+  },
+  "patches": {
+    "dws": {
+      "path": "docs/patches/E117-dws-cancellation.patch",
+      "sha256": "6c62ff71d61e4de7996029949350ea4835d4f98758bfed45ffb75bb47db4223e",
+      "target": "internal/keychain/keychain_darwin.go",
+      "candidateSha256": "4cc84415572b374cad5a6a5b22964ef8233b9cb4c06642250df2bcfa3eed4da8"
+    },
+    "keyring": {
+      "path": "docs/patches/E117-keyring-cancellation.patch",
+      "sha256": "c9e05035dde4268e6f6eb920b33b611c040de6ec3cc17aa4ee4153bfedb3d754",
+      "target": "keyring_darwin.go",
+      "candidateSha256": "0d6cbc209c88318390a4974b616c14ab565e24c8edf5efd4121c97fe04089320"
+    }
+  },
+  "tests": {
+    "dws": {
+      "file": "dws_candidate_test.go",
+      "sha256": "c1c2b6bf132bbf71530765ace77e3a7209a16bb601f616268dd36662567f8f71",
+      "methods": [
+        "TestReadSuccessNoWriteAndJoined",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestPanicRemainsUnavailableAndJoined"
+      ]
+    },
+    "keyring": {
+      "file": "keyring_candidate_test.go",
+      "sha256": "4969b2e243394e10158bcbf8efb1a03b53726be05e927e30eae8dfa88928b9a8",
+      "methods": [
+        "TestReadEncodingAndFailureSemantics",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestSetValidatesSizeBeforeCreatingChild",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestCancelledSetDoesNotSpawn"
+      ]
+    }
+  }
+}

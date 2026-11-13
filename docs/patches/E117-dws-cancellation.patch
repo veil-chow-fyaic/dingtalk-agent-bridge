@@ -1,0 +1,207 @@
+--- a/internal/keychain/keychain_darwin.go
++++ b/internal/keychain/keychain_darwin.go
+@@ -42,6 +42,10 @@
+ 
+ var keychainTimeout = 5 * time.Second
+ 
++// Cleanup is separate from the request budget; never call a still-running worker clean.
++var keychainCleanupTimeout = time.Second
++var errDarwinCleanupPending = errors.New("keychain worker cleanup pending")
++
+ // StorageDir returns the storage directory for a given service name on macOS.
+ // Uses ~/Library/Application Support/<service> following Apple conventions.
+ // When the DWS_KEYCHAIN_DIR environment variable is set (used by tests for
+@@ -63,21 +67,27 @@
+ 	return safeFileNameRe.ReplaceAllString(account, "_") + ".enc"
+ }
+ 
+-var readDefaultKeychain = func() ([]byte, error) {
+-	return exec.Command("security", "default-keychain", "-d", "user").Output()
++var readDefaultKeychain = func(ctx context.Context) ([]byte, error) {
++	cmd := exec.CommandContext(ctx, "/usr/bin/security", "default-keychain", "-d", "user")
++	cmd.WaitDelay = keychainCleanupTimeout
++	out, err := cmd.Output()
++	if ctx.Err() != nil {
++		return nil, ctx.Err()
++	}
++	return out, err
+ }
+ 
+ var (
+-	keyringGet                       = keyring.Get
+-	keyringSet                       = keyring.Set
++	keyringGet                       = keyring.GetContext
++	keyringSet                       = keyring.SetContext
+ 	keychainAuthTokenCiphertextPaths = authTokenCiphertextPaths
+ 	keychainEntryReadFile            = os.ReadFile
+ )
+ 
+ type darwinKeychainRuntime struct {
+-	checkAvailable func() error
+-	get            func(service, account string) (string, error)
+-	set            func(service, account, value string) error
++	checkAvailable func(context.Context) error
++	get            func(context.Context, string, string) (string, error)
++	set            func(context.Context, string, string, string) error
+ 	randRead       func([]byte) (int, error)
+ 	timeout        time.Duration
+ }
+@@ -120,16 +130,24 @@
+ 	return darwinKeychainWorker{result: result, done: done}
+ }
+ 
+-func waitDarwinKeychainWorker(timeout time.Duration, operation string, worker darwinKeychainWorker) ([]byte, error, <-chan struct{}) {
+-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+-	defer cancel()
+-
++func waitDarwinKeychainWorker(ctx context.Context, operation string, worker darwinKeychainWorker) ([]byte, error, <-chan struct{}) {
+ 	select {
+ 	case result := <-worker.result:
+ 		<-worker.done
++		// A late success must not beat an already expired operation deadline.
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		}
+ 		return result.key, result.err, worker.done
+ 	case <-ctx.Done():
+-		return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		timer := time.NewTimer(keychainCleanupTimeout)
++		defer timer.Stop()
++		select {
++		case <-worker.done:
++			return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		case <-timer.C:
++			return nil, NewUnavailableError(operation, errors.Join(ctx.Err(), errDarwinCleanupPending)), worker.done
++		}
+ 	}
+ }
+ 
+@@ -150,8 +168,11 @@
+ 	return strings.Trim(value, `"`)
+ }
+ 
+-func checkDefaultKeychainAvailable() error {
+-	output, err := readDefaultKeychain()
++func checkDefaultKeychainAvailable(ctx context.Context) error {
++	output, err := readDefaultKeychain(ctx)
++	if ctx.Err() != nil {
++		return NewUnavailableError("read macOS default Keychain", ctx.Err())
++	}
+ 	if err != nil {
+ 		return nil
+ 	}
+@@ -181,7 +202,9 @@
+ 		}
+ 	}
+ 
+-	output, err := readDefaultKeychain()
++	ctx, cancel := context.WithTimeout(context.Background(), keychainTimeout)
++	defer cancel()
++	output, err := readDefaultKeychain(ctx)
+ 	if err != nil {
+ 		detail["error"] = err.Error()
+ 		return Diagnostic{
+@@ -242,8 +265,14 @@
+ 	return key, err == nil && len(key) == dekBytes
+ }
+ 
+-func readStoredSystemDEK(service string, runtime darwinKeychainRuntime) ([]byte, error) {
+-	encodedKey, err := runtime.get(service, "dek")
++func readStoredSystemDEK(ctx context.Context, service string, runtime darwinKeychainRuntime) ([]byte, error) {
++	if ctx.Err() != nil {
++		return nil, NewUnavailableError("read DEK from macOS Keychain", ctx.Err())
++	}
++	encodedKey, err := runtime.get(ctx, service, "dek")
++	if ctx.Err() != nil {
++		return nil, NewUnavailableError("read DEK from macOS Keychain", ctx.Err())
++	}
+ 	if err == nil {
+ 		key, ok := decodeSystemDEK(encodedKey)
+ 		if ok {
+@@ -258,16 +287,21 @@
+ }
+ 
+ func getSystemDEKReadOnlyWithRuntime(service string, runtime darwinKeychainRuntime) ([]byte, error, <-chan struct{}) {
+-	if err := runtime.checkAvailable(); err != nil {
+-		return nil, err, finishedDarwinKeychainWorker()
+-	}
++	ctx, cancel := context.WithTimeout(context.Background(), runtime.timeout)
++	defer cancel()
+ 
+ 	const operation = "read DEK from macOS Keychain"
+ 	worker := startDarwinKeychainWorker(operation, func() ([]byte, error) {
+-		return readStoredSystemDEK(service, runtime)
++		if err := runtime.checkAvailable(ctx); err != nil {
++			return nil, err
++		}
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		return readStoredSystemDEK(ctx, service, runtime)
+ 	})
+ 
+-	return waitDarwinKeychainWorker(runtime.timeout, operation, worker)
++	return waitDarwinKeychainWorker(ctx, operation, worker)
+ }
+ 
+ func getOrCreateDEK(service string) ([]byte, error) {
+@@ -279,13 +313,18 @@
+ }
+ 
+ func getOrCreateDEKWithRuntime(service string, runtime darwinKeychainRuntime) ([]byte, error, <-chan struct{}) {
+-	if err := runtime.checkAvailable(); err != nil {
+-		return nil, err, finishedDarwinKeychainWorker()
+-	}
++	ctx, cancel := context.WithTimeout(context.Background(), runtime.timeout)
++	defer cancel()
+ 
+ 	const operation = "read or create DEK in macOS Keychain"
+ 	worker := startDarwinKeychainWorker(operation, func() ([]byte, error) {
+-		key, err := readStoredSystemDEK(service, runtime)
++		if err := runtime.checkAvailable(ctx); err != nil {
++			return nil, err
++		}
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		key, err := readStoredSystemDEK(ctx, service, runtime)
+ 		if err == nil {
+ 			return key, nil
+ 		}
+@@ -293,26 +332,32 @@
+ 			return nil, err
+ 		}
+ 
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
+ 		// Generate a candidate only when the slot is empty or unreadable.
+ 		// Concurrent writers must not replace a DEK another process just stored.
+ 		key = make([]byte, dekBytes)
+ 		if _, randErr := runtime.randRead(key); randErr != nil {
+ 			return nil, randErr
+ 		}
+-		if setErr := runtime.set(service, "dek", base64.StdEncoding.EncodeToString(key)); setErr != nil {
+-			existing, getErr := readStoredSystemDEK(service, runtime)
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		if setErr := runtime.set(ctx, service, "dek", base64.StdEncoding.EncodeToString(key)); setErr != nil {
++			existing, getErr := readStoredSystemDEK(ctx, service, runtime)
+ 			if getErr == nil {
+ 				return existing, nil
+ 			}
+ 			return nil, NewUnavailableError("store DEK in macOS Keychain", setErr)
+ 		}
+-		if existing, getErr := readStoredSystemDEK(service, runtime); getErr == nil {
++		if existing, getErr := readStoredSystemDEK(ctx, service, runtime); getErr == nil {
+ 			return existing, nil
+ 		}
+ 		return key, nil
+ 	})
+ 
+-	return waitDarwinKeychainWorker(runtime.timeout, operation, worker)
++	return waitDarwinKeychainWorker(ctx, operation, worker)
+ }
+ 
+ func encryptData(plaintext string, key []byte) ([]byte, error) {

@@ -301,3 +301,5 @@
 | 2026-11-13 E115 | runtime网络环境持久配置、DWS结构化错误诊断；冻结源/同wheel双Python357，16新增/11核验；无真实认证操作 | docs/115；runtime-environment-diagnostics-validation | 下一立即受管部署：先停空闲gateway、封新调用排空后停transport，固定cut补读停机核账本再起三服务；新UI任务检验持久环境及文件交付 |
 
 | 2026-11-13 E116 | 部署87a3d39；无代理manager启动后，两路真实Python/环境检查及TXT/JSON下载Quick Look/SHA通过；86旧任务保持，38核验，58真实安全result无错误 | docs/116；runtime-environment-deployment-ui | M1/M2闭环；aic-persistent-env-20261113独立24h观察已启动，每30秒只读。观察期推进官方取消合成候选/剩余协议新入口/Codex环境验证；不重跑旧UI，不把当前成功冒称系统根治/自然续期/全项目完成 |
+
+| 2026-11-13 E117 | 官方DWS/keyring双层取消候选及精确摘要复现工具；15方法/10子用例普通/race通过、18核验、本地上游草稿 | docs/117–118；dws-cancellation-candidate-validation | 仅选定源/合成进程，未集成部署发布；产品87a3d39和原观察保持。下一段Codex持久网络环境有界验证/剩余协议新入口，原根因与MUST缺口不关闭 |

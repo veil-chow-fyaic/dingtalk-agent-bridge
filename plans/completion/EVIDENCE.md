@@ -417,3 +417,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - veil原生UI在AIC/原私聊交办两新任务，实际Python及环境读取：1517→2021/TXT 47B、1003→1159/JSON 68B，env_ready=true。liev六回复confirmed/history回读，两个原件从钉钉下载并Quick Look打开/SHA一致。
 - [记录](../../docs/116-persistent-environment-deployment-ui.md)、[38核验](../../evidence/2026-11-13/runtime-environment-deployment-ui.json)均过；截止审计58个真实DWS result具exit/阶段/耗时且无错误，不能当自然刷新或健康24h。
 - aic-persistent-env-20261113独立24h/30秒只读观察已启动，21模块/配置/manager/六库基线留local，旧reliability保留；项目49/14/1及7 MUST缺口不变。
+
+## E117 — 官方取消缺口双层候选和合成回归
+- [候选及限制](../../docs/117-dws-cancellation-candidate.md)、[本地上游草稿](../../docs/118-dws-cancellation-upstream-draft.md)、[脱敏18核验](../../evidence/2026-11-13/dws-cancellation-candidate-validation.json)。固定v67及keyring v0.2.8，只向新local目录应用候选；预检查/读/写同deadline、owned child取消回收、late结果/写保护、Set启动前校验。
+- DWS10方法/3子用例、依赖5方法/7子用例，普通与race四次均过；每套1helper正常跳过。最终公共工具核固定源/补丁/测试及完整方法集合，0项/缺方法/失败拒绝；18核验通过。不是bridge新增15项或上游全量通过，原357未重跑。
+- 未运行真实DWS/Keychain，未部署/发布，参考源/21产品模块保持；当前三服务与原观察run不变。上游依赖API、旧测试签名、全CLI集成仍需审查；原无效DEK/并发写/读回fallback政策未改。D01根因、49/14/1与7 MUST缺口不变。

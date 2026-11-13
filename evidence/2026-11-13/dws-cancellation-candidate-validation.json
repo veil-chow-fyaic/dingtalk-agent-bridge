@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E117",
+  "recordedAt": "2026-11-13T09:28:31.411610+00:00",
+  "ok": true,
+  "checks": {
+    "changed_source_rejected": true,
+    "exact_patch_applied": true,
+    "patch_path_rejected": true,
+    "patch_context_rejected": true,
+    "patch_counts_rejected": true,
+    "patch_offset_rejected": true,
+    "existing_output_rejected": true,
+    "nonlocal_output_rejected": true,
+    "no_tests_rejected": true,
+    "missing_method_rejected": true,
+    "failed_package_rejected": true,
+    "normal_and_race_four_runs_pass": true,
+    "all_pinned_reference_files_unchanged": true,
+    "product_21_modules_still_e115": true,
+    "no_upstream_testmain_copied": true,
+    "license_files_preserved": true,
+    "synthetic_methods_exact": true,
+    "upstream_reference_commit_matches": true
+  },
+  "runs": [
+    {
+      "ok": true,
+      "methodsPassed": 10,
+      "subtestsPassed": 3,
+      "methods": [
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestReadSuccessNoWriteAndJoined",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead"
+      ],
+      "skippedHelpers": [
+        "TestSyntheticChild"
+      ],
+      "failedEvents": 0,
+      "logSha256": "f227f8fa9279132ffafd82cb569c05fcb5413657269ce757f71743d520afb873",
+      "label": "dws",
+      "exitCode": 0
+    },
+    {
+      "ok": true,
+      "methodsPassed": 5,
+      "subtestsPassed": 7,
+      "methods": [
+        "TestCancelledSetDoesNotSpawn",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestReadEncodingAndFailureSemantics",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestSetValidatesSizeBeforeCreatingChild"
+      ],
+      "skippedHelpers": [
+        "TestSyntheticKeyringChild"
+      ],
+      "failedEvents": 0,
+      "logSha256": "6610753a267490f1bec0d732ab2100f813c90eeb3726568b7fa26075a3cdcb13",
+      "label": "keyring",
+      "exitCode": 0
+    },
+    {
+      "ok": true,
+      "methodsPassed": 10,
+      "subtestsPassed": 3,
+      "methods": [
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestReadSuccessNoWriteAndJoined",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead"
+      ],
+      "skippedHelpers": [
+        "TestSyntheticChild"
+      ],
+      "failedEvents": 0,
+      "logSha256": "1d3def7cae07f3541838d06557efd7827c2927602e552bf0d8047956bcc49ecd",
+      "label": "dws-race",
+      "exitCode": 0
+    },
+    {
+      "ok": true,
+      "methodsPassed": 5,
+      "subtestsPassed": 7,
+      "methods": [
+        "TestCancelledSetDoesNotSpawn",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestReadEncodingAndFailureSemantics",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestSetValidatesSizeBeforeCreatingChild"
+      ],
+      "skippedHelpers": [
+        "TestSyntheticKeyringChild"
+      ],
+      "failedEvents": 0,
+      "logSha256": "569b392ebfc577d3bb6a9d1a70a8f279be5330baec65421e8106dd2ecdabf40d",
+      "label": "keyring-race",
+      "exitCode": 0
+    }
+  ],
+  "sourcePinsSha256": "dbc8f3895bbc7f45434912e111ff6ac324738db9188cdd35778c3d1ae78d67b4",
+  "runnerSha256": "ae829b17b5c3519ccbf4864df0910036ba05473b84f98e0a4725480c7cad2d10",
+  "productCommitUnchanged": "87a3d39",
+  "officialBinaryNotRebuiltOrReplaced": true,
+  "candidateDeployed": false,
+  "realDwsCallsFromCandidateValidation": 0,
+  "systemKeychainCommandsFromTests": 0,
+  "upstreamPublished": false,
+  "privateEvidence": "local/dws-cancellation-20261113",
+  "limitations": [
+    "Selected source package, not full upstream test suite or DWS CLI build",
+    "Darwin context API dependency and original upstream tests still require integration review",
+    "No proof of root cause or repair for original macOS -25293/exit51 incident",
+    "Cancellation cannot retract completed store writes or queued system UI",
+    "Delete/DeleteAll, invalid stored DEK legacy policy, set -U race semantics and readback fallback unchanged",
+    "No product/UI/MUST coverage added; existing observation not restarted"
+  ]
+}

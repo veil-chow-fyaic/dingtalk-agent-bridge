@@ -1,5 +1,7 @@
 # 当前任务
 
+E117（2026-11-13）：官方取消缺口双层候选及本地上游草稿已完成，15个方法/10子用例普通与race均过、18核验；未集成或部署，产品仍87a3d39。参考源码/21模块保持；独立观察原run不重启。下一独立项Codex持久环境有界验证及剩余协议新入口，不重跑取消候选。详见[候选范围](../../docs/117-dws-cancellation-candidate.md)。
+
 E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配置，manager无代理变量启动后，AIC与原私聊真实Python/原session/文字及文件下载打开/SHA通过；86旧任务保留，38核验通过。E115冻结源码/同wheel双Python各357项。三服务运行、DWS ready、心跳ACTIVE；24h只读观察aic-persistent-env-20261113刚启动，未完成长期验收。49/14/1及7 MUST缺口不变。
 
 交付官方DWS真人账号到可替换Agent的通用钉钉IM中间件，群/私聊文字、媒体原件、真实任务、多轮及同会话交付。CLI/HTTP/consumer独立，gateway可选；组织/runtime为配置，不新增bot。Kimi满足至少一个执行器，Codex仍超时，Pi/OpenClaw未验。原[PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)不变。
