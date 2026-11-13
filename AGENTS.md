@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管服务随重启停止（无开机自启），不是新的认证失败结论。旧调用日志829次invoking/828次released，遗留一条history active；原件保留，需核无主后显式恢复。终端仍v1.0.61，bridge固定v1.0.67；官方续期缺陷有历史修复，exit51与已记录系统故障分开。CUA重启后已能读取钉钉界面，E104/E108产品此前已部署997e9fa，21模块/341冻结验证保持，新版任务/下载打开待验。49/14/1、7 MUST未完整，心跳PAUSED，项目未完成。 [续期与重启核对](docs/112-dws-refresh-and-reboot-review.md)。
+E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [本轮恢复与UI](docs/113-reboot-recovery-and-runtime-network.md)。
 
 ## 同一项目与当前检查点
 
@@ -10,7 +10,7 @@ E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管
 
 E103历史检查点：transport已加载E102/3fa5011的发送凭据校验；两个gateway保留E099/e27547b的结果契约。E102只改core，其他20模块与E099相同。固定源码/同wheel双Python各307通过，21模块/六入口/许可已核；这是E102冻结验证，不反复重跑。三个受管服务运行，history-only15秒，心跳独立保持PAUSED。
 
-E100群长文/上下文/status/cancel/new真实UI及21核验；E103新任务Python1387、两确认回执、真实群UI及15核验。当前49/64通过、14blocked、1partial，14 MUST中7未完整，项目未完成。详见[长文控制](docs/104-aic-group-long-text-and-controls.md)、[发送凭据及部署](docs/106-send-evidence-contract.md)。C03/C04已于E109部署并显式迁移原会话，当前优先新版真实任务/UI闭环，不重做已过样本。
+E100群长文/上下文/status/cancel/new真实UI及21核验；E103新任务Python1387、两确认回执、真实群UI及15核验。当前49/64通过、14blocked、1partial，14 MUST中7未完整，项目未完成。详见[长文控制](docs/104-aic-group-long-text-and-controls.md)、[发送凭据及部署](docs/106-send-evidence-contract.md)。C03/C04已于E109部署并显式迁移原会话，E112已补新版两路任务/文件UI，下一步运行环境持久配置及持续观察，不重做已过样本。
 
 ## 授权与身份范围
 
@@ -26,7 +26,7 @@ veil是客户端真人用户，liev是显式profile绑定的DWS真人普通账�
 
 正常受管DWS业务调用沿用官方凭据机制；持久暂停、最多两并发、90秒请求加最多15秒清理，办公六族同样走wrapper。凭据故障则暂停，不自动恢复/反复认证。两个一次查询key（dab-auth-read-20261112、dab-auth-read-fixed-20261112）已消费，原receipt保留，禁止重试或换key。
 
-官方Stream bus按身份共享并Setsid脱组，无独占退出权，不杀共享bus，不用foreground冒充消费者。当前history-only不启Stream。守护和运行器不是OS沙箱，不保证恶意脱组/系统失效隔离。127.0.0.1:18768及三个服务由原manager归属管理，无开机自启，不按旧PID发信号。
+官方Stream bus按身份共享并Setsid脱组，无独占退出权，不杀共享bus，不用foreground冒充消费者。当前history-only不启Stream。守护和运行器不是OS沙箱，不保证恶意脱组/系统失效隔离。127.0.0.1:18768及三个服务由原manager归属管理，无开机自启，不按旧PID发信号。E112两gateway继承本机已有HTTP(S)代理，transport未变；这只是进程启动环境，普通重启不自动恢复它，需先补通用环境配置，不能把本机代理端口固化产品。
 
 ## 文件、参考与证据边界
 

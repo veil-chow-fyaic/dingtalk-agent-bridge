@@ -12,7 +12,7 @@ E028已实际观察过一次自然预刷新：原到期02:44:32变为04:39:40，
 
 | 来源 | 已确认内容 | 与本机的关系 |
 |---|---|---|
-| [DWS #1132](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132)及[维护者回复](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132#issuecomment-5762379764) | 多凭据槽refresh token不同步，刷新后旧槽失效；维护者明确v1.0.62修复，包含组织及legacy全局槽处理 | 桥接固定v1.0.67已有修复；终端旧v1.0.61早于完整修复，不能把两者当同一环境 |
+| [DWS #1132](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132)及[维护者回复](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132#issuecomment-5762379764) | 多凭据槽refresh token不同步，刷新后旧槽失效；维护者明确v1.0.62修复，包含组织及legacy全局槽处理 | 桥接固定v1.0.67包含相关路径；终端v1.0.61不能仅凭版本号认定缺少修复，需逐项核源码 |
 | [DWS #476](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/476)及[维护者回复](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/476#issuecomment-5762849801) | 后台约2小时失效报告；维护者说明完整OAuth/Device Flow支持长跑，access-only凭据不足 | 报告使用file-DEK，和本机系统钥匙串路径不同，不能直接照搬解决方式 |
 | [DWS #436](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/436#issuecomment-5761406189) | 老版macOS偶发权限错误、重登恢复；维护者表示已修复 | 没有精确修复版本，不据此判断所有重登恢复都是同一问题 |
 | [Codex #60687](https://github.com/openai/codex/issues/60687) | macOS密码解锁后钥匙串失败，出现-25293及exit51，报告关联Computer Use Guardian；目前仍open | 本机E094系统日志高度吻合；社区评论的确定归责不是维护者结论，尚不能确认最终根因或修复版本 |
@@ -25,7 +25,7 @@ E028已实际观察过一次自然预刷新：原到期02:44:32变为04:39:40，
 
 - 普通终端PATH的dws为既有v1.0.61，revision `50eb73a0906c5911c5c25f9c7106b6ead4f14f62`；与最初[版本记录](07-local-results.md)一致。
 - bridge固定使用项目内v1.0.67，revision `63a7c4906c7dee10750011ea309b9eb78abb7eb0`。
-- v1.0.61源码已有双锁及组织镜像fallback，但尚无v1.0.67的legacy全局fallback。因此不能夸成旧版完全没有刷新保护，也不能忽略旧入口缺少后续修复。
+- v1.0.61和v1.0.67源码均已有双锁、组织镜像及legacy全局fallback。仅凭维护者说v1.0.62已修复，不能反推v1.0.61完全没有该修复；版本差异要核具体行为，本轮不将它认定为事故根因。
 
 用户在新终端登录成功只证明那次登录成功，不能代替bridge显式profile业务验证。后续应统一受控入口/版本，避免旧新CLI交替维护同一登录态；尚未证明版本混用造成了已记录事故，不擅自替换用户全局程序。主线继续固定v1.0.67和原profile，不复制token、不切file-DEK。
 
@@ -43,3 +43,6 @@ E028已实际观察过一次自然预刷新：原到期02:44:32变为04:39:40，
 随后用原生UI在AIC测试群和原私聊交办合成任务，核真实工具、原session续接、liev回复、客户端下载打开。认证长期稳定另需自然运行跨刷新窗口观察；不人为改token/时钟、不做锁屏复现实验，也不把恢复成功当根治。所有旧失败、reliability窗口与49/14/1矩阵保留。本轮没有新增产品测试或UI任务通过。
 
 公开源码/issue原文、二进制摘要及本地快照只留local/auth-research-20261113；公开记录见[E111摘要](../evidence/2026-11-13/auth-refresh-reboot-review.json)。
+
+## E112后续实测
+本页停止状态为研究检查点；随后按既有授权完成恢复与真实UI。首次DWS网络超时及Kimi认证端点连接超时分别保留，两gateway继承现有代理后新任务闭环。详见[恢复/执行器/文件验收](113-reboot-recovery-and-runtime-network.md)。没有因成功反推此前根因或抹掉旧失败。

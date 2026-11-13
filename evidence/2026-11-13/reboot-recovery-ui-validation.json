@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E112",
+  "recordedAt": "2026-11-13T14:56:37.338961+08:00",
+  "ok": true,
+  "checks": {
+    "group_old_jobs_preserved": true,
+    "group_old_outbox_preserved": true,
+    "group_same_session_contract_and_generation": true,
+    "group_two_new_jobs_only": true,
+    "group_initial_failure_retained": true,
+    "group_new_task_complete": true,
+    "group_failed_before_task_tools": true,
+    "group_real_python_tool": true,
+    "group_same_runtime_session": true,
+    "group_client_download_identical": true,
+    "group_result_values_correct": true,
+    "group_all_five_responses_confirmed": true,
+    "group_zero_unconfirmed_transport": true,
+    "group_all_replies_in_history": true,
+    "direct_old_jobs_preserved": true,
+    "direct_old_outbox_preserved": true,
+    "direct_same_session_contract_and_generation": true,
+    "direct_two_new_jobs_only": true,
+    "direct_initial_failure_retained": true,
+    "direct_new_task_complete": true,
+    "direct_failed_before_task_tools": true,
+    "direct_real_python_tool": true,
+    "direct_same_runtime_session": true,
+    "direct_client_download_identical": true,
+    "direct_result_values_correct": true,
+    "direct_all_five_responses_confirmed": true,
+    "direct_zero_unconfirmed_transport": true,
+    "direct_all_replies_in_history": true,
+    "backlog_review_before_gateways": true,
+    "startup_timeout_preserved": true,
+    "three_owned_services": true,
+    "dws_ready": true,
+    "two_routes_synchronized": true,
+    "same_21_product_modules": true
+  },
+  "oldJobsPreserved": 82,
+  "newFailedJobs": 2,
+  "newCompletedJobs": 2,
+  "newConfirmedResponses": 10,
+  "sameOldSessions": 2,
+  "downloadDigests": [
+    {
+      "type": "group",
+      "sha256": "d841127c8826ec04e9d400b4cb20968deb569479260c2fc92d59f5bbc1088ed0",
+      "size": 32
+    },
+    {
+      "type": "direct",
+      "sha256": "7e92d6a11d0dd0428c83b455c05c69837eee00a9cfde4eb642363290ad127486",
+      "size": 46
+    }
+  ],
+  "productCommit": "997e9fa",
+  "newProductTests": 0,
+  "uiObservations": {
+    "nativeDingTalkUserInput": 4,
+    "bothFailedMessagesVisible": true,
+    "bothCompletionMessagesVisible": true,
+    "bothFilesDownloadedAndQuickLookOpened": true,
+    "privateSource": "current chat native CUA records"
+  },
+  "networkAdjustment": "two gateway processes inherit the already configured local HTTP(S) proxy; transport not reloaded",
+  "limits": [
+    "Not a new 24h or natural-refresh observation",
+    "Initial DWS request_timeout cause not established",
+    "Proxy-assisted success does not establish unique Kimi timeout cause",
+    "No global DWS upgrade, auth/doctor or Keychain operation",
+    "Remaining acceptance gaps unchanged"
+  ],
+  "privateEvidence": "local/reboot-recovery-20261113"
+}

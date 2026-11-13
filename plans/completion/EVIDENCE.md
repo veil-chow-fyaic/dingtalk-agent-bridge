@@ -391,3 +391,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E111 — 官方续期反馈、版本差异及用户重启
 - [研究](../../docs/112-dws-refresh-and-reboot-review.md)、[摘要](../../evidence/2026-11-13/auth-refresh-reboot-review.json)：官方2h/30d自动续期，#1132明确v1.0.62修复；终端v1.0.61与bridge v1.0.67构建revision静态核对，v68无auth/Darwin改动。Codex#60687仍open，不能当已确认根因。
 - 用户重启后三服务停止、guard ready但slot0 active；829 invoking/828 released，未释放history可定位，非认证失败证明。CUA可重新读取钉钉；未发送/恢复、无新任务或UI文件通过，无DWS/auth/Keychain调用。
+
+
+## E112 — 重启补读、运行器网络调整与真实UI
+- [恢复及验收](../../docs/113-reboot-recovery-and-runtime-network.md)、[34核验](../../evidence/2026-11-13/reboot-recovery-ui-validation.json)。首次会话读取request_timeout保留；成功业务读后，固定cut补读、gateway停机核积压、三服务恢复，82旧任务/session/回执保持。
+- 两条E112真人任务遇Kimi OAuth连接超时，失败提示均UI可见，未执行工具/交付/重做。现有系统代理与父环境差异核实后，独立13.68秒成功，只重载两gateway继承代理，原transport不动。
+- 两新E112B任务Python1517/1003、旧session1387/493、liev文字/文件、客户端两下载件Quick Look及SHA通过；10回复confirmed且history一致。产品21模块仍997e9fa，未重跑341；49/14/1不变，长期和全项目仍未完成。

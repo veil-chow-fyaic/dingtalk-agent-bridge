@@ -1,6 +1,6 @@
 # 当前任务池
 
-E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管服务随重启停止（无开机自启），不是新的认证失败结论。旧调用日志829次invoking/828次released，遗留一条history active；原件保留，需核无主后显式恢复。终端仍v1.0.61，bridge固定v1.0.67；官方续期缺陷有历史修复，exit51与已记录系统故障分开。CUA重启后已能读取钉钉界面，E104/E108产品此前已部署997e9fa，21模块/341冻结验证保持，新版任务/下载打开待验。49/14/1、7 MUST未完整，心跳PAUSED，项目未完成。 [续期与重启核对](../../docs/112-dws-refresh-and-reboot-review.md)。
+E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [本轮恢复与UI](../../docs/113-reboot-recovery-and-runtime-network.md)。
 
 > E103历史检查点：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
@@ -33,7 +33,8 @@ E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../.
 详见[CEO深挖与验收](../../docs/references/ceo-deep-dive.md)。S1被具体UI/平台条件阻塞时转S2，不循环同路径。
 
 - [x] E109部署E104/E108：两路同步、原session显式迁移、三个受管服务、两个出站探针；首次cut门槛错误保留，后续watermark已核，25项当前状态核验。
-- [ ] 新部署真实UI：veil新任务→Kimi实际工具/相同session→liev文字/文件→客户端下载打开；CUA已恢复可读，先恢复本次重启后的后台；两个旧API探针不计UI任务通过。
+- [x] E112新部署真实UI：veil新任务→Kimi实际Python/相同session→liev文字/文件→客户端下载打开及SHA一致；群1517/TXT、私聊1003/JSON。首轮两个OAuth超时失败保留，不算成功。
+- [ ] E112运行环境持久配置：当前两gateway仅继承已有本机代理，普通重启不自动继承；增加通用、可审查配置与重启验证，不能固化本机端口或改HOME/认证。
 
 ## S3/S4 — 扩展与受限入口
 

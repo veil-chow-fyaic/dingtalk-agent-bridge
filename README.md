@@ -1,12 +1,12 @@
 # DingTalk Agent Bridge
 
-> E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管服务随重启停止（无开机自启），不是新的认证失败结论。旧调用日志829次invoking/828次released，遗留一条history active；原件保留，需核无主后显式恢复。终端仍v1.0.61，bridge固定v1.0.67；官方续期缺陷有历史修复，exit51与已记录系统故障分开。CUA重启后已能读取钉钉界面，E104/E108产品此前已部署997e9fa，21模块/341冻结验证保持，新版任务/下载打开待验。49/14/1、7 MUST未完整，心跳PAUSED，项目未完成。 [当前诊断](docs/112-dws-refresh-and-reboot-review.md)。
+> E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [恢复与验收](docs/113-reboot-recovery-and-runtime-network.md)。
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
 选型优先采用公开GitHub/钉钉官方实现：**官方DWS做通讯底座，Qwen作通道组件参照，CEO作任务/交付/执行器契约参照**。默认DWS授权真人账号；bot项目仅参考可拆交互。[统一需求与路线](docs/102-user-requirements-and-roadmap.md) · [CEO源码深挖](docs/references/ceo-deep-dive.md) · [参考目录](docs/references/README.md) · [文档导航](docs/README.md)
 
-**项目尚未完整验收；E109曾恢复两路，E111用户重启后三服务停止，待按账本恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
+**项目尚未完整验收；E112已恢复三服务并完成新版群/私聊任务与文件UI，长期及剩余协议仍待验。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
 
 - E109三个组件已部署997e9fa（E104运行器/会话契约、E108调用日志），包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。

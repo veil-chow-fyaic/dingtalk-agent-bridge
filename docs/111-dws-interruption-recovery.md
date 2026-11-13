@@ -35,3 +35,7 @@
 今日Codex/app-server日志未检到该错误，按实际控制服务进程名读取最近macOS日志亦无匹配；没有因此重跑旧故障路径。13:02只读本地状态显示三服务运行、DWS ready、两路约13:01:51完整同步且无poll_error；三服务均已独立运行于PPID1。未执行新的DWS探针或产品测试。
 
 [官方截图故障指引](https://learn.chatgpt.com/docs/appshots#limits-and-troubleshooting)包含重启桌面应用，但未说明这个精确错误的成因。下一步仅建议用户保存工作后正常退出/重开Codex，作为恢复控制服务的尝试，不保证修复；无需重启Mac、重新登录DWS、处理密码或修改权限。原测试授权保持，工具恢复后继续原两路新任务/UI，旧探针只读复核。[脱敏记录](../evidence/2026-11-13/unlocked-desktop-ui-blocker.json)。
+
+
+## E112后续
+用户自行重启后UI读取恢复，三个无自启服务重新按固定cut/停机审查恢复；首次网络超时保留。随后解决Kimi本轮网络环境差异，两路新任务及文件下载打开已验，见[完整记录](113-reboot-recovery-and-runtime-network.md)。E110不再是当前阻塞。
