@@ -49,7 +49,7 @@ def execute(root, binary, profile, arguments, *, timeout=600, stop=None):
     except ValueError:raise ValueError('official_proxy_invalid_timeout') from None
     args=pinned_arguments(arguments,profile)
     access=DWSAccess(root)
-    with access.lease(stop) as lease:
+    with access.lease(stop,operation='office') as lease:
         try:
             # Preserve the runtime's working directory for local file paths;
             # root selects only the bridge-wide circuit and concurrency slots.

@@ -1,0 +1,63 @@
+{
+  "evidence": "E108",
+  "date": "2026-11-13",
+  "ok": true,
+  "checks": {
+    "three_341_suites": true,
+    "build_install_ok": true,
+    "21_frozen_modules": true,
+    "changed_only_four_managed_call_modules": true,
+    "tests_match_frozen": true,
+    "installed_sitepackages": true,
+    "six_entrypoints": true,
+    "wheel_modules_match": true,
+    "license_preserved": true
+  },
+  "tests": {
+    "source": {
+      "ok": true,
+      "testsRun": 341,
+      "failures": 0,
+      "errors": 0
+    },
+    "py314": {
+      "ok": true,
+      "testsRun": 341,
+      "failures": 0,
+      "errors": 0
+    },
+    "py311": {
+      "ok": true,
+      "testsRun": 341,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "newTestMethods": 6,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "c4fcca4953e9adba3e92c44ed4f62b49cdd9cb8b80be55d69d42facf78623f1c",
+    "runtime_guard.py": "62a566cb491c4ceae836e125d2c0b8732a727580a605ee998212900139e55b28",
+    "agent_runtime.py": "ffb94edaf8cd75639bcf609825f102170d7be94aed06eeffdf8f3e4f4c0ec2ce",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "40fc0852407109bf3c79e07ae53d1fb12c81ad08a73fa036ef7722fd4ee515cf",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "ba4f5744f5eb95ac2b81386144e2a1e4ebc158264d0f8d9592b7bb66684a3d04",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "official_proxy.py": "96b7b6a4a8576dfcfab9a11591565ece197e4fe430373e330bb7d73d5897ab4f",
+    "doctor.py": "a390d906eca3526bb1e4be9c8736a6c7d08552610a4d829b7560634808c0d9ba",
+    "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "wheelSha256": "6ea8c87e752bb831162a3c30917761d78676b6cf8edf5b4c056e32463126b42c",
+  "deployed": false,
+  "scope": "Synthetic SIGKILL, release I/O failure and no-secret journal; no real DWS fault injection. User explicitly authorized subsequent same-route recovery."
+}

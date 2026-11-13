@@ -371,3 +371,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E107 — 真实业务暂停的只读证据
 - [当前状态](../../docs/110-interrupted-history-current-state.md)、[快照](../../evidence/2026-11-13/interrupted-history-snapshot.json)：三个进程仍running，但闩为dws_process_interrupted、mtime09:33:56，slot0 active/slot1 ready；两slot lsof未报告句柄，两路last_sync约09:33且窗口未完。
 - 已入库0未知投递不代表远端无积压；本轮真实DWS0/恢复0，守护文件与配置未改。只存state/reason缺归属阶段，不能推定Keychain复发或精确根因；E104仍未部署。该状态覆盖旧“可用”快照，下一项只读/合成诊断，不盲目清闩。
+
+## E108 — 调用归属日志与有界恢复准备
+- [实现/恢复次序](../../docs/111-dws-interruption-recovery.md)、[9冻结核验](../../evidence/2026-11-13/dws-call-journal-validation.json)：6新增方法、源码/同wheel双Python各341，21模块一致。真实合成SIGKILL及释放落盘失败复现active残留；不外推为本次最初中断根因。
+- 用户明确授权本轮恢复，三服务已受管停止、任务/会话备份，0未决投递/执行；仅同AIC/原私聊。当前未清闩/调用，下一步固定cut补读、停机积压审查、原session迁移及UI。

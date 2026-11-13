@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
 from .rejection import read_length_rejection
 from .dws_access import (BridgeError, DWSCredentialStoreUnavailable, DWSAccessSuspended,
-                         DWSAccess, access_diagnostic, credential_failure, run_dws)
+                         DWSAccess, access_diagnostic, credential_failure, run_dws,operation_kind)
 
 
 def credential_store_diagnostic():
@@ -83,8 +83,9 @@ class DWS:
         self.stop = threading.Event()
 
     def call(self, args):
-        with self.access.lease(self.stop) as lease:
+        with self.access.lease(self.stop,operation=operation_kind(args)) as lease:
             try:
+                lease.stage('invoking')
                 p = run_dws([self.binary, *args, '--profile', self.config['profile'],
                              '--format', 'json'], cwd=self.root, stop=self.stop)
             except DWSAccessSuspended as exc:

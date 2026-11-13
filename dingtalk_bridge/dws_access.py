@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 
 
 class BridgeError(Exception):
@@ -17,6 +18,14 @@ class BridgeError(Exception):
 
 REASONS = {'credential_store_unavailable', 'dws_timeout', 'dws_process_interrupted',
            'dws_cleanup_incomplete', 'dws_access_state_invalid', 'operator_suspended'}
+OPERATIONS={'history','send','send_status','download','upload','office','stream','other'}
+
+
+def operation_kind(args):
+    """Closed categories only: never persist command arguments or account IDs."""
+    return {('chat','+chat-messages'):'history',('chat','+messages-send'):'send',
+            ('chat','+messages-reply'):'send',('chat','+messages-query-send-status'):'send_status',
+            ('chat','+messages-mget'):'download',('chat','bridge-image-upload'):'upload'}.get(tuple(args[:2]),'other')
 
 
 class DWSAccessSuspended(BridgeError):
@@ -93,6 +102,21 @@ class DWSAccess:
         finally:
             if os.path.exists(name):os.unlink(name)
 
+    def audit(self,event,*,attempt=None,slot=None,operation='other',reason=None,error_type=None):
+        """Diagnostic journal; failure must not erase receipts or alter the latch."""
+        record={'schemaVersion':1,'at':time.time(),'pid':os.getpid(),'event':event,
+                'attempt':attempt,'slot':slot,'operation':operation if operation in OPERATIONS else 'other'}
+        if reason in REASONS:record['reason']=reason
+        if error_type:record['errorType']=error_type
+        try:
+            fd=os.open(self.directory/'dws-call-audit.ndjson',os.O_CREAT|os.O_WRONLY|os.O_APPEND,0o600)
+            with os.fdopen(fd,'wb') as output:
+                fcntl.flock(output.fileno(),fcntl.LOCK_EX)
+                output.write((json.dumps(record,separators=(',',':'))+'\n').encode())
+                output.flush();os.fsync(output.fileno())
+        except OSError as exc:
+            print(json.dumps({'dws_audit_write_failed':type(exc).__name__}),file=sys.stderr,flush=True)
+
     @contextmanager
     def lock(self, stop=None, timeout=95):
         self.directory.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -111,7 +135,7 @@ class DWSAccess:
             os.close(fd)
 
     @contextmanager
-    def lease(self, stop=None):
+    def lease(self, stop=None, operation='other'):
         self.directory.mkdir(parents=True, exist_ok=True, mode=0o700)
         deadline=time.monotonic()+95
         owner=None
@@ -129,15 +153,23 @@ class DWSAccess:
                     if time.monotonic()>=deadline:raise BridgeError('DWS access busy; no process started')
                     time.sleep(.05)
             fd,path=owner
+            attempt=uuid.uuid4().hex
             try:previous=json.loads(path.read_text())
             except FileNotFoundError:previous={'state':'ready'}
             except (OSError,ValueError):previous={}
             if previous!={'state':'ready'}:
+                self.audit('stale_reservation',attempt=attempt,slot=index,operation=operation,
+                           reason='dws_process_interrupted' if previous=={'state':'active'} else 'dws_access_state_invalid')
                 self.block('dws_process_interrupted' if previous=={'state':'active'} else 'dws_access_state_invalid')
             self.check()
+            self.audit('reserving',attempt=attempt,slot=index,operation=operation)
             self.write({'state':'active'},path)
-            lease=DWSLease(self,path)
+            lease=DWSLease(self,path,attempt,index,operation)
+            self.audit('reserved',attempt=attempt,slot=index,operation=operation)
             try:yield lease
+            except BaseException as exc:
+                lease.stage('raised',error_type=type(exc).__name__)
+                raise
             finally:
                 if not lease.completed:
                     if self.status()['state']!='suspended':self.block('dws_process_interrupted')
@@ -171,19 +203,28 @@ class DWSAccess:
                     except BlockingIOError:raise BridgeError('DWS call active; stop callers before resume') from None
                 for _,path in held:self.write({'state':'ready'},path)
                 self.complete();self.block_path.unlink(missing_ok=True)
+                self.audit('explicit_resume')
         finally:
             for fd,_ in held:os.close(fd)
 
 
 class DWSLease:
-    def __init__(self, access, path):
+    def __init__(self, access, path, attempt=None,slot=None,operation='other'):
         self.access=access;self.path=path;self.completed=False
+        self.attempt=attempt;self.slot=slot;self.operation=operation
+
+    def stage(self,event,**details):
+        self.access.audit(event,attempt=self.attempt,slot=self.slot,operation=self.operation,**details)
 
     def complete(self):
-        self.access.write({'state':'ready'},self.path);self.completed=True
+        try:self.access.write({'state':'ready'},self.path)
+        except BaseException as exc:
+            self.stage('release_failed',error_type=type(exc).__name__);raise
+        self.completed=True;self.stage('released')
 
     def block(self, reason):
         self.access.block(reason)
+        self.stage('suspended',reason=reason)
 
 
 class SupervisedDWS:

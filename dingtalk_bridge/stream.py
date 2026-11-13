@@ -54,7 +54,7 @@ class StreamListener:
 
     def run_once(self,stop,duration=3600,handshake_timeout=90):
         lease_stack=ExitStack()
-        lease=lease_stack.enter_context(self.access.lease(stop))
+        lease=lease_stack.enter_context(self.access.lease(stop,operation='stream'))
         self.update(state='connecting',ready=False)
         with self.lock:self.state['connections']+=1
         owned=None;sel=selectors.DefaultSelector();buffers={};terminating=None
