@@ -1,5 +1,7 @@
 # 钉钉 bridge 工作约定
 
+E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+
 ## 同一项目与当前检查点
 
 只在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录仅为入口。先读plans/completion的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志；同一01-PRD与ACCEPTANCE_MATRIX标准，历史“下一步”不当当前指令。

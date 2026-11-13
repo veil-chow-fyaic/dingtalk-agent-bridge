@@ -17,14 +17,53 @@ RESPONSE_SCHEMA={'type':'object','properties':{'text':{'type':'string'},
 class RuntimeStopped(Exception):pass
 
 
-class RuntimeResultError(ValueError):
+class RuntimeFailure(RuntimeError):
+    """Stable host classification, never inferred from provider prose/tool output."""
+    retry_safe=False
+    def __init__(self,code,stage='process'):
+        self.code=code;self.stage=stage
+        super().__init__(code)
+
+
+class RuntimeSessionError(RuntimeFailure):
+    def __init__(self,code):super().__init__(code,'session')
+
+
+class RuntimeResultError(RuntimeFailure,ValueError):
     """A terminal runtime response is unusable; prior tool effects may exist."""
     stage='result'
     retry_safe=False
 
     def __init__(self,code):
-        self.code=code
-        super().__init__(code)
+        super().__init__(code,'result')
+
+
+def runtime_manifest(settings):
+    """Reviewed adapter surface, not a probe of this installation or account."""
+    kind=settings['kind']
+    if kind not in {'codex','kimi'}:raise ValueError('Unknown local runtime')
+    capabilities=['text','workspace_files','image_files','tool_execution','resume','cancel','structured_result']
+    if kind=='codex':capabilities.append('native_image_arguments')
+    return {'kind':kind,'adapterContract':'local-cli-v1','resultContract':'text-files-v1',
+            'capabilities':sorted(capabilities),'imageInput':'native-argument' if kind=='codex' else 'workspace-file',
+            'completion':'turn.completed-and-exit-zero' if kind=='codex' else 'assistant-then-session.resume_hint',
+            'health':'unknown'}
+
+
+def require_capabilities(settings):
+    required=settings.get('requiredCapabilities',[])
+    if not isinstance(required,list) or any(not isinstance(x,str) or not x for x in required):
+        raise ValueError('requiredCapabilities must be a list of nonempty strings')
+    if not set(required)<=set(runtime_manifest(settings)['capabilities']):
+        raise RuntimeFailure('runtime_capability_unsupported','capability')
+
+
+def checked_session(value,expected=None):
+    if not isinstance(value,str) or not value.strip() or any(ord(c)<32 for c in value):
+        raise RuntimeSessionError('runtime_session_invalid')
+    if expected is not None and value!=expected:
+        raise RuntimeSessionError('runtime_session_mismatch')
+    return value
 
 
 def validate_runtime_result(result):
@@ -119,7 +158,7 @@ def stop_owned_group(process):
 class LocalRuntime:
     def __init__(self,settings):
         self.settings=settings;self.kind=settings['kind']
-        if self.kind not in {'codex','kimi'}:raise ValueError('Unknown local runtime')
+        runtime_manifest(settings);require_capabilities(settings)
         timeout_seconds(settings)
 
     def command(self,workspace,run_dir,session_id,images=()):
@@ -141,7 +180,12 @@ class LocalRuntime:
 
     def run(self,prompt,workspace,run_dir,session_id,cancel,on_session,images=()):
         timeout=timeout_seconds(self.settings)
-        workspace=Path(workspace);run_dir=Path(run_dir);run_dir.mkdir(parents=True,exist_ok=True,mode=0o700)
+        require_capabilities(self.settings)
+        if session_id is not None:checked_session(session_id)
+        workspace=Path(workspace);run_dir=Path(run_dir)
+        # Never truncate an earlier attempt or consume its -o file as this turn.
+        try:run_dir.mkdir(parents=True,exist_ok=False,mode=0o700)
+        except FileExistsError as exc:raise RuntimeFailure('runtime_run_reuse') from exc
         args=self.command(workspace,run_dir,session_id,images)
         if self.kind=='kimi':
             if len(prompt.encode())>65536:raise ValueError('Prompt too large; use file inputs')
@@ -168,13 +212,15 @@ class LocalRuntime:
                 if not isinstance(event,dict):return
                 if self.kind=='codex':
                     if event.get('type')=='thread.started':
-                        observed_session=event['thread_id'];on_session(observed_session)
+                        observed_session=checked_session(event.get('thread_id'),observed_session);on_session(observed_session)
                     if event.get('type')=='turn.completed':completed=True
                     if event.get('type')=='turn.failed':terminal_error=True
                 else:
                     if event.get('role')=='assistant' and isinstance(event.get('content'),str):final_text=event['content']
                     if event.get('type')=='session.resume_hint':
-                        observed_session=event['session_id'];on_session(observed_session);completed=True
+                        observed_session=checked_session(event.get('session_id'),observed_session);on_session(observed_session)
+                        if final_text is None:raise RuntimeResultError('runtime_result_missing')
+                        completed=True
             try:
                 os.set_blocking(process.stdout.fileno(),False)
                 sel.register(process.stdout,selectors.EVENT_READ)
@@ -203,11 +249,17 @@ class LocalRuntime:
                     # Kimi 2.1.1 can retain background handles after its terminal resume hint.
                     # The terminal event follows the saved response; terminate only this owned CLI.
                     if completed or terminal_error:break
-                if not completed or terminal_error or not observed_session:raise RuntimeError('Runtime did not complete; inspect private run log')
+                if terminal_error:raise RuntimeFailure('runtime_turn_failed','unknown')
+                if not completed:raise RuntimeFailure('runtime_terminal_missing')
+                if not observed_session:raise RuntimeSessionError('runtime_session_missing')
                 if self.kind=='codex':
                     # The CLI writes -o while finishing the completed turn.
-                    wait_unreaped(process,10)
-                    final_text=(run_dir/'response.json').read_text()
+                    try:wait_unreaped(process,10)
+                    except subprocess.TimeoutExpired as exc:raise RuntimeFailure('runtime_terminal_without_exit') from exc
+                    stop_owned_group(process)
+                    if process.returncode!=0:raise RuntimeFailure('runtime_exit_nonzero')
+                    try:final_text=(run_dir/'response.json').read_text()
+                    except (OSError,UnicodeError) as exc:raise RuntimeResultError('runtime_result_missing') from exc
                 result=decode_runtime_result(final_text)
                 (run_dir/'validated-response.json').write_text(json.dumps(result,ensure_ascii=False))
                 return result
@@ -217,5 +269,6 @@ class LocalRuntime:
                 # The supervisor owns the actual CLI and retains its PID through
                 # cleanup. Closing this pipe also works when the gateway dies.
                 os.close(lifetime_write)
-                try:wait_unreaped(process,15)
-                finally:stop_owned_group(process)
+                if process.returncode is None:
+                    try:wait_unreaped(process,15)
+                    finally:stop_owned_group(process)

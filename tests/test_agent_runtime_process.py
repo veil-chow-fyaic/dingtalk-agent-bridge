@@ -129,7 +129,7 @@ while not Path('child-ready').exists(): time.sleep(.01)
         body=self.forked_tool()+'os._exit(0)\n'
         # The supervisor now observes the CLI exit and closes inherited tool
         # stdout promptly; failure no longer needs to wait for the deadline.
-        with self.assertRaisesRegex(RuntimeError,'did not complete'):
+        with self.assertRaisesRegex(RuntimeError,'runtime_terminal_missing'):
             self.run_provider(self.runtime(body,timeout=2))
         self.assert_tool_stopped()
 

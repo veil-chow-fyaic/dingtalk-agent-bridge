@@ -354,3 +354,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [部署与UI](../../docs/106-send-evidence-contract.md)、[15项核验](../../evidence/2026-11-12/send-evidence-deployment-validation.json)。3fa5011冻结21模块一致，仅原manager重载transport；两gateway进程、旧任务/回执/投递/session/config保持，三服务运行。
 - veil原生新任务一次，Kimi实际Python1387，liev两气泡及AI标识可见；两个不同task/message回执与传输账本一致。两路history维护后完整同步、无poll_error；无auth/doctor、旧key重放或新矩阵通过格。
 - 首审计字段误猜导致1项失败留local，改核真实last_sync.at/complete后15项通过。原24h run未改，49/14/1、7 MUST未完整；下一项C03/C04，不重做已过UI。
+
+## E104 — CEO能力/终态与会话兼容性
+- [具体实现](../../docs/107-runtime-and-session-contracts.md)、[13核验](../../evidence/2026-11-13/runtime-session-contract-validation.json)。旧冻结4实际合成CLI负例全失败；新增24方法，源码/同wheel双Python各331通过，21模块/六入口/许可与冻结源一致。
+- 错session、Codex异常退出、复用旧run/旧输出拒绝；静态能力≠健康，未知错误不凭文字判认证。冻结每任务契约，旧session缺metadata/不兼容明确blocked，new归档历史，不重放。
+- 初开发329项1失败/5错误保留；已修二次wait与补办公升级显式审查。真实旧会话未迁移/未部署，三服务仍E103部署；CUA正确bundle两次failedToCreateImageDestination，停止路径，无消息/UI通过增量。49/14/1与7 MUST缺口保持。

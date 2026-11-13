@@ -1,5 +1,7 @@
 # 当前任务池
 
+E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+
 > E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
 E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../../docs/102-user-requirements-and-roadmap.md)、[PRD](01-PRD.md)、[矩阵](ACCEPTANCE_MATRIX.md)。截至E096原清单按字节[归档](../../docs/history/through-E096/TODO.md.txt)，阶段证据留EVIDENCE/Git，旧“待许可/未部署”不再作为待办。
@@ -23,12 +25,14 @@ E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../.
 
 - [x] E102 C02发送事实负例映射及窄修复：旧冻结8方法22失败，新冻结源码/双Python各307；只改core，未知不重发。
 - [x] E103只重载transport，实际Python1387/两确认/UI、15核验；其他组件/账本保留。
-- [ ] C03后续能力与终态契约（E099结果/错误已落地）：Kimi旧行为保持，CLI/原生协议边界独立；不默认切runtime/账号或重放。
-- [ ] C04会话兼容性元数据：冻结契约，升级/不兼容可解释，旧session/任务/回执不丢。
+- [x] E104 C03能力/终态离线实现：非终态/错session/异常退出拒绝，不切runtime或重放；候选未部署，真实UI待验。
+- [x] E104 C04冻结任务契约/显式续接兼容性，合成迁移、旧历史保留和new归档通过；真实旧会话迁移待执行。
 - [ ] Qwen admitted/completed与inbox/job入库事务专项对照仍保留；现实现已有同等证据则不重复改写。
 - [ ] C05多宿主租约仅在有实际场景时采用；当前flock有效，不能将候选计为现有缺陷。
 
 详见[CEO深挖与验收](../../docs/references/ceo-deep-dive.md)。S1被具体UI/平台条件阻塞时转S2，不循环同路径。
+
+- [ ] E104候选部署：核旧gateway版本/配置与空闲账本，备份并明确迁移原session契约，再受管重载及真实UI；CUA恢复前不盲发。
 
 ## S3/S4 — 扩展与受限入口
 

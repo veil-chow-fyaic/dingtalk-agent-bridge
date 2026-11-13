@@ -1,5 +1,7 @@
 # 续作前置核对
 
+E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+
 先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认原checkout、codex/complete-bridge和未提交归属。不能从聊天空目录另做实现。
 
 E103当前transport已加载3fa5011，gateway为e27547b；只有core在两版本间不同。E102冻结21模块、源码及双Python安装各307已核，E10315项部署/UI核验通过。没有新代码/未解疑点不重复全量；不拿当前HEAD冒充旧冻结测试。

@@ -275,3 +275,5 @@
 | 2026-11-12T20:24:08+08:00 E102 | CEO C02负例落实：旧冻结8方法22失败，新core/8方法，源码及同wheel双Python各307、13审计通过 | docs/106；send-evidence-contract-validation | 当前尚未部署，下一步仅受管transport重载及唯一UI正向；不重跑旧实验，不增加矩阵通过格 |
 
 | 2026-11-12T20:30:15+08:00 E103闭环 | 原manager只重载transport至3fa5011；一条真实群任务Python1387、两回执与UI、15核验；原账本/session/config/两gateway保持，原24h不改 | E103；docs/106 | C03能力/终态、C04兼容性及剩余新UI入口；49/14/1，7 MUST未完整，心跳PAUSED/服务运行 |
+
+| 2026-11-13T11:59:41+08:00 E104 | C03/C04落实：旧4缺陷复现，24新方法，冻结源码/双Python331与13核验；session/任务契约及new历史保护 | docs/107；runtime-session-contract-validation | 未部署；CUA绑定两次图像错误loop guard，无盲发。下一独立项Codex参数/旧超时诊断；UI恢复后审查真实旧session迁移并受管部署，三服务版本不冒报为E104 |

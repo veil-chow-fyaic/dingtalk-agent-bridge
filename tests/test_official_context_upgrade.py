@@ -5,7 +5,7 @@ import subprocess
 import tempfile
 import unittest
 
-from dingtalk_bridge.agent_gateway import Gateway
+from dingtalk_bridge.agent_gateway import Gateway,session_contract,contract_json
 from dingtalk_bridge.dws_access import DWSAccess
 from dingtalk_bridge.official_tools import CONTEXT, GUIDE, WRAPPER
 from test_agent_gateway import FakeAPI, FakeRuntime, SETTINGS
@@ -75,6 +75,11 @@ class OfficialContextUpgradeTests(unittest.TestCase):
 
     def test_legacy_direct_binary_is_refreshed_before_resuming_existing_session(self):
         self.reopen(True)
+        # C04 makes enabling a tool surface an explicit compatibility decision.
+        # This fixture's reviewed migration changes only the generated wrapper;
+        # unreviewed changes are rejected in test_session_compatibility.
+        with self.g.db:self.g.db.execute('UPDATE meta SET value=? WHERE key="session_contract"',
+                                        (contract_json(session_contract(self.g.settings)),))
         seen = []
         def resumed(prompt, workspace, run_dir, session, cancel, remember, images):
             seen.append(session)

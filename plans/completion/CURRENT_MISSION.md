@@ -1,5 +1,7 @@
 # 当前任务
 
+E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
+
 交付通用普通账号钉钉IM中间件，以官方DWS真人身份连接可替换Agent：群/私聊文字、媒体原件、真实任务、上下文和同会话交付。需求见[01-PRD](01-PRD.md)，不新增四runtime必过门槛；Kimi已满足至少一个执行器，Codex独立推进。
 
 E103当前transport=E102/3fa5011，两个gateway=E099/e27547b；history-only15秒，三服务运行，心跳仍PAUSED。E102冻结源码/同wheel双Python各307通过、21模块/六入口；E103只重载transport，原账本/配置/session/gateway保持，唯一群任务实际Python1387、两确认回复及UI通过。见[发送凭据与部署](../../docs/106-send-evidence-contract.md)。
