@@ -277,3 +277,5 @@
 | 2026-11-12T20:30:15+08:00 E103闭环 | 原manager只重载transport至3fa5011；一条真实群任务Python1387、两回执与UI、15核验；原账本/session/config/两gateway保持，原24h不改 | E103；docs/106 | C03能力/终态、C04兼容性及剩余新UI入口；49/14/1，7 MUST未完整，心跳PAUSED/服务运行 |
 
 | 2026-11-13T11:59:41+08:00 E104 | C03/C04落实：旧4缺陷复现，24新方法，冻结源码/双Python331与13核验；session/任务契约及new历史保护 | docs/107；runtime-session-contract-validation | 未部署；CUA绑定两次图像错误loop guard，无盲发。下一独立项Codex参数/旧超时诊断；UI恢复后审查真实旧session迁移并受管部署，三服务版本不冒报为E104 |
+
+| 2026-11-13T12:04:14+08:00 E105 | Codex0.164.0参数已核；新60秒独立本地任务request timed out，守护完成、无工具/产物/IM，旧日志保留 | docs/108；codex-cli-timeout-diagnostic | 新环境/服务证据前不重复Codex；UI工具绑定亦loop guard。转原观察最终账本只读核对，不改变原run或把离线数抵消UI |

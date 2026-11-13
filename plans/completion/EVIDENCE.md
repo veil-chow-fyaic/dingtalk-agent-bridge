@@ -359,3 +359,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [具体实现](../../docs/107-runtime-and-session-contracts.md)、[13核验](../../evidence/2026-11-13/runtime-session-contract-validation.json)。旧冻结4实际合成CLI负例全失败；新增24方法，源码/同wheel双Python各331通过，21模块/六入口/许可与冻结源一致。
 - 错session、Codex异常退出、复用旧run/旧输出拒绝；静态能力≠健康，未知错误不凭文字判认证。冻结每任务契约，旧session缺metadata/不兼容明确blocked，new归档历史，不重放。
 - 初开发329项1失败/5错误保留；已修二次wait与补办公升级显式审查。真实旧会话未迁移/未部署，三服务仍E103部署；CUA正确bundle两次failedToCreateImageDestination，停止路径，无消息/UI通过增量。49/14/1与7 MUST缺口保持。
+
+## E105 — Codex固定本机参数与新有界超时
+- [诊断](../../docs/108-codex-cli-timeout-diagnostic.md)、[记录](../../evidence/2026-11-13/codex-cli-timeout-diagnostic.json)：本机0.164.0完整start/resume帮助解析通过；新任务唯一一次，60.110秒超时，CLI内部Reconnecting2/5，只有thread/turn started+error，无工具/产物，守护清理完成。
+- 未改配置/HOME/凭据/模型，旧日志保持；不推定根因，不重试或提高timeout，不计第二runtime/新UI。产品仍E104候选、部署仍E103。

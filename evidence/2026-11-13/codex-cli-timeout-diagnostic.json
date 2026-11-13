@@ -1,0 +1,51 @@
+{
+  "evidence": "E105",
+  "date": "2026-11-13",
+  "version": "codex-cli 0.164.0",
+  "binarySha256": "d8990e3ee7acfbc26f91265b12a1a83f0fee40d0e0f8f1f40a37d4ec21f499cf",
+  "exactCommands": {
+    "start": {
+      "exitCode": 0,
+      "argsAcceptedWithoutExecution": true
+    },
+    "resume": {
+      "exitCode": 0,
+      "argsAcceptedWithoutExecution": true
+    }
+  },
+  "hostModelAttempts": 1,
+  "cliReconnectObserved": "Reconnecting... 2/5 (request timed out)",
+  "completed": false,
+  "elapsedSeconds": 60.11035537533462,
+  "runtimeFailure": "timeout",
+  "artifactPresent": false,
+  "eventTypes": [
+    "thread.started",
+    "turn.started",
+    "error"
+  ],
+  "cleanupComplete": true,
+  "oldLogsUnchanged": true,
+  "environmentPresence": {
+    "CODEX_HOME": false,
+    "OPENAI_BASE_URL": false,
+    "CHATGPT_BASE_URL": false,
+    "HTTPS_PROXY": false,
+    "HTTP_PROXY": false,
+    "ALL_PROXY": false,
+    "NO_PROXY": false
+  },
+  "credentialsReadByAssistant": false,
+  "configChanged": false,
+  "imMessages": 0,
+  "rootCauseEstablished": false,
+  "sources": [
+    "https://learn.chatgpt.com/docs/developer-commands#codex-exec"
+  ],
+  "rawSha256": {
+    "probe-attempt.json": "40b1a685481dbad9fc67b59bbcbeba1b618f1854c665ddd0186aa594c3d204f2",
+    "probe-result.json": "ad0fe5d158da03f9817458d342f2a6c7860854dea1368d00dcc0122cd1781c73",
+    "probe-run/events.jsonl": "e22838c1b6afa50f4e3c73ec872a26641bf1ab6f13cb06c14886410a70411a7b",
+    "probe-run/stderr.log": "d3792da08c3f4b67e7325e7b716615dfcffc0c4cb3316766a206c715727478ac"
+  }
+}
