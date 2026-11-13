@@ -1,0 +1,43 @@
+{
+  "evidenceId": "E114",
+  "at": "2026-11-13T08:23:27.634316+00:00",
+  "scope": "Existing long-task heartbeat resumed; not a product or UI acceptance",
+  "automation": {
+    "id": "bridge",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "intervalMinutes": 30,
+    "existingThreadPreserved": true,
+    "duplicateCreated": false,
+    "source": "official automation_update plus local configuration readback"
+  },
+  "plan": "plans/completion",
+  "milestones": [
+    "M1 durable runtime environment",
+    "M2 safe error diagnostics",
+    "M3 current deployment sustained observation",
+    "M4 remaining message types and real UI",
+    "M5 runtime adapter progression",
+    "M6 clean install, handoff and final review"
+  ],
+  "unchanged": [
+    "Original PRD and MUST/SHOULD levels",
+    "Product source, real services and account configuration",
+    "AIC test group and original direct chat only",
+    "Authentication and system-operation prohibitions",
+    "Historical failures and reliability run"
+  ],
+  "completion": false,
+  "limits": [
+    "Needs Mac and Codex online",
+    "Scheduling is not continuous service health",
+    "No new DWS calls, messages, UI results or product tests in this scheduling step"
+  ],
+  "checks": {
+    "original_heartbeat_active": true,
+    "original_target_and_cadence_preserved": true,
+    "product_source_unchanged": true,
+    "acceptance_gaps_preserved": true,
+    "same_branch": true
+  }
+}

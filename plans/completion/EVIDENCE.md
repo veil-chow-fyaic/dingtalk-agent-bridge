@@ -402,3 +402,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - 用户要求整理项目主线/剩余工作/产出/踩坑；[统一总览](../../docs/102-user-requirements-and-roadmap.md)、[DWS风险表](../../docs/114-dws-risks-and-resolution.md)、[接入经验](../../docs/11-onboarding-lessons.md)已更新。E112是最近真实现场，本轮不运行DWS/auth/Keychain/服务/UI，不增加通过格。
 - [公开来源复核](../../evidence/2026-11-13/mainline-risk-review-sources.json)：#1132 closed且维护者v62说明、#60687 open且未获官方因果确认、最新release v68；未升级或发布外部消息。D01系统根因、D02取消缺口、D05暂停、D07执行器网络等分开，恢复/止损不叫根治。
 - E097–E107旧状态从活动入口移除；C03/C04已部署/UI通过，下一段P0启动环境/安全错误信封/当前长期观察。原PRD判据/级别、14MUST判定、64格状态及产品/测试字节保持；[文档核对结果](../../evidence/2026-11-13/mainline-risk-review-validation.json)。历史失败、reliability及E075旧包范围保持。
+
+## E114 — 原长任务心跳恢复与阶段执行门槛
+- 用户要求安排长过程闭环；复用bridge，官方工具update为ACTIVE、每30分钟，并读回原target/配置核实；没有重复任务、新线程、子Agent或另一目标系统。[调度证据](../../evidence/2026-11-13/long-run-resume.json)。
+- Rose文件化续作沿用本目录，M1环境、M2错误、M3观察、M4剩余UI、M5执行器、M6封版及阻塞转项/退出条件见[里程碑](09-执行时序与里程碑.md)。本轮仅安排执行，无新DWS/产品/UI验收，最后业务现场仍E112，原49/14/1及7 MUST不完整。
