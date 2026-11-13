@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E120",
+  "recordedAt": "2026-11-13T10:12:54.625138+00:00",
+  "ok": true,
+  "checks": {
+    "0_old_jobs_preserved": true,
+    "0_old_outbox_preserved": true,
+    "group_tasks_and_session_unchanged": true,
+    "1_old_jobs_preserved": true,
+    "1_old_outbox_preserved": true,
+    "four_new_jobs_exact_states": true,
+    "task_0_actual_python": true,
+    "task_0_download_same_sha": true,
+    "task_0_content_correct": true,
+    "task_1_actual_python": true,
+    "task_1_download_same_sha": true,
+    "task_1_content_correct": true,
+    "task_2_actual_python": true,
+    "ui_cancel_native_interrupt": true,
+    "three_turns_same_native_codex_session": true,
+    "old_kimi_session_archive_retained": true,
+    "nine_replies_confirmed": true,
+    "nine_replies_history_echo": true,
+    "no_unknown_delivery": true,
+    "ui_tool_delay_fully_elapsed": true,
+    "ui_cancel_no_late_write": true,
+    "owned_cancel_descendants_captured": true,
+    "owned_cancel_descendants_exited": true,
+    "frozen_product_loaded": true,
+    "backlog_review_before_agents": true,
+    "history_cut_initial_covered": true,
+    "first_startup_failure_preserved": true,
+    "three_owned_services_running": true,
+    "dws_ready": true,
+    "both_routes_currently_sync": true
+  },
+  "productCommit": "0c6f2da",
+  "oldJobsPreserved": 89,
+  "newJobs": 4,
+  "completedToolTasks": 2,
+  "cancelledToolTasks": 1,
+  "cancelControlTasks": 1,
+  "newRepliesConfirmedAndHistoryEcho": 9,
+  "runtimeGroup": "kimi",
+  "runtimeDirect": "codex",
+  "realUI": {
+    "veilNativeInputs": 4,
+    "lievTextAndFileRepliesVisible": true,
+    "downloadedAndQuickLookOpened": [
+      "JSON",
+      "TXT"
+    ],
+    "results": [
+      1829,
+      1836
+    ],
+    "envReady": true,
+    "cancelRequestAndStoppedRepliesVisible": true,
+    "cancelToolDelaySeconds": 90,
+    "observedSecondsAfterMarker": 104.51352095603943,
+    "lateArtifactPresent": false,
+    "capturedOwnedProcesses": 4,
+    "capturedOwnedProcessesExited": true
+  },
+  "downloads": [
+    {
+      "size": 42,
+      "sha256": "a468d0a0224bc2d82b6602352cd4e615e09c978892fed04aadcaf234b6a29246"
+    },
+    {
+      "size": 34,
+      "sha256": "e3eaca99717b143ad1657d0cc7f6eb775241e99aa61b12939f3f639dc6c8f442"
+    }
+  ],
+  "startupFailure": {
+    "category": "api",
+    "reason": "request_timeout",
+    "elapsedMs": 3870,
+    "authErrorObserved": false,
+    "boundedRecoverySucceeded": true,
+    "networkConfigurationChanged": false
+  },
+  "privateEvidence": "local/codex-native-interrupt-20261113",
+  "limitations": [
+    "Original startup failure retained; no proof of original system Keychain cause or natural token refresh",
+    "E118 failed cancellation retained; no universal detached process isolation claim",
+    "Original 24h observer retains maintenance and mixed source interval; not uninterrupted uniform-version health",
+    "UI matrix49/14/1 and seven incomplete MUST unchanged; Pi/OpenClaw untested"
+  ]
+}

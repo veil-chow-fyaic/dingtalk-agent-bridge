@@ -307,3 +307,5 @@
 | 2026-11-13 E118 | Codex60秒内真工具1961及同session1968成功；取消后90秒late写入失败；迁移工具10专项三环境通过但未执行 | docs/119；codex-persistent-env-and-migration-validation | 私聊new归档、切换binding拒绝后恢复Kimi，群/transport保持，原run两维护。下一先修原生SIGINT/turn interrupt及延迟验证，再迁移和UI，不掩盖失败 |
 
 | 2026-11-13 E119 | Codex原生中断及输出排空，7新增/冻结374三环境/16核验，实际延迟取消通过；89旧任务迁移保持 | docs/120 | 下一固定cut补读、停审积压、恢复两路再Codex私聊真实UI；不重跑E116 |
+
+| 2026-11-13 E120闭环 | 0c6f2da已部署；首启API超时保留，一次有界恢复；私聊Codex真工具/原session/下载打开/取消104秒无late，30核验，89旧任务保持 | docs/121 | 三服务运行、心跳ACTIVE；下一新协议入口或当前版干净交接/PiOpenClaw契约，原观察不重置；不重跑E120 |

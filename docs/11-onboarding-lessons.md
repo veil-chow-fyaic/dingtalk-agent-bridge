@@ -51,3 +51,7 @@ DWS的released只证明调用槽释放；result诊断需另保留安全category/
 ## E117：取消必须传至真正的子进程
 
 仅外层select超时不能结束底层exec.Command；预算需从预检查开始，逐层传context，成功Start之后必须Wait回收。清理期耗尽就保留pending，不把返回错误等同进程已退出。原写入已发生的副作用不能靠取消回滚。候选只用固定源码/合成进程验证，未改官方binary或真实存储；[候选与限制](117-dws-cancellation-candidate.md)。系统-25293与该取消缺口不能混为同一根因。
+
+## E119/E120新增经验
+
+Codex工具可能另建会话；仅杀CLI组不等于工具已停。使用固定官方原生SIGINT→turn/interrupt，并跨过任务计划写入点观察，无late且所捕获进程退出才计通过。gateway取消期间需排空输出，避免大事件堵塞清理。更换runtime需原生new归档和显式binding迁移，不能仅改JSON配置。首次DWS启动api/request_timeout不等于认证失效；保留错误分类与耗时，正常有界恢复不做auth/Keychain。详见docs/120–121。

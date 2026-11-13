@@ -53,3 +53,7 @@ D01直接故障点已定位但根因未定，D02是已复现未上游修复的�
 - **运行验收**：当前版独立观察包含版本切换、维护、调用错误、自然刷新可证事实和截止账本；旧reliability-20261111保持原样。主动破坏refresh凭据不是必要验证手段，无法安全取得的真实失效证据继续记缺口，不偷偷降低R13。
 
 文档中的“已修复”必须指具体缺陷、产品版本和验证；“已恢复”只描述当次运行；“未知”要带下一条能改变判断的证据。没有这三项，不能向用户承诺底层已解决。
+
+## E120新增实际故障分类
+
+0c6f2da部署首次conversation-info返回category=api、reason=request_timeout、stage=request、exit=1、耗时3870ms、providerExecutionStarted=false。三服务未启动成功，未发UI任务；原失败保留。相同网络配置下显式一次有界恢复成功，随后9新回复confirmed/history及真实UI通过。没有认证错误证据，不能将这次故障归因为授权自动过期或Keychain；也不能以恢复成功证明网络/官方服务根因。原D01保持未知，未执行真实auth/doctor/Keychain操作。

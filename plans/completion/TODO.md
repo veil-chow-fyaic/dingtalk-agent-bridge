@@ -1,12 +1,6 @@
 # 当前任务池
 
-E119（2026-11-13）：Codex先原生SIGINT/turn interrupt，再有限进程组清理；旧取消/超时/父死亡3失败，新7方法及冻结源码/同wheel双Python各374通过。真实取消等过30秒工具写入期限，4进程/4组均退出、无late；保留E118迟到文件。显式私聊binding迁移已执行，89旧任务保持；当前三服务因部署停机，下一步固定cut补读/停机审积压后启动AIC Kimi和私聊Codex并做新UI验收。原观察记维护及开发期guard源码混用区间，不重置。见[修复边界](../../docs/120-codex-native-interrupt.md)。
-
-E118（2026-11-13）：Codex在持久网络环境下真实Python1961、同session续接1968成功，但取消返回后约90秒仍有工具迟到写入，取消验收失败。私聊new已归档原Kimi会话；切换被runtime binding拦住后已恢复Kimi，群/transport未动，维护记原run。显式绑定迁移工具10专项三环境通过、尚未执行真实迁移。下一项依据固定Codex ctrl_c→turn/interrupt实现原生中断并验证延迟退出，之前不部署Codex。见[新证据](../../docs/119-codex-environment-and-cancellation-gap.md)。
-
-E117（2026-11-13）：官方取消缺口双层候选及本地上游草稿已完成，15个方法/10子用例普通与race均过、18核验；未集成或部署，产品仍87a3d39。参考源码/21模块保持；独立观察原run不重启。下一独立项Codex持久环境有界验证及剩余协议新入口，不重跑取消候选。详见[候选范围](../../docs/117-dws-cancellation-candidate.md)。
-
-E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配置，manager无代理变量启动后，AIC与原私聊真实Python/原session/文字及文件下载打开/SHA通过；86旧任务保留，38核验通过。E115冻结源码/同wheel双Python各357项。三服务运行、DWS ready、心跳ACTIVE；24h只读观察aic-persistent-env-20261113刚启动，未完成长期验收。49/14/1及7 MUST缺口不变。
+E120当前状态（2026-11-13）：0c6f2da已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊显式迁移Codex。89旧任务保持，新实际Python1829及同session1836、JSON/TXT客户端下载Quick Look/SHA、真实cancel回复通过；90秒工具延迟后观察104秒无late、4进程退出，9回复confirmed/history回读，30部署/UI核验。E119冻结源码/同wheel双Python各374通过。首次启动api/request_timeout 3.87秒保留，环境不变下一次有界恢复成功；不据此称认证故障或系统根治。E117官方取消候选已成稿但未集成部署；原24h观察保留混用/维护，不重置。下一项剩余协议新入口、当前版干净检出/回滚交接或Pi/OpenClaw同契约；不重跑E120。见[最新UI](../../docs/121-codex-deployment-and-ui.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -28,14 +22,14 @@ E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配�
 
 ## P1 — 剩余验收与封版
 
-- [ ] E118 Codex正常/续接已成功，但取消后工具迟到写入；依据固定官方原生中断修复、合成及新的真实延迟验证，再显式绑定迁移/IM UI。绑定迁移工具10专项三环境已过、未执行现场。
+- [x] E119/E120 Codex原生中断、绑定迁移及真实私聊工具/续接/取消/文件UI，89旧任务保持；旧E118失败保留。
 - [ ] 14 blocked和1partial逐项寻找新入口/官方能力，验引用、原生语音/video及单消息组合。没有新入口停止同路径；不得默默删除MUST。
 - [ ] 当前冻结源码干净检出/独立安装、模板与六入口、许可、运行/暂停/恢复/回滚说明和最终交接；E075不代表新版。
 - [ ] 14 MUST/64格/证据/隐私/manifest一致终审；R01/R04/R06/R07/R12/R13/R14仍未完整。全部满足才完成，不用文档数量替代用户验收。
 
 ## 独立推进和条件扩展
 
-- [ ] Codex依据已有失败日志及E112环境新线索有界诊断，真实工具、会话、取消、文件UI通过才标支持；不重登录/改HOME/扩大超时凑成功。
+- [x] E120 Codex实际Python、同session、取消延迟观察、客户端下载原件打开全部通过；未重登录/改HOME/扩大timeout。
 - [ ] Pi/OpenClaw逐个按同契约接入，先明确turn由宿主还是gateway持有；四runtime全过不是原R09新增门槛。
 - [ ] Qwen admitted/completed与inbox/job事务边界对照，已有等价实现只登记，不重写。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。

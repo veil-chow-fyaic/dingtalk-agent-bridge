@@ -429,3 +429,5 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - 固定Codex6aaac69源码已找到ctrl_c→turn/interrupt新依据，下一段原生中断及晚写验证，之后再UI。guard cleanup_complete只能证明原进程组，早先取消通过口头结论已撤回。
 
 | E119 | L3/L4 | Codex原生中断；旧3失败/新7方法，冻结源码/同wheel双Python374；真实取消4进程退出且延迟无late；显式binding迁移保持89任务 | docs/120；codex-native-interrupt-validation | 三服务部署停机，UI未验；原观察记录混用/维护；非系统根治 |
+
+| E120 | L4/L5 | 0c6f2da部署，AIC Kimi/私聊Codex；89旧任务保持，实际Python1829/同session1836、两文件客户端下载打开SHA、取消104秒无late/4进程退出；9回执history、30核验 | docs/121；codex-deployment-ui-validation | 首次DWS启动API超时保留，原观察维护/混用；非认证根治/自然刷新/24h；七MUST仍缺 |

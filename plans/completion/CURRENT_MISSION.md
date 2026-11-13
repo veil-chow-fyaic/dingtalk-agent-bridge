@@ -1,17 +1,11 @@
 # 当前任务
 
-E119（2026-11-13）：Codex先原生SIGINT/turn interrupt，再有限进程组清理；旧取消/超时/父死亡3失败，新7方法及冻结源码/同wheel双Python各374通过。真实取消等过30秒工具写入期限，4进程/4组均退出、无late；保留E118迟到文件。显式私聊binding迁移已执行，89旧任务保持；当前三服务因部署停机，下一步固定cut补读/停机审积压后启动AIC Kimi和私聊Codex并做新UI验收。原观察记维护及开发期guard源码混用区间，不重置。见[修复边界](../../docs/120-codex-native-interrupt.md)。
+E120当前状态（2026-11-13）：0c6f2da已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊显式迁移Codex。89旧任务保持，新实际Python1829及同session1836、JSON/TXT客户端下载Quick Look/SHA、真实cancel回复通过；90秒工具延迟后观察104秒无late、4进程退出，9回复confirmed/history回读，30部署/UI核验。E119冻结源码/同wheel双Python各374通过。首次启动api/request_timeout 3.87秒保留，环境不变下一次有界恢复成功；不据此称认证故障或系统根治。E117官方取消候选已成稿但未集成部署；原24h观察保留混用/维护，不重置。下一项剩余协议新入口、当前版干净检出/回滚交接或Pi/OpenClaw同契约；不重跑E120。见[最新UI](../../docs/121-codex-deployment-and-ui.md)。
 
-E118（2026-11-13）：Codex在持久网络环境下真实Python1961、同session续接1968成功，但取消返回后约90秒仍有工具迟到写入，取消验收失败。私聊new已归档原Kimi会话；切换被runtime binding拦住后已恢复Kimi，群/transport未动，维护记原run。显式绑定迁移工具10专项三环境通过、尚未执行真实迁移。下一项依据固定Codex ctrl_c→turn/interrupt实现原生中断并验证延迟退出，之前不部署Codex。见[新证据](../../docs/119-codex-environment-and-cancellation-gap.md)。
-
-E117（2026-11-13）：官方取消缺口双层候选及本地上游草稿已完成，15个方法/10子用例普通与race均过、18核验；未集成或部署，产品仍87a3d39。参考源码/21模块保持；独立观察原run不重启。下一独立项Codex持久环境有界验证及剩余协议新入口，不重跑取消候选。详见[候选范围](../../docs/117-dws-cancellation-candidate.md)。
-
-E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配置，manager无代理变量启动后，AIC与原私聊真实Python/原session/文字及文件下载打开/SHA通过；86旧任务保留，38核验通过。E115冻结源码/同wheel双Python各357项。三服务运行、DWS ready、心跳ACTIVE；24h只读观察aic-persistent-env-20261113刚启动，未完成长期验收。49/14/1及7 MUST缺口不变。
-
-交付官方DWS真人账号到可替换Agent的通用钉钉IM中间件，群/私聊文字、媒体原件、真实任务、多轮及同会话交付。CLI/HTTP/consumer独立，gateway可选；组织/runtime为配置，不新增bot。Kimi满足至少一个执行器，Codex仍超时，Pi/OpenClaw未验。原[PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)不变。
+交付官方DWS真人账号到可替换Agent的通用钉钉IM中间件，群/私聊文字、媒体原件、真实任务、多轮及同会话交付。CLI/HTTP/consumer独立，gateway可选；组织/runtime为配置，不新增bot。Kimi满足至少一个执行器，Codex E120真实工具/续接/取消/文件UI也已通过，Pi/OpenClaw未验。原[PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)不变。
 
 当前解释统一在[需求/产出/路线](../../docs/102-user-requirements-and-roadmap.md)及[DWS风险与解决状态](../../docs/114-dws-risks-and-resolution.md)。DWS最初钥匙串故障根因未定，不把恢复或外层防护写成根治；E107暂停/E104未部署是已被后续覆盖的历史，不再重做。
 
-通用runtime启动环境及DWS安全错误观察已实现并部署/UI通过；当前AIC独立持续观察已启动；期间推进新协议入口、Codex环境诊断，最后干净检出/交接。具体退出条件见[关键路径](CRITICAL_PATH.md)、[TODO](TODO.md)。当前7个MUST缺口为R01/R04/R06/R07/R12/R13/R14，未降低判据。
+通用runtime启动环境及DWS安全错误观察已实现并部署/UI通过；当前AIC独立持续观察已启动；期间推进新协议入口、其他runtime契约，最后干净检出/交接。具体退出条件见[关键路径](CRITICAL_PATH.md)、[TODO](TODO.md)。当前7个MUST缺口为R01/R04/R06/R07/R12/R13/R14，未降低判据。
 
 只有AIC测试群及原veil/liev私聊可实测，企业大群/旧群禁止。助手auth/doctor/Keychain、自动认证修复和其他系统操作禁令沿用[AGENTS](../../AGENTS.md)；不用新计划扩大授权。旧任务/未知发送同key核对，不重放旧实验。
