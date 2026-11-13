@@ -367,3 +367,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E106 — 原观察已采事件与后续账本一致
 - [结果/边界](../../docs/109-observation-ledger-reconciliation.md)、[8核验](../../evidence/2026-11-13/observation-ledger-validation.json)：205捕获事件完整同seq/正文/账号/会话匹配，采样区间行集合一致；之后4行单列，不能按消息时间倒推入库截止。
 - 原四文件SHA与E101相同，52维护/13带局部版本字段及旧故障保持。新4专项源码/双Python旧E104wheel均通过，产品21模块不变；无335全量主张、真实调用或UI。原窗口全量截止与当前AIC长期覆盖仍不足，R13不改绿。
+
+## E107 — 真实业务暂停的只读证据
+- [当前状态](../../docs/110-interrupted-history-current-state.md)、[快照](../../evidence/2026-11-13/interrupted-history-snapshot.json)：三个进程仍running，但闩为dws_process_interrupted、mtime09:33:56，slot0 active/slot1 ready；两slot lsof未报告句柄，两路last_sync约09:33且窗口未完。
+- 已入库0未知投递不代表远端无积压；本轮真实DWS0/恢复0，守护文件与配置未改。只存state/reason缺归属阶段，不能推定Keychain复发或精确根因；E104仍未部署。该状态覆盖旧“可用”快照，下一项只读/合成诊断，不盲目清闩。

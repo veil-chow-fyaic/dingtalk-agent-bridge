@@ -1,0 +1,35 @@
+{
+  "evidence": "E107",
+  "observedAt": "2026-11-13T12:09:20+08:00",
+  "reason": "dws_process_interrupted",
+  "latchMtime": "2026-11-13T09:33:56.539422+08:00",
+  "slot0Mtime": "2026-11-13T09:33:40.988652+08:00",
+  "slotStates": {
+    "0": {
+      "state": "active"
+    },
+    "1": {
+      "state": "ready"
+    }
+  },
+  "lsof": {
+    "0": {
+      "exitCode": 1,
+      "openHandleReported": false
+    },
+    "1": {
+      "exitCode": 1,
+      "openHandleReported": false
+    }
+  },
+  "guardFilesUnchanged": true,
+  "pendingHistoryWindows": 2,
+  "knownUncertainDeliveries": 0,
+  "previousDeployment": "E103; no reload this turn",
+  "realDwsCallsThisTurn": 0,
+  "automaticResume": false,
+  "rootCauseEstablished": false,
+  "managedProcessesRunning": 3,
+  "notCredentialFailureEvidence": true,
+  "uiToolBlocked": true
+}

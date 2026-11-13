@@ -4,7 +4,9 @@
 
 | 目的 | 入口 |
 |---|---|
-| 最新代码/部署 | [CEO发送凭据修复E102与真实UI E103](106-send-evidence-contract.md) |
+| 当前调用暂停/下一步 | [E107实际状态](110-interrupted-history-current-state.md) |
+| 最新代码/部署 | [E104运行器与会话契约（未部署）](107-runtime-and-session-contracts.md) · [E103历史部署UI](106-send-evidence-contract.md) |
+| Codex诊断与原观察账本 | [E105参数通过/请求超时](108-codex-cli-timeout-diagnostic.md) · [E106205条对账与限制](109-observation-ledger-reconciliation.md) |
 | 最新真实UI与观察终检 | [群长文与控制E100](104-aic-group-long-text-and-controls.md) · [原24h记录E101](105-original-24h-observation.md) |
 | 用户需求、真实进度、接下来做什么 | [E097统一复盘与路线](102-user-requirements-and-roadmap.md) · [CEO源码深挖](references/ceo-deep-dive.md) |
 | 先看现成项目与采用顺序 | [公开参考目录](references/README.md) · [逐项采用清单](references/adoption-plan.md) · [固定来源 catalog](references/catalog.json) |

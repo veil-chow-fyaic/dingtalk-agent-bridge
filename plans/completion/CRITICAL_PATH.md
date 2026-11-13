@@ -1,10 +1,14 @@
 # 当前关键路径
 
+E107当前（2026-11-13）：三个进程running，但DWS调用已持久暂停（dws_process_interrupted，闩mtime09:33:56），两路history有未完窗口，远端积压未知。不得称正常收发，不自动清闩/恢复或要求密码；先补只含调用类别/归属/阶段的诊断并用合成中断验证。E104候选c5ee1fe未部署；E105 Codex60秒仍超时；E106205采到事件与旧账本一致但不证明原截止全量。CUA两次图像错误路径停止，心跳PAUSED。 [当前证据](../../docs/110-interrupted-history-current-state.md)。
+
 E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
 
-E103当前：E102回执一致性已部署transport，E099结果契约已部署gateway；固定源码/同wheel双Python307，实际群任务1387及15核验通过。49/14/1、7 MUST未完整，判据不变。详情见[当前任务](CURRENT_MISSION.md)、[E100](../../docs/104-aic-group-long-text-and-controls.md)、[E102/E103](../../docs/106-send-evidence-contract.md)。
+E103历史检查点：E102回执一致性已部署transport，E099结果契约已部署gateway；固定源码/同wheel双Python307，实际群任务1387及15核验通过。49/14/1、7 MUST未完整，判据不变。详情见[当前任务](CURRENT_MISSION.md)、[E100](../../docs/104-aic-group-long-text-and-controls.md)、[E102/E103](../../docs/106-send-evidence-contract.md)。
 
 ## 下一段
+
+0. E107优先：受管调用暂停，归属/中断阶段证据不足；只读核账和合成故障补诊断，不自动恢复或认证。保持原history_window，远端积压未知；原UI/Codex失败路径无新证据不重复。
 
 1. E104 C03/C04候选已实现，冻结源码/同wheel双Python各331和13核验已通过；部署需核旧gateway配置/版本及空闲账本，备份后显式迁移同一原session契约，不能用当前配置猜未知历史。CUA绑定连续两次图像错误已停止，工具恢复后再部署/真实任务UI，不盲发。
 2. Codex独立诊断：先读已有私有失败日志及固定CLI/环境差异，CEO只作线索；不重登录/拷贝凭据/改HOME/只扩大超时。真实任务UI闭环后才声明第二运行器支持。Pi/OpenClaw逐个接同一接口，不重造通道、不同时启动双执行器。

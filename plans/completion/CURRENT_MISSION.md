@@ -1,5 +1,7 @@
 # 当前任务
 
+E107当前（2026-11-13）：三个进程running，但DWS调用已持久暂停（dws_process_interrupted，闩mtime09:33:56），两路history有未完窗口，远端积压未知。不得称正常收发，不自动清闩/恢复或要求密码；先补只含调用类别/归属/阶段的诊断并用合成中断验证。E104候选c5ee1fe未部署；E105 Codex60秒仍超时；E106205采到事件与旧账本一致但不证明原截止全量。CUA两次图像错误路径停止，心跳PAUSED。 [当前证据](../../docs/110-interrupted-history-current-state.md)。
+
 E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
 
 交付通用普通账号钉钉IM中间件，以官方DWS真人身份连接可替换Agent：群/私聊文字、媒体原件、真实任务、上下文和同会话交付。需求见[01-PRD](01-PRD.md)，不新增四runtime必过门槛；Kimi已满足至少一个执行器，Codex独立推进。

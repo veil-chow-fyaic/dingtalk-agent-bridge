@@ -1,8 +1,10 @@
 # 当前任务池
 
+E107当前（2026-11-13）：三个进程running，但DWS调用已持久暂停（dws_process_interrupted，闩mtime09:33:56），两路history有未完窗口，远端积压未知。不得称正常收发，不自动清闩/恢复或要求密码；先补只含调用类别/归属/阶段的诊断并用合成中断验证。E104候选c5ee1fe未部署；E105 Codex60秒仍超时；E106205采到事件与旧账本一致但不证明原截止全量。CUA两次图像错误路径停止，心跳PAUSED。 [当前证据](../../docs/110-interrupted-history-current-state.md)。
+
 E104新增（2026-11-13）：C03能力/终态和C04会话兼容性已实现，旧冻结4负例复现，24新增方法，冻结源码/同wheel双Python各331和13核验通过；详情[运行器契约](../../docs/107-runtime-and-session-contracts.md)。当前候选未部署，真实gateway仍E099。CUA正确bundle连续两次failedToCreateImageDestination，停止该路径；不得称新UI通过。旧session须按已加载版本/原配置审查后显式迁移，不能自动重置/重放。
 
-> E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
+> E103历史检查点：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
 E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../../docs/102-user-requirements-and-roadmap.md)、[PRD](01-PRD.md)、[矩阵](ACCEPTANCE_MATRIX.md)。截至E096原清单按字节[归档](../../docs/history/through-E096/TODO.md.txt)，阶段证据留EVIDENCE/Git，旧“待许可/未部署”不再作为待办。
 

@@ -281,3 +281,5 @@
 | 2026-11-13T12:04:14+08:00 E105 | Codex0.164.0参数已核；新60秒独立本地任务request timed out，守护完成、无工具/产物/IM，旧日志保留 | docs/108；codex-cli-timeout-diagnostic | 新环境/服务证据前不重复Codex；UI工具绑定亦loop guard。转原观察最终账本只读核对，不改变原run或把离线数抵消UI |
 
 | 2026-11-13T12:07:05+08:00 E106 | 原205采到事件与后续SQLite逐条/区间一致；4后来行单列；原四SHA/52维护不变，4专项三环境/8核验 | docs/109；observation-ledger-validation | 缺入库时间/统一加载版本，不能补造截止全量或健康24h；当前AIC长期覆盖仍缺。下一可独立项当前commit干净检出与交付资料核对，UI/Codex沿已记录loop guard |
+
+| 2026-11-13T12:10:52+08:00 E107实际阻断 | 三进程running但DWS持久暂停，mtime09:33:56/active slot无报告句柄；两history窗口未完，0已入库未知不代表远端为空 | docs/110；interrupted-history-snapshot | 保持闩，不问密码/认证；下一段补归属/阶段合成诊断与原窗口账本方案，E104候选未部署，UI/Codexloop guard保持 |

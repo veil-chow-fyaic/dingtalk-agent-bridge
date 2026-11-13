@@ -1,12 +1,12 @@
 # DingTalk Agent Bridge
 
-> E103当前：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](docs/106-send-evidence-contract.md)。
+> E107当前：三个受管进程运行，但DWS业务调用因dws_process_interrupted持久暂停（11月13日09:33的记录），两路history窗口待核，远端积压未知。E104运行器/会话契约已实现，冻结源码/双Python各331通过，尚未部署；E105 Codex60秒请求仍超时，CUA绑定图像错误阻止新UI。E106205条已采事件与后续账本一致，不能称健康24h。49/14/1、7 MUST未完整，心跳PAUSED。[当前状态](docs/110-interrupted-history-current-state.md) · [代码与边界](docs/107-runtime-and-session-contracts.md)。
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
 选型优先采用公开GitHub/钉钉官方实现：**官方DWS做通讯底座，Qwen作通道组件参照，CEO作任务/交付/执行器契约参照**。默认DWS授权真人账号；bot项目仅参考可拆交互。[统一需求与路线](docs/102-user-requirements-and-roadmap.md) · [CEO源码深挖](docs/references/ceo-deep-dive.md) · [参考目录](docs/references/README.md) · [文档导航](docs/README.md)
 
-**项目尚未完整验收；当前普通账号群聊和私聊已恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
+**项目尚未完整验收；E095曾恢复两路，E107当前受管调用再次暂停。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
 
 - E103传输加载E102/3fa5011，gateway保留E099/e27547b，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
@@ -45,4 +45,4 @@ python3 scripts/verify_handoff.py
 
 代码、合成fixtures、脱敏evidence与文档可入Git；身份、凭据、原聊天/AX/截图、日志、数据库和下载件只留local。未知投递同key对账，禁止换key或UI补发。当前分支codex/complete-bridge，无远程发布；MUST/UI与完整自检未全部满足前不标完成、不停heartbeat。
 
-E096又补齐AIC群[原生PNG交付](docs/101-aic-group-native-png.md)：Kimi实际Pillow生成、原生图片气泡/查看器、客户端下载/Quick Look、原件SHA一致。群JPEG/WAV/MP4、长文/控制和其他原生协议缺口继续保留。
+E096又补齐AIC群[原生PNG交付](docs/101-aic-group-native-png.md)：Kimi实际Pillow生成、原生图片气泡/查看器、客户端下载/Quick Look、原件SHA一致。群JPEG/WAV/MP4文件、长文/控制随后E098/E100已过，其他原生协议/引用/组合缺口仍保留。
