@@ -2,7 +2,7 @@
 
 2026-11-13 E116：当前87a3d39已部署，两路持久环境/真实Python/原session/文件下载打开通过。三服务运行，心跳ACTIVE，当前独立24h观察刚启动；系统Keychain最初根因与完整验收仍未完成。
 
-[官方取消候选（未部署）](117-dws-cancellation-candidate.md) · [持久配置与安全诊断](115-runtime-environment-and-dws-diagnostics.md) · [部署及真实UI](116-persistent-environment-deployment-ui.md)
+[Codex取消实测缺口](119-codex-environment-and-cancellation-gap.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md) · [持久配置与安全诊断](115-runtime-environment-and-dws-diagnostics.md) · [部署及真实UI](116-persistent-environment-deployment-ui.md)
 
 | 要解决的问题 | 当前入口 |
 |---|---|

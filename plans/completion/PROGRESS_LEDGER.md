@@ -303,3 +303,5 @@
 | 2026-11-13 E116 | 部署87a3d39；无代理manager启动后，两路真实Python/环境检查及TXT/JSON下载Quick Look/SHA通过；86旧任务保持，38核验，58真实安全result无错误 | docs/116；runtime-environment-deployment-ui | M1/M2闭环；aic-persistent-env-20261113独立24h观察已启动，每30秒只读。观察期推进官方取消合成候选/剩余协议新入口/Codex环境验证；不重跑旧UI，不把当前成功冒称系统根治/自然续期/全项目完成 |
 
 | 2026-11-13 E117 | 官方DWS/keyring双层取消候选及精确摘要复现工具；15方法/10子用例普通/race通过、18核验、本地上游草稿 | docs/117–118；dws-cancellation-candidate-validation | 仅选定源/合成进程，未集成部署发布；产品87a3d39和原观察保持。下一段Codex持久网络环境有界验证/剩余协议新入口，原根因与MUST缺口不关闭 |
+
+| 2026-11-13 E118 | Codex60秒内真工具1961及同session1968成功；取消后90秒late写入失败；迁移工具10专项三环境通过但未执行 | docs/119；codex-persistent-env-and-migration-validation | 私聊new归档、切换binding拒绝后恢复Kimi，群/transport保持，原run两维护。下一先修原生SIGINT/turn interrupt及延迟验证，再迁移和UI，不掩盖失败 |

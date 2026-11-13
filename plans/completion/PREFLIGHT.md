@@ -1,5 +1,7 @@
 # 续作前置核对
 
+E118（2026-11-13）：Codex在持久网络环境下真实Python1961、同session续接1968成功，但取消返回后约90秒仍有工具迟到写入，取消验收失败。私聊new已归档原Kimi会话；切换被runtime binding拦住后已恢复Kimi，群/transport未动，维护记原run。显式绑定迁移工具10专项三环境通过、尚未执行真实迁移。下一项依据固定Codex ctrl_c→turn/interrupt实现原生中断并验证延迟退出，之前不部署Codex。见[新证据](../../docs/119-codex-environment-and-cancellation-gap.md)。
+
 E117（2026-11-13）：官方取消缺口双层候选及本地上游草稿已完成，15个方法/10子用例普通与race均过、18核验；未集成或部署，产品仍87a3d39。参考源码/21模块保持；独立观察原run不重启。下一独立项Codex持久环境有界验证及剩余协议新入口，不重跑取消候选。详见[候选范围](../../docs/117-dws-cancellation-candidate.md)。
 
 E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配置，manager无代理变量启动后，AIC与原私聊真实Python/原session/文字及文件下载打开/SHA通过；86旧任务保留，38核验通过。E115冻结源码/同wheel双Python各357项。三服务运行、DWS ready、心跳ACTIVE；24h只读观察aic-persistent-env-20261113刚启动，未完成长期验收。49/14/1及7 MUST缺口不变。

@@ -20,4 +20,4 @@
 
 这项缺陷不证明macOS `SecKeychainLogin=-25293`或`exit status 51`的最初触发原因；也不证明取消一个命令能撤回系统授权UI。候选没有改变身份/存储策略，未解决原有无效DEK/并发`-U`/读回fallback语义，未处理Delete/DeleteAll。保留这些限制，避免将一个可复现的取消缺口扩大成“系统认证事故已解决”。
 
-公开来源：[固定DWS Darwin实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/keychain/keychain_darwin.go)、[固定go-keyring Darwin实现](https://github.com/zalando/go-keyring/blob/v0.2.8/keyring_darwin.go)。源码分别为Apache-2.0，候选修改和新测试保留对应许可；不附带任何本机凭据材料。
+公开来源：[固定DWS Darwin实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/keychain/keychain_darwin.go)、[固定go-keyring Darwin实现](https://github.com/zalando/go-keyring/blob/v0.2.8/keyring_darwin.go)。DWS为Apache-2.0；go-keyring仓库LICENSE为MIT，而该Darwin文件保留Google的Apache-2.0头。两者原许可及文件声明分别保留，不能把仓库整体误称Apache-2.0；候选修改和新测试保留对应许可；不附带任何本机凭据材料。

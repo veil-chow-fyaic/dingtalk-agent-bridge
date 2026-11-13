@@ -18,6 +18,8 @@
 | D08 DWS conversation-info request_timeout | E112启动首读约3.87s失败，只有reason/traceback，未保存结构化错误信封；网络/上游deadline/其他原因尚不能分清 | 新的无凭据网络证据后，同目标受管业务读约1.14s成功，再进行有界恢复；原失败保留 | E115已实现安全category/reason/exit/耗时/阶段，合成错误和写日志失败已验；E116真实58个正常result已落日志。原E112缺失信封不可补造，后续真实失败再归因，不反复重启 |
 | D09 UI failedToCreateImageDestination | 钉钉和Finder均失败，属于共享UI读取路径；当时两路DWS仍同步。OS内部根因未知 | 用户重启后UI恢复，E112实际下载打开完成 | UI不可读时不能声称通过，也不能反推DWS认证坏了；不为取截图改变系统权限或操纵系统守护 |
 
+E118额外运行器风险：Codex在持久网络环境下正常与续接已成功，但取消后仍有工具迟到写入；这是执行器取消边界，不能归因DWS/auth。CLI组cleanup_complete不代表所有工具退出。私聊切换已回滚Kimi，下一用固定官方原生中断机制修复并延迟验收。[详见](119-codex-environment-and-cancellation-gap.md)。
+
 D01直接故障点已定位但根因未定，D02是已复现未上游修复的独立缺口，D05包含已修观察/恢复不足，D07已有持久配置及重启UI证据，但原唯一因果仍未知。它们不是“每天同一个DWS崩溃”。我们仍欠DWS底座长期稳定性的验收。
 
 ## 官方与社区证据怎么用

@@ -422,3 +422,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [候选及限制](../../docs/117-dws-cancellation-candidate.md)、[本地上游草稿](../../docs/118-dws-cancellation-upstream-draft.md)、[脱敏18核验](../../evidence/2026-11-13/dws-cancellation-candidate-validation.json)。固定v67及keyring v0.2.8，只向新local目录应用候选；预检查/读/写同deadline、owned child取消回收、late结果/写保护、Set启动前校验。
 - DWS10方法/3子用例、依赖5方法/7子用例，普通与race四次均过；每套1helper正常跳过。最终公共工具核固定源/补丁/测试及完整方法集合，0项/缺方法/失败拒绝；18核验通过。不是bridge新增15项或上游全量通过，原357未重跑。
 - 未运行真实DWS/Keychain，未部署/发布，参考源/21产品模块保持；当前三服务与原观察run不变。上游依赖API、旧测试签名、全CLI集成仍需审查；原无效DEK/并发写/读回fallback政策未改。D01根因、49/14/1与7 MUST缺口不变。
+
+## E118 — Codex新环境真实工具、取消失败及显式迁移工具
+- [完整记录](../../docs/119-codex-environment-and-cancellation-gap.md)、[脱敏结果](../../evidence/2026-11-13/codex-persistent-env-and-migration-validation.json)。同CLI/60秒，新持久环境实际Python1961/19.64秒、同session1968/17.02秒通过；第三取消任务11.68秒返回后，工具约90秒仍写late，失败保留，不能称Codex可部署。
+- veil UI new及liev回执可见，原session归档；第一次切换只到manager runtime binding拒绝，原Kimi已恢复，群/transport不动，两维护记原观察。新增迁移脚本要求停机/显式new/零未决，冻结10专项三环境通过；真实迁移未执行。原88任务及原E105失败保留，21产品模块不变。
+- 固定Codex6aaac69源码已找到ctrl_c→turn/interrupt新依据，下一段原生中断及晚写验证，之后再UI。guard cleanup_complete只能证明原进程组，早先取消通过口头结论已撤回。

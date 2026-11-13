@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E118",
+  "recordedAt": "2026-11-13T09:42:12.922356+00:00",
+  "ok": false,
+  "checks": {
+    "initial_real_artifact_correct": true,
+    "same_native_session_resume_correct": true,
+    "no_late_file_past_90_seconds": false,
+    "probe_cleanup_complete": true,
+    "probe_real_tool_started": true,
+    "probe_real_tool_exit_zero": true,
+    "resume_cleanup_complete": true,
+    "resume_real_tool_started": true,
+    "resume_real_tool_exit_zero": true,
+    "cancel_cleanup_complete": true,
+    "cancel_real_tool_started": true,
+    "migration-frozen-source-tests.log": true,
+    "migration-installed-py314-tests.log": true,
+    "migration-installed-py311-tests.log": true,
+    "frozen_tool_and_tests_unchanged": true,
+    "two_frozen_copies_match": true,
+    "product_21_modules_unchanged": true,
+    "same_cli_as_e105": true,
+    "e105_failure_logs_preserved": true,
+    "original_observer_launch_unchanged": true,
+    "host_cancel_returned_after_marker": true
+  },
+  "codexVersion": "0.164.0",
+  "binarySha256": "d8990e3ee7acfbc26f91265b12a1a83f0fee40d0e0f8f1f40a37d4ec21f499cf",
+  "environmentPresence": {
+    "HTTP_PROXY": true,
+    "HTTPS_PROXY": true,
+    "NO_PROXY": true,
+    "http_proxy": true,
+    "https_proxy": true,
+    "no_proxy": true
+  },
+  "runtimeTimeoutSeconds": 60,
+  "hostAttempts": 3,
+  "runs": [
+    {
+      "label": "probe",
+      "elapsedSeconds": 19.642318542000794,
+      "completed": true,
+      "eventTypes": [
+        "item.completed",
+        "item.started",
+        "thread.started",
+        "turn.completed",
+        "turn.started"
+      ],
+      "commandEvents": 2,
+      "cleanupComplete": true,
+      "eventsSha256": "0bf75f6ba234d03dc49e721a4db3cf5bab33508805c63a7fc4490a0641a2bb33",
+      "stderrSha256": "978e505911ae1584b688146da1d943e6a1505dad2b85b86f477e1af1a056a68c"
+    },
+    {
+      "label": "resume",
+      "elapsedSeconds": 17.01735354199991,
+      "completed": true,
+      "eventTypes": [
+        "item.completed",
+        "item.started",
+        "thread.started",
+        "turn.completed",
+        "turn.started"
+      ],
+      "commandEvents": 2,
+      "cleanupComplete": true,
+      "eventsSha256": "bd5353cb0c4b1de742b3297afb8b89c2bb64d4585adda452b027778c353051cc",
+      "stderrSha256": "978e505911ae1584b688146da1d943e6a1505dad2b85b86f477e1af1a056a68c"
+    },
+    {
+      "label": "cancel",
+      "elapsedSeconds": 11.678227458000038,
+      "completed": false,
+      "eventTypes": [
+        "item.completed",
+        "item.started",
+        "thread.started",
+        "turn.started"
+      ],
+      "commandEvents": 1,
+      "cleanupComplete": true,
+      "eventsSha256": "becd844b48de99075f0657c9889286205fff2597b7ceb4926af58f9df22f0724",
+      "stderrSha256": "3a41c30af719ede1ee9bf9f76ea5ff13a5dad7f9543c8463f5c82ede6987497e"
+    }
+  ],
+  "migrationFrozen": {
+    "sha256": {
+      "tests/test_runtime_binding_migration.py": "0478039293331e79efb8fd7bfcdfbfee6e3ca11f26134bc87d6719566ef89c8e",
+      "scripts/migrate_agent_runtime_binding.py": "90770ec33dcd475c9f229868bbbfe01f5de6559a0dafd94f3a3eb0b3541c4475"
+    },
+    "productCommit": "87a3d39",
+    "installedWheelSha256": "6317fce394ff98b5e18d44cbadadd269b68f619f7338294abbc7a4b96b616ff2"
+  },
+  "migrationTestMethods": 10,
+  "migrationTestEnvironments": 3,
+  "productCommitUnchanged": "87a3d39",
+  "initialMigrationPreflight": "runtime_binding mismatch; stopped DM restored to original Kimi, no binding mutation",
+  "uiState": "veil explicit new and liev response observed; original Kimi session archived; attempted switch stopped at runtime_binding preflight; all services restored Kimi, Codex not deployed",
+  "credentialsReadByAssistant": false,
+  "credentialOrSystemChange": false,
+  "rootCauseEstablished": false,
+  "privateEvidence": "local/codex-persistent-env-20261113",
+  "testLogSha256": {
+    "migration-frozen-source-tests.log": "0d40508b7f9860d6c3f3bdfc87555933dcb2fd98384ab527d5efe91a90714413",
+    "migration-installed-py314-tests.log": "515dab166c3c6b72287875a0982dee707f5613b25c67cc8c5f34a4a1999b6c1d",
+    "migration-installed-py311-tests.log": "d089bf948332acb791214d7e8368f96652a5adda4ef9370427ee4b2dc195f3b0"
+  },
+  "documentationSource": "https://learn.chatgpt.com/docs/developer-commands#codex-exec",
+  "limitations": [
+    "First migration tool test had one path canonicalization error, fixed and original log retained",
+    "No whole-product 367 test claim; 357 is earlier E115 evidence",
+    "Native runtime source environment success does not prove unique cause of E105 timeout",
+    "IM deployment and download UI follow separately",
+    "DWS system root cause and 24h/natural refresh remain open",
+    "cleanup_complete in current guard covers the owned CLI process group only; actual Codex tool survived and wrote late output"
+  ],
+  "integrityOk": true,
+  "migrationValidated": true,
+  "codexCancellationPassed": false,
+  "codexReadyForImDeployment": false,
+  "lateArtifact": {
+    "present": true,
+    "sha256": "089001a35679a33ef3db0ca350db9b9a2f0136e0e327577b04b3b98127470961",
+    "secondsAfterMarker": 90.00678873062134,
+    "secondsAfterCancelReturn": 89.82669949531555,
+    "contents": "synthetic late"
+  },
+  "nextEvidence": "fixed Codex source ctrl_c -> turn/interrupt supports SIGINT-first adapter; synthetic regression and new real cancellation required before any IM deployment",
+  "officialSource": {
+    "repository": "https://github.com/openai/codex",
+    "tag": "rust-v0.164.0",
+    "commit": "6aaac694803004a63c6f393d153c96d22521a6b9",
+    "file": "codex-rs/exec/src/lib.rs",
+    "ctrlCLine": 1192,
+    "turnInterruptLine": 1313,
+    "sha256": "cb9a1eb6239ece15d0f761fbf64369013469ccf7850408c40b54b9cf0b576eba"
+  }
+}
