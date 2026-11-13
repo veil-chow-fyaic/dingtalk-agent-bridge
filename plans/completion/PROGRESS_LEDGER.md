@@ -289,3 +289,5 @@
 | 2026-11-13T12:29+08:00 E109 | 实际history完成旧窗口后停机核本地零积压，cut门槛误判；后续watermark核实已补齐，两个旧session显式迁移，82任务保持，三服务加载997e9fa；群/DM各一条confirmed且history echo/consumer一致，25项当前状态核验（含原门槛偏差） | docs/111；dws-recovery-deployment-validation | 新版真实UI仍缺：CUA重置仍图像创建失败，桌面状态问题待答复；保持正常后台/心跳PAUSED，不重发探针、不重跑全量、不再认证 |
 
 | 2026-11-13T13:02+08:00 E110 | 用户解锁确认后重连/重置仍失败，Finder同错，未发新消息；本地日志无进一步根因；DWS ready/三服务/两路同步正常 | docs/111；unlocked-desktop-ui-blocker | 桌面问题已答复，不再等待解锁/密码；建议正常重开Codex后继续UI，后台保持。无产品变更/新测试/新DWS探针 |
+
+| 2026-11-13T14:39:15.417370+08:00 E111 | 用户重启重登后核官方续期/修复/社区报告，静态核终端v61和bridge v67差异；三服务停止、history残留归属可追，CUA已可读 | docs/112；auth-refresh-reboot-review | 下一段按固定cut/停机积压门槛恢复，真实两路任务和下载；不再认证/操作钥匙串，不将重启停机算作DWS崩溃 |

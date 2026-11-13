@@ -386,3 +386,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E110 — 已解锁桌面下的UI服务阻塞
 - 用户确认解锁，钉钉直接/重置后两次与Finder独立绑定均failedToCreateImageDestination；0输入/发送/新DWS探针，不是新UI通过。[记录](../../evidence/2026-11-13/unlocked-desktop-ui-blocker.json)。
 - 本地日志没有进一步根因；13:02三服务/两路同步/DWS ready。官方泛用指引建议重启应用，未保证修复该错误；下一动作仅用户正常重开Codex，不碰Mac重启/权限/凭据。产品仍997e9fa，无新测试，原341冻结不重跑。
+
+
+## E111 — 官方续期反馈、版本差异及用户重启
+- [研究](../../docs/112-dws-refresh-and-reboot-review.md)、[摘要](../../evidence/2026-11-13/auth-refresh-reboot-review.json)：官方2h/30d自动续期，#1132明确v1.0.62修复；终端v1.0.61与bridge v1.0.67构建revision静态核对，v68无auth/Darwin改动。Codex#60687仍open，不能当已确认根因。
+- 用户重启后三服务停止、guard ready但slot0 active；829 invoking/828 released，未释放history可定位，非认证失败证明。CUA可重新读取钉钉；未发送/恢复、无新任务或UI文件通过，无DWS/auth/Keychain调用。

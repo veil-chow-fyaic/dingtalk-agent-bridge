@@ -1,15 +1,15 @@
 # DingTalk Agent Bridge
 
-> E107当前：三个受管进程运行，但DWS业务调用因dws_process_interrupted持久暂停（11月13日09:33的记录），两路history窗口待核，远端积压未知。E104运行器/会话契约已实现，冻结源码/双Python各331通过，尚未部署；E105 Codex60秒请求仍超时，CUA绑定图像错误阻止新UI。E106205条已采事件与后续账本一致，不能称健康24h。49/14/1、7 MUST未完整，心跳PAUSED。[当前状态](docs/110-interrupted-history-current-state.md) · [代码与边界](docs/107-runtime-and-session-contracts.md)。
+> E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管服务随重启停止（无开机自启），不是新的认证失败结论。旧调用日志829次invoking/828次released，遗留一条history active；原件保留，需核无主后显式恢复。终端仍v1.0.61，bridge固定v1.0.67；官方续期缺陷有历史修复，exit51与已记录系统故障分开。CUA重启后已能读取钉钉界面，E104/E108产品此前已部署997e9fa，21模块/341冻结验证保持，新版任务/下载打开待验。49/14/1、7 MUST未完整，心跳PAUSED，项目未完成。 [当前诊断](docs/112-dws-refresh-and-reboot-review.md)。
 
 通用普通账号IM工具：通过CLI、HTTP或持久consumer承接群聊/私聊文字、文件和任务，可选本地Agent执行并把结果交回原会话。接口不绑定组织或runtime。当前本机Kimi已实际接通，Codex超时独立跟踪；没有创建bot。
 
 选型优先采用公开GitHub/钉钉官方实现：**官方DWS做通讯底座，Qwen作通道组件参照，CEO作任务/交付/执行器契约参照**。默认DWS授权真人账号；bot项目仅参考可拆交互。[统一需求与路线](docs/102-user-requirements-and-roadmap.md) · [CEO源码深挖](docs/references/ceo-deep-dive.md) · [参考目录](docs/references/README.md) · [文档导航](docs/README.md)
 
-**项目尚未完整验收；E095曾恢复两路，E107当前受管调用再次暂停。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
+**项目尚未完整验收；E109曾恢复两路，E111用户重启后三服务停止，待按账本恢复。** 用户提供liev登录成功截图，并限定群测试只在新建AIC测试群；企业大群及旧群禁止再测。E095已完成精确绑定、保留旧账本、history补读审查和三个服务恢复；心跳仍PAUSED。截图原件仅local，Git保存脱敏摘要，见[本轮实际验收](docs/100-aic-group-resume-and-files.md)。
 ## 当前实现与验证
 
-- E103传输加载E102/3fa5011，gateway保留E099/e27547b，包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
+- E109三个组件已部署997e9fa（E104运行器/会话契约、E108调用日志），包含E070群文件关联、E072/E073受管防护、E084持久history续页；与冻结源码一致，双路history-only15秒补读，无Stream消费者。官方共享bus不杀，foreground不当消费者。
 - E092整理13项公开参考来源、69份选摘文件的固定版本/摘要/许可，明确采用边界；没有运行上游服务/测试、移入其实现或新增UI通过项。本地WeCom资料不作为当前选型依据。
 - E093实际采用社区的[文件摘要校验](docs/references/artifact-digest-adoption.md)，补上排队后产物变更缺口。新任务file/image携带原定SHA256，已发送原key继续对账；MIT许可随包保留。11项新增专项，最终源码/双Python安装包各291项、12项冻结核验通过；E095部署同一源码，本轮未重跑全量。
 - E095新增群TXT入站/CSV双向三格，Kimi求和43、CSV/TXT由钉钉下载并打开；私聊493/JSON也通过。E098媒体及E100长文/控制补验后，当前矩阵64格：49通过、14阻塞、1部分；14项MUST仍7项未完整覆盖。API、工具执行、UI可见和客户端下载打开分别取证。[只读声明核对](docs/91-acceptance-coverage-review.md)不代替原始证据复核。

@@ -1,6 +1,6 @@
 # 当前任务池
 
-E109当前（2026-11-13）：按用户本轮明确恢复指令，三服务已部署997e9fa（含E104/E108）；两路history与gateway已恢复，DWS为ready；初次cut门槛误用了调用时间，随后按持久watermark核实已覆盖cut，旧任务无变化，偏差保留。群/私聊各一条真实出站探针confirmed，官方历史回读及consumer入库一致，自身消息未生成任务；82旧任务、旧回执和两个原session保持。25项当前部署核验通过（原阶段门槛不通过），源码/同wheel双Python各341。E110用户确认桌面已解锁；重置后钉钉与Finder仍同报failedToCreateImageDestination。UI服务原因未明，新版veil发任务/下载打开仍未验；不再询问锁屏/密码，不重试已失败路径。心跳PAUSED，当前项目未完成。 [恢复与边界](../../docs/111-dws-interruption-recovery.md)。
+E111当前（2026-11-13）：用户已自行重启并重新登录；三个受管服务随重启停止（无开机自启），不是新的认证失败结论。旧调用日志829次invoking/828次released，遗留一条history active；原件保留，需核无主后显式恢复。终端仍v1.0.61，bridge固定v1.0.67；官方续期缺陷有历史修复，exit51与已记录系统故障分开。CUA重启后已能读取钉钉界面，E104/E108产品此前已部署997e9fa，21模块/341冻结验证保持，新版任务/下载打开待验。49/14/1、7 MUST未完整，心跳PAUSED，项目未完成。 [续期与重启核对](../../docs/112-dws-refresh-and-reboot-review.md)。
 
 > E103历史检查点：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 
@@ -33,7 +33,7 @@ E097整理，唯一当前清单；需求与标准不变，见[统一复盘](../.
 详见[CEO深挖与验收](../../docs/references/ceo-deep-dive.md)。S1被具体UI/平台条件阻塞时转S2，不循环同路径。
 
 - [x] E109部署E104/E108：两路同步、原session显式迁移、三个受管服务、两个出站探针；首次cut门槛错误保留，后续watermark已核，25项当前状态核验。
-- [ ] 新部署真实UI：veil新任务→Kimi实际工具/相同session→liev文字/文件→客户端下载打开；CUA截图失败未解决，两个API探针不计UI通过。
+- [ ] 新部署真实UI：veil新任务→Kimi实际工具/相同session→liev文字/文件→客户端下载打开；CUA已恢复可读，先恢复本次重启后的后台；两个旧API探针不计UI任务通过。
 
 ## S3/S4 — 扩展与受限入口
 
