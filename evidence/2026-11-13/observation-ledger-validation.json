@@ -1,0 +1,91 @@
+{
+  "evidence": "E106",
+  "date": "2026-11-13",
+  "ok": true,
+  "checks": {
+    "same_21_e104_modules": true,
+    "source_four_pass": true,
+    "py314_four_pass": true,
+    "py311_four_pass": true,
+    "original_hashes_match_e101": true,
+    "all_205_captured_rows_retained": true,
+    "original_files_unchanged": true,
+    "new_tool_and_tests_match_frozen": true
+  },
+  "targetedTests": {
+    "source": {
+      "ok": true,
+      "testsRun": 4,
+      "failures": 0,
+      "errors": 0
+    },
+    "py314": {
+      "ok": true,
+      "testsRun": 4,
+      "failures": 0,
+      "errors": 0
+    },
+    "py311": {
+      "ok": true,
+      "testsRun": 4,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "productValidation": "E104 same wheel and 21 modules; no full-suite 335 claim",
+  "observationReview": {
+    "capturedRangeReconciled": true,
+    "routes": [
+      {
+        "routeIndex": 0,
+        "scopeMatches": true,
+        "identityBound": true,
+        "uniqueSequences": true,
+        "captured": 9,
+        "exactlyRetained": 9,
+        "sampledRangeExact": true,
+        "persistedBeyondLastCapture": 0,
+        "currentDeliveryStates": {
+          "confirmed": 12
+        },
+        "ok": true
+      },
+      {
+        "routeIndex": 1,
+        "scopeMatches": true,
+        "identityBound": true,
+        "uniqueSequences": true,
+        "captured": 196,
+        "exactlyRetained": 196,
+        "sampledRangeExact": true,
+        "persistedBeyondLastCapture": 4,
+        "currentDeliveryStates": {
+          "confirmed": 171,
+          "rejected": 1
+        },
+        "ok": true
+      }
+    ],
+    "historicalWindowCutoffProven": false,
+    "limits": [
+      "Later SQLite snapshot; no claim of a contemporaneous end-of-window snapshot",
+      "No ingestion timestamp: additional rows cannot be assigned to historical cutoff",
+      "Preserved captured rows do not prove that upstream supplied every message",
+      "Delivery state counts are current and include historical failures/unknowns unchanged"
+    ],
+    "snapshotStartedAt": 1794542729.688552,
+    "snapshotEndedAt": 1794542729.712839,
+    "maintenanceRecords": 52,
+    "maintenanceWithVersionMetadata": 13,
+    "uniformLoadedVersionCoverageProven": false,
+    "originalFilesUnchanged": true,
+    "sourceSha256": {
+      "baseline.json": "bb9ecd77ec9eb4c385b747e2366bd0592982347b7989c0a4e3681b3c6965b129",
+      "status.json": "67fd3982db44909e31068784af367373567b272e348b72e6328bff91f4944989",
+      "observations.ndjson": "ea2210f45da0aa82d5758d7c3eab202133ee2221267996a96fb0245c63583d35",
+      "maintenance.ndjson": "1a350a408ab9b496e45a20646703b544b7f7ec194fbb2c700ad9d66efb9a7361"
+    }
+  },
+  "runtimeOrDwsCalls": 0,
+  "deployed": false
+}

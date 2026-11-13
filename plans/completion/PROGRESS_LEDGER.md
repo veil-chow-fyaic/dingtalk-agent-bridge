@@ -279,3 +279,5 @@
 | 2026-11-13T11:59:41+08:00 E104 | C03/C04落实：旧4缺陷复现，24新方法，冻结源码/双Python331与13核验；session/任务契约及new历史保护 | docs/107；runtime-session-contract-validation | 未部署；CUA绑定两次图像错误loop guard，无盲发。下一独立项Codex参数/旧超时诊断；UI恢复后审查真实旧session迁移并受管部署，三服务版本不冒报为E104 |
 
 | 2026-11-13T12:04:14+08:00 E105 | Codex0.164.0参数已核；新60秒独立本地任务request timed out，守护完成、无工具/产物/IM，旧日志保留 | docs/108；codex-cli-timeout-diagnostic | 新环境/服务证据前不重复Codex；UI工具绑定亦loop guard。转原观察最终账本只读核对，不改变原run或把离线数抵消UI |
+
+| 2026-11-13T12:07:05+08:00 E106 | 原205采到事件与后续SQLite逐条/区间一致；4后来行单列；原四SHA/52维护不变，4专项三环境/8核验 | docs/109；observation-ledger-validation | 缺入库时间/统一加载版本，不能补造截止全量或健康24h；当前AIC长期覆盖仍缺。下一可独立项当前commit干净检出与交付资料核对，UI/Codex沿已记录loop guard |

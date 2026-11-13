@@ -363,3 +363,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E105 — Codex固定本机参数与新有界超时
 - [诊断](../../docs/108-codex-cli-timeout-diagnostic.md)、[记录](../../evidence/2026-11-13/codex-cli-timeout-diagnostic.json)：本机0.164.0完整start/resume帮助解析通过；新任务唯一一次，60.110秒超时，CLI内部Reconnecting2/5，只有thread/turn started+error，无工具/产物，守护清理完成。
 - 未改配置/HOME/凭据/模型，旧日志保持；不推定根因，不重试或提高timeout，不计第二runtime/新UI。产品仍E104候选、部署仍E103。
+
+## E106 — 原观察已采事件与后续账本一致
+- [结果/边界](../../docs/109-observation-ledger-reconciliation.md)、[8核验](../../evidence/2026-11-13/observation-ledger-validation.json)：205捕获事件完整同seq/正文/账号/会话匹配，采样区间行集合一致；之后4行单列，不能按消息时间倒推入库截止。
+- 原四文件SHA与E101相同，52维护/13带局部版本字段及旧故障保持。新4专项源码/双Python旧E104wheel均通过，产品21模块不变；无335全量主张、真实调用或UI。原窗口全量截止与当前AIC长期覆盖仍不足，R13不改绿。
