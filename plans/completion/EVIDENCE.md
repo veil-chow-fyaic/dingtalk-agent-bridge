@@ -411,3 +411,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - runtime.environment只配置子进程网络变量，大小写统一/空值清除/回环绕过/合法性校验，原身份和session保持；聊天及办公受管日志增加安全结果分类、exit/耗时，不改变回执与自动重试策略。
 - [说明](../../docs/115-runtime-environment-and-dws-diagnostics.md)、[冻结证据](../../evidence/2026-11-13/runtime-environment-diagnostics-validation.json)：16新增方法；冻结源码/同wheel Python3.14及3.11各357通过，11核验、21模块/六入口/许可一致。初轮2产品失败已修；冻结测试布局15失败/2错误已纠正，原日志保留。
 - 尚未部署，本段之后立即按当前授权受管重载及两路真实UI任务/文件下载打开。旧Keychain根因和长期可靠性未关闭，测试不产生真实DWS调用。
+
+## E116 — 无代理manager启动、持久配置生效与双端UI
+- 87a3d39实际部署，保留86旧任务、回执及原session。先停gateway、封新调用排空后停transport；固定cut补读达watermark且无history_window，再停机核0积压，恢复三服务。
+- veil原生UI在AIC/原私聊交办两新任务，实际Python及环境读取：1517→2021/TXT 47B、1003→1159/JSON 68B，env_ready=true。liev六回复confirmed/history回读，两个原件从钉钉下载并Quick Look打开/SHA一致。
+- [记录](../../docs/116-persistent-environment-deployment-ui.md)、[38核验](../../evidence/2026-11-13/runtime-environment-deployment-ui.json)均过；截止审计58个真实DWS result具exit/阶段/耗时且无错误，不能当自然刷新或健康24h。
+- aic-persistent-env-20261113独立24h/30秒只读观察已启动，21模块/配置/manager/六库基线留local，旧reliability保留；项目49/14/1及7 MUST缺口不变。

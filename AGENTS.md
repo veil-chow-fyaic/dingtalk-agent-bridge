@@ -1,8 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E114（2026-11-13）：用户要求长过程闭环，原heartbeat bridge已恢复ACTIVE、每30分钟续作；只改变任务调度，不是新的业务健康/部署证据。下一段M1运行环境→M2安全错误信息→M3真实持续观察，并推进剩余UI/执行器/交接。详见[里程碑](plans/completion/09-执行时序与里程碑.md)。
-
-E113文档整理（2026-11-13），没有新运行检查。最近真实检查点E112：产品997e9fa/21模块，三服务恢复、两路真实Kimi任务/原session/文件客户端下载打开通过；首次DWS超时和两Kimi失败保留。341是E108冻结三环境测试，E112另34核验。49/14/1，7 MUST未完整；心跳PAUSED，无开机自启。当前gateway代理仅启动环境、未持久配置。 [当前路线](docs/102-user-requirements-and-roadmap.md) · [风险/根因/处置](docs/114-dws-risks-and-resolution.md)。
+E116（2026-11-13）：87a3d39已部署。两份runtime网络环境已持久配置，manager无代理变量启动后，AIC与原私聊真实Python/原session/文字及文件下载打开/SHA通过；86旧任务保留，38核验通过。E115冻结源码/同wheel双Python各357项。三服务运行、DWS ready、心跳ACTIVE；24h只读观察aic-persistent-env-20261113刚启动，未完成长期验收。49/14/1及7 MUST缺口不变。
 
 ## 同一项目与当前检查点
 
@@ -12,7 +10,7 @@ E113文档整理（2026-11-13），没有新运行检查。最近真实检查点
 
 E103历史检查点：transport已加载E102/3fa5011的发送凭据校验；两个gateway保留E099/e27547b的结果契约。E102只改core，其他20模块与E099相同。固定源码/同wheel双Python各307通过，21模块/六入口/许可已核；这是E102冻结验证，不反复重跑。三个受管服务运行，history-only15秒，心跳独立保持PAUSED。
 
-E100群长文/上下文/status/cancel/new真实UI及21核验；E103新任务Python1387、两确认回执、真实群UI及15核验。当前49/64通过、14blocked、1partial，14 MUST中7未完整，项目未完成。详见[长文控制](docs/104-aic-group-long-text-and-controls.md)、[发送凭据及部署](docs/106-send-evidence-contract.md)。C03/C04已于E109部署并显式迁移原会话，E112已补新版两路任务/文件UI，下一步运行环境持久配置及持续观察，不重做已过样本。
+E100群长文/上下文/status/cancel/new真实UI及21核验；E103新任务Python1387、两确认回执、真实群UI及15核验。当前49/64通过、14blocked、1partial，14 MUST中7未完整，项目未完成。详见[长文控制](docs/104-aic-group-long-text-and-controls.md)、[发送凭据及部署](docs/106-send-evidence-contract.md)。C03/C04已于E109部署并显式迁移原会话，E112已补新版两路任务/文件UI，E115/E116持久配置和安全错误诊断也已部署/UI通过，下一步当前独立持续观察及剩余协议/执行器，不重做已过样本。
 
 ## 授权与身份范围
 
@@ -28,14 +26,14 @@ veil是客户端真人用户，liev是显式profile绑定的DWS真人普通账�
 
 正常受管DWS业务调用沿用官方凭据机制；持久暂停、最多两并发、90秒请求加最多15秒清理，办公六族同样走wrapper。凭据故障则暂停，不自动恢复/反复认证。两个一次查询key（dab-auth-read-20261112、dab-auth-read-fixed-20261112）已消费，原receipt保留，禁止重试或换key。
 
-官方Stream bus按身份共享并Setsid脱组，无独占退出权，不杀共享bus，不用foreground冒充消费者。当前history-only不启Stream。守护和运行器不是OS沙箱，不保证恶意脱组/系统失效隔离。127.0.0.1:18768及三个服务由原manager归属管理，无开机自启，不按旧PID发信号。E112两gateway继承本机已有HTTP(S)代理，transport未变；这只是进程启动环境，普通重启不自动恢复它，需先补通用环境配置，不能把本机代理端口固化产品。
+官方Stream bus按身份共享并Setsid脱组，无独占退出权，不杀共享bus，不用foreground冒充消费者。当前history-only不启Stream。守护和运行器不是OS沙箱，不保证恶意脱组/系统失效隔离。127.0.0.1:18768及三个服务由原manager归属管理，无开机自启，不按旧PID发信号。E116两gateway从私有runtime.environment读取已有HTTP(S)代理，manager无代理变量启动的两路真实工具已验；transport配置未变，产品默认不固化本机代理端口。
 
 ## 文件、参考与证据边界
 
 - 官方binary固定local/bin/v1.0.67，不静默升级。CHAT_IMAGE上传窄叶子复用固定官方源码认证/上传，不改原binary；PNG/JPEG≤2MiB用image，更大用file，输出单文件20MiB。
 - WAV/MP4原件和播放器通过不等于原生语音条/独立video协议。E056重复file仅末项、正文/file互斥、图文最多9本地图引用边界保留，无新入口不重复探针。
 - DM官方办公上下文启用、群关闭；doc/todo/calendar/mail/drive/minutes固定身份受管。不将新聊天验证外推所有办公API。
-- E093 CEO文件摘要已部署；E099结果分类及E102回执一致性已落实。C03能力/终态和C04兼容性已由E109部署/E112真实续接UI通过；下一项C06启动环境及错误观察。参考源码不等于上游测试通过。
+- E093 CEO文件摘要已部署；E099结果分类及E102回执一致性已落实。C03能力/终态和C04兼容性已由E109部署/E112真实续接UI通过；C06启动环境及错误观察已由E115/E116完成，下一项当前独立观察及剩余协议/执行器。参考源码不等于上游测试通过。
 - 原reliability-20261111窗口11月11日19:36:08至12日19:36:08已结束，E101完整性13检查通过；1059 unavailable/168 poll_error/52维护保留，不重置或称连续健康24h。当前AIC部署长期覆盖、最终账本核对仍缺。新维护另记，不改已封存原run。
 
 ## 执行与完成

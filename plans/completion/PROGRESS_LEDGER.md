@@ -299,3 +299,5 @@
 | 2026-11-13 E114 | 用户要求安排长过程；恢复原bridge心跳ACTIVE/30分钟，原聊天及授权不变，补明确里程碑与逐段退出条件 | long-run-resume；09-执行时序与里程碑 | 下一执行段先实现通用runtime启动环境，不重新规划或恢复旧实验；本轮调度不算业务恢复/新UI通过 |
 
 | 2026-11-13 E115 | runtime网络环境持久配置、DWS结构化错误诊断；冻结源/同wheel双Python357，16新增/11核验；无真实认证操作 | docs/115；runtime-environment-diagnostics-validation | 下一立即受管部署：先停空闲gateway、封新调用排空后停transport，固定cut补读停机核账本再起三服务；新UI任务检验持久环境及文件交付 |
+
+| 2026-11-13 E116 | 部署87a3d39；无代理manager启动后，两路真实Python/环境检查及TXT/JSON下载Quick Look/SHA通过；86旧任务保持，38核验，58真实安全result无错误 | docs/116；runtime-environment-deployment-ui | M1/M2闭环；aic-persistent-env-20261113独立24h观察已启动，每30秒只读。观察期推进官方取消合成候选/剩余协议新入口/Codex环境验证；不重跑旧UI，不把当前成功冒称系统根治/自然续期/全项目完成 |

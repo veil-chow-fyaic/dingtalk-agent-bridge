@@ -96,3 +96,9 @@ python3 scripts/verify_handoff.py
 异常raw或资源引用结构保存在consumer的quarantined状态，游标可继续处理后续合法消息；不为无法规范化的输入创建Agent任务或猜身份。原始事件留本地inbox，只读排查后再明确用户意图，不能自动重放。见[异常消息隔离](70-malformed-message-isolation.md)。
 
 附件缓存命中同时核成功/完整标志、预期资源集合、路径、SHA和准确字节数；损坏缓存拒绝返回，不自动下载或改清单。显式attachments --repair重新调用官方下载到新attempt目录，旧原件保留。见[缓存完整性](71-download-cache-integrity.md)。
+
+## runtime网络配置（E115/E116）
+
+在私有Agent JSON的runtime.environment中声明所需HTTP_PROXY/HTTPS_PROXY/ALL_PROXY/NO_PROXY，默认空映射继承父环境。只支持这些键的大写/小写，null或空值清除；配置同步大小写并保留回环绕过，不改变HOME/认证/transport。配置值不进入Git或诊断日志。[配置规则与故障分类](115-runtime-environment-and-dws-diagnostics.md)。
+
+部署证据：87a3d39由无代理环境manager启动，两个实际Kimi子进程通过持久配置获得所需网络；群/私聊工具和文件UI通过。常规重载须等任务/outbox终态、按manager归属停止再修改配置；transport改动另按固定cut补读/停机积压审查流程。回滚代码前先核旧版对runtime.environment的支持，不能直接回退到忽略该字段的版本后声称网络配置仍有效；保留原库/会话和所有失败回执。

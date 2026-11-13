@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E116",
+  "runId": "aic-persistent-env-20261113",
+  "productCommit": "87a3d39",
+  "startedAt": 1794560929.726023,
+  "activeAtStart": true,
+  "durationSeconds": 86400,
+  "sampleIntervalSeconds": 30.0,
+  "initialSamples": 1,
+  "initialUnavailableSamples": 0,
+  "baselineDatabases": 6,
+  "productModules": 21,
+  "readsOnly": "loopback health and events; no auth/token read or automatic recovery",
+  "previousRunUnchanged": "reliability-20261111",
+  "completed": false,
+  "naturalRefresh": "unknown",
+  "privateMetadata": "local/runtime-env-diagnostics-20261113/observation-launch-attempt.json",
+  "privateRun": "local/service-observations/aic-persistent-env-20261113",
+  "heartbeat": {
+    "id": "bridge",
+    "status": "ACTIVE",
+    "intervalMinutes": 30,
+    "updatedBy": "official automation_update",
+    "nextStepUpdated": true,
+    "promptSha256": "8112dc9964811d8261c5e44b067a42809d55034b64fc641f81fec45bdff2472b"
+  }
+}

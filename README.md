@@ -1,10 +1,10 @@
 # DingTalk Agent Bridge
 
-E114调度更新：原长任务心跳已恢复ACTIVE，每30分钟续作；[执行里程碑](plans/completion/09-执行时序与里程碑.md)。下文E112/E113状态为历史证据，本次未重新验业务健康。
+E116：持久运行环境与DWS安全错误诊断已部署，两路新任务及文件UI已验；原心跳ACTIVE，每30分钟续作。当前独立24h观察刚启动，未完成长期验收。[部署证据](docs/116-persistent-environment-deployment-ui.md)。
 
 使用官方DWS授权的真人账号，将钉钉群聊/私聊接入可替换Agent的通用中间件。CLI、HTTP及持久consumer可独立使用；可选gateway负责本地执行、会话和结果交付。组织、账号、测试群及运行器均为配置，没有新建bot。
 
-**已完成真实群/私聊任务和文件闭环，尚未完成长期可靠性及全部验收。** 2026-11-13最近现场证据E112：997e9fa的21模块已部署，Kimi真实Python、原session续接、两路文字/文件回复、客户端下载打开/SHA通过。64个方向/类型格49通过、14阻塞、1部分；14 MUST仍7项不完整。源码/同wheel双Python各341项是E108冻结验证，不是本次文档更新重跑。
+**已完成真实群/私聊任务和文件闭环，尚未完成长期可靠性及全部验收。** 2026-11-13最近现场证据E116：87a3d39的21模块已部署，Kimi真实Python、原session续接、两路文字/文件回复、客户端下载打开/SHA通过。64个方向/类型格49通过、14阻塞、1部分；14 MUST仍7项不完整。E115冻结源码/同wheel双Python各357项通过，E116另38项部署/UI/账本核验通过。
 
 [需求、产出与下一步](docs/102-user-requirements-and-roadmap.md) · [DWS风险及解决进度](docs/114-dws-risks-and-resolution.md) · [文档导航](docs/README.md)
 
@@ -15,7 +15,7 @@ E114调度更新：原长任务心跳已恢复ACTIVE，每30分钟续作；[执�
 - 文本、长文、常用文档、PNG/JPEG、WAV/MP4文件以及状态/取消/new有真实证据。原生语音条、独立video、部分引用及单消息多附件仍缺；音视频文件可播放不等于原生协议。
 - 原生图片上传仅作固定官方缺口的薄补充：PNG/JPEG≤2MiB，较大走file；输出单文件20MiB。运行器及工具wrapper不是OS沙箱。
 - DWS故障持久暂停、两并发、有限调用/清理与归属日志已部署；**钥匙串事故根因和永久修复未定**。重新登录/重启后的恢复不证明根治；普通终端直接DWS不受bridge防护。
-- E112两个gateway继承本机已有代理后任务成功，目前尚未持久配置。下一段先补通用启动环境与安全错误诊断，再做当前部署持续观察。无开机自启，心跳PAUSED；这些是E112检查点，本页没有重新查询现场。
+- runtime.environment已持久配置并验证：manager无代理变量启动后，群/私聊任务均检查env_ready=true。DWS调用安全保留错误分类/exit/耗时；三服务运行，心跳ACTIVE，无开机自启。当前AIC独立24h只读观察运行中。
 
 ## 产出入口
 
@@ -24,12 +24,12 @@ E114调度更新：原长任务心跳已恢复ACTIVE，每30分钟续作；[执�
 | 产品与安装 | [源码](dingtalk_bridge/) · [六CLI入口](pyproject.toml) · [运行手册](docs/15-service-runbook.md) |
 | 接口与配置 | [OpenAPI](api/openapi.json) · [路由模板](config.routes.example.json) · [执行器模板](config.agent.example.json) |
 | 社区作业与采用账 | [公开参考](docs/references/README.md) · [CEO深挖](docs/references/ceo-deep-dive.md) · [采用清单](docs/references/adoption-plan.md) |
-| 需求与验收 | [PRD](plans/completion/01-PRD.md) · [矩阵](plans/completion/ACCEPTANCE_MATRIX.md) · [最近UI](docs/113-reboot-recovery-and-runtime-network.md) |
+| 需求与验收 | [PRD](plans/completion/01-PRD.md) · [矩阵](plans/completion/ACCEPTANCE_MATRIX.md) · [最近UI](docs/116-persistent-environment-deployment-ui.md) |
 | 当前工作 | [关键路径](plans/completion/CRITICAL_PATH.md) · [TODO](plans/completion/TODO.md) · [AGENTS](AGENTS.md) |
 | 开通与故障经验 | [接入经验](docs/11-onboarding-lessons.md) · [风险/根因/恢复方案](docs/114-dws-risks-and-resolution.md) |
 | 可复核历史 | [EVIDENCE](plans/completion/EVIDENCE.md) · [推进账本](plans/completion/PROGRESS_LEDGER.md) · [脱敏证据](evidence/) |
 
-CEO提供任务/交付/运行器契约参考，Qwen提供通道接纳边界参考；没有整体移植第三方业务应用。CEO C01摘要、C02发送事实、C03能力/终态、C04会话兼容性已落实，保留来源与MIT许可；C06环境构造继续采用必要部分。
+CEO提供任务/交付/运行器契约参考，Qwen提供通道接纳边界参考；没有整体移植第三方业务应用。CEO C01摘要、C02发送事实、C03能力/终态、C04会话兼容性已落实，保留来源与MIT许可；C06网络环境构造已由E115/E116采用、部署并真实UI验证。
 
 独立部署需要Python≥3.11/POSIX、自己的官方身份与专用测试会话；macOS已实机验，其他OS未实机认证。不要复制local或套用本机恢复脚本。当前现场仅准AIC测试群及原veil/liev私聊，企业大群/旧群禁止测试；账号/群不是产品固定常量。
 

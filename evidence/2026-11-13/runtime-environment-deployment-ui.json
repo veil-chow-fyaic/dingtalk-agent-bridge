@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E116",
+  "recordedAt": "2026-11-13T17:08:22.424848+08:00",
+  "ok": true,
+  "checks": {
+    "group_old_jobs_preserved": true,
+    "group_old_receipts_preserved": true,
+    "group_old_session_contract_and_generation": true,
+    "group_one_new_complete_task": true,
+    "group_real_python_tool_and_env_reads": true,
+    "group_same_native_runtime_session": true,
+    "group_client_download_sha_matches": true,
+    "group_content_correct": true,
+    "group_three_confirmed_replies": true,
+    "group_zero_unconfirmed_deliveries": true,
+    "group_three_replies_history_echo": true,
+    "direct_old_jobs_preserved": true,
+    "direct_old_receipts_preserved": true,
+    "direct_old_session_contract_and_generation": true,
+    "direct_one_new_complete_task": true,
+    "direct_real_python_tool_and_env_reads": true,
+    "direct_same_native_runtime_session": true,
+    "direct_client_download_sha_matches": true,
+    "direct_content_correct": true,
+    "direct_three_confirmed_replies": true,
+    "direct_zero_unconfirmed_deliveries": true,
+    "direct_three_replies_history_echo": true,
+    "history_cut_covered_while_gateways_stopped": true,
+    "backlog_audit_before_gateway_start": true,
+    "manager_without_network_variables": true,
+    "transport_configuration_unchanged": true,
+    "agent-1_only_network_config_changed": true,
+    "agent-1_persisted_config_matches_deployed": true,
+    "agent-2_only_network_config_changed": true,
+    "agent-2_persisted_config_matches_deployed": true,
+    "same_frozen_21_modules": true,
+    "three_owned_services": true,
+    "dws_ready": true,
+    "two_routes_synchronized": true,
+    "real_history_and_send_result_diagnostics": true,
+    "no_observed_dws_error_after_start": true,
+    "diagnostics_have_exit_duration_phase": true,
+    "no_unexpected_suspend_after_start": true
+  },
+  "productCommit": "87a3d39",
+  "oldJobsPreserved": 86,
+  "newCompletedJobs": 2,
+  "newConfirmedReplies": 6,
+  "sameSessions": 2,
+  "runtimeEnvironmentFromPrivateConfig": true,
+  "managerInheritedProxyVariables": false,
+  "ui": {
+    "nativeUserInputs": 2,
+    "groupAndDirectRepliesVisible": true,
+    "bothFilesDownloadedThroughDingTalk": true,
+    "bothDownloadedFilesQuickLookOpened": true,
+    "groupResult": [
+      1517,
+      2021
+    ],
+    "directResult": [
+      1003,
+      1159
+    ],
+    "bothEnvReady": true,
+    "source": "private native CUA records in this chat"
+  },
+  "downloadDigests": [
+    {
+      "type": "group",
+      "size": 47,
+      "sha256": "0740600f9c5b0c3e2b697d77c5d7287f64301d04ed6bf514ba209c24151c1e06"
+    },
+    {
+      "type": "direct",
+      "size": 68,
+      "sha256": "ae49a602038ae34687207d4e53d23e59f37edb2382a0308d73c20eb8a7b86552"
+    }
+  ],
+  "dwsDiagnostics": {
+    "resultCountAtAudit": 58,
+    "byOperation": {
+      "other": 2,
+      "history": 44,
+      "send": 6,
+      "send_status": 6
+    },
+    "observedErrors": 0
+  },
+  "privateEvidence": "local/runtime-env-diagnostics-20261113",
+  "limits": [
+    "No auth/login/doctor/Keychain operation",
+    "No claim of root cause correction for original system fault",
+    "Not proof of natural token refresh or 24h health",
+    "UI media matrix 49/14/1 unchanged; remaining seven MUST gaps not waived"
+  ]
+}
