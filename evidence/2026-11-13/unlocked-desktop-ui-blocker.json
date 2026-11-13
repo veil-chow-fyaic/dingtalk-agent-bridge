@@ -1,0 +1,35 @@
+{
+  "evidence": "E110",
+  "at": "2026-11-13T13:02:04.722913+08:00",
+  "desktopUnlockedConfirmedByUser": true,
+  "nativeUiAttempts": [
+    {
+      "target": "DingTalk",
+      "resetBefore": false,
+      "error": "failedToCreateImageDestination"
+    },
+    {
+      "target": "DingTalk",
+      "resetBefore": true,
+      "error": "failedToCreateImageDestination"
+    },
+    {
+      "target": "Finder",
+      "error": "failedToCreateImageDestination"
+    }
+  ],
+  "uiActionsSent": 0,
+  "newDwsProbes": 0,
+  "threeServicesRunning": true,
+  "guard": {
+    "state": "ready"
+  },
+  "historyHealthy": true,
+  "diagnosticConclusion": "Same image destination error for DingTalk and Finder after CUA runtime reset; exact cause unknown",
+  "officialGuidance": "https://learn.chatgpt.com/docs/appshots#limits-and-troubleshooting",
+  "noPermissionsCredentialsOrServiceChanges": true,
+  "nextAction": "User may normally quit/reopen Codex app; never reboot Mac or modify Keychain for this UI failure",
+  "privateEvidence": "local/ui-control-20261113",
+  "newTests": 0,
+  "productCommit": "997e9fa"
+}

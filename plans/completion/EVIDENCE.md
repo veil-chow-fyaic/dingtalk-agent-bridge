@@ -381,3 +381,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [恢复记录](../../docs/111-dws-interruption-recovery.md)、[25项当前状态核验](../../evidence/2026-11-13/dws-recovery-deployment-validation.json)。用户最新指令授权执行；首次只完成旧窗口，误用last_sync.at判定cut；停机审查本地零积压后提前启动gateway。后续按持久watermark核实两路已覆盖cut且无未完窗口，旧82任务仍全部未变；原门槛失败保留。
 - 审查E103原进程/旧E099配置后显式迁移两session，82任务/旧回执保持；三个服务加载997e9fa冻结21模块，DWS ready。两个新合成出站均confirmed，官方history正文/自身身份一致，consumer已收且无新任务；28真实调用短时检查点无新故障。
 - CUA重置后仍图像创建错误，未取得新客户端UI；未冒称veil入站任务或新版下载打开通过。旧矩阵/长期故障保留，下一步工具恢复后新任务真实UI，不重复探针、resume、登录或钥匙串。
+
+
+## E110 — 已解锁桌面下的UI服务阻塞
+- 用户确认解锁，钉钉直接/重置后两次与Finder独立绑定均failedToCreateImageDestination；0输入/发送/新DWS探针，不是新UI通过。[记录](../../evidence/2026-11-13/unlocked-desktop-ui-blocker.json)。
+- 本地日志没有进一步根因；13:02三服务/两路同步/DWS ready。官方泛用指引建议重启应用，未保证修复该错误；下一动作仅用户正常重开Codex，不碰Mac重启/权限/凭据。产品仍997e9fa，无新测试，原341冻结不重跑。

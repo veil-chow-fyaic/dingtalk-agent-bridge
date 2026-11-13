@@ -1,6 +1,6 @@
 # 当前任务池
 
-E109当前（2026-11-13）：按用户本轮明确恢复指令，三服务已部署997e9fa（含E104/E108）；两路history与gateway已恢复，DWS为ready；初次cut门槛误用了调用时间，随后按持久watermark核实已覆盖cut，旧任务无变化，偏差保留。群/私聊各一条真实出站探针confirmed，官方历史回读及consumer入库一致，自身消息未生成任务；82旧任务、旧回执和两个原session保持。25项当前部署核验通过（原阶段门槛不通过），源码/同wheel双Python各341。UI工具重置后仍failedToCreateImageDestination，新版veil发任务/客户端下载打开尚未验；不能称UI完成。心跳PAUSED，当前项目未完成。 [恢复与边界](../../docs/111-dws-interruption-recovery.md)。
+E109当前（2026-11-13）：按用户本轮明确恢复指令，三服务已部署997e9fa（含E104/E108）；两路history与gateway已恢复，DWS为ready；初次cut门槛误用了调用时间，随后按持久watermark核实已覆盖cut，旧任务无变化，偏差保留。群/私聊各一条真实出站探针confirmed，官方历史回读及consumer入库一致，自身消息未生成任务；82旧任务、旧回执和两个原session保持。25项当前部署核验通过（原阶段门槛不通过），源码/同wheel双Python各341。E110用户确认桌面已解锁；重置后钉钉与Finder仍同报failedToCreateImageDestination。UI服务原因未明，新版veil发任务/下载打开仍未验；不再询问锁屏/密码，不重试已失败路径。心跳PAUSED，当前项目未完成。 [恢复与边界](../../docs/111-dws-interruption-recovery.md)。
 
 > E103历史检查点：回执身份修复已部署transport（3fa5011），两个gateway保持E099（e27547b）；冻结源码/同wheel双Python各307，唯一群任务实际Python1387、两确认回复和UI通过。群媒体/长文/控制已闭环；49/64通过、14blocked、1partial，7 MUST未完整。原24h记录完整但有故障；三服务运行、心跳PAUSED。下一步C03/C04及剩余UI/观察/交接。见[最新实现与部署](../../docs/106-send-evidence-contract.md)。
 

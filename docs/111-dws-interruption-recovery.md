@@ -26,3 +26,12 @@
 **UI尚未闭环。** CUA重置和正确bundle仍报failedToCreateImageDestination；应用清单显示钉钉运行，磁盘尚有48GiB，不证明桌面解锁，也不足以定位工具错误。没有绕用其他UI技术或假装veil发消息。本轮仅liev出站和history回读通过；新版真人入站任务、相同session真实续接与客户端下载打开待工具恢复。待决桌面状态问题只提一次，不需要密码。旧49/64、7 MUST缺口不因此改绿。
 
 旧09:33暂停的直接原因是无主active槽，已核无持锁调用后显式释放，通道实际恢复。旧状态没有PID/阶段，因此最初中断为何发生仍不能确诊；不能把恢复成功写成DWS认证根治。新日志补足下一次中断的归属证据，保守暂停和两并发/90+15秒防护保持。
+
+
+## E110：桌面解锁后的UI工具核验
+
+用户已确认Mac解锁且桌面正常。钉钉重新绑定失败，重置CUA JavaScript会话后再绑定仍失败；独立Finder绑定也报相同failedToCreateImageDestination。失败发生在读取界面之前，没有操作输入框或发送任何新消息。不能把它继续归因锁屏或DWS，也不能假定修改屏幕权限就会解决。
+
+今日Codex/app-server日志未检到该错误，按实际控制服务进程名读取最近macOS日志亦无匹配；没有因此重跑旧故障路径。13:02只读本地状态显示三服务运行、DWS ready、两路约13:01:51完整同步且无poll_error；三服务均已独立运行于PPID1。未执行新的DWS探针或产品测试。
+
+[官方截图故障指引](https://learn.chatgpt.com/docs/appshots#limits-and-troubleshooting)包含重启桌面应用，但未说明这个精确错误的成因。下一步仅建议用户保存工作后正常退出/重开Codex，作为恢复控制服务的尝试，不保证修复；无需重启Mac、重新登录DWS、处理密码或修改权限。原测试授权保持，工具恢复后继续原两路新任务/UI，旧探针只读复核。[脱敏记录](../evidence/2026-11-13/unlocked-desktop-ui-blocker.json)。
