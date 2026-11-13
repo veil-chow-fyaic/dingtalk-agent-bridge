@@ -1,16 +1,12 @@
 # 钉钉 bridge 工作约定
 
-E122：Pi 0.84.2接入相同runtime契约，22新增方法；最终冻结源码/同wheel Python3.14和3.11各396通过。原Codex超时fixture启动竞态已修，三套旧失败保留。Pi本地Read/Write续接及实际Python取消、延迟230秒无late/4自有进程退出已证；前两轮没有运行Python，不冒称计算工具通过。原生new归档Codex后显式迁移私聊binding，94旧任务保持；三服务当前因部署停机，下一固定cut补读/停机核账本，再Pi新私聊UI。AIC保持Kimi，原24h观察记维护不重置。见[Pi契约](docs/123-pi-runtime-contract.md)。
-
-E120当前状态（2026-11-13）：0c6f2da已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊显式迁移Codex。89旧任务保持，新实际Python1829及同session1836、JSON/TXT客户端下载Quick Look/SHA、真实cancel回复通过；90秒工具延迟后观察104秒无late、4进程退出，9回复confirmed/history回读，30部署/UI核验。E119冻结源码/同wheel双Python各374通过。首次启动api/request_timeout 3.87秒保留，环境不变下一次有界恢复成功；不据此称认证故障或系统根治。E117官方取消候选已成稿但未集成部署；原24h观察保留混用/维护，不重置。下一项剩余协议新入口、当前版干净检出/回滚交接或Pi/OpenClaw同契约；不重跑E120。见[最新UI](docs/121-codex-deployment-and-ui.md)。
-
-E121：固定982ae49干净交接已完成（683 manifest/同21模块/新wheel离线安装/六入口/许可/空状态/19核验）；复用E119精确相同冻结测试，不虚报新374运行。下一优先剩余消息新入口或Pi/OpenClaw契约，原24h观察持续；不重复打包或E120样本。见[交接边界](docs/122-current-clean-handoff.md)。
+E123当前状态（2026-11-13）：e7d82cc已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊已通过new归档和显式binding迁移Pi 0.84.2，Codex原会话保留。94旧任务保持，新实际Python533/同session542、JSON/TXT客户端下载Quick Look/SHA、原生cancel回复均可见；90秒工具延迟后观察95秒无late、3自有子进程退出，9回复confirmed/history回读，31部署/UI核验通过。E122最终冻结源/同wheel双Python各396，旧fixture失败保留。首次DWS启动api/request_timeout 3872ms保留，无凭据TLS检查后一次有界恢复成功；不称认证故障、系统根治或自然刷新。原24h观察保持并记维护。Pi图片未声明，OpenClaw未验；下一独立项OpenClaw官方宿主契约/Qwen事务对照及DWS超时新证据，原媒体路径无新入口不重复。见[最新UI](docs/124-pi-deployment-and-ui.md)。
 
 ## 同一项目与当前检查点
 
 只在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录仅为入口。先读plans/completion的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志；同一01-PRD与ACCEPTANCE_MATRIX标准，历史“下一步”不当当前指令。
 
-交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文及同会话交付。CLI/HTTP/consumer不绑定测试组织或Agent。官方DWS负责身份、通讯、历史、资源和办公，bridge补路由、白名单、任务、会话、幂等、文件与恢复。至少一个本地执行器即可；Kimi真工具已满足，Codex超时独立跟踪，Pi/OpenClaw未验不能冒称支持。公开官方/GitHub优先；CEO任务/交付/runtime契约优先参考，Qwen作通道参照，不转回本地WeCom考古。
+交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文及同会话交付。CLI/HTTP/consumer不绑定测试组织或Agent。官方DWS负责身份、通讯、历史、资源和办公，bridge补路由、白名单、任务、会话、幂等、文件与恢复。至少一个本地执行器即可；Kimi真工具已满足，Codex已验并保留旧超时/取消失败，Pi E123文字/文件/续接/取消UI已验，Pi图片和OpenClaw未验。公开官方/GitHub优先；CEO任务/交付/runtime契约优先参考，Qwen作通道参照，不转回本地WeCom考古。
 
 E103历史检查点：transport已加载E102/3fa5011的发送凭据校验；两个gateway保留E099/e27547b的结果契约。E102只改core，其他20模块与E099相同。固定源码/同wheel双Python各307通过，21模块/六入口/许可已核；这是E102冻结验证，不反复重跑。三个受管服务运行，history-only15秒，心跳独立保持PAUSED。
 

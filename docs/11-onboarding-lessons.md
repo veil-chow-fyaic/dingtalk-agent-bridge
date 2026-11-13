@@ -55,3 +55,7 @@ DWS的released只证明调用槽释放；result诊断需另保留安全category/
 ## E119/E120新增经验
 
 Codex工具可能另建会话；仅杀CLI组不等于工具已停。使用固定官方原生SIGINT→turn/interrupt，并跨过任务计划写入点观察，无late且所捕获进程退出才计通过。gateway取消期间需排空输出，避免大事件堵塞清理。更换runtime需原生new归档和显式binding迁移，不能仅改JSON配置。首次DWS启动api/request_timeout不等于认证失效；保留错误分类与耗时，正常有界恢复不做auth/Keychain。详见docs/120–121。
+
+## E122/E123 Pi接入经验
+
+按实际安装版本核JSON协议；agent_end后可能重试，须等待agent_settled、最后assistant stopReason=stop和exit0。Pi print模式SIGTERM能清理其追踪工具，Codex则要原生SIGINT，不能把所有CLI的停止行为混为一谈。安装版本无aborted字段不能照main文档硬套。测试原生超时清理前先确认合成handler/工具ready，避免冷启动1秒门槛测错场景。第一任务虽实际Python计算但由write生成JSON，需记录工具选择偏差，不把模型自述当执行事实。详见[Pi契约与UI](124-pi-deployment-and-ui.md)。

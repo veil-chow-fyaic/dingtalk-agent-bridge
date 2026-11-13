@@ -57,3 +57,7 @@ D01直接故障点已定位但根因未定，D02是已复现未上游修复的�
 ## E120新增实际故障分类
 
 0c6f2da部署首次conversation-info返回category=api、reason=request_timeout、stage=request、exit=1、耗时3870ms、providerExecutionStarted=false。三服务未启动成功，未发UI任务；原失败保留。相同网络配置下显式一次有界恢复成功，随后9新回复confirmed/history及真实UI通过。没有认证错误证据，不能将这次故障归因为授权自动过期或Keychain；也不能以恢复成功证明网络/官方服务根因。原D01保持未知，未执行真实auth/doctor/Keychain操作。
+
+## E123重复出现的请求期限错误
+
+本次首启仍为api/request_timeout、stage=request、exit1，3872ms，未开始provider执行；无凭据TLS两官方域名成功，环境网络变量均空，一次有界分阶段恢复后UI通过。固定v67 transport/client.go将该reason映射自context.DeadlineExceeded，并有默认3秒DialContext；耗时只是线索，缺具体连接阶段证据，尚不能定为TCP/DNS/代理或服务端。没有认证错误，也没有通过改超时或Keychain止损。下次仅按新阶段证据收敛，原D01/D08未关闭。[本次证据](124-pi-deployment-and-ui.md)。

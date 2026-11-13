@@ -1,17 +1,17 @@
 # DingTalk Agent Bridge
 
-E120：0c6f2da已部署，AIC Kimi与原私聊Codex运行；Codex实际任务/续接/文件下载/取消UI通过，当前独立24h观察持续并保留维护。心跳ACTIVE，项目未完成。[最新验收](docs/121-codex-deployment-and-ui.md)。
+E123：e7d82cc已部署，AIC Kimi和原私聊Pi运行；Pi实际Python/续接/取消/JSON与TXT客户端下载打开通过，Kimi/Codex原验收保持。独立24h观察保留所有维护和故障，项目未完成。[最新验收](docs/124-pi-deployment-and-ui.md)。
 
 使用官方DWS授权的真人账号，将钉钉群聊/私聊接入可替换Agent的通用中间件。CLI、HTTP及持久consumer可独立使用；可选gateway负责本地执行、会话和结果交付。组织、账号、测试群及运行器均为配置，没有新建bot。
 
-**已完成真实群/私聊任务和文件闭环，尚未完成长期可靠性及全部验收。** 2026-11-13最近现场证据E120：0c6f2da的21模块已部署，Codex私聊实际Python、同session、原生取消及JSON/TXT下载打开/SHA通过；AIC保留已验Kimi。64个方向/类型格49通过、14阻塞、1部分；14 MUST仍7项不完整。E119冻结源码/同wheel双Python各374项通过，E120另30项部署/UI/账本核验通过。
+**已完成真实群/私聊任务和文件闭环，尚未完成长期可靠性及全部验收。** 2026-11-13最近现场证据E123：e7d82cc的21模块已部署；Pi私聊实际工具/同session/原生取消及文件下载打开通过，AIC保持Kimi。
 
 [需求、产出与下一步](docs/102-user-requirements-and-roadmap.md) · [DWS风险及解决进度](docs/114-dws-risks-and-resolution.md) · [文档导航](docs/README.md)
 
 ## 现有能力与边界
 
 - 官方DWS负责身份、通讯/历史、资源和办公；bridge负责多路由/白名单、持久任务/会话/发件箱、原件缓存、文件摘要、幂等及恢复。固定v1.0.67，history-only每15秒补读，不启动Stream消费者或杀共享bus。
-- Kimi实际Read/Write/Bash和交付已验；Codex原生中断修复后已部署并完成私聊实际执行/续接/取消/下载UI，Pi/OpenClaw未验，不能冒称四者已经支持。通用runtime能力、可信终态和会话兼容性契约已部署。
+- Kimi实际Read/Write/Bash和交付已验；Codex原生中断修复后已部署并完成私聊实际执行/续接/取消/下载UI，Pi E123文字/文件/续接/取消UI已验，图片和OpenClaw未验，不能冒称四者所有能力已支持。通用runtime能力、可信终态和会话兼容性契约已部署。
 - 文本、长文、常用文档、PNG/JPEG、WAV/MP4文件以及状态/取消/new有真实证据。原生语音条、独立video、部分引用及单消息多附件仍缺；音视频文件可播放不等于原生协议。
 - 原生图片上传仅作固定官方缺口的薄补充：PNG/JPEG≤2MiB，较大走file；输出单文件20MiB。运行器及工具wrapper不是OS沙箱。
 - DWS故障持久暂停、两并发、有限调用/清理与归属日志已部署；**钥匙串事故根因和永久修复未定**。重新登录/重启后的恢复不证明根治；普通终端直接DWS不受bridge防护。
@@ -42,4 +42,4 @@ python3 scripts/verify_handoff.py
 
 代码变更按需使用`python3 scripts/run_tests_with_evidence.py`，不重复既有UI发送凑数量。未知投递按原key对账，禁止换key或UI补发。旧reliability-20261111故障/维护保留，未证明当前部署健康24h。
 
-Git只收代码、合成素材、脱敏证据及文档；账号ID、凭据、原聊天/截图、数据库、运行日志和下载件只留local或私有工具记录。E075包仅历史版本，最终当前版交接尚未完成。分支codex/complete-bridge，仅本地提交，未远程发布。
+Git只收代码、合成素材、脱敏证据及文档；账号ID、凭据、原聊天/截图、数据库、运行日志和下载件只留local或私有工具记录。E075和E121包均为固定历史版本；Pi版安装已验，最终项目交接仍受MUST缺口约束。分支codex/complete-bridge，仅本地提交，未远程发布。

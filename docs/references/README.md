@@ -47,3 +47,5 @@ E092的13来源/69文件catalog保留历史范围；E097另建CEO新版31文件�
 DWS 官方源码快照来自此前固定的公开 commit，不改变已安装 binary。其余公开快照来自相同 commit 的 GitHub raw 文件；可按 catalog 的 URL 重新取得并核 SHA256。两份早先取到的本地 WeCom 快照已从活动 catalog 排除，仅在 local 保留历史，不作为本轮优先复用依据。
 
 后续真正移植代码时，在同一提交保留原 LICENSE/NOTICE/版权头、记录源文件和 commit、列修改与依赖闭包，并跑对应契约测试。MIT/Apache 条件按原文件保留；未授权仓库仅作文档/设计参照，不把“GitHub 公开”当任意复制许可。
+
+E122/E123新增采用：Pi固定0.84.2官方JSON终态、session及print清理语义，复用现有runtime契约，未整包移植。文字/文件/续接/取消私聊UI已过，图片与OpenClaw仍未声明。[实现与固定来源](../123-pi-runtime-contract.md)、[真实UI](../124-pi-deployment-and-ui.md)。

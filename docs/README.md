@@ -30,3 +30,5 @@ architecture保存设计，references保存公开选型及固定来源，编号�
 - [E121当前版干净交接与回滚边界](122-current-clean-handoff.md)
 
 - [E122 Pi执行器契约与验证](123-pi-runtime-contract.md)
+
+- [E123 Pi部署与真实私聊验收](124-pi-deployment-and-ui.md)

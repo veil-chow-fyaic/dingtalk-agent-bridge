@@ -1,6 +1,7 @@
 # 运行、接入与恢复
 
-2026-11-13 E120：0c6f2da已部署，AIC Kimi与原私聊Codex运行；[最新真实UI](121-codex-deployment-and-ui.md)完成任务、续接、文件下载与取消，心跳ACTIVE，无开机自启。只在AIC测试群和原私聊验收，企业大群/旧群禁测。
+当前E123：e7d82cc已部署，AIC Kimi/原私聊Pi；Codex原会话已归档，既有验收保留。Pi实际Python、续接、取消和JSON/TXT客户端下载打开通过，396×3及31核验；完整MUST仍未完成。[最新状态](124-pi-deployment-and-ui.md)。
+
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
 
@@ -43,7 +44,7 @@ E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。�
 
 HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-E120检查点服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
+E123检查点服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
 
 ```bash
 python3 -m dingtalk_bridge.cli health
@@ -76,7 +77,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 附件缓存丢失或摘要变化会报错；核对后可显式`attachments --repair`取回原件，新目录/manifest替换缓存指向，旧文件保留。首次与缓存共用完整性校验；成功清单通过同目录0600临时文件、文件fsync及原子replace发布，写失败保住旧好清单，崩溃遗留临时文件不用于读取。未fsync目录，不宣称掉电持久保证。见[原子清单验证](76-atomic-download-manifest.md)。不要删除仍被消费者引用的文件。
 
-可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash，Codex也已完成实际Python/同会话/文件/取消UI；执行器、提示词及官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
+可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash，Codex和Pi也已完成实际Python/同会话/文件/取消UI；Pi图片能力未声明；执行器、提示词及官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
 E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，已随E095部署加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。发生凭据存储/超时/进程中断时持久暂停后续受管DWS调用；不自动探测是否恢复。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；E084已持久化原窗口和nextPageToken，超本轮容量在后续有界调用接续，重启不丢游标。complete=false不算追平；长停机按watermark覆盖原窗口，恢复须达到固定cut且无待续窗口，无watermark首次仅24h，不能保证更早或平台不可见历史。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
@@ -108,4 +109,4 @@ python3 scripts/verify_handoff.py
 
 不要只改runtime.kind后重启：任务库runtime_binding会拒绝不匹配身份，这保护旧会话免被另一CLI错误续接。正常更换先在已授权会话发`/agent new`，等控制任务和其outbox终态，原native session会归档。停目标gateway并保留原配置；`scripts/migrate_agent_runtime_binding.py`以旧/新配置产生私有计划，apply时重核库、配置摘要及归属，事务保留旧绑定。该工具不写配置、不启动服务、不调用DWS或模型；其精确CLI见`--help`，现场实测见[部署UI](121-codex-deployment-and-ui.md)。没有new、存在活动session/未决任务/未确认回执或计划过期时应拒绝，不能手改SQLite绕过。
 
-代码回滚须保持当前任务/outbox/session账本，不能恢复旧快照覆盖后来的真实消息。先停止相关服务，固定目标commit和wheel并核模块摘要，核目标版本是否支持当前runtime/session契约及runtime.environment。Codex回滚到0c6f2da之前会重新暴露已知取消迟到写入缺口，应保持该gateway停机；若改回Kimi，按上段归档/显式迁移，再按固定cut和积压审查恢复。未知投递只用原key核对。回滚不包含复制令牌、登录修复或杀共享bus；复杂降级有不兼容时保持停止并记录，不声称已自动回滚成功。
+当前Pi回退到e7d82cc之前会失去Pi适配，须停目标gateway并按原生new/显式binding迁移选择兼容运行器，不能把Pi会话交给旧CLI。代码回滚须保持当前任务/outbox/session账本，不能恢复旧快照覆盖后来的真实消息。先停止相关服务，固定目标commit和wheel并核模块摘要，核目标版本是否支持当前runtime/session契约及runtime.environment。Codex回滚到0c6f2da之前会重新暴露已知取消迟到写入缺口，应保持该gateway停机；若改回Kimi，按上段归档/显式迁移，再按固定cut和积压审查恢复。未知投递只用原key核对。回滚不包含复制令牌、登录修复或杀共享bus；复杂降级有不兼容时保持停止并记录，不声称已自动回滚成功。

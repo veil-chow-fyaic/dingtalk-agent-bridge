@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E123",
+  "recordedAt": "2026-11-13T10:53:18.244460+00:00",
+  "ok": true,
+  "checks": {
+    "0_old_jobs_preserved": true,
+    "0_old_outbox_preserved": true,
+    "group_tasks_and_session_unchanged": true,
+    "1_old_jobs_preserved": true,
+    "1_old_outbox_preserved": true,
+    "four_new_jobs_exact_states": true,
+    "task_0_actual_python": true,
+    "task_0_download_same_sha": true,
+    "task_0_content_correct": true,
+    "task_1_actual_python": true,
+    "task_1_download_same_sha": true,
+    "task_1_content_correct": true,
+    "task_2_actual_python": true,
+    "ui_cancel_guard_cleanup": true,
+    "three_turns_same_native_pi_session": true,
+    "old_codex_session_archive_retained": true,
+    "nine_replies_confirmed": true,
+    "nine_replies_history_echo": true,
+    "no_unknown_delivery": true,
+    "ui_tool_delay_fully_elapsed": true,
+    "ui_cancel_no_late_write": true,
+    "owned_cancel_descendants_captured": true,
+    "owned_cancel_descendants_exited": true,
+    "frozen_product_loaded": true,
+    "backlog_review_before_agents": true,
+    "history_cut_initial_covered": true,
+    "first_startup_failure_preserved": true,
+    "three_owned_services_running": true,
+    "dws_ready": true,
+    "both_routes_currently_sync": true,
+    "native_ui_observations_complete": true
+  },
+  "productCommit": "e7d82cc",
+  "oldJobsPreserved": 94,
+  "newJobs": 4,
+  "completedToolTasks": 2,
+  "cancelledToolTasks": 1,
+  "cancelControlTasks": 1,
+  "newRepliesConfirmedAndHistoryEcho": 9,
+  "runtimeGroup": "kimi",
+  "runtimeDirect": "pi",
+  "realUI": {
+    "veilNativeInputs": 4,
+    "lievTextAndFileRepliesVisible": true,
+    "downloadedAndQuickLookOpened": [
+      "JSON",
+      "TXT"
+    ],
+    "results": [
+      533,
+      542
+    ],
+    "firstFileWriter": "write tool after actual bash/Python calculation",
+    "cancelRequestAndStoppedRepliesVisible": true,
+    "cancelToolDelaySeconds": 90,
+    "observedSecondsAfterMarker": 95.22107195854187,
+    "lateArtifactPresent": false,
+    "capturedOwnedProcesses": 3,
+    "capturedOwnedProcessesExited": true
+  },
+  "downloads": [
+    {
+      "size": 14,
+      "sha256": "75e47a879ec085abea7e461111ffb66db1aa6809e81af16063b7a77d4e98cb44"
+    },
+    {
+      "size": 26,
+      "sha256": "dc83565a431fafa2f3206ce9aded2308decabd93c224223546920cad02548616"
+    }
+  ],
+  "startupFailure": {
+    "category": "api",
+    "reason": "request_timeout",
+    "elapsedMs": 3872,
+    "authErrorObserved": false,
+    "boundedRecoverySucceeded": true,
+    "networkConfigurationChanged": false
+  },
+  "privateEvidence": "local/pi-adapter-20261113",
+  "limitations": [
+    "Original startup failure retained; no proof of original system Keychain cause or natural token refresh",
+    "E118 failed cancellation retained; no universal detached process isolation claim",
+    "Original 24h observer retains maintenance and mixed source interval; not uninterrupted uniform-version health",
+    "First task requested Python to write JSON but Pi used write after actual Python computation; content and delivery verified, exact tool-selection instruction not met",
+    "UI matrix49/14/1 and seven incomplete MUST unchanged; Pi images and OpenClaw untested"
+  ]
+}

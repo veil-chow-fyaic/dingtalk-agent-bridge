@@ -56,7 +56,7 @@ CEO把route、凭据模式、事件类型、错误类别、是否可重试/可�
 | 错误 | auth/transport/capacity/capability/session/result/process/unknown | 能解释和选择恢复策略，不把每个非零退出都当登录坏了 |
 | 执行归属 | standalone gateway或宿主原生channel二选一 | OpenClaw持有Agent turn时中间件只交消息，不再启动本地Kimi重复执行 |
 
-未来共享一组adapter契约测试：续接正确会话、能力不足拒绝、部分stdout/坏JSON/非终态退出、取消无晚产物、产物路径/摘要、恢复不串任务。Kimi现有闭环作基线，Codex先闭环，再Pi/OpenClaw。不能照搬CEO某些自动切route策略：发送主体不切账号，执行器切换不能自动重放有未知副作用的任务。
+未来共享一组adapter契约测试：续接正确会话、能力不足拒绝、部分stdout/坏JSON/非终态退出、取消无晚产物、产物路径/摘要、恢复不串任务。Kimi现有闭环作基线；E120 Codex和E123 Pi文字/文件/续接/取消已闭环，下一OpenClaw按相同契约。不能照搬CEO某些自动切route策略：发送主体不切账号，执行器切换不能自动重放有未知副作用的任务。
 
 ## 6. Codex超时：借诊断方法，不能认定同一病因
 
