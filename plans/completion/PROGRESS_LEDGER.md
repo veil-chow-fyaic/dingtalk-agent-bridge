@@ -305,3 +305,5 @@
 | 2026-11-13 E117 | 官方DWS/keyring双层取消候选及精确摘要复现工具；15方法/10子用例普通/race通过、18核验、本地上游草稿 | docs/117–118；dws-cancellation-candidate-validation | 仅选定源/合成进程，未集成部署发布；产品87a3d39和原观察保持。下一段Codex持久网络环境有界验证/剩余协议新入口，原根因与MUST缺口不关闭 |
 
 | 2026-11-13 E118 | Codex60秒内真工具1961及同session1968成功；取消后90秒late写入失败；迁移工具10专项三环境通过但未执行 | docs/119；codex-persistent-env-and-migration-validation | 私聊new归档、切换binding拒绝后恢复Kimi，群/transport保持，原run两维护。下一先修原生SIGINT/turn interrupt及延迟验证，再迁移和UI，不掩盖失败 |
+
+| 2026-11-13 E119 | Codex原生中断及输出排空，7新增/冻结374三环境/16核验，实际延迟取消通过；89旧任务迁移保持 | docs/120 | 下一固定cut补读、停审积压、恢复两路再Codex私聊真实UI；不重跑E116 |

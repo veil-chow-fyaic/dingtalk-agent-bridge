@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E119",
+  "recordedAt": "2026-11-13T10:04:00.029979+00:00",
+  "ok": true,
+  "checks": {
+    "installed_report_ok": true,
+    "modules_21": true,
+    "same_frozen_modules": true,
+    "source-tests-final.log_374_pass": true,
+    "py314-tests-final.log_374_pass": true,
+    "py311-tests-final.log_374_pass": true,
+    "same_new_frozen_test_bytes": true,
+    "same_readiness_test": true,
+    "same_migration_tool": true,
+    "wheel_same_modules": true,
+    "license_files_in_wheel": true,
+    "real_cancel_once": true,
+    "real_planned_delay_expired": true,
+    "real_no_late_file": true,
+    "native_interrupt_confirmed_exit": true,
+    "observed_owned_processes_exited": true,
+    "old_codex_failure_retained": true
+  },
+  "tests": [
+    {
+      "environment": "source-tests-final.log",
+      "testsRun": 374,
+      "passed": true,
+      "sha256": "acd6fbd39eb2e9ac9061195f36dc5b4d6e9d788673fa7725a6a2be8553f006f7"
+    },
+    {
+      "environment": "py314-tests-final.log",
+      "testsRun": 374,
+      "passed": true,
+      "sha256": "17a913df8bed15042456a26a37f61747aa8f29e4f7f5e85fd721e38f9fca2364"
+    },
+    {
+      "environment": "py311-tests-final.log",
+      "testsRun": 374,
+      "passed": true,
+      "sha256": "158cccd21e74ca0a40fa8ece7e8934f1b0c53e2c7706bc356d8bd6bddeb0a465"
+    }
+  ],
+  "newMethods": 7,
+  "priorMigrationMethods": 10,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "agent_runtime.py": "fff1cbdb185b0e3c8d5fbcdffdb657117f14bba2d6b9c2460e9d49c6c2ed0e7d",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "ed824427797636f410e681f90cca10949e4bdf17e733d87c7d716772d6e80fd6",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "8ed834f87e04669f87f9ebe9296a8e3431813527d621b61ff3b0746e7e0cf62e",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "b43836bcf8563ce68ca54bc85620b4d63520bb2e7931d589c40f5606d2188a13",
+    "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "wheelSha256": "154db8c4afb47b4f22a45d35ce93efecba12f8bd1a1a4c2419efed84b7874579",
+  "realCancellation": {
+    "newHostAttempts": 1,
+    "timeoutSeconds": 60,
+    "plannedToolDelaySeconds": 30,
+    "code": "cancelled",
+    "elapsedSeconds": 11.28719641600037,
+    "secondsObservedAfterPlannedWrite": 598.2788248062134,
+    "lateArtifactPresent": false,
+    "ownedProcessesBeforeCancel": 4,
+    "distinctGroupsBeforeCancel": 4,
+    "ownedProcessesStillRunning": 0,
+    "nativeInterrupt": "sent_and_exited"
+  },
+  "deployed": false,
+  "liveSourceRestoredDuringValidation": true,
+  "observationMaintenanceRecorded": true,
+  "officialSourceCommit": "6aaac694803004a63c6f393d153c96d22521a6b9",
+  "oldNegative": {
+    "methods": 3,
+    "failures": 3,
+    "file": "native-interrupt-old-tests.log",
+    "privateParent": "local/codex-persistent-env-20261113"
+  },
+  "privateEvidence": "local/codex-native-interrupt-20261113",
+  "limitations": [
+    "First full Py3.14 run had one fixture readiness error; original report retained, readiness handshake corrected, all three final frozen suites passed",
+    "Native interrupt lets Codex stop its tools; group cleanup is not a sandbox or universal detached process guarantee",
+    "Real local cancel passed; gateway UI/deployment still separate",
+    "Live source briefly exposed candidate runtime_guard to history child processes during development; original run records mixed source interval",
+    "System Keychain cause/natural refresh/full 24h/UI MUST gaps unchanged"
+  ]
+}

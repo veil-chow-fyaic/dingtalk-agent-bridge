@@ -205,6 +205,26 @@ def stop_owned_group(process):
     finally:process.wait()
 
 
+def wait_with_output_drain(process, log, timeout):
+    """Keep cancellation event output writable until the owned guard exits."""
+    deadline = time.monotonic() + timeout
+    os.set_blocking(process.stdout.fileno(), False)
+    while True:
+        try:
+            data = os.read(process.stdout.fileno(), 65536)
+        except BlockingIOError:
+            data = b''
+        if data:
+            log.write(data);log.flush()
+        try:
+            wait_unreaped(process, 0)
+            return
+        except subprocess.TimeoutExpired:
+            if time.monotonic() >= deadline:
+                raise subprocess.TimeoutExpired(process.args, timeout)
+        time.sleep(.02)
+
+
 class LocalRuntime:
     def __init__(self,settings):
         self.settings=settings;self.kind=settings['kind']
@@ -248,7 +268,9 @@ class LocalRuntime:
             lifetime_read,lifetime_write=os.pipe()
             try:
                 guard=[sys.executable,str(Path(__file__).with_name('runtime_guard.py')),
-                    '--lifetime-fd',str(lifetime_read),'--',*args]
+                    '--lifetime-fd',str(lifetime_read)]
+                if self.kind=='codex':guard.append('--native-interrupt')
+                guard+=['--',*args]
                 process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind=='codex' else subprocess.DEVNULL,
                     stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,),env=environment)
             except BaseException:
@@ -316,11 +338,13 @@ class LocalRuntime:
                 (run_dir/'validated-response.json').write_text(json.dumps(result,ensure_ascii=False))
                 return result
             finally:
-                sel.close();process.stdout.close()
+                sel.close()
                 if process.stdin and not process.stdin.closed:process.stdin.close()
                 # The supervisor owns the actual CLI and retains its PID through
                 # cleanup. Closing this pipe also works when the gateway dies.
                 os.close(lifetime_write)
-                if process.returncode is None:
-                    try:wait_unreaped(process,15)
-                    finally:stop_owned_group(process)
+                try:
+                    if process.returncode is None:
+                        try:wait_with_output_drain(process,log,15)
+                        finally:stop_owned_group(process)
+                finally:process.stdout.close()

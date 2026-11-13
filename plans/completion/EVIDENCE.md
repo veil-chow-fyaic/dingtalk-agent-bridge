@@ -427,3 +427,5 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [完整记录](../../docs/119-codex-environment-and-cancellation-gap.md)、[脱敏结果](../../evidence/2026-11-13/codex-persistent-env-and-migration-validation.json)。同CLI/60秒，新持久环境实际Python1961/19.64秒、同session1968/17.02秒通过；第三取消任务11.68秒返回后，工具约90秒仍写late，失败保留，不能称Codex可部署。
 - veil UI new及liev回执可见，原session归档；第一次切换只到manager runtime binding拒绝，原Kimi已恢复，群/transport不动，两维护记原观察。新增迁移脚本要求停机/显式new/零未决，冻结10专项三环境通过；真实迁移未执行。原88任务及原E105失败保留，21产品模块不变。
 - 固定Codex6aaac69源码已找到ctrl_c→turn/interrupt新依据，下一段原生中断及晚写验证，之后再UI。guard cleanup_complete只能证明原进程组，早先取消通过口头结论已撤回。
+
+| E119 | L3/L4 | Codex原生中断；旧3失败/新7方法，冻结源码/同wheel双Python374；真实取消4进程退出且延迟无late；显式binding迁移保持89任务 | docs/120；codex-native-interrupt-validation | 三服务部署停机，UI未验；原观察记录混用/维护；非系统根治 |

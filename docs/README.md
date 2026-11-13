@@ -22,3 +22,5 @@
 architecture保存设计，references保存公开选型及固定来源，编号阶段文档保存当时实现/失败/验证，evidence保存脱敏结果，plans/completion保存同一活动任务。源码在dingtalk_bridge，私有现场在local，不搬动数据库或账号配置来“整理”。
 
 历史文档的“待许可、未部署、下一步”只对当时有效。当前群只允许AIC测试群，原私聊保持，企业大群禁测；心跳ACTIVE。49/14/1及7项MUST未完整，不能用旧文章的成功/失败覆盖当前判定。
+
+- [E119 Codex原生中断与有限清理](120-codex-native-interrupt.md)

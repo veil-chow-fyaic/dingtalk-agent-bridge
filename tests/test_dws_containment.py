@@ -12,7 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from dingtalk_bridge.core import DWS, BridgeError
-from dingtalk_bridge.dws_access import DWSAccess, DWSAccessSuspended, run_dws
+from dingtalk_bridge.dws_access import DWSAccess, DWSAccessSuspended, SupervisedDWS, run_dws
 from dingtalk_bridge.stream import StreamListener
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,7 +66,17 @@ class DWSContainmentTests(unittest.TestCase):
     def test_timeout_cleans_descendants_and_suspends_future_calls(self):
         self.addCleanup(self.cleanup_child)
         self.binary(self.spawn_code('time.sleep(60)'))
-        with patch('dingtalk_bridge.core.run_dws',
+        def started_descendant(*args, **kwargs):
+            owned = SupervisedDWS(*args, **kwargs)
+            try:
+                # Exercise post-start descendant cleanup, not scheduler speed.
+                # run_dws starts its 2s budget after this constructor returns.
+                self.until(lambda:(self.root/'child.ready').exists())
+                return owned
+            except BaseException:
+                owned.close()
+                raise
+        with patch('dingtalk_bridge.dws_access.SupervisedDWS', side_effect=started_descendant), patch('dingtalk_bridge.core.run_dws',
                    lambda command, cwd, stop: run_dws(command,cwd,stop=stop,timeout=2)):
             with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
                 DWS(self.root,self.config).call([])
