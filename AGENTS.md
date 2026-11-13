@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [本轮恢复与UI](docs/113-reboot-recovery-and-runtime-network.md)。
+E113文档整理（2026-11-13），没有新运行检查。最近真实检查点E112：产品997e9fa/21模块，三服务恢复、两路真实Kimi任务/原session/文件客户端下载打开通过；首次DWS超时和两Kimi失败保留。341是E108冻结三环境测试，E112另34核验。49/14/1，7 MUST未完整；心跳PAUSED，无开机自启。当前gateway代理仅启动环境、未持久配置。 [当前路线](docs/102-user-requirements-and-roadmap.md) · [风险/根因/处置](docs/114-dws-risks-and-resolution.md)。
 
 ## 同一项目与当前检查点
 
@@ -33,7 +33,7 @@ veil是客户端真人用户，liev是显式profile绑定的DWS真人普通账�
 - 官方binary固定local/bin/v1.0.67，不静默升级。CHAT_IMAGE上传窄叶子复用固定官方源码认证/上传，不改原binary；PNG/JPEG≤2MiB用image，更大用file，输出单文件20MiB。
 - WAV/MP4原件和播放器通过不等于原生语音条/独立video协议。E056重复file仅末项、正文/file互斥、图文最多9本地图引用边界保留，无新入口不重复探针。
 - DM官方办公上下文启用、群关闭；doc/todo/calendar/mail/drive/minutes固定身份受管。不将新聊天验证外推所有办公API。
-- E093 CEO文件摘要已部署；E099结果分类及E102回执一致性已落实。C03其余能力/终态和C04兼容性继续，参考源码不等于已移植/上游测试通过。
+- E093 CEO文件摘要已部署；E099结果分类及E102回执一致性已落实。C03能力/终态和C04兼容性已由E109部署/E112真实续接UI通过；下一项C06启动环境及错误观察。参考源码不等于上游测试通过。
 - 原reliability-20261111窗口11月11日19:36:08至12日19:36:08已结束，E101完整性13检查通过；1059 unavailable/168 poll_error/52维护保留，不重置或称连续健康24h。当前AIC部署长期覆盖、最终账本核对仍缺。新维护另记，不改已封存原run。
 
 ## 执行与完成

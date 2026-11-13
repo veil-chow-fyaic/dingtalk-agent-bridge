@@ -1,6 +1,6 @@
 # build
 
-E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [本轮恢复与UI](../../docs/113-reboot-recovery-and-runtime-network.md)。
+E113文档整理（2026-11-13），没有新运行检查。最近真实检查点E112：产品997e9fa/21模块，三服务恢复、两路真实Kimi任务/原session/文件客户端下载打开通过；首次DWS超时和两Kimi失败保留。341是E108冻结三环境测试，E112另34核验。49/14/1，7 MUST未完整；心跳PAUSED，无开机自启。当前gateway代理仅启动环境、未持久配置。
 
 同一需求与验收，单Agent，原项目codex/complete-bridge小步本地提交。E103三服务运行仅为历史；当前E112三服务运行、心跳PAUSED；唯一群范围AIC测试群，原两人私聊保持。当前回执修复已部署并真实UI通过，不待旧恢复许可。
 

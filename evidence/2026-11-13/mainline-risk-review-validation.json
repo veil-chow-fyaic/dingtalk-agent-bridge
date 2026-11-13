@@ -1,0 +1,62 @@
+{
+  "evidenceId": "E113",
+  "checkedAt": "2026-11-13T08:16:01.483571+00:00",
+  "scope": "Document consistency, not product tests, private UI reverification or live health",
+  "baseCommit": "2065db66f5c8842852f96b4b5a3b475efd78881b",
+  "productCommit": "997e9fa",
+  "sources": "evidence/2026-11-13/mainline-risk-review-sources.json",
+  "checks": {
+    "original_requirement_criteria_and_levels_unchanged": true,
+    "all_64_type_direction_states_unchanged": true,
+    "all_14_must_states_unchanged": true,
+    "not_falsely_complete": true,
+    "productHashes_unchanged": true,
+    "testHashes_unchanged": true,
+    "product_module_count_still_21": true,
+    "tracked_edits_only_documentation_and_manifest": true,
+    "public_issue_statuses_explicit": true,
+    "latest_release_recorded_not_installed": true,
+    "current_entry_README.md": true,
+    "current_entry_docs/README.md": true,
+    "current_entry_docs/17-requirements-progress-review.md": true,
+    "current_entry_plans/completion/CURRENT_MISSION.md": true
+  },
+  "ok": true,
+  "uiStateCounts": {
+    "passed": 49,
+    "blocked": 14,
+    "partial": 1
+  },
+  "mustStateCounts": {
+    "partial": 4,
+    "passed": 7,
+    "open": 3
+  },
+  "remainingMustIds": [
+    "R01",
+    "R04",
+    "R06",
+    "R07",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "initialValidationFailure": {
+    "check": "tracked_edits_only_documentation",
+    "reason": "Git quoted the Chinese path; line-splitting misread its suffix. Corrected to NUL-separated paths and explicitly allowed the manifest; no product edits.",
+    "retainedPrivately": true
+  },
+  "noNewClaims": [
+    "No real DWS, auth, doctor, Keychain or system operations",
+    "No service, credential, permission or runtime configuration changes",
+    "No new UI messages, downloads or product tests",
+    "No upstream issue/PR publishing or global binary upgrade"
+  ],
+  "limits": [
+    "System keychain initiating root cause and permanent fix remain unknown",
+    "Official cancellation gap reproduced previously, not patched here",
+    "E112 runtime proxy is process environment only",
+    "E112 running state is historical checkpoint; not checked again in E113",
+    "Current deployment sustained observation and final release remain incomplete"
+  ]
+}

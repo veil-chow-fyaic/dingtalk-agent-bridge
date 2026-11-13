@@ -397,3 +397,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [恢复及验收](../../docs/113-reboot-recovery-and-runtime-network.md)、[34核验](../../evidence/2026-11-13/reboot-recovery-ui-validation.json)。首次会话读取request_timeout保留；成功业务读后，固定cut补读、gateway停机核积压、三服务恢复，82旧任务/session/回执保持。
 - 两条E112真人任务遇Kimi OAuth连接超时，失败提示均UI可见，未执行工具/交付/重做。现有系统代理与父环境差异核实后，独立13.68秒成功，只重载两gateway继承代理，原transport不动。
 - 两新E112B任务Python1517/1003、旧session1387/493、liev文字/文件、客户端两下载件Quick Look及SHA通过；10回复confirmed且history一致。产品21模块仍997e9fa，未重跑341；49/14/1不变，长期和全项目仍未完成。
+
+## E113 — 主线产出整理、风险根因与当前入口纠偏
+- 用户要求整理项目主线/剩余工作/产出/踩坑；[统一总览](../../docs/102-user-requirements-and-roadmap.md)、[DWS风险表](../../docs/114-dws-risks-and-resolution.md)、[接入经验](../../docs/11-onboarding-lessons.md)已更新。E112是最近真实现场，本轮不运行DWS/auth/Keychain/服务/UI，不增加通过格。
+- [公开来源复核](../../evidence/2026-11-13/mainline-risk-review-sources.json)：#1132 closed且维护者v62说明、#60687 open且未获官方因果确认、最新release v68；未升级或发布外部消息。D01系统根因、D02取消缺口、D05暂停、D07执行器网络等分开，恢复/止损不叫根治。
+- E097–E107旧状态从活动入口移除；C03/C04已部署/UI通过，下一段P0启动环境/安全错误信封/当前长期观察。原PRD判据/级别、14MUST判定、64格状态及产品/测试字节保持；[文档核对结果](../../evidence/2026-11-13/mainline-risk-review-validation.json)。历史失败、reliability及E075旧包范围保持。

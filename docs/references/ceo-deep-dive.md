@@ -4,6 +4,8 @@
 
 E093实际采用的旧版`bd3de36b136abfd5e3dc571347358ea5b1be69c1`及[摘要校验记录](artifact-digest-adoption.md)保持原来源，不用新版冒充当时采用版本。本次将CEO提升为**任务/交付/执行器契约的优先参照**；Qwen仍是DWS通道组件参照，两者用途互补。
 
+> E113状态同步：本文源码研究仍固定E097版本，不声称重跑上游测试。C01/C02/C03/C04已经实现并于E109全部部署，E112两路原session/可信终态/文件UI通过；正文“还没有/建议”描述E097审查时的差距，当前以末尾采用表为准。下一项是C06通用启动环境，不是再做C03/C04。
+
 ## 适合借鉴到什么程度
 
 CEO是本地优先、DWS/Codex/SQLite支撑的业务自动回复服务，有管理者画像、业务任务、办公和审核流程，不是独立通用IM SDK。它另有可配置bot路径，不能把这些路径的能力混算到DWS真人账号。[固定README](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/README.md)
@@ -38,7 +40,7 @@ Consumer在创建运行之前以conversation取得持久锁；TaskAgent的共享
 
 CEO按route和conversation保存session，调用时要求合适的contract hash。测试检查developer契约/选定Skill改变时不错误复用；Skill指纹使用该轮冻结材料，而不是之后变化的文件。普通提示修改与协议不兼容并非一律同等处理。[会话选择](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/app/consumer_agent.py#L681)、[fingerprint测试](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_consumer_session_prompt_fingerprint.py)、[Skill契约测试](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_consumer_skill_session_contract.py)
 
-本项目绑定当前是scope/runtime kind/binary，已有schema2办公上下文升级及原session保持；还没有独立的adapter契约版本/能力指纹。这是S2可落地的明确设计接缝：增加可解释的兼容性元数据，区分正常提示更新、工具协议变化、runtime更换。**不直接照搬自动清空session**；不兼容应明确停止或按用户明确的新会话动作处理，旧历史和失败保持。
+E097审查时本项目绑定是scope/runtime kind/binary，已有schema2办公上下文升级及原session保持，当时还没有独立的adapter契约版本/能力指纹；E104已实现、E109部署并由E112实证续接。当时确定并随后实现的接缝是可解释的兼容性元数据，区分正常提示更新、工具协议变化、runtime更换。**不直接照搬自动清空session**；不兼容应明确停止或按用户明确的新会话动作处理，旧历史和失败保持。
 
 ## 5. Runtime契约：适合支撑Codex、Kimi、Pi、OpenClaw
 
@@ -75,8 +77,8 @@ CEO的adapter显式构建子进程环境、区分provider结构化错误和工�
 |---|---|---|---|
 | C01 | 已采用并部署 E093/E095 | 文件原定摘要门槛；保留旧固定版与MIT | 已有11新增专项、三环境291历史验证及最近UI，不重跑旧样本 |
 | C02 | E102修复/E103已部署UI | `core.py`/gateway发件箱；发送事实负例逐项映射 | 假/引用/冲突/跨任务回执不得confirmed，未知不重发；已有等价用例则记映射，不重写 |
-| C03 | E099已部署，E104能力/终态已实现未部署 | `agent_runtime.py`薄适配器、类型化终态/能力/失败 | Kimi旧行为保持，Codex合成事件失败分类可解释，协议不绑定DWS；再真实第二runtime闭环 |
-| C04 | E104离线实现，真实迁移待验 | gateway会话兼容性版本、冻结任务契约 | 合法续接/升级保持；不兼容不静默抹session；历史/回执原样 |
+| C03 | E104已实现、E109部署、E112真实UI通过 | `agent_runtime.py`薄适配器、类型化终态/能力/失败 | Kimi旧行为保持，Codex合成事件失败分类可解释，协议不绑定DWS；再真实第二runtime闭环 |
+| C04 | E109显式迁移原两session、E112续接UI通过 | gateway会话兼容性版本、冻结任务契约 | 合法续接/升级保持；不兼容不静默抹session；历史/回执原样 |
 | C05 | 有多宿主需求再做 | consumer归属/租约 | 两实例不能同时用同session；失租拒绝提交；不得降低现有flock防护 |
 | C06 | Codex独立排查线索 | 子进程环境、进度/终态和错误分类 | 可复现原超时或解释具体失败，正常任务UI闭环后才声明支持 |
 
@@ -84,4 +86,4 @@ CEO的adapter显式构建子进程环境、区分provider结构化错误和工�
 
 E102已将C02负例落实到本项目，旧8方法22子场景失败，冻结修复三环境各307通过；只改core，未知不重发，不引入业务审核/相似历史确认。[具体对照与部署边界](../106-send-evidence-contract.md)。
 
-E104落实C03/C04：4旧缺陷用真实合成CLI复现，静态能力/明确终态/冻结会话契约与24方法验证；真实旧会话未迁移，UI受工具绑定错误阻塞。[实现与边界](../107-runtime-and-session-contracts.md)。
+E104历史实现记录（后来E109部署/E112真实UI覆盖）：4旧缺陷用真实合成CLI复现，静态能力/明确终态/冻结会话契约与24方法验证；当时真实旧会话未迁移、UI受工具绑定错误阻塞；后续状态以E109/E112为准。[实现与边界](../107-runtime-and-session-contracts.md)。

@@ -1,6 +1,9 @@
 # 运行、接入与恢复
 
-2026-11-12，E095当前状态：用户完成登录并授权回主线、新AIC专用群。三个受管服务运行，双路history-only15秒；实际部署E093冻结产品、cut/积压审查及UI证据见[恢复记录](100-aic-group-resume-and-files.md)。仅新AIC测试群＋原两人私聊可测试，企业大群禁测；心跳PAUSED。系统Keychain/auth/doctor诊断等仍禁止，故障持久暂停、不自动反复认证。旧入口已[存档](history/through-E076/README.md)，[完整验收](../plans/completion/ACCEPTANCE_MATRIX.md)仍未完成。
+2026-11-13 E113整理，最近现场证据为[E112](113-reboot-recovery-and-runtime-network.md)：997e9fa已部署、三服务运行、两路真实任务/文件UI通过，心跳PAUSED，无开机自启。本页不是新健康检查。只在AIC测试群和原私聊验收，企业大群/旧群禁测。
+
+当前两gateway的代理只在启动环境中，尚未持久配置；不能直接无环境重启并假定与E112相同。重载先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只使用原manager和当前归属，不重放local内一次性恢复脚本。auth/doctor/Keychain操作等禁止，故障持久暂停，不自动认证。完整MUST仍未通过。
+
 ## 安装与工作目录
 
 需要Python≥3.11及POSIX；运行包仅使用标准库，构建需要setuptools。macOS arm64已有实际验证，Linux未实机认证。DWS及可选图片上传补充分别配置，不捆绑账号数据或二进制。新使用者在自己的项目检出中执行：
@@ -40,7 +43,7 @@ E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。�
 
 HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-当前服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
+E112检查点服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
 
 ```bash
 python3 -m dingtalk_bridge.cli health
@@ -86,7 +89,7 @@ python3 scripts/run_tests_with_evidence.py
 python3 scripts/verify_handoff.py
 ```
 
-诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察仍须等待真实时间，历史不可达/错误/维护不抹掉。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
+诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察已结束且故障/维护保留；当前部署的新观察仍需真实时长与截止账本，不能重置旧run。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
 
 产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；E073生成的受管入口支持doc/todo/calendar/mail/drive/minutes六类，固定身份/JSON，保持官方双流及退出码。它不是OS权限隔离，没有新增bot，见[入口边界](89-supervised-official-office-entrypoint.md)。
 

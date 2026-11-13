@@ -1,13 +1,11 @@
 # 当前任务
 
-E112当前（2026-11-13）：用户重启后的history残留已按归属恢复；首次DWS request_timeout保留，随后同目标读取成功，transport先补至固定cut、停机核积压后恢复两gateway。82旧任务/两个session/旧回执保持。首轮两Kimi任务因OAuth连接超时失败并真实通知；沿官方代理规则，只重载空闲gateway继承本机已有代理后，两条新UI任务实际Python1517/1003，群TXT及私聊JSON均客户端下载、快速查看、SHA一致。34项核验通过；产品仍997e9fa/21模块，原341冻结不重跑。三服务运行/DWS ready，心跳PAUSED；49/14/1、7 MUST未完整，项目未完成。 [本轮恢复与UI](../../docs/113-reboot-recovery-and-runtime-network.md)。
+E113文档整理（2026-11-13），没有新运行检查。最近真实检查点E112：产品997e9fa/21模块，三服务恢复、两路真实Kimi任务/原session/文件客户端下载打开通过；首次DWS超时和两Kimi失败保留。341是E108冻结三环境测试，E112另34核验。49/14/1，7 MUST未完整；心跳PAUSED，无开机自启。当前gateway代理仅启动环境、未持久配置。
 
-交付通用普通账号钉钉IM中间件，以官方DWS真人身份连接可替换Agent：群/私聊文字、媒体原件、真实任务、上下文和同会话交付。需求见[01-PRD](01-PRD.md)，不新增四runtime必过门槛；Kimi已满足至少一个执行器，Codex独立推进。
+交付官方DWS真人账号到可替换Agent的通用钉钉IM中间件，群/私聊文字、媒体原件、真实任务、多轮及同会话交付。CLI/HTTP/consumer独立，gateway可选；组织/runtime为配置，不新增bot。Kimi满足至少一个执行器，Codex仍超时，Pi/OpenClaw未验。原[PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)不变。
 
-E103历史检查点transport=E102/3fa5011，两个gateway=E099/e27547b；history-only15秒，三服务运行，心跳仍PAUSED。E102冻结源码/同wheel双Python各307通过、21模块/六入口；E103只重载transport，原账本/配置/session/gateway保持，唯一群任务实际Python1387、两确认回复及UI通过。见[发送凭据与部署](../../docs/106-send-evidence-contract.md)。
+当前解释统一在[需求/产出/路线](../../docs/102-user-requirements-and-roadmap.md)及[DWS风险与解决状态](../../docs/114-dws-risks-and-resolution.md)。DWS最初钥匙串故障根因未定，不把恢复或外层防护写成根治；E107暂停/E104未部署是已被后续覆盖的历史，不再重做。
 
-用户仅授权新AIC测试群与原veil/liev私聊；企业大群/旧群禁测。用户已登录成功，不等待密码、第二账号或旧恢复许可；助手auth/doctor/Keychain等禁止项沿用[AGENTS](../../AGENTS.md)。故障暂停，不自动反复认证。
+下一段先补通用runtime启动环境及DWS安全错误观察，再开展当前AIC部署持续运行；期间推进新协议入口、Codex环境诊断，最后干净检出/交接。具体退出条件见[关键路径](CRITICAL_PATH.md)、[TODO](TODO.md)。当前7个MUST缺口为R01/R04/R06/R07/R12/R13/R14，未降低判据。
 
-E098媒体、E100长文/上下文/status/cancel/new已真实UI闭环。矩阵49通过/14blocked/1partial，14 MUST中7未完整（R01/R04/R06/R07/R12/R13/R14）。[E101](../../docs/105-original-24h-observation.md)原24小时记录完整，但保留全部真实故障和维护，不是当前版本健康24h。
-
-下一步沿[关键路径](CRITICAL_PATH.md)：E112已补C03/C04真实任务/UI，继续运行环境持久配置及Codex独立诊断，剩余协议/引用/组合寻找新入口，原观察最终账本和最终交接。官方/GitHub优先，继续取CEO通用部分，不重做已过实验。当前项目未完成。
+只有AIC测试群及原veil/liev私聊可实测，企业大群/旧群禁止。助手auth/doctor/Keychain、自动认证修复和其他系统操作禁令沿用[AGENTS](../../AGENTS.md)；不用新计划扩大授权。旧任务/未知发送同key核对，不重放旧实验。

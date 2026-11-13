@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-13T08:05:42.717Z",
+  "issues": [
+    {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132",
+      "title": "[Bug] access_token 自动刷新失败：keychain 多槽位 refresh_token 不同步导致 HTTP 400",
+      "state": "closed",
+      "updated_at": "2026-09-21T14:43:37Z",
+      "comments": 1
+    },
+    {
+      "url": "https://github.com/openai/codex/issues/60687",
+      "title": "[macOS] Login keychain fails to unlock after password screen unlock while Computer Use's CUALockScreenGuardian is active (SecKeychainLogin -25293), stays broken until logout/reboot",
+      "state": "open",
+      "updated_at": "2026-11-11T13:07:48Z",
+      "comments": 1
+    }
+  ],
+  "release": {
+    "tag": "v1.0.68",
+    "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68",
+    "publishedAt": "2026-11-11T08:50:17Z"
+  },
+  "refreshMaintainerCommentUrl": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132#issuecomment-5762379764",
+  "keychainCommentStatus": "One community comment; not treated as official causal confirmation"
+}
