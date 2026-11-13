@@ -1,8 +1,8 @@
 # 文档导航
 
-2026-11-13 E116：当前87a3d39已部署，两路持久环境/真实Python/原session/文件下载打开通过。三服务运行，心跳ACTIVE，当前独立24h观察刚启动；系统Keychain最初根因与完整验收仍未完成。
+2026-11-13 E120：当前0c6f2da已部署，AIC Kimi/私聊Codex运行；Codex工具/续接/取消及下载UI通过，心跳ACTIVE。当前独立24h观察保留维护/故障，系统Keychain最初根因与完整验收仍未完成。
 
-[Codex取消实测缺口](119-codex-environment-and-cancellation-gap.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md) · [持久配置与安全诊断](115-runtime-environment-and-dws-diagnostics.md) · [部署及真实UI](116-persistent-environment-deployment-ui.md)
+[Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md) · [持久配置与安全诊断](115-runtime-environment-and-dws-diagnostics.md) · [部署及真实UI](116-persistent-environment-deployment-ui.md)
 
 | 要解决的问题 | 当前入口 |
 |---|---|
@@ -10,8 +10,8 @@
 | DWS究竟哪里坏了、什么已修/未修 | [风险与解决进度](114-dws-risks-and-resolution.md) |
 | 开通时怎样避免踩坑 | [通用接入经验](11-onboarding-lessons.md) |
 | 安装、运行和恢复 | [运行手册](15-service-runbook.md) · [通用CLI/HTTP/consumer](22-generic-tool-and-consumer.md) |
-| 最新真实UI、恢复与保留的失败 | [E116持久环境部署及两路UI](116-persistent-environment-deployment-ui.md) |
-| 当前部署代码与离线验证 | [E108/E109受管日志和部署](111-dws-interruption-recovery.md) · [E104 runtime契约](107-runtime-and-session-contracts.md)（已于E109部署） |
+| 最新真实UI、恢复与保留的失败 | [E120 Codex部署及私聊UI](121-codex-deployment-and-ui.md) · [E116两路持久环境UI](116-persistent-environment-deployment-ui.md) |
+| 当前部署代码与离线验证 | [E119 Codex原生中断/374回归](120-codex-native-interrupt.md) · [E115持久环境/诊断](115-runtime-environment-and-dws-diagnostics.md) |
 | 官方/GitHub有什么可抄 | [参考目录](references/README.md) · [CEO源码深挖与采用状态](references/ceo-deep-dive.md) · [采用清单](references/adoption-plan.md) · [固定来源](references/catalog.json) |
 | 通用设计及官方/自研边界 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [Agent接入面](architecture/agent-integration-map.md) · [身份边界](25-official-boundary-and-scenarios.md) |
 | 继续工作的唯一清单 | [AGENTS](../AGENTS.md) · [CURRENT_MISSION](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) · [TODO](../plans/completion/TODO.md) |
