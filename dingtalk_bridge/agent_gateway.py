@@ -15,7 +15,7 @@ from urllib.request import Request,urlopen
 from urllib.error import HTTPError
 from .agent_runtime import (LocalRuntime,RuntimeStopped,RuntimeFailure,RuntimeSessionError,RuntimeResultError,
                             timeout_seconds,validate_runtime_result,runtime_manifest,checked_session,require_capabilities,
-                            runtime_environment)
+                            runtime_environment,runtime_binding)
 from .consumer import Inbox,HydrationPending
 from .core import ArtifactIntegrityError
 from .message_model import media_parts
@@ -36,9 +36,13 @@ def session_contract(settings):
     """
     manifest=runtime_manifest(settings['runtime'])
     manifest.pop('health')
-    return {'gatewayContract':'workspace-task-v1','runtime':manifest,
+    contract={'gatewayContract':'workspace-task-v1','runtime':manifest,
             'model':settings['runtime'].get('model') or None,
             'toolContext':'official-office-v2' if official_tools_enabled(settings) else 'none'}
+    if settings['runtime']['kind']=='openclaw':
+        from .openclaw_runtime import host_identity
+        contract['localHost']=host_identity(settings['runtime'])
+    return contract
 
 
 def contract_json(contract):
@@ -157,7 +161,7 @@ class Gateway:
         ''')
         if 'runtime_context' not in {r[1] for r in self.db.execute('PRAGMA table_info(jobs)')}:
             self.db.execute('ALTER TABLE jobs ADD COLUMN runtime_context TEXT')
-        binding=json.dumps([scope,settings['runtime']['kind'],settings['runtime']['binary']])
+        binding=runtime_binding(scope,settings['runtime'])
         prior=self.db.execute('SELECT value FROM meta WHERE key="binding"').fetchone()
         if prior and prior[0]!=binding:self.close();raise ValueError('Gateway runtime/scope changed; use an explicit new deployment')
         with self.db:

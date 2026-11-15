@@ -321,3 +321,5 @@
 | 2026-11-15 E125 | 固定OpenClaw官方17文件，核exec每次新session/local独占/Gateway远端turn；原结果函数14检查+2篡改负例，2内部输入边界保留；既有DWS窗口内40/窗口后30超时脱敏汇总 | docs/126；openclaw-entry-contract-validation；observation-existing-dws-diagnostics | 未安装/调用OpenClaw或凭据、未改产品/绑定；继续local完整JSON/配置隔离/无凭据合成provider验证；超时仍request阶段，不重复真实探针 |
 
 | 2026-11-15 E126 | 固定OpenClaw完整local入口9样本，Python499/续接/独占/跨state/取消期限；7子进程及28/13秒无late；冻结guard聚合失败保留，24离线复核+5反例/2源固定负例 | docs/127；openclaw-local-host-validation | 下一薄适配/绑定与终态回归；真实OpenClaw/UI未验，21产品及服务不变，49/14/1和7 MUST保持 |
+
+| 2026-11-15 E127 | OpenClaw薄适配及config摘要绑定；完整CLI合成6样本/18检查、Python535/续接/新代隔离/取消；22新增方法，最终冻结源/同wheel双Python423×3、22模块177素材六入口许可一致 | docs/128；openclaw-adapter-validation | 未部署/迁移/真实模型或UI；首版replayInvalid误拒及419旧绿保留，下一必要父进程死亡/gateway链路或新官方协议入口；7 MUST保持 |

@@ -1,10 +1,10 @@
 # 当前进度入口
 
-E126补充：[OpenClaw完整本地宿主](127-openclaw-local-host-validation.md)已核合成续接/工具/状态锁/取消；尚未薄适配或真实模型/UI，产品与服务保持E123。原冻结guard统计失败及修正复核分开记录。
+E127：[OpenClaw薄适配](128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。
 
-当前E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
+历史历史E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
 
-OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](126-openclaw-turn-entry-contract.md)。
+E125入口函数与E126完整宿主是历史阶段，现由E127薄适配继续；真实模型/UI仍未验。见[入口契约](126-openclaw-turn-entry-contract.md)、[完整宿主](127-openclaw-local-host-validation.md)。
 
 2026-11-13 E120整理。本页不再维护另一份易过期的状态表。
 

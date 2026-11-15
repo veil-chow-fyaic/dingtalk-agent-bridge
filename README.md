@@ -1,10 +1,10 @@
 # DingTalk Agent Bridge
 
-E126补充：[OpenClaw完整本地宿主](docs/127-openclaw-local-host-validation.md)已核合成续接/工具/状态锁/取消；尚未薄适配或真实模型/UI，产品与服务保持E123。原冻结guard统计失败及修正复核分开记录。
+E127：[OpenClaw薄适配](docs/128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。
 
-E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
+历史E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
 
-OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](docs/126-openclaw-turn-entry-contract.md)。
+E125入口函数与E126完整宿主是历史阶段，现由E127薄适配继续；真实模型/UI仍未验。见[入口契约](docs/126-openclaw-turn-entry-contract.md)、[完整宿主](docs/127-openclaw-local-host-validation.md)。
 
 使用官方DWS授权的真人账号，将钉钉群聊/私聊接入可替换Agent的通用中间件。CLI、HTTP及持久consumer可独立使用；可选gateway负责本地执行、会话和结果交付。组织、账号、测试群及运行器均为配置，没有新建bot。
 
@@ -15,7 +15,7 @@ OpenClaw E125已核官方入口和结果函数，exec无同session续接，local
 ## 现有能力与边界
 
 - 官方DWS负责身份、通讯/历史、资源和办公；bridge负责多路由/白名单、持久任务/会话/发件箱、原件缓存、文件摘要、幂等及恢复。固定v1.0.67，history-only每15秒补读，不启动Stream消费者或杀共享bus。
-- Kimi实际Read/Write/Bash和交付已验；Codex原生中断修复后已部署并完成私聊实际执行/续接/取消/下载UI，Pi E123文字/文件/续接/取消UI已验，图片和OpenClaw未验，不能冒称四者所有能力已支持。通用runtime能力、可信终态和会话兼容性契约已部署。
+- Kimi实际Read/Write/Bash和交付已验；Codex原生中断修复后已部署并完成私聊实际执行/续接/取消/下载UI，Pi E123文字/文件/续接/取消UI已验，图片和OpenClaw真实模型/UI未验，不能冒称四者所有能力已支持。通用runtime能力、可信终态和会话兼容性契约已部署。
 - 文本、长文、常用文档、PNG/JPEG、WAV/MP4文件以及状态/取消/new有真实证据。原生语音条、独立video、部分引用及单消息多附件仍缺；音视频文件可播放不等于原生协议。
 - 原生图片上传仅作固定官方缺口的薄补充：PNG/JPEG≤2MiB，较大走file；输出单文件20MiB。运行器及工具wrapper不是OS沙箱。
 - DWS故障持久暂停、两并发、有限调用/清理与归属日志已部署；**钥匙串事故根因和永久修复未定**。重新登录/重启后的恢复不证明根治；普通终端直接DWS不受bridge防护。

@@ -43,15 +43,24 @@ class RuntimeResultError(RuntimeFailure,ValueError):
 def runtime_manifest(settings):
     """Reviewed adapter surface, not a probe of this installation or account."""
     kind=settings['kind']
-    if kind not in {'codex','kimi','pi'}:raise ValueError('Unknown local runtime')
+    if kind not in {'codex','kimi','pi','openclaw'}:raise ValueError('Unknown local runtime')
     capabilities=['text','workspace_files','image_files','tool_execution','resume','cancel','structured_result']
     if kind=='codex':capabilities.append('native_image_arguments')
-    if kind=='pi':capabilities.remove('image_files')
+    if kind in {'pi','openclaw'}:capabilities.remove('image_files')
     return {'kind':kind,'adapterContract':'local-cli-v1','resultContract':'text-files-v1',
-            'capabilities':sorted(capabilities),'imageInput':{'codex':'native-argument','kimi':'workspace-file','pi':'unsupported'}[kind],
+            'capabilities':sorted(capabilities),'imageInput':{'codex':'native-argument','kimi':'workspace-file','pi':'unsupported','openclaw':'unsupported'}[kind],
             'completion':{'codex':'turn.completed-and-exit-zero','kimi':'assistant-then-session.resume_hint',
-                          'pi':'agent_settled-final-stop-and-exit-zero'}[kind],
+                          'pi':'agent_settled-final-stop-and-exit-zero',
+                          'openclaw':'local-json-final-stop-and-exit-zero'}[kind],
             'health':'unknown'}
+
+
+def runtime_binding(scope, settings):
+    values = [scope, settings['kind'], settings['binary']]
+    if settings['kind'] == 'openclaw':
+        from .openclaw_runtime import host_identity
+        values.append(host_identity(settings))
+    return json.dumps(values)
 
 
 def require_capabilities(settings):
@@ -275,9 +284,16 @@ class LocalRuntime:
         runtime_manifest(settings);require_capabilities(settings)
         timeout_seconds(settings)
         runtime_environment(settings)
+        self.openclaw=None
+        if self.kind=='openclaw':
+            from .openclaw_runtime import OpenClawHost
+            self.openclaw=OpenClawHost(settings)
 
     def command(self,workspace,run_dir,session_id,images=()):
         executable=self.settings['binary']
+        if self.openclaw:
+            if images:raise RuntimeFailure('runtime_capability_unsupported','capability')
+            return self.openclaw.command(session_id,timeout_seconds(self.settings))
         if self.kind=='pi':
             if images:raise RuntimeFailure('runtime_capability_unsupported','capability')
             sessions=workspace/'.pi-sessions'
@@ -306,12 +322,22 @@ class LocalRuntime:
         environment=runtime_environment(self.settings)
         require_capabilities(self.settings)
         if session_id is not None:
-            (checked_pi_session if self.kind=='pi' else checked_session)(session_id)
+            (checked_pi_session if self.kind in {'pi','openclaw'} else checked_session)(session_id)
         workspace=Path(workspace);run_dir=Path(run_dir)
+        if self.openclaw:
+            if images:raise RuntimeFailure('runtime_capability_unsupported','capability')
+            if len(prompt.encode())>4*1024*1024:raise ValueError('Prompt too large; use file inputs')
+            environment=self.openclaw.environment(workspace,environment)
+            session_id=session_id or str(uuid.uuid4())
         # Never truncate an earlier attempt or consume its -o file as this turn.
         try:run_dir.mkdir(parents=True,exist_ok=False,mode=0o700)
         except FileExistsError as exc:raise RuntimeFailure('runtime_run_reuse') from exc
         args=self.command(workspace,run_dir,session_id,images)
+        if self.openclaw:
+            # Persist the UUID before tools can start, including a turn whose
+            # CLI crashes before it can print its one terminal JSON object.
+            if cancel.is_set():raise RuntimeStopped('cancelled')
+            on_session(session_id)
         if self.kind=='kimi':
             if len(prompt.encode())>65536:raise ValueError('Prompt too large; use file inputs')
             args+=['--prompt',prompt]
@@ -323,9 +349,9 @@ class LocalRuntime:
             try:
                 guard=[sys.executable,str(Path(__file__).with_name('runtime_guard.py')),
                     '--lifetime-fd',str(lifetime_read)]
-                if self.kind=='codex':guard.append('--native-interrupt')
+                if self.kind in {'codex','openclaw'}:guard.append('--native-interrupt')
                 guard+=['--',*args]
-                process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind in {'codex','pi'} else subprocess.DEVNULL,
+                process=subprocess.Popen(guard,cwd=workspace,stdin=subprocess.PIPE if self.kind in {'codex','pi','openclaw'} else subprocess.DEVNULL,
                     stdout=subprocess.PIPE,stderr=errors,start_new_session=True,pass_fds=(lifetime_read,),env=environment)
             except BaseException:
                 os.close(lifetime_write)
@@ -359,7 +385,7 @@ class LocalRuntime:
                 os.set_blocking(process.stdout.fileno(),False)
                 sel.register(process.stdout,selectors.EVENT_READ)
                 pending_input=memoryview(prompt.encode())
-                if self.kind in {'codex','pi'}:
+                if self.kind in {'codex','pi','openclaw'}:
                     os.set_blocking(process.stdin.fileno(),False)
                     sel.register(process.stdin,selectors.EVENT_WRITE)
                 while sel.get_map():
@@ -374,18 +400,25 @@ class LocalRuntime:
                             continue
                         data=os.read(key.fileobj.fileno(),65536)
                         if not data:
-                            if buffer:
+                            if buffer and not self.openclaw:
                                 if self.kind=='pi':raise RuntimeFailure('runtime_protocol_unterminated')
                                 consume(buffer);buffer=b''
                             sel.unregister(key.fileobj);continue
                         log.write(data);log.flush();buffer+=data
                         if len(buffer)>4*1024*1024:raise ValueError('Oversized runtime event')
-                        while b'\n' in buffer:
+                        while not self.openclaw and b'\n' in buffer:
                             line,buffer=buffer.split(b'\n',1);consume(line)
                     # Kimi 2.1.1 can retain background handles after its terminal resume hint.
                     # The terminal event follows the saved response; terminate only this owned CLI.
                     if terminal_error or (completed and self.kind!='pi'):break
                 if terminal_error:raise RuntimeFailure('runtime_turn_failed','unknown')
+                if self.openclaw:
+                    from .openclaw_runtime import terminal_text
+                    try:wait_unreaped(process,min(10,max(.01,deadline-time.monotonic())))
+                    except subprocess.TimeoutExpired as exc:raise RuntimeFailure('runtime_terminal_without_exit') from exc
+                    stop_owned_group(process)
+                    final_text=terminal_text(buffer,session_id,process.returncode)
+                    completed=True
                 if not completed:raise RuntimeFailure('runtime_terminal_missing')
                 if not observed_session:raise RuntimeSessionError('runtime_session_missing')
                 if self.kind in {'codex','pi'}:

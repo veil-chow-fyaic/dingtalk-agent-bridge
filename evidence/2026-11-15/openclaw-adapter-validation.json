@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E127",
+  "date": "2026-11-15",
+  "upstreamCommit": "41f2b981d240cab9e55b07cba991282a795317b5",
+  "sourceBaseCommit": "cfc72d6a4f32829eaf495f5fb8386ec0aeea3dcf",
+  "newTestMethods": 22,
+  "productModuleCount": 22,
+  "testScriptFixtureIntegrationAssetCount": 177,
+  "validation": {
+    "current_code_matches_frozen": true,
+    "current_test_assets_match_frozen": true,
+    "source_and_installed_test_assets_match": true,
+    "same_wheel": true,
+    "final_install_succeeded": true,
+    "wheel_module_set_exact": true,
+    "wheel_code_matches": true,
+    "wheel_license_bytes_match": true,
+    "py314_license_bytes_match": true,
+    "py311_license_bytes_match": true
+  },
+  "finalFrozenSuites": {
+    "source": {
+      "testsRun": 423,
+      "ok": true,
+      "refusalsRetained": 11,
+      "pythonVersion": "Python 3.14.6",
+      "logSha256": "6ad6f0b722bff6ee5d689e4b70a3bbeede98e80ce5a9f060a70a0aa108fcab3f"
+    },
+    "py314": {
+      "testsRun": 423,
+      "ok": true,
+      "refusalsRetained": 11,
+      "pythonVersion": "Python 3.14.6",
+      "logSha256": "3e86be490b1ce37bbe1a862f4079fca77e2c5ef8393dc090c46749d0e1488cf3"
+    },
+    "py311": {
+      "testsRun": 423,
+      "ok": true,
+      "refusalsRetained": 11,
+      "pythonVersion": "Python 3.11.15",
+      "logSha256": "1ebe58a6bd93c62ca23a0aeb99c998ebcbf3d4fe72eefcb08f4b3dabc199be25"
+    }
+  },
+  "wheelSha256": "4b31957ad5bab291358f3db13f1f6c83771ec3d90183d39f6da9ad7e8c1c0a68",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "3b4337aa197ae2a9cbe489eea79838b63b1181f69820fa2599616e2bdcbd5018",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "8ed834f87e04669f87f9ebe9296a8e3431813527d621b61ff3b0746e7e0cf62e",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "licenseSha256": {
+    "licenses/ceo-agent-service.txt": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85"
+  },
+  "entrypoints": {
+    "py314": {
+      "dab": 0,
+      "dab-bridge": 0,
+      "dab-agent": 0,
+      "dab-consume": 0,
+      "dab-doctor": 0,
+      "dab-service": 0
+    },
+    "py311": {
+      "dab": 0,
+      "dab-bridge": 0,
+      "dab-agent": 0,
+      "dab-consume": 0,
+      "dab-doctor": 0,
+      "dab-service": 0
+    }
+  },
+  "integration": {
+    "productCodeSha256": {
+      "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+      "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+      "openclaw_runtime.py": "c113c24c4501dd3d2cd34968aa6965d17803c8956574283f42209ecc7a0e3bc0",
+      "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+      "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+      "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+      "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+      "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+      "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+      "agent_gateway.py": "3b4337aa197ae2a9cbe489eea79838b63b1181f69820fa2599616e2bdcbd5018",
+      "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+      "core.py": "8ed834f87e04669f87f9ebe9296a8e3431813527d621b61ff3b0746e7e0cf62e",
+      "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+      "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+      "cli.py": "d3d7daf61ef3954b6e6e69174ab20bec0d000fc84683f6b54973348e890b187e",
+      "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+      "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+      "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+      "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+      "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+      "__main__.py": "e49e796140f109cb8c5265019cad79b7602a3a5f86e0468f894e199cbe5ec53b",
+      "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+    },
+    "driverSha256": "72ecfe94af689ae7cd2439be51f5aa80c10e01b326639f07a242ac47c97d4ac2",
+    "cases": [
+      {
+        "phase": "first",
+        "status": "returned",
+        "result": {
+          "text": "ADAPTER_FIRST",
+          "files": []
+        },
+        "seconds": 5.230763333005598
+      },
+      {
+        "phase": "resume",
+        "status": "returned",
+        "result": {
+          "text": "ADAPTER_RESUME",
+          "files": []
+        },
+        "seconds": 5.1315997909987345
+      },
+      {
+        "phase": "tool",
+        "status": "returned",
+        "result": {
+          "text": "ADAPTER_TOOL",
+          "files": [
+            "exports/value.json"
+          ]
+        },
+        "seconds": 6.15563758398639
+      },
+      {
+        "phase": "new",
+        "status": "returned",
+        "result": {
+          "text": "ADAPTER_NEW",
+          "files": []
+        },
+        "seconds": 4.525409458001377
+      },
+      {
+        "phase": "length",
+        "status": "rejected",
+        "code": "runtime_turn_failed",
+        "seconds": 6.0047301659942605
+      },
+      {
+        "phase": "cancel",
+        "status": "rejected",
+        "code": "cancelled",
+        "seconds": 6.825934292020975
+      }
+    ],
+    "checks": {
+      "first_contract": true,
+      "resume_contract": true,
+      "same_uuid": true,
+      "actual_history_resume": true,
+      "artifact_contract": true,
+      "actual_python_535": true,
+      "new_generation_result": true,
+      "new_generation_no_old_history": true,
+      "length_rejected": true,
+      "cancel_classified": true,
+      "tool_started_before_cancel": true,
+      "no_late_artifact": true,
+      "owned_tool_exited": true,
+      "native_interrupt_confirmed": true,
+      "invalid_turns_not_delivered": true,
+      "config_never_rewritten": true,
+      "only_blocked_known_probes": true,
+      "source_matches_after": true
+    },
+    "finalCodeDelta": {
+      "ok": true,
+      "checks": {
+        "only_host_config_validation_changed": true,
+        "all_other_modules_identical": true,
+        "same_successful_config_accepted_by_final": true
+      },
+      "changedFunctions": [
+        "validate_host_config"
+      ],
+      "officialCliRerun": false
+    },
+    "realProvider": false,
+    "officialCliRerunAfterConfigOnlyHardening": false,
+    "capturedWorkspaceAudit": {
+      "checks": {
+        "first": true,
+        "resume": true,
+        "tool": true,
+        "new": true,
+        "length": true
+      },
+      "rawOutputSha256": {
+        "first": "8678491d2b6d0b8aa16a30933655bf66a528d8871a59e0c588f5ffec4b6c0960",
+        "resume": "6e467caac6a183f9eb56da7122df90292975d62eda1b75d64e2e182f6a5d4bd6",
+        "tool": "c4af0bdd8e8c8d181cc6e3d911cc6fea1449e5db2af1da788b1f314dbcac876b",
+        "new": "47c66254df27c0bf40275c0f26d6f5dba22f88742f4ef8b006b9f3dba60fc17d",
+        "length": "83404fa2da5730b0e011e0b7c2d23d29df78d50042376b9514cf5d7d25494820"
+      },
+      "auditSha256": "4fd43d3bcb39e1cc5e2f9cdea2ae0eca765fc85a8cb8f719819a8a976b9dbc24",
+      "newCLICalls": 0
+    }
+  },
+  "retainedFailures": [
+    {
+      "stage": "initial-unit",
+      "testsRun": 18,
+      "failures": 2,
+      "cause": "test path spelling on macOS /var versus /private/var; corrected fixture, product path checks unchanged"
+    },
+    {
+      "stage": "initial-CLI-integration",
+      "cases": 1,
+      "cause": "case-alias of build path refused by test read tripwire before provider; original failure retained"
+    },
+    {
+      "stage": "initial-product-integration",
+      "cases": 3,
+      "cause": "successful Python artifact created; replayInvalid true incorrectly rejected; fixed adapter semantics and added regression"
+    }
+  ],
+  "historicalFrozenSuites": [
+    {
+      "stage": "before-replay-fix",
+      "eachTestsRun": 419,
+      "environments": 3,
+      "allPassed": true,
+      "integrationSucceeded": false
+    },
+    {
+      "stage": "before-nested-include-hardening",
+      "eachTestsRun": 420,
+      "environments": 3,
+      "allPassed": true,
+      "integrationSucceeded": true
+    }
+  ],
+  "privateDigestLedgerSha256": "a05f247f40e756d6812233cf7b08b90a3879c3318c94ec5ef398cbc43bd5c269",
+  "deployed": false,
+  "bindingMigrated": false,
+  "serviceOperations": false,
+  "dwsOrRealModelCalls": false,
+  "rawEvidenceLocation": "local/openclaw-adapter-20261115",
+  "currentKnownDeployment": "E123/e7d82cc",
+  "remainingAcceptance": {
+    "passed": 49,
+    "blocked": 14,
+    "partial": 1,
+    "incompleteMust": 7
+  },
+  "limits": [
+    "Restricted dedicated config contract; no ambient credential copy or authentication",
+    "Test read/launch tripwire is not an OS sandbox; no guarantee for arbitrary production binary/config",
+    "Images unsupported; actual provider and DingTalk UI unverified",
+    "Whole CLI six-case run precedes configuration-only hardening; exact immutable snapshots and offline delta audit retained",
+    "No final project completion or clean handoff claimed"
+  ]
+}

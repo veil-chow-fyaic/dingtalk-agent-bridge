@@ -1,6 +1,7 @@
 from contextlib import closing, nullcontext, redirect_stdout
 import io
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import sqlite3
@@ -54,6 +55,36 @@ class RuntimeBindingMigrationTests(unittest.TestCase):
 
     def plan(self):
         return migration.create_plan(self.root, self.old, self.new)
+
+    def openclaw_candidate(self, name='host'):
+        from test_openclaw_runtime import configuration
+        host=self.root/'local'/(name+'.json');host.write_text(json.dumps(configuration()))
+        return {'kind':'openclaw','binary':'synthetic-openclaw','model':'fixture/model',
+                'openclaw':{'configPath':str(host),'configSha256':hashlib.sha256(host.read_bytes()).hexdigest()}}
+
+    def test_openclaw_migration_includes_host_identity_and_retains_history(self):
+        candidate=json.loads(self.old.read_text());candidate['runtime']=self.openclaw_candidate()
+        self.new.write_text(json.dumps(candidate));before=self.view()
+        with patch('subprocess.Popen',side_effect=AssertionError('migration must not run CLI')):
+            plan=self.plan();self.execute(plan)
+        after=self.view();self.assertEqual(before['jobs'],after['jobs']);self.assertEqual(before['outbox'],after['outbox'])
+        binding=json.loads(dict(after['meta'])['binding'])
+        self.assertEqual(binding[3]['configSha256'],candidate['runtime']['openclaw']['configSha256'])
+        self.assertEqual(binding[3]['agentId'],'main')
+
+    def test_openclaw_host_change_still_requires_native_new(self):
+        candidate=json.loads(self.old.read_text());candidate['runtime']=self.openclaw_candidate()
+        self.new.write_text(json.dumps(candidate));self.execute(self.plan());self.old.write_text(json.dumps(candidate))
+        candidate['runtime']=self.openclaw_candidate('host-v2');self.new.write_text(json.dumps(candidate))
+        self.mutate('INSERT INTO meta VALUES("session_id","synthetic-active-session")')
+        with self.assertRaisesRegex(ValueError,'explicit_new_required'):self.plan()
+        self.mutate('DELETE FROM meta WHERE key="session_id"')
+        self.mutate('UPDATE jobs SET command="ordinary task" WHERE id="3"')
+        with self.assertRaisesRegex(ValueError,'completed_new'):self.plan()
+        self.mutate('UPDATE jobs SET command="new" WHERE id="3"')
+        self.mutate('UPDATE meta SET value="2" WHERE key="generation"')
+        self.execute(self.plan())
+        self.assertIn('runtime_binding_history/2',dict(self.view()['meta']))
 
     def view(self):
         with closing(sqlite3.connect(self.database)) as db:

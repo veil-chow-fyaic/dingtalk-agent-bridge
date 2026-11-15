@@ -16,7 +16,7 @@ from urllib.error import HTTPError
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from .routing import route_configs
-from .agent_runtime import timeout_seconds, runtime_environment
+from .agent_runtime import timeout_seconds, runtime_environment, runtime_binding
 from .core import credential_store_diagnostic
 from .dws_access import DWSAccess, REASONS, access_diagnostic
 
@@ -147,7 +147,12 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
                 timeout_valid = False
             add(scope, 'runtime_timeout_seconds', 'ok' if timeout_valid else 'error')
             binary = runtime.get('binary')
-            supported = runtime['kind'] in ('kimi', 'codex', 'pi') and isinstance(binary, str)
+            supported = runtime['kind'] in ('kimi', 'codex', 'pi', 'openclaw') and isinstance(binary, str)
+            if runtime['kind']=='openclaw':
+                from .openclaw_runtime import validate_host_config
+                from .agent_runtime import RuntimeFailure
+                try:validate_host_config(runtime)
+                except (RuntimeFailure, ValueError):supported=False
             # Runtime cwd is its task workspace, so root-relative binaries do
             # not have the same meaning as DWS's root-relative binary path.
             supported = supported and (Path(binary).is_absolute() or '/' not in binary)
@@ -162,7 +167,7 @@ def diagnose(root, config_path='local/service-config.json', agents=(), *, live=F
             db = root / 'local/agents' / key / 'tasks.sqlite3'
             if db.exists():
                 meta, counts = meta_and_counts(db, 'jobs')
-                expected = json.dumps([binding_scope, runtime['kind'], runtime['binary']])
+                expected = runtime_binding(binding_scope,runtime)
                 add(scope, 'runtime_binding', 'ok' if meta.get('binding') == expected else 'error')
                 attention = sum(counts.get(k, 0) for k in ('blocked', 'failed', 'interrupted'))
                 add(scope, 'retained_task_failures', 'warning' if attention else 'ok', {'count': attention})

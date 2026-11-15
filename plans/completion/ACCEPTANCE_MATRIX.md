@@ -74,3 +74,5 @@ E100补齐长文两格及R08群控制，当前49通过/14blocked/1partial；14 M
 E102/E103回执一致性修复及真实任务正向已完成，不增加既有矩阵格；源码/同wheel双Python各307，transport=3fa5011、gateway=e27547b。
 
 历史阶段：E104当时24方法/三环境331为离线候选，E105 Codex60秒请求失败，E106四专项只核已采事件，E107当时调用暂停。随后E109已部署、E112恢复并补真实任务/续接/文件UI；不新增本表媒体格或降低判据。
+
+E127仅补通用runtime演进及R01/R14离线证据：OpenClaw薄适配、6完整合成CLI样本/18检查、最终冻结源/同wheel双Python423×3。未部署或真实模型/UI，原49/14/1和7 MUST缺口不变；非新增四runtime全过门槛。详见[证据](../../evidence/2026-11-15/openclaw-adapter-validation.json)。

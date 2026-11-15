@@ -1,12 +1,12 @@
 # 钉钉 bridge 工作约定
 
-E126当前状态（2026-11-15）：OpenClaw官方41f2b981已在local冻结构建，65,102原文件未改；完整agent --local九样本验stdin/同session/跨state隔离/实际Python499/独占锁/取消/工具期限及终态。取消与deadline各7自有进程退出，28/13秒无late；length虽exit0仍为partial，必须核stop。冻结工具21检查20过，1个guard聚合把已阻止的build-info探测误计凭据；原exit1保留，独立离线24检查及5反例、2源固定负例通过，非重跑全量。独立HOME/state/config/cache及新profile；早期mac-control.token读取在open前被拦截，无真实凭据读取，login-shell探测仍被拦；不是OS沙箱或任意生产配置已隔离。尚未注册/迁移/部署OpenClaw，下一段薄适配及绑定/终态回归。21产品模块仍e7d82cc、最近真实部署/UI E123，原观察/Qwen已收尾不重做；49/14/1及7 MUST缺口不变。见[完整宿主证据](docs/127-openclaw-local-host-validation.md)。
+E127当前状态（2026-11-15）：OpenClaw本地薄适配已实现，固定41f2b981完整CLI合成联调6样本/18检查通过：stdin、UUID续接、实际Python535/JSON、新generation隔离、length拒绝、原生取消后12秒无late。专用配置路径/摘要进binding与session契约，三处workspace替换、独立state/cache/profile、拒绝嵌套include/远端ACP/插件发现。首版replayInvalid=true误拒成功副作用已修，原失败与419×3旧绿保留；最终22新增方法、冻结源/同wheel双Python各423通过，22模块/177素材/六入口/许可一致。22产品模块未部署，现有服务仍E123/e7d82cc，AIC Kimi/原私聊Pi；真实OpenClaw模型/UI及图片未验。下一本地独立项可核父进程死亡或gateway/new全链路，禁止复制既有凭据去造真实OpenClaw验收。原观察/Qwen/旧UI不重复，49/14/1及7 MUST保持。见[薄适配与冻结验证](docs/128-openclaw-adapter.md)。
 
 ## 同一项目与当前检查点
 
 只在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录仅为入口。先读plans/completion的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志；同一01-PRD与ACCEPTANCE_MATRIX标准，历史“下一步”不当当前指令。
 
-交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文及同会话交付。CLI/HTTP/consumer不绑定测试组织或Agent。官方DWS负责身份、通讯、历史、资源和办公，bridge补路由、白名单、任务、会话、幂等、文件与恢复。至少一个本地执行器即可；Kimi真工具已满足，Codex已验并保留旧超时/取消失败，Pi E123文字/文件/续接/取消UI已验，Pi图片和OpenClaw未验。公开官方/GitHub优先；CEO任务/交付/runtime契约优先参考，Qwen作通道参照，不转回本地WeCom考古。
+交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文及同会话交付。CLI/HTTP/consumer不绑定测试组织或Agent。官方DWS负责身份、通讯、历史、资源和办公，bridge补路由、白名单、任务、会话、幂等、文件与恢复。至少一个本地执行器即可；Kimi真工具已满足，Codex已验并保留旧超时/取消失败，Pi E123文字/文件/续接/取消UI已验，Pi图片和OpenClaw真实模型/UI未验。公开官方/GitHub优先；CEO任务/交付/runtime契约优先参考，Qwen作通道参照，不转回本地WeCom考古。
 
 E103历史检查点：transport已加载E102/3fa5011的发送凭据校验；两个gateway保留E099/e27547b的结果契约。E102只改core，其他20模块与E099相同。固定源码/同wheel双Python各307通过，21模块/六入口/许可已核；这是E102冻结验证，不反复重跑。三个受管服务运行，history-only15秒，心跳独立保持PAUSED。
 

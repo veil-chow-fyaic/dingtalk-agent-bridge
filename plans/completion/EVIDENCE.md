@@ -452,3 +452,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E126 — OpenClaw完整本地宿主与隔离边界
 - [记录](../../docs/127-openclaw-local-host-validation.md)、[证据](../../evidence/2026-11-15/openclaw-local-host-validation.json)：固定41f2b981/36文件；65,102源文件未改，local构建成功。9个CLI样本验stdin/续接/跨state、Python499/JSON、锁拒绝、SIGINT130/期限1、7自有进程及28/13秒无late、length exit0/显式partial、null原始finish规范化stop。
 - 冻结21检查20过/1guard元数据误计，原exit1不改；独立24复核、5篡改反例及2源固定负例通过。全新profile避免App凭据命名空间，早期token open前被阻止；login-shell PATH探测保持拒绝，不称任意配置或OS沙箱已安全。无产品/服务/真实模型/UI变更，49/14/1及7 MUST保持。下一段薄适配/绑定和终态回归，不重跑旧观察/Qwen/UI。
+
+## E127 — OpenClaw本地薄适配、配置绑定和严格终态
+- [说明](../../docs/128-openclaw-adapter.md)、[脱敏证据](../../evidence/2026-11-15/openclaw-adapter-validation.json)：固定41f2b981/原36+补4源文件；agent --local/stdin、完整UUID提前入账、专用不可变config/profile/state/cache、整JSON/stop/exit0及原生SIGINT，复用原任务/outbox。配置摘要进入binding/session，native new/零未决/显式迁移约束保留，旧三runtime绑定字节不变。
+- 官方完整CLI合成6样本/18检查通过：Python535实际写JSON/通用files返回、同UUID续接、新generation隔离、length拒绝、取消后至少12秒无late。成功副作用replayInvalid=true不等于失败，首版误判和419×3旧绿保留；完整样本属于嵌套include收紧前版本，20方法配置/终态+2迁移新增后最终冻结源及同wheel双Python各423通过，22模块/177素材/六入口/许可一致。只收紧配置的AST/字节/同配置离线审计3检查通过，未重复CLI。
+- 无真实模型/DWS/UI/认证/凭据复制/服务操作/绑定迁移/远程发布。新代码未部署，最近现场仍E123/e7d82cc。原观察/Qwen/旧样本不重跑，49/14/1及7 MUST未完整，最终自检不勾选。

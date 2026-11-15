@@ -13,7 +13,7 @@ from pathlib import Path
 import sqlite3
 import time
 
-from dingtalk_bridge.agent_runtime import LocalRuntime
+from dingtalk_bridge.agent_runtime import LocalRuntime, runtime_binding
 from dingtalk_bridge.routing import route_configs
 from dingtalk_bridge.service_manager import Manager
 
@@ -64,8 +64,8 @@ def target_paths(root, from_config, to_config):
         raise ValueError('route_not_unique')
     route = routes[0]
     scope = json.dumps([route['accountId'], route['profile'], route['group'], route['conversationType']])
-    old_binding = json.dumps([scope, old['runtime']['kind'], old['runtime']['binary']])
-    new_binding = json.dumps([scope, new['runtime']['kind'], new['runtime']['binary']])
+    old_binding = runtime_binding(scope, old['runtime'])
+    new_binding = runtime_binding(scope, new['runtime'])
     if old_binding == new_binding:
         raise ValueError('binding_unchanged')
     return (root / 'local/agents' / digest(scope.encode())[:24] / 'tasks.sqlite3',

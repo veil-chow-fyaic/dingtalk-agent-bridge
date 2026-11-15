@@ -1,6 +1,6 @@
 # 当前任务池
 
-E126当前状态（2026-11-15）：OpenClaw官方41f2b981已在local冻结构建，65,102原文件未改；完整agent --local九样本验stdin/同session/跨state隔离/实际Python499/独占锁/取消/工具期限及终态。取消与deadline各7自有进程退出，28/13秒无late；length虽exit0仍为partial，必须核stop。冻结工具21检查20过，1个guard聚合把已阻止的build-info探测误计凭据；原exit1保留，独立离线24检查及5反例、2源固定负例通过，非重跑全量。独立HOME/state/config/cache及新profile；早期mac-control.token读取在open前被拦截，无真实凭据读取，login-shell探测仍被拦；不是OS沙箱或任意生产配置已隔离。尚未注册/迁移/部署OpenClaw，下一段薄适配及绑定/终态回归。21产品模块仍e7d82cc、最近真实部署/UI E123，原观察/Qwen已收尾不重做；49/14/1及7 MUST缺口不变。见[完整宿主证据](../../docs/127-openclaw-local-host-validation.md)。
+E127当前状态（2026-11-15）：OpenClaw本地薄适配已实现，固定41f2b981完整CLI合成联调6样本/18检查通过：stdin、UUID续接、实际Python535/JSON、新generation隔离、length拒绝、原生取消后12秒无late。专用配置路径/摘要进binding与session契约，三处workspace替换、独立state/cache/profile、拒绝嵌套include/远端ACP/插件发现。首版replayInvalid=true误拒成功副作用已修，原失败与419×3旧绿保留；最终22新增方法、冻结源/同wheel双Python各423通过，22模块/177素材/六入口/许可一致。22产品模块未部署，现有服务仍E123/e7d82cc，AIC Kimi/原私聊Pi；真实OpenClaw模型/UI及图片未验。下一本地独立项可核父进程死亡或gateway/new全链路，禁止复制既有凭据去造真实OpenClaw验收。原观察/Qwen/旧UI不重复，49/14/1及7 MUST保持。见[薄适配与冻结验证](../../docs/128-openclaw-adapter.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -34,7 +34,8 @@ E126当前状态（2026-11-15）：OpenClaw官方41f2b981已在local冻结构建
 - [x] E122/E123 Pi 0.84.2按同契约接入，396×3及私聊实际Python/续接/取消/文件UI通过；图片能力未声明。
 - [x] E125固定OpenClaw官方17文件，区分exec新session/local独占/Gateway远端归属，原结果函数14检查及2源码篡改负例；没有完整CLI/宿主验证。
 - [x] E126 OpenClaw local完整合成宿主九样本及24离线复核：stdin/整对象JSON、同session/跨state、Python499、独占锁、取消/期限；冻结guard聚合失败及原始日志保留。
-- [ ] OpenClaw薄适配：明确profile/config/state及完整UUID、终态严格核对/原生SIGINT/绑定兼容性，再按授权决定真实模型/UI；四runtime全过不是原R09新增门槛。
+- [x] E127 OpenClaw薄适配：明确profile/config/state/完整UUID、整对象终态核对、原生SIGINT和配置摘要绑定，合成完整CLI联调及迁移回归。
+- [ ] OpenClaw真实provider/钉钉UI仍未验；必要时先核父进程死亡或gateway/new全链路，不复制既有凭据，不把四runtime全过加入原R09门槛。
 - [x] E124 Qwen admitted/completed与inbox/job/outbox事务边界已对照，5真实SIGKILL方法在冻结源/同wheel双Python各通过；现有实现无需重写，上游满队列/落盘失败降级不采用。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。
 - [ ] 办公更多流程/外部群/跨组织/流式审批保持R15–R17 SHOULD，不擅加成员/改权限或冒称已支持。

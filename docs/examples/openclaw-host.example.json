@@ -1,0 +1,67 @@
+{
+  "agents": {
+    "defaults": {
+      "systemAgent": {
+        "agentId": "main"
+      },
+      "workspace": "${DAB_OPENCLAW_WORKSPACE}",
+      "cwd": "${DAB_OPENCLAW_WORKSPACE}",
+      "repoRoot": "${DAB_OPENCLAW_WORKSPACE}",
+      "skipBootstrap": true,
+      "skills": [],
+      "model": {
+        "primary": "fixture/model"
+      },
+      "models": {
+        "fixture/model": {
+          "agentRuntime": {
+            "id": "openclaw"
+          }
+        }
+      }
+    },
+    "entries": {
+      "main": {}
+    }
+  },
+  "plugins": {
+    "enabled": false
+  },
+  "env": {
+    "shellEnv": {
+      "enabled": false
+    }
+  },
+  "tools": {
+    "allow": [
+      "exec",
+      "process"
+    ],
+    "codeMode": false,
+    "swarm": false,
+    "exec": {
+      "host": "gateway",
+      "security": "full",
+      "ask": "off"
+    },
+    "fs": {
+      "workspaceOnly": true
+    }
+  },
+  "models": {
+    "mode": "replace",
+    "providers": {
+      "fixture": {
+        "api": "openai-completions",
+        "apiKey": "<operator-managed dedicated provider configuration>",
+        "baseUrl": "https://api.example.invalid/v1",
+        "models": [
+          {
+            "id": "model",
+            "name": "Fixture"
+          }
+        ]
+      }
+    }
+  }
+}

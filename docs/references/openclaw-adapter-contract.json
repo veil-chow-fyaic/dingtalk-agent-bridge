@@ -1,0 +1,24 @@
+{
+  "repository": "openclaw/openclaw",
+  "commit": "41f2b981d240cab9e55b07cba991282a795317b5",
+  "baseManifest": "openclaw-local-host-contract.json",
+  "files": [
+    {
+      "path": "src/config/env-substitution.ts",
+      "sha256": "c9f591aa21e3b60efb12829e5da839cbbd671516ac8f43c54e757406476ce824"
+    },
+    {
+      "path": "src/agents/embedded-agent-runner/result.types.ts",
+      "sha256": "8f65399f684f37502044e9c6c01ea9644f117d09f87f488bef569cded6f71a30"
+    },
+    {
+      "path": "src/agents/embedded-agent-subscribe.handlers.tools.completion.ts",
+      "sha256": "e9ef41bee389719449037aeec70ddee1ac7e85bc28ac99c6fbfaba97f2c21b86"
+    },
+    {
+      "path": "src/agents/tool-replay-safety.ts",
+      "sha256": "3a10361d06f4500b119e28c3a4dfbf52a7e8d51715ab08d0f51b09e5b145dc6f"
+    }
+  ],
+  "scope": "Additional configuration substitution and successful-side-effect replay semantics; not upstream integration tests."
+}
