@@ -1,6 +1,6 @@
 # 当前任务池
 
-E127当前状态（2026-11-15）：OpenClaw本地薄适配已实现，固定41f2b981完整CLI合成联调6样本/18检查通过：stdin、UUID续接、实际Python535/JSON、新generation隔离、length拒绝、原生取消后12秒无late。专用配置路径/摘要进binding与session契约，三处workspace替换、独立state/cache/profile、拒绝嵌套include/远端ACP/插件发现。首版replayInvalid=true误拒成功副作用已修，原失败与419×3旧绿保留；最终22新增方法、冻结源/同wheel双Python各423通过，22模块/177素材/六入口/许可一致。22产品模块未部署，现有服务仍E123/e7d82cc，AIC Kimi/原私聊Pi；真实OpenClaw模型/UI及图片未验。下一本地独立项可核父进程死亡或gateway/new全链路，禁止复制既有凭据去造真实OpenClaw验收。原观察/Qwen/旧UI不重复，49/14/1及7 MUST保持。见[薄适配与冻结验证](../../docs/128-openclaw-adapter.md)。
+E128当前状态（2026-11-15）：固定E127/500191a的22模块，OpenClaw官方CLI父进程死亡与gateway/new链路25检查通过；仅两个合成provider turn。SIGKILL自有gateway后7子进程退出，工具开始后12.06秒无late；两次恢复保持interrupted/原UUID/契约且不重做，原生new归档后新UUID/目录无旧历史。新增3方法在冻结源/同wheel双Python各3通过；旧423×3不重跑，不称426全量。产品、服务、绑定均未改，最近真实部署/UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；OpenClaw真实provider/UI未验，不复制既有凭据。父进程死亡及已过观察/Qwen/旧UI不重复，下一独立项回到剩余MUST的新官方协议/UI入口。49/14/1及7 MUST保持。见[父进程死亡与恢复验证](../../docs/129-openclaw-gateway-lifecycle.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -35,7 +35,8 @@ E127当前状态（2026-11-15）：OpenClaw本地薄适配已实现，固定41f2
 - [x] E125固定OpenClaw官方17文件，区分exec新session/local独占/Gateway远端归属，原结果函数14检查及2源码篡改负例；没有完整CLI/宿主验证。
 - [x] E126 OpenClaw local完整合成宿主九样本及24离线复核：stdin/整对象JSON、同session/跨state、Python499、独占锁、取消/期限；冻结guard聚合失败及原始日志保留。
 - [x] E127 OpenClaw薄适配：明确profile/config/state/完整UUID、整对象终态核对、原生SIGINT和配置摘要绑定，合成完整CLI联调及迁移回归。
-- [ ] OpenClaw真实provider/钉钉UI仍未验；必要时先核父进程死亡或gateway/new全链路，不复制既有凭据，不把四runtime全过加入原R09门槛。
+- [x] E128官方CLI父进程死亡/gateway恢复/new全链路25检查、3专项×3环境通过；22产品模块不改。
+- [ ] OpenClaw真实provider/钉钉UI仍未验；无专用现成授权配置，不复制既有凭据，不把四runtime全过加入原R09门槛。
 - [x] E124 Qwen admitted/completed与inbox/job/outbox事务边界已对照，5真实SIGKILL方法在冻结源/同wheel双Python各通过；现有实现无需重写，上游满队列/落盘失败降级不采用。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。
 - [ ] 办公更多流程/外部群/跨组织/流式审批保持R15–R17 SHOULD，不擅加成员/改权限或冒称已支持。

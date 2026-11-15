@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E127当前状态（2026-11-15）：OpenClaw本地薄适配已实现，固定41f2b981完整CLI合成联调6样本/18检查通过：stdin、UUID续接、实际Python535/JSON、新generation隔离、length拒绝、原生取消后12秒无late。专用配置路径/摘要进binding与session契约，三处workspace替换、独立state/cache/profile、拒绝嵌套include/远端ACP/插件发现。首版replayInvalid=true误拒成功副作用已修，原失败与419×3旧绿保留；最终22新增方法、冻结源/同wheel双Python各423通过，22模块/177素材/六入口/许可一致。22产品模块未部署，现有服务仍E123/e7d82cc，AIC Kimi/原私聊Pi；真实OpenClaw模型/UI及图片未验。下一本地独立项可核父进程死亡或gateway/new全链路，禁止复制既有凭据去造真实OpenClaw验收。原观察/Qwen/旧UI不重复，49/14/1及7 MUST保持。见[薄适配与冻结验证](docs/128-openclaw-adapter.md)。
+E128当前状态（2026-11-15）：固定E127/500191a的22模块，OpenClaw官方CLI父进程死亡与gateway/new链路25检查通过；仅两个合成provider turn。SIGKILL自有gateway后7子进程退出，工具开始后12.06秒无late；两次恢复保持interrupted/原UUID/契约且不重做，原生new归档后新UUID/目录无旧历史。新增3方法在冻结源/同wheel双Python各3通过；旧423×3不重跑，不称426全量。产品、服务、绑定均未改，最近真实部署/UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；OpenClaw真实provider/UI未验，不复制既有凭据。父进程死亡及已过观察/Qwen/旧UI不重复，下一独立项回到剩余MUST的新官方协议/UI入口。49/14/1及7 MUST保持。见[父进程死亡与恢复验证](docs/129-openclaw-gateway-lifecycle.md)。
 
 ## 同一项目与当前检查点
 

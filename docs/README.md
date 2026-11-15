@@ -1,6 +1,8 @@
 # 文档导航
 
-2026-11-15 E127：OpenClaw薄适配及专用配置绑定已实现，官方CLI合成联调通过；真实模型/UI未验，22模块未部署。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi。原观察/Qwen已收尾，系统根因、自然refresh、历史截止覆盖及完整验收缺口保持。
+2026-11-15 E128：[OpenClaw父进程死亡/gateway恢复/new](129-openclaw-gateway-lifecycle.md)25检查及3专项×3环境通过；22产品模块、现场服务不改。最新产品候选仍500191a，真实部署/UI仍E123/e7d82cc。
+
+历史E127：OpenClaw薄适配及专用配置绑定已实现，官方CLI合成联调通过；真实模型/UI未验，22模块未部署。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi。原观察/Qwen已收尾，系统根因、自然refresh、历史截止覆盖及完整验收缺口保持。
 
 [OpenClaw薄适配](128-openclaw-adapter.md) · [OpenClaw入口与边界](126-openclaw-turn-entry-contract.md) · [观察收尾与Qwen事务](125-observation-closeout-and-qwen-transactions.md) · [Pi部署及UI](124-pi-deployment-and-ui.md) · [Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md)
 
@@ -10,8 +12,8 @@
 | DWS究竟哪里坏了、什么已修/未修 | [风险与解决进度](114-dws-risks-and-resolution.md) |
 | 开通时怎样避免踩坑 | [通用接入经验](11-onboarding-lessons.md) |
 | 安装、运行和恢复 | [运行手册](15-service-runbook.md) · [通用CLI/HTTP/consumer](22-generic-tool-and-consumer.md) |
-| 最新真实UI、恢复与保留的失败 | [E120 Codex部署及私聊UI](121-codex-deployment-and-ui.md) · [E116两路持久环境UI](116-persistent-environment-deployment-ui.md) |
-| 当前部署代码与离线验证 | [E119 Codex原生中断/374回归](120-codex-native-interrupt.md) · [E115持久环境/诊断](115-runtime-environment-and-dws-diagnostics.md) |
+| 最新真实UI、恢复与保留的失败 | [E123 Pi部署及私聊UI](124-pi-deployment-and-ui.md) · [E120 Codex部署及私聊UI](121-codex-deployment-and-ui.md) · [E116两路持久环境UI](116-persistent-environment-deployment-ui.md) |
+| 当前部署代码与离线验证 | [E122 Pi已部署](123-pi-runtime-contract.md) · [E127 OpenClaw未部署](128-openclaw-adapter.md) · [E119 Codex原生中断/374回归](120-codex-native-interrupt.md) · [E115持久环境/诊断](115-runtime-environment-and-dws-diagnostics.md) |
 | 官方/GitHub有什么可抄 | [参考目录](references/README.md) · [CEO源码深挖与采用状态](references/ceo-deep-dive.md) · [采用清单](references/adoption-plan.md) · [固定来源](references/catalog.json) |
 | 通用设计及官方/自研边界 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [Agent接入面](architecture/agent-integration-map.md) · [身份边界](25-official-boundary-and-scenarios.md) |
 | 继续工作的唯一清单 | [AGENTS](../AGENTS.md) · [CURRENT_MISSION](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) · [TODO](../plans/completion/TODO.md) |

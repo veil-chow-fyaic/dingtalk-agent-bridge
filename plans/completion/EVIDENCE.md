@@ -457,3 +457,9 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [说明](../../docs/128-openclaw-adapter.md)、[脱敏证据](../../evidence/2026-11-15/openclaw-adapter-validation.json)：固定41f2b981/原36+补4源文件；agent --local/stdin、完整UUID提前入账、专用不可变config/profile/state/cache、整JSON/stop/exit0及原生SIGINT，复用原任务/outbox。配置摘要进入binding/session，native new/零未决/显式迁移约束保留，旧三runtime绑定字节不变。
 - 官方完整CLI合成6样本/18检查通过：Python535实际写JSON/通用files返回、同UUID续接、新generation隔离、length拒绝、取消后至少12秒无late。成功副作用replayInvalid=true不等于失败，首版误判和419×3旧绿保留；完整样本属于嵌套include收紧前版本，20方法配置/终态+2迁移新增后最终冻结源及同wheel双Python各423通过，22模块/177素材/六入口/许可一致。只收紧配置的AST/字节/同配置离线审计3检查通过，未重复CLI。
 - 无真实模型/DWS/UI/认证/凭据复制/服务操作/绑定迁移/远程发布。新代码未部署，最近现场仍E123/e7d82cc。原观察/Qwen/旧样本不重跑，49/14/1及7 MUST未完整，最终自检不勾选。
+
+
+## E128 — OpenClaw父进程死亡与gateway/new链路
+- [记录](../../docs/129-openclaw-gateway-lifecycle.md)、[脱敏证据](../../evidence/2026-11-15/openclaw-gateway-lifecycle-validation.json)：固定E127/500191a产品22模块，官方41f2b981两turn/25检查。SIGKILL自有gateway后7子进程退出，12.06秒无late；两次恢复保留interrupted/原UUID/契约、不重做或新增provider请求；native new归档后新UUID/目录无旧历史、旧任务不变。
+- 新增3方法冻结源Py3.14.6/E127同wheel既有安装Py3.14.6与3.11.15各3通过，22模块/许可/六入口定义一致、180素材；原177未改，另含2新增文件及旧后缀过滤漏计CSV。旧423全量不重跑，不称426×3。无产品修复、部署、服务操作、真实provider/DWS/UI或凭据复制。
+- 25检查属于完整官方CLI+合成provider/内存transport，进程范围与12秒观察不外推任意脱组/OS沙箱。下一独立项剩余MUST的新官方协议/UI入口，49/14/1及7 MUST保持，不重复本轮或原观察/Qwen/旧UI。

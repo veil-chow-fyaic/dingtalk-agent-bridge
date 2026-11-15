@@ -1,6 +1,8 @@
 # DingTalk Agent Bridge
 
-E127：[OpenClaw薄适配](docs/128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。
+E128：[OpenClaw父进程死亡与恢复](docs/129-openclaw-gateway-lifecycle.md)25检查通过，7自有子进程退出、两次恢复不重做、原生new归档及新代隔离已验；新增3专项×3环境通过。22产品模块及部署未变，最近真实UI仍E123，真实OpenClaw模型/UI及7 MUST缺口保持。
+
+历史E127：[OpenClaw薄适配](docs/128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。
 
 历史E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
 

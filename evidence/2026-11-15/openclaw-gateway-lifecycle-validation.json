@@ -1,0 +1,112 @@
+{
+  "evidence": "E128",
+  "date": "2026-11-15",
+  "productCommit": "500191a9a534bf330d8860ec5dec9f5996cb0449",
+  "productChanged": false,
+  "deployed": false,
+  "realProvider": false,
+  "realDws": false,
+  "realUi": false,
+  "officialCommit": "41f2b981d240cab9e55b07cba991282a795317b5",
+  "officialCli": {
+    "ok": true,
+    "checks": {
+      "running_with_persisted_uuid_before_kill": true,
+      "gateway_sigkill": true,
+      "captured_owned_processes_gone": true,
+      "no_late_after_tool_deadline": true,
+      "pipe_eof_reached_native_interrupt": true,
+      "crash_not_validated": true,
+      "restart_0_no_execution": true,
+      "restart_1_no_execution": true,
+      "restart_no_provider_call": true,
+      "interrupted_not_completed_or_requeued": true,
+      "old_session_contract_binding_preserved": true,
+      "only_original_ack_and_single_interrupt_notice": true,
+      "native_new_executed": true,
+      "native_new_archives_exact_old_contract": true,
+      "new_clears_session_and_preserves_binding": true,
+      "fresh_task_executed": true,
+      "fresh_uuid_and_generation": true,
+      "fresh_completed_and_delivered": true,
+      "fresh_provider_has_no_old_history": true,
+      "official_workspace_matches_new_generation": true,
+      "interrupted_job_unchanged_after_new": true,
+      "only_two_official_turns": true,
+      "config_not_rewritten": true,
+      "read_launch_boundaries": true,
+      "product_unchanged": true
+    },
+    "observations": {
+      "gatewayExitCode": -9,
+      "aliveAfterCleanup": [],
+      "secondsAfterToolStart": 12.064599752426147,
+      "ownedProcessCount": 8,
+      "ownedChildCount": 7
+    },
+    "providerRequests": 2,
+    "realProvider": false,
+    "realDws": false,
+    "deployed": false
+  },
+  "frozenValidation": {
+    "focusedMethods": 3,
+    "sourcePython": "3.14.6",
+    "installedPython": [
+      "3.14.6",
+      "3.11.15"
+    ],
+    "suites": {
+      "source": {
+        "testsRun": 3,
+        "ok": true,
+        "logSha256": "cb1030b88e0420cabd44c2ba37442c23e94a3e47c08549785d0db8cb7b50f869",
+        "summarySha256": "89a92fce1dde9a48345c2735971416a0aa941cb4a9db10f7051d57bf4701f3d5"
+      },
+      "py314": {
+        "testsRun": 3,
+        "ok": true,
+        "logSha256": "3e1a6ce6603302081ca57262f90dc9f0caa3393e8ef0358d6df23ef8563b2404",
+        "summarySha256": "89a92fce1dde9a48345c2735971416a0aa941cb4a9db10f7051d57bf4701f3d5"
+      },
+      "py311": {
+        "testsRun": 3,
+        "ok": true,
+        "logSha256": "e8b7193ca6c804c4a83c9daf7982bedf9b79dfe47fe3fb9a46a4d5dcf67c0c7f",
+        "summarySha256": "89a92fce1dde9a48345c2735971416a0aa941cb4a9db10f7051d57bf4701f3d5"
+      }
+    },
+    "productModules": 22,
+    "sourceWheelInstalledBytesEqual": true,
+    "wheelReusedFrom": "E127 validated",
+    "wheelSha256": "4b31957ad5bab291358f3db13f1f6c83771ec3d90183d39f6da9ad7e8c1c0a68",
+    "sixEntrypointDefinitionsUnchanged": true,
+    "entrypointHelpRerun": false,
+    "licenseSha256": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85",
+    "testAssets": 180,
+    "prior177AssetsUnchanged": true,
+    "additionalAssetInventory": [
+      "scripts/probe_openclaw_gateway_crash.py",
+      "tests/test_openclaw_gateway_lifecycle.py",
+      "existing tracked UTF-8 CSV omitted by prior suffix filter"
+    ],
+    "old423FullSuiteRerun": false,
+    "new426FullSuiteClaimed": false
+  },
+  "artifactDigests": {
+    "freeze": "f2d707aff974d4e56d1222a2ee5c36f1f4e266cd7fc2fc3d563a09628bbea9f8",
+    "byteAudit": "84f9f88027ee3dda7d319dfe4d4842948bdfbf7d430e846aa0780d1b6306743d",
+    "officialLog": "833258a1c1328761adee5f8eaad523bc1e599374e433a2b8845a14f37bb91530",
+    "officialResult": "604a9b6f24fa167d577613097e624245eee1ebf41ca9c4ca1c062e00de26c594",
+    "driver": "1c2fe7f52b69724bd10e8e5c0f91531e87891b55f2b4e38dc76578bffdfc76f5",
+    "tests": "d5a81b7763d46b98817e8ac5a4b2566d29e7d2b9e83215aac8abc247566dc0ff"
+  },
+  "rawEvidenceRoot": "local/openclaw-gateway-lifecycle-20261115",
+  "limitations": [
+    "Synthetic provider and memory transport; no real model, DWS, delivery receipt or UI.",
+    "Only captured owned process tree and 12.06 seconds after tool start; not arbitrary detached processes or an OS sandbox.",
+    "Node read/launch tripwire blocked known login-shell and metadata probes; not universal production isolation.",
+    "No service operation, deployment, binding migration, auth or credential copy.",
+    "49 passed / 14 blocked / 1 partial and 7 incomplete MUST remain unchanged."
+  ]
+}
