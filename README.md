@@ -1,6 +1,6 @@
 # DingTalk Agent Bridge
 
-E123：e7d82cc已部署，AIC Kimi和原私聊Pi运行；Pi实际Python/续接/取消/JSON与TXT客户端下载打开通过，Kimi/Codex原验收保持。独立24h观察保留所有维护和故障，项目未完成。[最新验收](docs/124-pi-deployment-and-ui.md)。
+E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
 
 使用官方DWS授权的真人账号，将钉钉群聊/私聊接入可替换Agent的通用中间件。CLI、HTTP及持久consumer可独立使用；可选gateway负责本地执行、会话和结果交付。组织、账号、测试群及运行器均为配置，没有新建bot。
 
@@ -15,7 +15,7 @@ E123：e7d82cc已部署，AIC Kimi和原私聊Pi运行；Pi实际Python/续接/�
 - 文本、长文、常用文档、PNG/JPEG、WAV/MP4文件以及状态/取消/new有真实证据。原生语音条、独立video、部分引用及单消息多附件仍缺；音视频文件可播放不等于原生协议。
 - 原生图片上传仅作固定官方缺口的薄补充：PNG/JPEG≤2MiB，较大走file；输出单文件20MiB。运行器及工具wrapper不是OS沙箱。
 - DWS故障持久暂停、两并发、有限调用/清理与归属日志已部署；**钥匙串事故根因和永久修复未定**。重新登录/重启后的恢复不证明根治；普通终端直接DWS不受bridge防护。
-- runtime.environment已持久配置并验证：manager无代理变量启动后，群/私聊任务均检查env_ready=true。DWS调用安全保留错误分类/exit/耗时；三服务运行，心跳ACTIVE，无开机自启。当前AIC独立24h只读观察运行中。
+- runtime.environment已持久配置并验证：manager无代理变量启动后，群/私聊任务均检查env_ready=true。DWS调用安全保留错误分类/exit/耗时；三服务运行，心跳ACTIVE，无开机自启。原AIC独立24h观察已结束，14不可达/16错误采样/9维护保留，不能称连续健康24h。
 
 ## 产出入口
 

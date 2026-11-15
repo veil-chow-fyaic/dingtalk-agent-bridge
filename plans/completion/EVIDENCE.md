@@ -437,3 +437,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 | E122 | L3/L4 | Pi 0.84.2原生JSON/session/settled/退出契约，22新方法；最终396×3/21模块；本地Read/Write续接与真实Python取消、延迟230秒/4进程；94旧任务binding迁移保持 | docs/123；pi-runtime-validation | 三服务部署停机，待补读与Pi UI；旧fixture失败保留，图片/OpenClaw未验 |
 
 | E123 | L4/L5 | e7d82cc部署，AIC Kimi/私聊Pi；94旧任务保持，实际Python533/同session542、JSON/TXT客户端下载Quick Look/SHA、cancel95秒无late/3自有进程；9回复history、31核验 | docs/124；pi-deployment-ui-validation | 首启3872ms API超时保留，一次有界恢复；非系统根治/自然刷新/24h，Pi图片/OpenClaw未验 |
+
+## E124 — 原观察收尾与Qwen事务强杀边界
+- [完整记录](../../docs/125-observation-closeout-and-qwen-transactions.md)、[脱敏证据](../../evidence/2026-11-15/observation-and-transaction-validation.json)：原run自然到期，2879采样/13检查、32捕获事件逐条对账；14不可达/16 poll_error采样/24路由错误/9维护保留，不称健康24h。后续六库保留起点88任务/216 outbox原字段，当前98任务；非截止或六库共同原子快照。
+- Qwen固定41a3b9f5 admitted/completed映射现有持久事务，不复制上游源码或弱化落盘边界；新5个SIGKILL方法验证cursor/inbox、job/ack、工具副作用/终态、终态/outbox、provider接收/本地回执，跨两次恢复不重跑工具、原key/payload保持。冻结源Py3.14/原同wheelPy3.14与3.11各5通过；21产品/许可相同，未重跑396全量，未调用真实DWS或修改部署。
+- R13真实失效refresh/系统根因和历史截止缺口仍在；49/14/1、7 MUST未完整不变。下一独立项OpenClaw宿主契约，旧UI/原观察/Qwen已过强杀样本不重复。

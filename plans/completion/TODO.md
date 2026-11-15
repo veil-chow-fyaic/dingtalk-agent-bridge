@@ -1,6 +1,6 @@
 # 当前任务池
 
-E123当前状态（2026-11-13）：e7d82cc已部署，三服务运行/DWS ready；AIC保持Kimi，原私聊已通过new归档和显式binding迁移Pi 0.84.2，Codex原会话保留。94旧任务保持，新实际Python533/同session542、JSON/TXT客户端下载Quick Look/SHA、原生cancel回复均可见；90秒工具延迟后观察95秒无late、3自有子进程退出，9回复confirmed/history回读，31部署/UI核验通过。E122最终冻结源/同wheel双Python各396，旧fixture失败保留。首次DWS启动api/request_timeout 3872ms保留，无凭据TLS检查后一次有界恢复成功；不称认证故障、系统根治或自然刷新。原24h观察保持并记维护。Pi图片未声明，OpenClaw未验；下一独立项OpenClaw官方宿主契约/Qwen事务对照及DWS超时新证据，原媒体路径无新入口不重复。见[最新UI](../../docs/124-pi-deployment-and-ui.md)。
+E124当前状态（2026-11-15）：原aic-persistent-env-20261113已自然到期，2879采样/13完整性检查通过；14不可达、16 poll_error采样/24路由错误、9维护保留，不能称连续健康24h。后续六库只读快照保留启动时88任务/216 outbox全字段，当前98任务；32捕获事件与账本一致，但不是截止时刻或六库共同原子快照。Qwen admitted/completed与现有事务已完成映射；新增5真实SIGKILL方法，冻结源/原同wheel双Python各5通过，无需重写产品。21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮未重载或真实DWS探针。下一独立项OpenClaw官方入口/唯一turn宿主，DWS仅有新阶段证据再诊断；49/14/1和7 MUST缺口保持。见[本轮证据](../../docs/125-observation-closeout-and-qwen-transactions.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -18,7 +18,8 @@ E123当前状态（2026-11-13）：e7d82cc已部署，三服务运行/DWS ready�
 - [x] E115/E116已实现、三环境357验证并部署；两路真实Python、环境检查及下载打开通过。通用runtime启动环境配置与验证：重载后实际继承、transport/HOME/凭据不变、localhost不受外部代理影响；不固化本机端口。合成验证后部署并新任务UI，普通重启不再丢失E112所需条件。
 - [x] E115/E116已实现、三环境357验证并部署；两路真实Python、环境检查及下载打开通过。DWS安全错误信封：category/reason/exit/耗时/阶段脱敏保留；对应负例与错误日志写失败验证，未知副作用不重发。不能只有笼统request_timeout。
 - [x] E117官方取消缺口双层候选、15方法普通/race、18核验及上游草稿；仅合成进程，未集成/部署/发布。系统钥匙串根因仍开放，只在官方新证据出现时复核，不重复系统实验。
-- [ ] 当前AIC部署至少24h观察（E116已启动aic-persistent-env-20261113）及自然刷新可证证据、故障/维护和截止快照；保留旧run。失效refresh真实边界未完成，不改凭据造场景，不用elapsed time声称刷新已过。
+- [x] E124原aic-persistent-env-20261113观察自然到期，13完整性检查、32捕获事件对账及后续六库保留审计；14不可达/16错误采样/9维护保留，原run不改。
+- [ ] R13自然失效refresh/长期可靠性证据及完整截止覆盖仍缺；后续快照不能追补当时事实，不用elapsed time或released声称刷新/健康已过。
 
 ## P1 — 剩余验收与封版
 
@@ -32,7 +33,7 @@ E123当前状态（2026-11-13）：e7d82cc已部署，三服务运行/DWS ready�
 - [x] E120 Codex实际Python、同session、取消延迟观察、客户端下载原件打开全部通过；未重登录/改HOME/扩大timeout。
 - [x] E122/E123 Pi 0.84.2按同契约接入，396×3及私聊实际Python/续接/取消/文件UI通过；图片能力未声明。
 - [ ] OpenClaw先核官方运行入口和turn归属，再决定薄适配；四runtime全过不是原R09新增门槛，不整包移植业务宿主。
-- [ ] Qwen admitted/completed与inbox/job事务边界对照，已有等价实现只登记，不重写。
+- [x] E124 Qwen admitted/completed与inbox/job/outbox事务边界已对照，5真实SIGKILL方法在冻结源/同wheel双Python各通过；现有实现无需重写，上游满队列/落盘失败降级不采用。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。
 - [ ] 办公更多流程/外部群/跨组织/流式审批保持R15–R17 SHOULD，不擅加成员/改权限或冒称已支持。
 

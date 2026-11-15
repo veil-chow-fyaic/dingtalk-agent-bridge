@@ -1,8 +1,8 @@
 # 文档导航
 
-2026-11-13 E120：当前0c6f2da已部署，AIC Kimi/私聊Codex运行；Codex工具/续接/取消及下载UI通过，心跳ACTIVE。当前独立24h观察保留维护/故障，系统Keychain最初根因与完整验收仍未完成。
+2026-11-15 E124：原24h观察已结束并核完整性/后续账本，Qwen事务映射及5强杀方法三环境通过，产品未变。最近真实UI为E123/e7d82cc，AIC Kimi/原私聊Pi；心跳ACTIVE。系统根因、自然refresh、历史截止覆盖及完整验收仍缺。
 
-[Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md) · [持久配置与安全诊断](115-runtime-environment-and-dws-diagnostics.md) · [部署及真实UI](116-persistent-environment-deployment-ui.md)
+[观察收尾与Qwen事务](125-observation-closeout-and-qwen-transactions.md) · [Pi部署及UI](124-pi-deployment-and-ui.md) · [Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md)
 
 | 要解决的问题 | 当前入口 |
 |---|---|

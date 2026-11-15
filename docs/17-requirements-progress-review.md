@@ -1,6 +1,6 @@
 # 当前进度入口
 
-当前E123：e7d82cc已部署，AIC Kimi/原私聊Pi；Codex原会话已归档，既有验收保留。Pi实际Python、续接、取消和JSON/TXT客户端下载打开通过，396×3及31核验；完整MUST仍未完成。[最新状态](124-pi-deployment-and-ui.md)。
+当前E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
 
 2026-11-13 E120整理。本页不再维护另一份易过期的状态表。
 

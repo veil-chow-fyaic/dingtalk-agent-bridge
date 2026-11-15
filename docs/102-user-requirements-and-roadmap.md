@@ -1,8 +1,8 @@
 # 用户需求、交付现状与后续路线
 
-当前E123：e7d82cc已部署，AIC Kimi/原私聊Pi；Codex原会话已归档，既有验收保留。Pi实际Python、续接、取消和JSON/TXT客户端下载打开通过，396×3及31核验；完整MUST仍未完成。[最新状态](124-pi-deployment-and-ui.md)。
+当前E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
 
-2026-11-13，E116：当前产品87a3d39，持久网络环境与DWS结构化诊断已实现、部署，群/私聊原session及真实工具/下载UI已验。三服务运行、心跳ACTIVE，独立24h观察刚启动，项目尚未完成。 [当前部署](116-persistent-environment-deployment-ui.md) · [DWS风险与处置](114-dws-risks-and-resolution.md)。
+E115/E116已完成持久网络环境与安全DWS错误信封的部署/UI验收；E120/E123分别完成Codex/Pi真实闭环。当前心跳ACTIVE，原观察已收尾但不证明连续健康或自然refresh，项目尚未完成。[DWS风险与处置](114-dws-risks-and-resolution.md)。
 
 原需求复盘E097读取了原聊天全部14条用户消息及本聊天指示。本次继续纳入恢复AIC/私聊、用户重启重登及“查清底层风险”的要求；[PRD](../plans/completion/01-PRD.md)17项判据与MUST/SHOULD等级不变。
 
