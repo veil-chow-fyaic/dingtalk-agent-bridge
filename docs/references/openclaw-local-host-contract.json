@@ -1,0 +1,151 @@
+{
+  "repository": "openclaw/openclaw",
+  "commit": "41f2b981d240cab9e55b07cba991282a795317b5",
+  "files": [
+    {
+      "path": "docs/cli/agent.md",
+      "sha256": "2ba6baaaa7f11e4ea94a2c0fe94396aad99e56ad61de4bb724382dd8abc95959"
+    },
+    {
+      "path": "docs/gateway/openresponses-http-api.md",
+      "sha256": "7776d8f77e52e20ce752538274ce5f372818e32a2bc13a5cd7551d57d57c2ba1"
+    },
+    {
+      "path": "docs/gateway/protocol.md",
+      "sha256": "05eb28fcf01ce304b1ac159a6f491b009c1ffcffb148ff2a0b2c62bc4b55cb13"
+    },
+    {
+      "path": "openclaw.mjs",
+      "sha256": "eebed013b2713107b1ff2bda6efac3a101b639c75db73a56d748255a6d39d05a"
+    },
+    {
+      "path": "package.json",
+      "sha256": "701dfe29397c3faa600a323d2d9c1d3177488377eccd3fec50a5095563c881d0"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "6448ef7cc009ea886e320eab8e78594202f6f9549d8fc24ea5c0200eed148891"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "ffece229d0e4465cf21eb28ea913030e8df3ee7c087e9e5f7602f08eba4d4498"
+    },
+    {
+      "path": "scripts/lib/build-identity.mts",
+      "sha256": "d73723cc2f1361f1515c5aaed237e7191c786bf97972e1e78487524ea51cc386"
+    },
+    {
+      "path": "src/agents/agent-command.ts",
+      "sha256": "87773becce44ada4e15ebf7f4d03131736b4ff26b6be338f10bd5ebaa73194a4"
+    },
+    {
+      "path": "src/agents/agent-run-terminal-outcome.ts",
+      "sha256": "3d2e3719252355774ef63f599e00ac95dc38902094feffe7669d67434a8a091f"
+    },
+    {
+      "path": "src/agents/auth-profiles/external-cli-discovery.ts",
+      "sha256": "1cc3326807bf4d693b3dc761d997e8f283b505725745c9166958cefb8b409f98"
+    },
+    {
+      "path": "src/agents/auth-profiles/external-cli-sync.ts",
+      "sha256": "d510f9e5729714bdafd8f5c1f7e28cacfded12b29a5f34793d4951f2ee32f1a2"
+    },
+    {
+      "path": "src/agents/bash-tools.exec-request-preparation.ts",
+      "sha256": "3e3890681aff95a47e4f83ee855e5a302ef5d2d250a1f9ba112feb6b504743e2"
+    },
+    {
+      "path": "src/agents/command/cleanup.ts",
+      "sha256": "d852af12259790d4194b32189c474a2d03dab5e01e84cb7ccd60e0edea327486"
+    },
+    {
+      "path": "src/agents/command/delivery.ts",
+      "sha256": "226bc2619b0423f4af471de5d244808517a186a239098c2749288e15d329717a"
+    },
+    {
+      "path": "src/agents/command/post-run.ts",
+      "sha256": "ed0a6698a4bb22d9aa2c58c81ef53ad8fb7aeb102d888a43db5e1411f71242c3"
+    },
+    {
+      "path": "src/agents/command/prepare.ts",
+      "sha256": "1c82379e3fe9a046b0d14cb55544cd69cd197bb5eddbe51b793970ba689d2896"
+    },
+    {
+      "path": "src/agents/command/session.ts",
+      "sha256": "8c8e7bdd957ff0016edd71ef5b64fa4921ca87f1491bb067480341119b9c5237"
+    },
+    {
+      "path": "src/agents/shell-utils.ts",
+      "sha256": "e10cec7c9fde3ef4e9d4d5d4f3e5b82d3d1ece911893668598d2f2445229c1ed"
+    },
+    {
+      "path": "src/channels/turn/agent-run-terminal-outcome.ts",
+      "sha256": "b2d303b7887cd2ce369dd0ede83775a060e6783681ea887daca4ca470b3d9413"
+    },
+    {
+      "path": "src/cli/local-state-owner.ts",
+      "sha256": "4c0a79737ad95a98ecd45eceff1c1205a49421b6b05ed7112b5b453998059f94"
+    },
+    {
+      "path": "src/cli/program/register.agent-turn.ts",
+      "sha256": "d97bdd556bd720b7bfa63c7397048c59eb33e4f976fb4600a4db1f4c58611b85"
+    },
+    {
+      "path": "src/commands/agent-exec-input.test.ts",
+      "sha256": "11781a3062e1a1c5468d0925a97e726cafbfb18cbbf6ffc254454c9fb798376a"
+    },
+    {
+      "path": "src/commands/agent-exec-input.ts",
+      "sha256": "96971f59c4dbc183068de5f9e85609a30e8c7bc9872c51c4db37d25c05dc83fc"
+    },
+    {
+      "path": "src/commands/agent-exec-result.ts",
+      "sha256": "84cb782d2100f703a158afca578a8ee468035f508089a6029eb9e0348e2d9008"
+    },
+    {
+      "path": "src/commands/agent-exec.state-lock.test.ts",
+      "sha256": "7245937b298985c820ccf676ef339146493d55445979dc8b9e89f203c3a59dd7"
+    },
+    {
+      "path": "src/commands/agent-exec.test.ts",
+      "sha256": "803abedac19f89dfdbc6bbfbd5843bfb1c31d16e6e771fdb49eee3d71943fff6"
+    },
+    {
+      "path": "src/commands/agent-exec.ts",
+      "sha256": "6c29592db19bcc3c563364f18e98e968832290fd9bb5c87ab2d3f15dea3386cf"
+    },
+    {
+      "path": "src/commands/agent-via-gateway.ts",
+      "sha256": "5d5e9c9a5df93b87ceaf241bd5bdac6f3ab134759f0e72a7337a7145324122ea"
+    },
+    {
+      "path": "src/commands/agent.ts",
+      "sha256": "a70b29523014de64e394edf4520b6c9ebaff5a0c3a95030aaa0899a993b7c7c9"
+    },
+    {
+      "path": "src/config/paths.ts",
+      "sha256": "8d61fec257ec5c09bddad6011b9ee9bc0db38d08e73c4e42b4ea5c4c138bbb8b"
+    },
+    {
+      "path": "src/infra/client-credential-async.ts",
+      "sha256": "7f53101d9514b088f9bc5bb302b00d4f3faa524228fa0b8f02017e3668c9694f"
+    },
+    {
+      "path": "src/infra/client-credential-ipc.ts",
+      "sha256": "8f10c91615c853ba5b19cc655786165db7844a948af98d3e98dccbcd6a795b52"
+    },
+    {
+      "path": "src/infra/home-dir.ts",
+      "sha256": "b7be266f90d78a01ce67170ab79903f516ace1b1c41a86dd9ec379f5193993b5"
+    },
+    {
+      "path": "src/infra/shell-env.ts",
+      "sha256": "4428301e737203adcb58a55b2f5986e3c1b97f684b83cb0f7d868cb828c06bd0"
+    },
+    {
+      "path": "src/infra/sqlite-snapshot-staging.ts",
+      "sha256": "db5e1e1d655d66468f8f891c9e54e48bac27d60cf5e8b0761934f6938797f2aa"
+    }
+  ],
+  "policy": "Pinned official build; synthetic loopback only; no credential contents or external delivery. Guarded runs are not OS sandbox or real-provider acceptance."
+}

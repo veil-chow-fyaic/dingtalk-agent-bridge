@@ -1,5 +1,7 @@
 # DingTalk Agent Bridge
 
+E126补充：[OpenClaw完整本地宿主](docs/127-openclaw-local-host-validation.md)已核合成续接/工具/状态锁/取消；尚未薄适配或真实模型/UI，产品与服务保持E123。原冻结guard统计失败及修正复核分开记录。
+
 E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
 
 OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](docs/126-openclaw-turn-entry-contract.md)。

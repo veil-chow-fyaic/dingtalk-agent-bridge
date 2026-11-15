@@ -319,3 +319,5 @@
 | 2026-11-15 E124 | 原24h run自然到期收尾：2879采样/13完整性、32事件对账、后续六库保存88旧任务/216 outbox，当前98；Qwen生命周期映射和5真SIGKILL方法×3环境通过，产品不改 | docs/125；observation-and-transaction-validation | 14不可达/16错误采样/9维护保留，缺历史截止/自然refresh，不算健康；OpenClaw唯一宿主与终态契约继续，原样本不重做 |
 
 | 2026-11-15 E125 | 固定OpenClaw官方17文件，核exec每次新session/local独占/Gateway远端turn；原结果函数14检查+2篡改负例，2内部输入边界保留；既有DWS窗口内40/窗口后30超时脱敏汇总 | docs/126；openclaw-entry-contract-validation；observation-existing-dws-diagnostics | 未安装/调用OpenClaw或凭据、未改产品/绑定；继续local完整JSON/配置隔离/无凭据合成provider验证；超时仍request阶段，不重复真实探针 |
+
+| 2026-11-15 E126 | 固定OpenClaw完整local入口9样本，Python499/续接/独占/跨state/取消期限；7子进程及28/13秒无late；冻结guard聚合失败保留，24离线复核+5反例/2源固定负例 | docs/127；openclaw-local-host-validation | 下一薄适配/绑定与终态回归；真实OpenClaw/UI未验，21产品及服务不变，49/14/1和7 MUST保持 |

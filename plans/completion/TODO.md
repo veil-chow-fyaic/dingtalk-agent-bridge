@@ -1,6 +1,6 @@
 # 当前任务池
 
-E125当前状态（2026-11-15）：OpenClaw官方41f2b981的17份入口/宿主源码已固定；agent exec每次新session，不能用state-dir冒充续接，优先核agent --local的明确session/独占状态契约。原结果分类函数14检查及2源码篡改负例通过，另2不完整输入边界保留；不是完整CLI/取消/续接或支持声明，未安装/调用OpenClaw或凭据。E124原24h观察已收尾，2879采样/13完整性，14不可达/16错误采样/9维护及缺截止快照保留；88起点任务/216 outbox保持，当前98任务。既有安全日志窗口内40、之后至本次读取30次API超时都仅stage=request，无新阶段根因或真实探针。Qwen5强杀方法×3环境已过，21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮无部署变更。49/14/1、7 MUST缺口不变。见[最新契约](../../docs/126-openclaw-turn-entry-contract.md)。
+E126当前状态（2026-11-15）：OpenClaw官方41f2b981已在local冻结构建，65,102原文件未改；完整agent --local九样本验stdin/同session/跨state隔离/实际Python499/独占锁/取消/工具期限及终态。取消与deadline各7自有进程退出，28/13秒无late；length虽exit0仍为partial，必须核stop。冻结工具21检查20过，1个guard聚合把已阻止的build-info探测误计凭据；原exit1保留，独立离线24检查及5反例、2源固定负例通过，非重跑全量。独立HOME/state/config/cache及新profile；早期mac-control.token读取在open前被拦截，无真实凭据读取，login-shell探测仍被拦；不是OS沙箱或任意生产配置已隔离。尚未注册/迁移/部署OpenClaw，下一段薄适配及绑定/终态回归。21产品模块仍e7d82cc、最近真实部署/UI E123，原观察/Qwen已收尾不重做；49/14/1及7 MUST缺口不变。见[完整宿主证据](../../docs/127-openclaw-local-host-validation.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -33,9 +33,15 @@ E125当前状态（2026-11-15）：OpenClaw官方41f2b981的17份入口/宿主�
 - [x] E120 Codex实际Python、同session、取消延迟观察、客户端下载原件打开全部通过；未重登录/改HOME/扩大timeout。
 - [x] E122/E123 Pi 0.84.2按同契约接入，396×3及私聊实际Python/续接/取消/文件UI通过；图片能力未声明。
 - [x] E125固定OpenClaw官方17文件，区分exec新session/local独占/Gateway远端归属，原结果函数14检查及2源码篡改负例；没有完整CLI/宿主验证。
-- [ ] OpenClaw下一步核agent --local完整JSON、session与配置隔离，再做无凭据/合成provider完整入口验证；具备真实续接/取消证据后才薄适配，四runtime全过不是原R09新增门槛。
+- [x] E126 OpenClaw local完整合成宿主九样本及24离线复核：stdin/整对象JSON、同session/跨state、Python499、独占锁、取消/期限；冻结guard聚合失败及原始日志保留。
+- [ ] OpenClaw薄适配：明确profile/config/state及完整UUID、终态严格核对/原生SIGINT/绑定兼容性，再按授权决定真实模型/UI；四runtime全过不是原R09新增门槛。
 - [x] E124 Qwen admitted/completed与inbox/job/outbox事务边界已对照，5真实SIGKILL方法在冻结源/同wheel双Python各通过；现有实现无需重写，上游满队列/落盘失败降级不采用。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。
 - [ ] 办公更多流程/外部群/跨组织/流式审批保持R15–R17 SHOULD，不擅加成员/改权限或冒称已支持。
 
 只在新AIC和原两人私聊实测；企业大群/旧群禁测。禁止auth/doctor/Keychain及自动修复，未知投递原key核对；旧查询key已消费。详细次序见[关键路径](CRITICAL_PATH.md)，正常不循环巡检/重复实验。
+
+
+## E126 — OpenClaw完整本地宿主与隔离边界
+- [记录](../../docs/127-openclaw-local-host-validation.md)、[证据](../../evidence/2026-11-15/openclaw-local-host-validation.json)：固定41f2b981/36文件；65,102源文件未改，local构建成功。9个CLI样本验stdin/续接/跨state、Python499/JSON、锁拒绝、SIGINT130/期限1、7自有进程及28/13秒无late、length exit0/显式partial、null原始finish规范化stop。
+- 冻结21检查20过/1guard元数据误计，原exit1不改；独立24复核、5篡改反例及2源固定负例通过。全新profile避免App凭据命名空间，早期token open前被阻止；login-shell PATH探测保持拒绝，不称任意配置或OS沙箱已安全。无产品/服务/真实模型/UI变更，49/14/1及7 MUST保持。下一段薄适配/绑定和终态回归，不重跑旧观察/Qwen/UI。

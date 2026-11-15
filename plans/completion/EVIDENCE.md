@@ -447,3 +447,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [契约与限制](../../docs/126-openclaw-turn-entry-contract.md)、[17文件摘要](../../docs/references/openclaw-turn-contract.json)、[执行证据](../../evidence/2026-11-15/openclaw-entry-contract-validation.json)。官方41f2b981：exec每次randomUUID，无resume选择器；local支持明确session并拒绝外部状态所有者；Gateway持有turn，退出/断连不能当工具停止。当前PATH无OpenClaw，未安装或读取凭据。
 - 只import固定官方agent-exec-result.ts，Node26.3.1执行14检查通过，空/变更源码2负例在import前拒绝；仅length或缺stopReason的内部输入仍分类ok，证明不能只用该函数认定完整成功，不据此称真实CLI有截断漏洞。未运行上游全量/完整CLI/取消/续接；产品21模块与现有部署不变。
 - [既有DWS日志补证](../../evidence/2026-11-15/observation-existing-dws-diagnostics.json)：原窗口10686响应诊断含40次api/request_timeout，3268–3872ms（38 history、2 other）；窗口后截至本次读取7830诊断含30次history同类错误，3266–3395ms。全部exit1/stage=request/providerExecutionStarted=false；与周期采样分母不同，不抵扣或替代原16错误采样，不推断DNS/TCP/代理/认证根因或自然刷新。无新增真实探针。
+
+
+## E126 — OpenClaw完整本地宿主与隔离边界
+- [记录](../../docs/127-openclaw-local-host-validation.md)、[证据](../../evidence/2026-11-15/openclaw-local-host-validation.json)：固定41f2b981/36文件；65,102源文件未改，local构建成功。9个CLI样本验stdin/续接/跨state、Python499/JSON、锁拒绝、SIGINT130/期限1、7自有进程及28/13秒无late、length exit0/显式partial、null原始finish规范化stop。
+- 冻结21检查20过/1guard元数据误计，原exit1不改；独立24复核、5篡改反例及2源固定负例通过。全新profile避免App凭据命名空间，早期token open前被阻止；login-shell PATH探测保持拒绝，不称任意配置或OS沙箱已安全。无产品/服务/真实模型/UI变更，49/14/1及7 MUST保持。下一段薄适配/绑定和终态回归，不重跑旧观察/Qwen/UI。

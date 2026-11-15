@@ -1,5 +1,7 @@
 # 用户需求、交付现状与后续路线
 
+E126补充：[OpenClaw完整本地宿主](127-openclaw-local-host-validation.md)已核合成续接/工具/状态锁/取消；尚未薄适配或真实模型/UI，产品与服务保持E123。原冻结guard统计失败及修正复核分开记录。
+
 当前E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
 
 OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](126-openclaw-turn-entry-contract.md)。

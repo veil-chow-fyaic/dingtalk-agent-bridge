@@ -1,0 +1,270 @@
+{
+  "evidenceId": "E126",
+  "date": "2026-11-15",
+  "scope": "Pinned official OpenClaw full CLI; loopback synthetic provider; no live DingTalk/model/account/Keychain operations",
+  "upstream": {
+    "repository": "openclaw/openclaw",
+    "commit": "41f2b981d240cab9e55b07cba991282a795317b5",
+    "version": "2026.11.3",
+    "referenceFiles": 36,
+    "sourceArchiveSha256": "da52fe1055b86434a41ed9e68698532cd96d2e426957ae1c847e358011effb21",
+    "sourceFilesCompared": 65102,
+    "changedOriginalFiles": [],
+    "distFiles": 28020,
+    "distManifestSha256": "e1f45a86af6fda286b454319bcffb36ae9536be1ed6ba7d7ef8b37a4395f659b",
+    "pnpm": "12.15.0",
+    "node": "v26.3.1",
+    "python": "3.14.6",
+    "lockfileSha256": "6448ef7cc009ea886e320eab8e78594202f6f9549d8fc24ea5c0200eed148891",
+    "frozenInstallExit": 0,
+    "runtimeBuildExit": 0
+  },
+  "hostCases": [
+    {
+      "case": "first",
+      "exitCode": 0,
+      "durationSeconds": 4.483452124986798,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "stop",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": null
+    },
+    {
+      "case": "resume",
+      "exitCode": 0,
+      "durationSeconds": 5.076468292012578,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "stop",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": null
+    },
+    {
+      "case": "tool",
+      "exitCode": 0,
+      "durationSeconds": 5.649750457989285,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "stop",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": 0
+    },
+    {
+      "case": "isolated",
+      "exitCode": 0,
+      "durationSeconds": 4.476146041997708,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "stop",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": null
+    },
+    {
+      "case": "contender",
+      "exitCode": 1,
+      "durationSeconds": 1.3116044999915175,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": null,
+      "aborted": null,
+      "metaErrorKind": null,
+      "toolFailures": null
+    },
+    {
+      "case": "cancel",
+      "exitCode": 130,
+      "durationSeconds": 7.164210666000145,
+      "forcedCleanup": false,
+      "jsonParsed": false,
+      "stopReason": null,
+      "aborted": null,
+      "metaErrorKind": null,
+      "toolFailures": null,
+      "observedSecondsAfterToolStart": 28.154440879821777,
+      "aliveAtCliExit": []
+    },
+    {
+      "case": "deadline",
+      "exitCode": 1,
+      "durationSeconds": 6.814429624995682,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": null,
+      "aborted": false,
+      "metaErrorKind": "incomplete_turn",
+      "toolFailures": 1,
+      "observedSecondsAfterToolStart": 13.006759881973267,
+      "aliveAtCliExit": []
+    },
+    {
+      "case": "length",
+      "exitCode": 0,
+      "durationSeconds": 4.995203625003342,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "length",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": null
+    },
+    {
+      "case": "missing",
+      "exitCode": 0,
+      "durationSeconds": 5.011910834000446,
+      "forcedCleanup": false,
+      "jsonParsed": true,
+      "stopReason": "stop",
+      "aborted": false,
+      "metaErrorKind": null,
+      "toolFailures": null
+    }
+  ],
+  "frozenDriver": {
+    "sha256": "87d81b96015a0352c1426346215264c5c57962e0e094aa9f4005e671b7c2d97e",
+    "exitCode": 1,
+    "checks": 21,
+    "passed": 20,
+    "failed": [
+      "no_ambient_credential_access_attempt"
+    ],
+    "cause": "Guard aggregation counted 8 denied build-info.json metadata probes as credential reads. Original result/failure preserved; underlying access remained denied."
+  },
+  "offlineReview": {
+    "ok": true,
+    "cases": 9,
+    "checks": {
+      "first_success": true,
+      "resume_success": true,
+      "tool_success": true,
+      "resume_contains_prior_user_and_assistant": true,
+      "python_artifact_value": true,
+      "tool_record_confirms_one_success": true,
+      "same_uuid_distinct_state_has_no_prior_history": true,
+      "exclusive_state_rejects_second_cli": true,
+      "cancel_native_children_exited": true,
+      "cancel_no_late_write": true,
+      "cancel_non_success_exit": true,
+      "deadline_native_children_exited": true,
+      "deadline_no_late_write": true,
+      "deadline_non_success_exit": true,
+      "deadline_reports_unknown_tool_outcome": true,
+      "length_completed_probe": true,
+      "missing_completed_probe": true,
+      "length_is_explicit_partial_not_full_success": true,
+      "explicit_direct_fixture_auth": true,
+      "no_external_profile_directory_created": true,
+      "exact_case_inventory_and_exits": true,
+      "native_tool_settlement_and_observation": true,
+      "required_checks_present": true,
+      "credential_boundaries_preserved": true
+    },
+    "guard": {
+      "ok": true,
+      "deniedLoginShellProbes": 3,
+      "deniedBuildMetadataReads": 8,
+      "unexpectedDenials": 0
+    },
+    "originalGuardAggregate": false,
+    "originalFailureRecordPreserved": true
+  },
+  "sourcePinNegativeChecks": [
+    {
+      "case": "mutated",
+      "nonzeroBeforeOutputCreated": true,
+      "exitCode": 1
+    },
+    {
+      "case": "empty",
+      "nonzeroBeforeOutputCreated": true,
+      "exitCode": 1
+    }
+  ],
+  "reviewNegativeChecks": [
+    {
+      "case": "credential-read",
+      "rejected": true
+    },
+    {
+      "case": "unknown-file-read",
+      "rejected": true
+    },
+    {
+      "case": "missing-case",
+      "rejected": true
+    },
+    {
+      "case": "false-exit",
+      "rejected": true
+    },
+    {
+      "case": "late-write",
+      "rejected": true
+    }
+  ],
+  "protocol": {
+    "input": "agent --local --agent main --session-id UUID --json --message-file -",
+    "output": "whole JSON payloads/meta, not agent-exec envelope",
+    "sameSessionContextVerified": true,
+    "sameUuidDistinctStateIsolated": true,
+    "pythonArtifact": {
+      "expression": "29*17+6",
+      "value": 499,
+      "sha256": "e904f576ee732f91132d04e440ffde84f8915d4a23682daedc9c8f84dcf3b310"
+    },
+    "cancelObservedOwnedProcesses": 7,
+    "deadlineObservedOwnedProcesses": 7,
+    "lengthExitZeroRetainsExplicitLength": true,
+    "nullProviderFinishReasonNormalizesToStop": true
+  },
+  "isolation": {
+    "explicitConfigHomeStateCacheAndFreshProfile": true,
+    "ambientEnvironmentNotInherited": true,
+    "pluginsDisabled": true,
+    "deliverFlagAbsent": true,
+    "realCredentialContentsRead": false,
+    "realAuthCommandsRun": false,
+    "macAppTokenProbeInEarlierRunBlockedBeforeOpen": true,
+    "loginShellPathProbesBlocked": true,
+    "guardIsOsSandbox": false,
+    "ownedCacheEmptyDirectoryRemoved": true
+  },
+  "retainedDeviations": [
+    "Node permission mode refused fsync before first model request.",
+    "Initial build metadata inherited enclosing bridge commit; rebuilt with explicit pinned upstream GIT_COMMIT; all 65102 original files identical.",
+    "First tool fixture used unsupported timeout instead of timeoutSeconds; no artifact, failure retained.",
+    "Before fresh profile, guard blocked mac-control.token read; tool did not execute; fixture HTTP assertion caused local retries, original logs retained.",
+    "OPENCLAW_HOME did not relocate SQLite staging cache; explicit XDG_CACHE_HOME added.",
+    "Full frozen driver guard aggregate failed on denied build metadata; corrected only offline classification, no repeated full host probes."
+  ],
+  "limitations": [
+    "Synthetic provider, not live model or DingTalk UI.",
+    "Not full upstream test suite or bridge full test suite.",
+    "No OpenClaw support registration, runtime binding migration or production/service change.",
+    "Guarded fixture blocks login-shell probes; not proof arbitrary configuration avoids ambient credential access.",
+    "No claim system Keychain root cause, natural refresh or continuous healthy 24h."
+  ],
+  "product": {
+    "base": "e7d82cc",
+    "modules": 21,
+    "moduleBytesUnchanged": true,
+    "latestDeploymentEvidence": "E123",
+    "acceptanceCounts": {
+      "passed": 49,
+      "blocked": 14,
+      "partial": 1
+    },
+    "mustIncomplete": 7
+  },
+  "localEvidenceRoot": "local/openclaw-host-20261115",
+  "localDigestManifestSha256": "b57572ed4fe50830f08ce9095f9195d6ef0ea64d886451d44d88cb76afc11846",
+  "publicToolSha256": {
+    "scripts/probe_openclaw_local_host.py": "8463ff4003d6caa25fa83438b36378796ad1945685bd7579020fe8803415d487",
+    "scripts/review_openclaw_local_host.py": "68bce1e4351511322870dab5d0636f5fb00abe7203f5929381a849e03225ad26",
+    "fixtures/openclaw-credential-guard.mjs": "391f9b5219862c37488f33becd55199453de78f36b61a3883ad55636c651eb12"
+  }
+}
