@@ -1,5 +1,7 @@
 # 文档导航
 
+E129：[官方新提交入口复核](130-dws-entry-delta-review.md)已完成，新增VoIP入会/纪要能力未提供剩余IM协议入口；没有新增真实验收，7 MUST缺口保持。
+
 2026-11-15 E128：[OpenClaw父进程死亡/gateway恢复/new](129-openclaw-gateway-lifecycle.md)25检查及3专项×3环境通过；22产品模块、现场服务不改。最新产品候选仍500191a，真实部署/UI仍E123/e7d82cc。
 
 历史E127：OpenClaw薄适配及专用配置绑定已实现，官方CLI合成联调通过；真实模型/UI未验，22模块未部署。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi。原观察/Qwen已收尾，系统根因、自然refresh、历史截止覆盖及完整验收缺口保持。

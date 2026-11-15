@@ -1,0 +1,78 @@
+{
+  "evidence": "E129",
+  "readAt": "2026-11-15T03:58:27.610613+00:00",
+  "baseline": "c4be030ea0470457faea167760613372d761fc5c",
+  "head": "4cc7767c70a874b189463ebfb07ad8a3c424389c",
+  "stableRelease": "v1.0.68",
+  "stablePublishedAt": "2026-11-11T08:50:17Z",
+  "comparisonStatus": "ahead",
+  "commitsAhead": 14,
+  "returnedCommits": 14,
+  "changedFiles": [
+    ".changes/released/1.0.69-beta.1/dwsh-6588-remove-ai-label-policy.md",
+    ".changes/released/1.0.69-beta.1/dwsh-6747-event-send.md",
+    ".changes/released/1.0.69-beta.1/voip-meeting-sdk-credentials.md",
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Formula/dingtalk-workspace-cli-beta.rb",
+    "internal/app/event_command.go",
+    "internal/app/event_command_full_coverage_test.go",
+    "internal/app/event_personal_command.go",
+    "internal/app/event_personal_debug_test.go",
+    "internal/app/event_personal_voip_test.go",
+    "internal/event/personal/output.go",
+    "internal/event/personal/output_test.go",
+    "internal/event/personal/registry_test.go",
+    "internal/helpers/register_voip.go",
+    "internal/helpers/voip.go",
+    "internal/helpers/voip_test.go",
+    "pkg/edition/default.go",
+    "skills/mono/references/products/event.md",
+    "skills/multi/dingtalk-event/references/event-voip.md",
+    "skills/multi/dingtalk-misc/SKILL.md",
+    "skills/multi/dingtalk-misc/references/voip.md",
+    "test/scripts/coverage_workflow_contract_test.go"
+  ],
+  "changedFileCount": 23,
+  "newChatProtocolEntryFound": false,
+  "newConnectionPhaseEvidenceFound": false,
+  "newCapabilityScope": "VoIP MeetingSDK credential projection and personal minutes auto-start settings; not native IM media or quote/multi-attachment APIs",
+  "failedReads": [
+    {
+      "tool": "built-in web open",
+      "scope": "GitHub commit/latest-release API",
+      "result": "tool could not open URLs; public unauthenticated HTTP succeeded"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/4cc7767c70a874b189463ebfb07ad8a3c424389c/skills/mono/references/products/chat.md",
+      "exitCode": 28,
+      "milliseconds": 25010,
+      "bytesReceived": 0,
+      "retried": false
+    }
+  ],
+  "primarySources": {
+    "commit": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/commit/4cc7767c70a874b189463ebfb07ad8a3c424389c",
+    "compare": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/compare/c4be030ea0470457faea167760613372d761fc5c...4cc7767c70a874b189463ebfb07ad8a3c424389c",
+    "stableRelease": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68",
+    "voipMinutes": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/skills/multi/dingtalk-misc/references/voip.md",
+    "voipEvents": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/skills/multi/dingtalk-event/references/event-voip.md"
+  },
+  "rawSha256": {
+    "main.json": "65a9e578fb3690add18119ca39f6e322e383386e52263e441322b42eea427380",
+    "latest-release.json": "4601eed0439c4c5e944e2c759af57dae9fb0a39dfd988cfa686e93c3519fb77b",
+    "compare.json": "7750db6450a51bc5d4325815343d66fde8cccc1a8a8e7c93de55f91c5a35ca8a"
+  },
+  "rawEvidenceRoot": "local/dws-entry-review-20261115",
+  "realDwsCalls": 0,
+  "realUiActions": 0,
+  "credentialsRead": false,
+  "productChanged": false,
+  "deployed": false,
+  "acceptanceChanged": false,
+  "limits": [
+    "The full 14-commit/23-file comparison is the evidence; the timed-out chat fetch is not counted as a successful current document read.",
+    "No claim that all third-party implementations or future versions lack a capability.",
+    "No live probes, DWS upgrade, original observer reset or historical sample replay."
+  ]
+}

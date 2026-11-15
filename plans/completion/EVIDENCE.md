@@ -463,3 +463,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [记录](../../docs/129-openclaw-gateway-lifecycle.md)、[脱敏证据](../../evidence/2026-11-15/openclaw-gateway-lifecycle-validation.json)：固定E127/500191a产品22模块，官方41f2b981两turn/25检查。SIGKILL自有gateway后7子进程退出，12.06秒无late；两次恢复保留interrupted/原UUID/契约、不重做或新增provider请求；native new归档后新UUID/目录无旧历史、旧任务不变。
 - 新增3方法冻结源Py3.14.6/E127同wheel既有安装Py3.14.6与3.11.15各3通过，22模块/许可/六入口定义一致、180素材；原177未改，另含2新增文件及旧后缀过滤漏计CSV。旧423全量不重跑，不称426×3。无产品修复、部署、服务操作、真实provider/DWS/UI或凭据复制。
 - 25检查属于完整官方CLI+合成provider/内存transport，进程范围与12秒观察不外推任意脱组/OS沙箱。下一独立项剩余MUST的新官方协议/UI入口，49/14/1及7 MUST保持，不重复本轮或原观察/Qwen/旧UI。
+
+
+## E129 — 剩余MUST的官方新提交入口核对
+- [记录](../../docs/130-dws-entry-delta-review.md)、[证据](../../evidence/2026-11-15/dws-entry-delta-review.json)：main从c4be030e到4cc7767c，完整14提交/23文件；稳定release v68，main有v69-beta.1。业务新增为VoIP MeetingSDK字段/个人纪要设置，无chat协议或连接细阶段诊断变更，不补原生语音/video、引用、多附件缺口。
+- 内置web两API不可访问后，无认证公开HTTP读取main/release/compare成功；chat原文25.01秒/0字节超时未重试，不冒称全文已读。只按完整差异及文档补丁判断，不外推所有社区实现。无产品/服务/DWS/UI/凭据/验收变化；下一仅新入口或细阶段证据才恢复对应实验，不重复此diff与已过宿主样本。

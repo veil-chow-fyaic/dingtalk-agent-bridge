@@ -1,5 +1,7 @@
 # 当前进度入口
 
+E129：[官方新提交入口复核](130-dws-entry-delta-review.md)已完成，新增VoIP入会/纪要能力未提供剩余IM协议入口；没有新增真实验收，7 MUST缺口保持。
+
 E128：[OpenClaw父进程死亡与恢复](129-openclaw-gateway-lifecycle.md)25检查通过，7自有子进程退出、两次恢复不重做、原生new归档及新代隔离已验；新增3专项×3环境通过。22产品模块及部署未变，最近真实UI仍E123，真实OpenClaw模型/UI及7 MUST缺口保持。
 
 历史E127：[OpenClaw薄适配](128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。

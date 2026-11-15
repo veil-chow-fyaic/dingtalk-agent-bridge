@@ -325,3 +325,5 @@
 | 2026-11-15 E127 | OpenClaw薄适配及config摘要绑定；完整CLI合成6样本/18检查、Python535/续接/新代隔离/取消；22新增方法，最终冻结源/同wheel双Python423×3、22模块177素材六入口许可一致 | docs/128；openclaw-adapter-validation | 未部署/迁移/真实模型或UI；首版replayInvalid误拒及419旧绿保留，下一必要父进程死亡/gateway链路或新官方协议入口；7 MUST保持 |
 
 | 2026-11-15 E128 | OpenClaw官方父进程死亡/gateway恢复/new两turn25检查；7子进程退出/12.06秒无late，两次恢复不重做，新代隔离；3专项×3环境，22产品模块不变 | docs/129；openclaw-gateway-lifecycle-validation | 无部署/真实provider/DWS/UI/凭据复制；旧423不重跑，下一剩余MUST新协议/UI入口，7 MUST保持 |
+
+| 2026-11-15 E129 | DWS main新增14提交/23文件完整核对，VoIP入会/纪要增量非IM原生消息入口；稳定v68，chat原文超时保留 | docs/130；dws-entry-delta-review | 无新可用协议或连接阶段证据，不重跑旧UI/真实探针；49/14/1及7 MUST保持，心跳继续等待可推进的新证据 |
