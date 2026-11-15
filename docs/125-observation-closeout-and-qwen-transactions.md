@@ -39,3 +39,5 @@ Qwen `admitMessage`（2129起）在队列满时可能对at/direct采用未持久
 当前UI49通过/14 blocked/1 partial，14 MUST中7未完整，不因新增离线证明而关闭。最近真实UI仍E123：AIC Kimi、原私聊Pi，Codex归档及各自已验范围保留。下一独立项是OpenClaw官方入口、唯一turn宿主、终态/取消与状态隔离契约；再决定是否能薄适配。DWS仅凭新的具体阶段证据继续诊断，原生媒体/引用/组合没有新入口就不重试。最终干净交接仍待完成，不重导E121旧包。
 
 原始观察、六库及日志仅在 `local/observation-closeout-20261115` 和 `local/admission-completion-20261115`，不入Git。
+
+E125后续仅离线读取既有安全DWS调用日志：原窗口40次、窗口后至读取另30次api/request_timeout，均exit1/stage=request且providerExecutionStarted=false。前者38 history/2 other、3268–3872ms，后者30 history/3266–3395ms。见[脱敏汇总](../evidence/2026-11-15/observation-existing-dws-diagnostics.json)。这是逐调用诊断，不能与16个周期poll_error采样互换，仍无更具体连接阶段。

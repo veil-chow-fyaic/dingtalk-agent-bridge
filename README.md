@@ -2,6 +2,8 @@
 
 E124：原24h观察已自然到期并完成完整性/后续账本审计，故障和缺截止证据保留；Qwen事务对照及5强杀方法×3环境通过，产品e7d82cc未改。最近真实UI仍E123（AIC Kimi/原私聊Pi），项目未完成。[本轮证据](docs/125-observation-closeout-and-qwen-transactions.md)。
 
+OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](docs/126-openclaw-turn-entry-contract.md)。
+
 使用官方DWS授权的真人账号，将钉钉群聊/私聊接入可替换Agent的通用中间件。CLI、HTTP及持久consumer可独立使用；可选gateway负责本地执行、会话和结果交付。组织、账号、测试群及运行器均为配置，没有新建bot。
 
 **已完成真实群/私聊任务和文件闭环，尚未完成长期可靠性及全部验收。** 2026-11-13最近现场证据E123：e7d82cc的21模块已部署；Pi私聊实际工具/同session/原生取消及文件下载打开通过，AIC保持Kimi。

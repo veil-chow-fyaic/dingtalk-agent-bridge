@@ -1,0 +1,58 @@
+{
+  "evidence": "E125-supplement",
+  "readAt": 1794710644.384186,
+  "sourcePrefixBytes": 17117156,
+  "sourcePrefixSha256": "8f0e9fa5677953a5cffb51f67ddaa6671f33665884f2e30d78ae2f0d13da9312",
+  "invalidLines": 0,
+  "windows": {
+    "originalObservation": {
+      "from": 1794560929.726023,
+      "until": 1794647329.726023,
+      "responseDiagnostics": 10686,
+      "responseErrors": 40,
+      "errorGroups": [
+        {
+          "category": "api",
+          "reason": "request_timeout",
+          "stage": "request",
+          "exitCode": 1,
+          "count": 40
+        }
+      ],
+      "errorElapsedMinMs": 3268,
+      "errorElapsedMaxMs": 3872,
+      "allReportedExecutionNotStarted": true,
+      "errorOperations": {
+        "other": 2,
+        "history": 38
+      }
+    },
+    "afterObservationToRead": {
+      "from": 1794647329.726023,
+      "until": 1794710644.384186,
+      "responseDiagnostics": 7830,
+      "responseErrors": 30,
+      "errorGroups": [
+        {
+          "category": "api",
+          "reason": "request_timeout",
+          "stage": "request",
+          "exitCode": 1,
+          "count": 30
+        }
+      ],
+      "errorElapsedMinMs": 3266,
+      "errorElapsedMaxMs": 3395,
+      "allReportedExecutionNotStarted": true,
+      "errorOperations": {
+        "history": 30
+      }
+    }
+  },
+  "limitations": [
+    "Existing safe response diagnostics only; no live DWS call",
+    "response_ok does not prove health or token refresh",
+    "Per-call errors and periodic poll-error samples have different denominators",
+    "stage=request does not isolate DNS/TCP/proxy/TLS/server cause"
+  ]
+}

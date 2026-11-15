@@ -1,6 +1,6 @@
 # 当前任务池
 
-E124当前状态（2026-11-15）：原aic-persistent-env-20261113已自然到期，2879采样/13完整性检查通过；14不可达、16 poll_error采样/24路由错误、9维护保留，不能称连续健康24h。后续六库只读快照保留启动时88任务/216 outbox全字段，当前98任务；32捕获事件与账本一致，但不是截止时刻或六库共同原子快照。Qwen admitted/completed与现有事务已完成映射；新增5真实SIGKILL方法，冻结源/原同wheel双Python各5通过，无需重写产品。21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮未重载或真实DWS探针。下一独立项OpenClaw官方入口/唯一turn宿主，DWS仅有新阶段证据再诊断；49/14/1和7 MUST缺口保持。见[本轮证据](../../docs/125-observation-closeout-and-qwen-transactions.md)。
+E125当前状态（2026-11-15）：OpenClaw官方41f2b981的17份入口/宿主源码已固定；agent exec每次新session，不能用state-dir冒充续接，优先核agent --local的明确session/独占状态契约。原结果分类函数14检查及2源码篡改负例通过，另2不完整输入边界保留；不是完整CLI/取消/续接或支持声明，未安装/调用OpenClaw或凭据。E124原24h观察已收尾，2879采样/13完整性，14不可达/16错误采样/9维护及缺截止快照保留；88起点任务/216 outbox保持，当前98任务。既有安全日志窗口内40、之后至本次读取30次API超时都仅stage=request，无新阶段根因或真实探针。Qwen5强杀方法×3环境已过，21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮无部署变更。49/14/1、7 MUST缺口不变。见[最新契约](../../docs/126-openclaw-turn-entry-contract.md)。
 
 这是唯一活动清单；[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)是原判据，[路线总览](../../docs/102-user-requirements-and-roadmap.md)解释交付物。阶段历史继续留EVIDENCE/Git，不执行旧文“下一步”。
 
@@ -32,7 +32,8 @@ E124当前状态（2026-11-15）：原aic-persistent-env-20261113已自然到期
 
 - [x] E120 Codex实际Python、同session、取消延迟观察、客户端下载原件打开全部通过；未重登录/改HOME/扩大timeout。
 - [x] E122/E123 Pi 0.84.2按同契约接入，396×3及私聊实际Python/续接/取消/文件UI通过；图片能力未声明。
-- [ ] OpenClaw先核官方运行入口和turn归属，再决定薄适配；四runtime全过不是原R09新增门槛，不整包移植业务宿主。
+- [x] E125固定OpenClaw官方17文件，区分exec新session/local独占/Gateway远端归属，原结果函数14检查及2源码篡改负例；没有完整CLI/宿主验证。
+- [ ] OpenClaw下一步核agent --local完整JSON、session与配置隔离，再做无凭据/合成provider完整入口验证；具备真实续接/取消证据后才薄适配，四runtime全过不是原R09新增门槛。
 - [x] E124 Qwen admitted/completed与inbox/job/outbox事务边界已对照，5真实SIGKILL方法在冻结源/同wheel双Python各通过；现有实现无需重写，上游满队列/落盘失败降级不采用。
 - [ ] CEO C05多宿主租约只在实际场景需要时做；当前flock不是已知缺陷。
 - [ ] 办公更多流程/外部群/跨组织/流式审批保持R15–R17 SHOULD，不擅加成员/改权限或冒称已支持。

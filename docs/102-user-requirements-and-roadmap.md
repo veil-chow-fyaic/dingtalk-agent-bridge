@@ -2,6 +2,8 @@
 
 当前E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
 
+OpenClaw E125已核官方入口和结果函数，exec无同session续接，local宿主仍待完整验证；未声明支持，见[入口契约](126-openclaw-turn-entry-contract.md)。
+
 E115/E116已完成持久网络环境与安全DWS错误信封的部署/UI验收；E120/E123分别完成Codex/Pi真实闭环。当前心跳ACTIVE，原观察已收尾但不证明连续健康或自然refresh，项目尚未完成。[DWS风险与处置](114-dws-risks-and-resolution.md)。
 
 原需求复盘E097读取了原聊天全部14条用户消息及本聊天指示。本次继续纳入恢复AIC/私聊、用户重启重登及“查清底层风险”的要求；[PRD](../plans/completion/01-PRD.md)17项判据与MUST/SHOULD等级不变。

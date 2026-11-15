@@ -1,6 +1,6 @@
 # 当前任务
 
-E124当前状态（2026-11-15）：原aic-persistent-env-20261113已自然到期，2879采样/13完整性检查通过；14不可达、16 poll_error采样/24路由错误、9维护保留，不能称连续健康24h。后续六库只读快照保留启动时88任务/216 outbox全字段，当前98任务；32捕获事件与账本一致，但不是截止时刻或六库共同原子快照。Qwen admitted/completed与现有事务已完成映射；新增5真实SIGKILL方法，冻结源/原同wheel双Python各5通过，无需重写产品。21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮未重载或真实DWS探针。下一独立项OpenClaw官方入口/唯一turn宿主，DWS仅有新阶段证据再诊断；49/14/1和7 MUST缺口保持。见[本轮证据](../../docs/125-observation-closeout-and-qwen-transactions.md)。
+E125当前状态（2026-11-15）：OpenClaw官方41f2b981的17份入口/宿主源码已固定；agent exec每次新session，不能用state-dir冒充续接，优先核agent --local的明确session/独占状态契约。原结果分类函数14检查及2源码篡改负例通过，另2不完整输入边界保留；不是完整CLI/取消/续接或支持声明，未安装/调用OpenClaw或凭据。E124原24h观察已收尾，2879采样/13完整性，14不可达/16错误采样/9维护及缺截止快照保留；88起点任务/216 outbox保持，当前98任务。既有安全日志窗口内40、之后至本次读取30次API超时都仅stage=request，无新阶段根因或真实探针。Qwen5强杀方法×3环境已过，21产品模块仍e7d82cc，最近真实UI仍E123（AIC Kimi/原私聊Pi），本轮无部署变更。49/14/1、7 MUST缺口不变。见[最新契约](../../docs/126-openclaw-turn-entry-contract.md)。
 
 交付官方DWS真人账号到可替换Agent的通用钉钉IM中间件，群/私聊文字、媒体原件、真实任务、多轮及同会话交付。CLI/HTTP/consumer独立，gateway可选；组织/runtime为配置，不新增bot。Kimi满足至少一个执行器，Codex E120真实工具/续接/取消/文件UI也已通过，Pi文字/文件/续接/取消UI已验，Pi图片和OpenClaw未验。原[PRD](01-PRD.md)与[矩阵](ACCEPTANCE_MATRIX.md)不变。
 

@@ -1,8 +1,8 @@
 # 文档导航
 
-2026-11-15 E124：原24h观察已结束并核完整性/后续账本，Qwen事务映射及5强杀方法三环境通过，产品未变。最近真实UI为E123/e7d82cc，AIC Kimi/原私聊Pi；心跳ACTIVE。系统根因、自然refresh、历史截止覆盖及完整验收仍缺。
+2026-11-15 E125：OpenClaw入口/结果函数专项已核，尚无完整宿主或适配声明；原24h观察收尾、Qwen5强杀方法三环境通过，产品未变。最近真实UI为E123/e7d82cc，AIC Kimi/原私聊Pi；心跳ACTIVE。系统根因、自然refresh、历史截止覆盖及完整验收仍缺。
 
-[观察收尾与Qwen事务](125-observation-closeout-and-qwen-transactions.md) · [Pi部署及UI](124-pi-deployment-and-ui.md) · [Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md)
+[OpenClaw入口与边界](126-openclaw-turn-entry-contract.md) · [观察收尾与Qwen事务](125-observation-closeout-and-qwen-transactions.md) · [Pi部署及UI](124-pi-deployment-and-ui.md) · [Codex取消修复及UI](121-codex-deployment-and-ui.md) · [官方取消候选（未部署）](117-dws-cancellation-candidate.md)
 
 | 要解决的问题 | 当前入口 |
 |---|---|

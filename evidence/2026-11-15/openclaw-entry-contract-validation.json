@@ -1,0 +1,111 @@
+{
+  "evidence": "E125",
+  "scope": "fixed official entry and pure result projection; no CLI/provider/credentials",
+  "probe": {
+    "upstreamCommit": "41f2b981d240cab9e55b07cba991282a795317b5",
+    "sourceSha256": "84cb782d2100f703a158afca578a8ee468035f508089a6029eb9e0348e2d9008",
+    "nodeVersion": "v26.3.1",
+    "executed": "classifyAgentExecResult only",
+    "checks": [
+      {
+        "name": "successful_terminal",
+        "passed": true,
+        "status": "ok"
+      },
+      {
+        "name": "reasoning_and_commentary_excluded",
+        "passed": true,
+        "status": "ok"
+      },
+      {
+        "name": "visible_text_fallback",
+        "passed": true,
+        "status": "ok"
+      },
+      {
+        "name": "error_payload",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "projected_error_payload",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "projected_untyped_error",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "aborted",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "meta_error",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "error_stop_reason",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "fallback_exhausted",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "timeout_reason",
+        "passed": true,
+        "status": "timeout"
+      },
+      {
+        "name": "timeout_phase",
+        "passed": true,
+        "status": "timeout"
+      },
+      {
+        "name": "incomplete_turn_error_preserved",
+        "passed": true,
+        "status": "error"
+      },
+      {
+        "name": "unavailable_usage_not_invented",
+        "passed": true,
+        "status": "ok"
+      }
+    ],
+    "boundaryObservations": {
+      "lengthWithoutMetaErrorClassifiedOk": true,
+      "missingStopReasonClassifiedOk": true
+    },
+    "fullCliTested": false,
+    "providerCalled": false,
+    "sessionResumeTested": false,
+    "cancellationCleanupTested": false,
+    "adapterReady": false
+  },
+  "negativeSourceChecks": [
+    {
+      "case": "empty",
+      "exitCode": 1,
+      "rejectedBeforeImport": true
+    },
+    {
+      "case": "changed",
+      "exitCode": 1,
+      "rejectedBeforeImport": true
+    }
+  ],
+  "toolSha256": "b914e034620d46a5142d75fcca2bc0af505a2e069aefc0af7b2e5f4b9882a70e",
+  "sourceFiles": 17,
+  "openclawInPath": false,
+  "productModulesChanged": 0,
+  "deployed": false,
+  "currentRuntimeBindingsChanged": false,
+  "mustCriteriaChanged": false,
+  "nextCandidate": "agent --local with explicit session and exclusive private state; requires complete JSON/cancel/config proof before adapter admission"
+}

@@ -442,3 +442,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [完整记录](../../docs/125-observation-closeout-and-qwen-transactions.md)、[脱敏证据](../../evidence/2026-11-15/observation-and-transaction-validation.json)：原run自然到期，2879采样/13检查、32捕获事件逐条对账；14不可达/16 poll_error采样/24路由错误/9维护保留，不称健康24h。后续六库保留起点88任务/216 outbox原字段，当前98任务；非截止或六库共同原子快照。
 - Qwen固定41a3b9f5 admitted/completed映射现有持久事务，不复制上游源码或弱化落盘边界；新5个SIGKILL方法验证cursor/inbox、job/ack、工具副作用/终态、终态/outbox、provider接收/本地回执，跨两次恢复不重跑工具、原key/payload保持。冻结源Py3.14/原同wheelPy3.14与3.11各5通过；21产品/许可相同，未重跑396全量，未调用真实DWS或修改部署。
 - R13真实失效refresh/系统根因和历史截止缺口仍在；49/14/1、7 MUST未完整不变。下一独立项OpenClaw宿主契约，旧UI/原观察/Qwen已过强杀样本不重复。
+
+## E125 — OpenClaw官方入口及无凭据结果函数验证
+- [契约与限制](../../docs/126-openclaw-turn-entry-contract.md)、[17文件摘要](../../docs/references/openclaw-turn-contract.json)、[执行证据](../../evidence/2026-11-15/openclaw-entry-contract-validation.json)。官方41f2b981：exec每次randomUUID，无resume选择器；local支持明确session并拒绝外部状态所有者；Gateway持有turn，退出/断连不能当工具停止。当前PATH无OpenClaw，未安装或读取凭据。
+- 只import固定官方agent-exec-result.ts，Node26.3.1执行14检查通过，空/变更源码2负例在import前拒绝；仅length或缺stopReason的内部输入仍分类ok，证明不能只用该函数认定完整成功，不据此称真实CLI有截断漏洞。未运行上游全量/完整CLI/取消/续接；产品21模块与现有部署不变。
+- [既有DWS日志补证](../../evidence/2026-11-15/observation-existing-dws-diagnostics.json)：原窗口10686响应诊断含40次api/request_timeout，3268–3872ms（38 history、2 other）；窗口后截至本次读取7830诊断含30次history同类错误，3266–3395ms。全部exit1/stage=request/providerExecutionStarted=false；与周期采样分母不同，不抵扣或替代原16错误采样，不推断DNS/TCP/代理/认证根因或自然刷新。无新增真实探针。
