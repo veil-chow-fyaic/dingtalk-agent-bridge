@@ -472,3 +472,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E130 — 群引用双向真实UI
 - [记录](../../docs/131-group-quote-ui.md)、[脱敏审计](../../evidence/2026-11-15/group-quote-ui-validation.json)：一次受管reply_to confirmed及新卡片明确回复入口原生入站；history/consumer保留引用ID/原文，5组原生AX/截图。33检查、4篡改负例通过，初次审计acked误判保留并按真实normalized修正。
 - 新增3消息/1传输投递，两路98任务/238 Agent outbox/session和旧行保持；无产品/服务/部署/绑定变更。群双向两格通过，51/12/1及7 MUST仍未完整。原始材料仅local/group-quote-20261115，不重复发送样本。
+
+## E131 — 群双PNG原件入站及Kimi订阅拒绝
+- [记录](../../docs/132-group-multi-image-and-provider-denial.md)、[脱敏审计](../../evidence/2026-11-15/group-multi-image-failure-validation.json)：一次原生文字＋两PNG，一个实际任务；两原件缓存/暂存同字节，parts顺序保持。Kimi2.1.1仅版本事件，stderr provider.auth_error 403明确订阅访问拒绝；failed/runtime_terminal_missing，无工具/结果或自动重做。
+- 32只读检查/5篡改负例通过，不等于任务通过；接收/失败两反馈confirmed/history/UI，旧98任务/238 outbox/session保持，现99/240。群组合只记部分，51/11/2，7 MUST仍未完整；无产品/服务/部署/绑定变更。原始仅local/group-multi-image-20261115，需Kimi服务权限恢复新证据，不重发或认证修复。

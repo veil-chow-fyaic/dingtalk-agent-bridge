@@ -1,6 +1,8 @@
 # 文档导航
 
-E130：[群引用双向真实UI](131-group-quote-ui.md)通过，33只读核验/4篡改负例，98任务和238 Agent outbox保持。矩阵51/12/1，7 MUST仍未完整；最近UI为E130，最近部署仍E123/e7d82cc。
+E131：[群双图入站及Kimi访问拒绝](132-group-multi-image-and-provider-denial.md)。原件入站/暂存一致，但Kimi订阅访问403，任务失败且无交付/重做；32只读检查/5负例。现99任务240 Agent outbox，矩阵51/11/2。群模型任务待既有服务权限恢复证据；7 MUST保持，部署未变。
+
+历史E130：[群引用双向真实UI](131-group-quote-ui.md)通过，33只读核验/4篡改负例，98任务和238 Agent outbox保持。矩阵51/12/1，7 MUST仍未完整；最近UI为E130，最近部署仍E123/e7d82cc。
 
 历史E129：[官方新提交入口复核](130-dws-entry-delta-review.md)已完成，新增VoIP入会/纪要能力未提供剩余IM协议入口；没有新增真实验收，7 MUST缺口保持。
 
@@ -27,7 +29,7 @@ E130：[群引用双向真实UI](131-group-quote-ui.md)通过，33只读核验/4
 
 architecture保存设计，references保存公开选型及固定来源，编号阶段文档保存当时实现/失败/验证，evidence保存脱敏结果，plans/completion保存同一活动任务。源码在dingtalk_bridge，私有现场在local，不搬动数据库或账号配置来“整理”。
 
-历史文档的“待许可、未部署、下一步”只对当时有效。当前群只允许AIC测试群，原私聊保持，企业大群禁测；心跳ACTIVE。51/12/1及7项MUST未完整，不能用旧文章的成功/失败覆盖当前判定。
+历史文档的“待许可、未部署、下一步”只对当时有效。当前群只允许AIC测试群，原私聊保持，企业大群禁测；心跳ACTIVE。51/11/2及7项MUST未完整，不能用旧文章的成功/失败覆盖当前判定。
 
 - [E119 Codex原生中断与有限清理](120-codex-native-interrupt.md)
 

@@ -1,6 +1,8 @@
 # DingTalk Agent Bridge
 
-E130：[群引用双向真实UI](docs/131-group-quote-ui.md)通过，33只读核验/4篡改负例，98任务和238 Agent outbox保持。矩阵51/12/1，7 MUST仍未完整；最近UI为E130，最近部署仍E123/e7d82cc。
+E131：[群双图入站及Kimi访问拒绝](docs/132-group-multi-image-and-provider-denial.md)。原件入站/暂存一致，但Kimi订阅访问403，任务失败且无交付/重做；32只读检查/5负例。现99任务240 Agent outbox，矩阵51/11/2。群模型任务待既有服务权限恢复证据；7 MUST保持，部署未变。
+
+历史E130：[群引用双向真实UI](docs/131-group-quote-ui.md)通过，33只读核验/4篡改负例，98任务和238 Agent outbox保持。矩阵51/12/1，7 MUST仍未完整；最近UI为E130，最近部署仍E123/e7d82cc。
 
 历史E129：[官方新提交入口复核](docs/130-dws-entry-delta-review.md)已完成，新增VoIP入会/纪要能力未提供剩余IM协议入口；没有新增真实验收，7 MUST缺口保持。
 

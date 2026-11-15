@@ -329,3 +329,5 @@
 | 2026-11-15 E129 | DWS main新增14提交/23文件完整核对，VoIP入会/纪要增量非IM原生消息入口；稳定v68，chat原文超时保留 | docs/130；dws-entry-delta-review | 无新可用协议或连接阶段证据，不重跑旧UI/真实探针；49/14/1及7 MUST保持，心跳继续等待可推进的新证据 |
 
 | 2026-11-15 19:43–19:50 E130 | 现有群出站reply_to及新原生回复卡片入站通过；33只读核验/4负例，98任务238 Agent outbox保持，无部署变更 | docs/131；group-quote-ui-validation | 矩阵51/12/1；下一核尚未验群组合明确入口，私聊入站引用仍缺，不再把所有引用一并等待新API；7 MUST不豁免 |
+
+| 2026-11-15 19:58–20:01 E131 | 群单消息双PNG原件缓存/暂存保持；Kimi订阅403导致failed，无工具/结果/自动重做；32审计/5负例，接收和失败两确认回复UI/history可见 | docs/132；group-multi-image-failure-validation | 现99任务240 Agent outbox；51/11/2仅入站部分进展。需要既有Kimi服务权限恢复的新证据，其他依赖逐项见docs/132；不复制token/登录/换runtime绕过，项目未完成 |
