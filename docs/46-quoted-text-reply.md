@@ -33,3 +33,5 @@ dab --account-id ACCOUNT --conversation-id CONVERSATION send \
 原24h观察器run/PID/起点不变，维护采样新增1不可用，累计6；不能宣称零中断同版本24h。原始请求、回执、源ID、AX/截图、安装/测试/管理器日志均仅在local/quote-bridge-20261112。
 
 后续独立诊断用两个隔离临时工作区，各启动/停止三个合成worker，保留30次ps身份观察；均正常停止，未复现现场PID变化。依loop guard停止重复，不标根因已查明或产品已修复。[诊断结果](../evidence/2026-11-12/manager-exit-diagnostic.json)及私密trace保持，未再重启真实bridge。
+
+E130后续：[群双向引用真实UI](131-group-quote-ui.md)已完成，33检查/4篡改负例。上文群未验仅指E027当时；私聊入站、跳源与其他组合仍未验。

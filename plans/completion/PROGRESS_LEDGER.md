@@ -327,3 +327,5 @@
 | 2026-11-15 E128 | OpenClaw官方父进程死亡/gateway恢复/new两turn25检查；7子进程退出/12.06秒无late，两次恢复不重做，新代隔离；3专项×3环境，22产品模块不变 | docs/129；openclaw-gateway-lifecycle-validation | 无部署/真实provider/DWS/UI/凭据复制；旧423不重跑，下一剩余MUST新协议/UI入口，7 MUST保持 |
 
 | 2026-11-15 E129 | DWS main新增14提交/23文件完整核对，VoIP入会/纪要增量非IM原生消息入口；稳定v68，chat原文超时保留 | docs/130；dws-entry-delta-review | 无新可用协议或连接阶段证据，不重跑旧UI/真实探针；49/14/1及7 MUST保持，心跳继续等待可推进的新证据 |
+
+| 2026-11-15 19:43–19:50 E130 | 现有群出站reply_to及新原生回复卡片入站通过；33只读核验/4负例，98任务238 Agent outbox保持，无部署变更 | docs/131；group-quote-ui-validation | 矩阵51/12/1；下一核尚未验群组合明确入口，私聊入站引用仍缺，不再把所有引用一并等待新API；7 MUST不豁免 |

@@ -468,3 +468,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E129 — 剩余MUST的官方新提交入口核对
 - [记录](../../docs/130-dws-entry-delta-review.md)、[证据](../../evidence/2026-11-15/dws-entry-delta-review.json)：main从c4be030e到4cc7767c，完整14提交/23文件；稳定release v68，main有v69-beta.1。业务新增为VoIP MeetingSDK字段/个人纪要设置，无chat协议或连接细阶段诊断变更，不补原生语音/video、引用、多附件缺口。
 - 内置web两API不可访问后，无认证公开HTTP读取main/release/compare成功；chat原文25.01秒/0字节超时未重试，不冒称全文已读。只按完整差异及文档补丁判断，不外推所有社区实现。无产品/服务/DWS/UI/凭据/验收变化；下一仅新入口或细阶段证据才恢复对应实验，不重复此diff与已过宿主样本。
+
+## E130 — 群引用双向真实UI
+- [记录](../../docs/131-group-quote-ui.md)、[脱敏审计](../../evidence/2026-11-15/group-quote-ui-validation.json)：一次受管reply_to confirmed及新卡片明确回复入口原生入站；history/consumer保留引用ID/原文，5组原生AX/截图。33检查、4篡改负例通过，初次审计acked误判保留并按真实normalized修正。
+- 新增3消息/1传输投递，两路98任务/238 Agent outbox/session和旧行保持；无产品/服务/部署/绑定变更。群双向两格通过，51/12/1及7 MUST仍未完整。原始材料仅local/group-quote-20261115，不重复发送样本。
