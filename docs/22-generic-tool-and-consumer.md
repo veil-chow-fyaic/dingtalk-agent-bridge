@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-E134（2026-11-16）部署E133的组合接口，产品2467fe2；两路真实发送/history/官方原件下载已验，客户端验收仍未完整，最近真实UI E131。公共工具独立于组织、模型和Agent runtime；现状统一见[总览](102-user-requirements-and-roadmap.md)。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
+E134（2026-11-16）部署E133的组合接口，产品2467fe2；两路真实发送/history/官方原件下载已验，客户端验收仍未完整，最近真实UI E131。公共工具独立于组织、模型和Agent runtime；现状统一见[总览](102-user-requirements-and-roadmap.md)。E135实查心跳已PAUSED，调度状态不等于业务健康；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
 
 ## 调用方式
 

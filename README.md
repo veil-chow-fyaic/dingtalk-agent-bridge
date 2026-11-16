@@ -1,5 +1,7 @@
 # DingTalk Agent Bridge
 
+接手入口：[HANDOFF](plans/completion/HANDOFF.md)。E135（2026-11-16）按用户要求完成只读交接检查；心跳实查已PAUSED，正常业务服务保持，本会话停止新增推进。
+
 使用官方 DWS 授权的真人账号，将钉钉群聊、私聊接入可替换 Agent 的通用中间件。CLI、HTTP 和持久 consumer 可独立使用；可选 gateway 管理本地任务、原生会话和结果交付。账号、组织、会话及运行器均通过配置选择。
 
 **已有真实任务和文件交付闭环，项目仍未完成。** 当前结论统一见[需求、进度与下一步](docs/102-user-requirements-and-roadmap.md)。E134（2026-11-16）部署产品 `2467fe2`，群/私聊各一次文字＋双PNG组合confirmed，历史及官方资源下载四原件字节/SHA一致。最近真实 UI 仍是 E131，组合客户端呈现/逐图保存尚未验。OpenClaw代码随包部署，尚未绑定或进行真实模型/UI验收。

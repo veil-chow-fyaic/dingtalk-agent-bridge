@@ -52,4 +52,4 @@ E133的composition已于E134随2467fe2部署，两路API/history/官方逐原件
 
 C01文件摘要、C02发送事实、C03能力/终态、C04兼容性与C06环境已采用并部署；Qwen接纳/完成与inbox/job/outbox事务对照于E124完成。已有等价实现只映射，不重新实现；C05租约仅有多宿主实际需要时引入，不能把当前flock视为缺陷。具体[采用账](../references/adoption-plan.md)。
 
-仅AIC测试群及原私聊获准，企业大群/旧群禁测；心跳ACTIVE与服务健康分开。系统钥匙串根因、自然失效refresh和长期验收未完成，禁止auth/doctor/Keychain实验。原生语音/video、私聊入站引用及组合缺口不因架构或运行器扩展而通过。
+仅AIC测试群及原私聊获准，企业大群/旧群禁测；E135实查心跳已PAUSED，调度与服务健康分开。系统钥匙串根因、自然失效refresh和长期验收未完成，禁止auth/doctor/Keychain实验。原生语音/video、私聊入站引用及组合缺口不因架构或运行器扩展而通过。

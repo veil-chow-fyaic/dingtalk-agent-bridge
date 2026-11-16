@@ -3,7 +3,7 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E134",
+    "documentationEvidence": "E135",
     "latestUiEvidence": "E131",
     "deployedProduct": "2467fe2",
     "deploymentEvidence": "E134",
@@ -22,7 +22,9 @@
       "R13",
       "R14"
     ],
-    "openclawCandidateProduct": "500191a"
+    "openclawCandidateProduct": "500191a",
+    "automationStatus": "PAUSED",
+    "handoff": "plans/completion/HANDOFF.md"
   },
   "documents": {
     "AGENTS.md": {
@@ -646,6 +648,9 @@
       "role": "ledger",
       "preservedSha256": "59c79bd25435893bfbe111b827bf779263f61ba225c1862a539432d8beef3265",
       "preservedPrefixBytes": 81242
+    },
+    "plans/completion/HANDOFF.md": {
+      "role": "current"
     },
     "plans/completion/INIT.md": {
       "role": "current"

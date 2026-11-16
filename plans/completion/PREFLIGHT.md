@@ -1,5 +1,7 @@
 # 续作前置核对
 
+E135接手先读[HANDOFF](HANDOFF.md)：本会话已按用户要求交接，心跳已PAUSED，不自动恢复。下列为未来接手步骤，不在交接时启动新实验。
+
 1. 读[AGENTS](../../AGENTS.md)、INIT、CURRENT_MISSION、MODE、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER及99-执行偏差日志；核原checkout、codex/complete-bridge、未提交改动归属，不从聊天空目录另做实现。
 2. 从[总览](../../docs/102-user-requirements-and-roadmap.md)区分现场2467fe2/E134（E133组合实现、包含500191a OpenClaw代码但未绑定/真实模型验收）、最近UI E131和E132文档治理。已有冻结测试不与当前HEAD混比，无代码变化不重跑全量。
 3. 选择未完成且有明确可用入口的项，先读对应证据及loop guard。E131模型403需既有服务访问恢复证据；DWS ready不解除这个条件。旧UI路径和两份旧观察不重复。

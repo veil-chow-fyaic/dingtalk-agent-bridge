@@ -1,0 +1,106 @@
+{
+  "at": "2026-11-16T06:10:38.802420+00:00",
+  "checkedCommit": "9bf2bf3bae8cb2fa91c804fbaf2c90051ac0b5b7",
+  "branch": "codex/complete-bridge",
+  "cleanBeforeHandoff": true,
+  "dwsCallsMade": 0,
+  "modelCallsMade": 0,
+  "uiCallsMade": 0,
+  "routes": [
+    {
+      "type": "group",
+      "jobs": 20,
+      "agentOutbox": 47,
+      "tasksMetaSessionOutboxMatchE134": true,
+      "eventsCount": 78,
+      "deliveriesCount": 50,
+      "transportRowsMatchE134": true,
+      "unfinishedJobs": 0,
+      "pendingAgentOutbox": 0,
+      "unknownTransportDeliveries": 0,
+      "lastSyncComplete": true,
+      "historyWindowPending": false
+    },
+    {
+      "type": "direct",
+      "jobs": 79,
+      "agentOutbox": 193,
+      "tasksMetaSessionOutboxMatchE134": true,
+      "eventsCount": 284,
+      "deliveriesCount": 204,
+      "transportRowsMatchE134": true,
+      "unfinishedJobs": 0,
+      "pendingAgentOutbox": 0,
+      "unknownTransportDeliveries": 0,
+      "lastSyncComplete": true,
+      "historyWindowPending": false
+    }
+  ],
+  "components": [
+    {
+      "component": "transport",
+      "status": "running"
+    },
+    {
+      "component": "agent-1",
+      "status": "running"
+    },
+    {
+      "component": "agent-2",
+      "status": "running"
+    }
+  ],
+  "allRunning": true,
+  "access": {
+    "state": "ready"
+  },
+  "automation": {
+    "id": "bridge",
+    "status": "PAUSED",
+    "updatedAt": "2026-11-16T01:42:42.501000+00:00",
+    "changedByThisHandoff": false
+  },
+  "productModuleCount": 23,
+  "productMatchesValidated": true,
+  "configHashesMatchE134": true,
+  "limitations": [
+    "Local process identity, stored guard and independent SQLite read transactions only; no new provider/auth/UI test or continuous health claim",
+    "Task and delivery counts are a capture-time fact, not a future guarantee",
+    "Existing E133/E134 validation records were inspected; full product tests were not rerun"
+  ],
+  "evidence": "E135",
+  "scope": "Read-only handoff inspection; no completion certification",
+  "reviewedSourceFiles": [
+    "dingtalk_bridge/composition.py",
+    "dingtalk_bridge/core.py",
+    "dingtalk_bridge/consumer.py",
+    "dingtalk_bridge/service_manager.py",
+    "scripts/accept_composition_api.py",
+    "scripts/capture_service_observations.py",
+    "scripts/review_service_observations.py",
+    "scripts/reconcile_observation_snapshot.py"
+  ],
+  "findings": [
+    "Current guidance claimed ACTIVE but automation was already PAUSED; this handoff did not change scheduler status",
+    "Observation collector does not automatically capture cutoff ledgers or loaded-version evidence; this is an independent implementation item, not blocked by Kimi/UI",
+    "Existing 51/11/2 UI declaration does not erase E134 API/original-download progress; full MUST completion remains false"
+  ],
+  "preEditChecks": {
+    "documentation": {
+      "ok": true,
+      "documents": 168
+    },
+    "manifest": {
+      "ok": true,
+      "files": 739,
+      "topLevelDocs": 137
+    },
+    "declaredAcceptance": {
+      "valid": true,
+      "complete": false,
+      "passed": 51,
+      "blocked": 11,
+      "partial": 2
+    }
+  }
+}

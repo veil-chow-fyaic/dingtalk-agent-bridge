@@ -1,5 +1,7 @@
 # 当前任务
 
+E135交接状态：用户已要求本会话停止推进并交接；先读[HANDOFF](HANDOFF.md)。本轮仅只读检查/文档修正，心跳已PAUSED且未更改，不自动恢复。产品功能与未完标准如下。
+
 交付官方DWS真人账号到可替换Agent的通用IM中间件，沿同一[PRD](01-PRD.md)、[验收矩阵](ACCEPTANCE_MATRIX.md)、[最终自检](10-自检清单.md)。当前结论统一见[总览](../../docs/102-user-requirements-and-roadmap.md)，授权和禁止项见[AGENTS](../../AGENTS.md)。
 
 E134（2026-11-16）已部署E133产品2467fe2并完成通道独立实测：群/私聊各一条文字＋双PNG组合confirmed，history图序及四张官方下载原件与源/暂存字节/SHA一致。无新模型任务，99任务/240 Agent outbox/session保持。原生UI两轮同错后停止重试，客户端呈现/保存仍未验；标准及矩阵不降低。

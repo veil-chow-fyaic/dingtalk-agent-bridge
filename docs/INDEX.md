@@ -167,6 +167,7 @@
 | [plans/completion/CRITICAL_PATH.md](../plans/completion/CRITICAL_PATH.md) | 现行说明 |
 | [plans/completion/CURRENT_MISSION.md](../plans/completion/CURRENT_MISSION.md) | 现行说明 |
 | [plans/completion/EVIDENCE.md](../plans/completion/EVIDENCE.md) | 累计账本 |
+| [plans/completion/HANDOFF.md](../plans/completion/HANDOFF.md) | 现行说明 |
 | [plans/completion/INIT.md](../plans/completion/INIT.md) | 现行说明 |
 | [plans/completion/MODE.md](../plans/completion/MODE.md) | 现行说明 |
 | [plans/completion/POLICY.md](../plans/completion/POLICY.md) | 现行说明 |

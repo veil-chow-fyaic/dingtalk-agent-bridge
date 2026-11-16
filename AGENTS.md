@@ -1,5 +1,7 @@
 # 钉钉 bridge 工作约定
 
+2026-11-16 E135：用户要求整体检查后交接，本会话停止新增推进。接手先读[HANDOFF](plans/completion/HANDOFF.md)。心跳实查已PAUSED，本轮未更改调度或停止正常业务服务；未经用户接手/恢复指示不自动续作。
+
 ## 工作位置和读取顺序
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
@@ -47,4 +49,4 @@ veil是原生客户端真人，liev是显式profile绑定的DWS真人；UI发送
 
 当前说明写入总览/任务池，阶段结果追加到证据和账本，不再在多个入口叠加“历史当前状态”。更新[文档索引](docs/documentation-index.json)并运行review_documentation；verify_handoff先写manifest再核对，verify_privacy扫描暂存blob，git diff --check。账号ID、凭据、原聊天、截图、日志、数据库和下载只在local或私有工具记录，不入Git、不整包交接。
 
-全部MUST及最终自检满足才完成并停bridge心跳。心跳ACTIVE为E114既有调度配置，不等于服务健康；唤醒次数、空等和离线时间不计进度。当前未完成。
+全部MUST及最终自检满足才可标完成；用户要求交接不等于完成。E135实查bridge心跳已PAUSED，旧ACTIVE仅为E114历史，不自动恢复。调度与业务服务分开，唤醒次数、空等和离线时间不计进度。当前未完成。

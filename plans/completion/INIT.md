@@ -8,14 +8,14 @@ git:
   target_branch: codex/complete-bridge
   remote_publish: false
 runtime:
-  mode: 完整实现与验收
+  mode: 交接，等待用户指定接手
   checkpoint_minutes: 45
   single_agent: true
 goal:
   use_goal: false
 ```
 
-用户已要求安排长过程闭环，E114复用原heartbeat bridge并恢复ACTIVE，每30分钟在本聊天续作。不是新实现/新线程，不增加独立目标系统。沿已有计划执行；先读AGENTS、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，然后09里程碑/10自检。
+E135用户要求整体检查后交接，当前以[HANDOFF](HANDOFF.md)为接手入口。实查原heartbeat bridge已PAUSED，未更改调度，不自动恢复；E114的ACTIVE是历史配置。不是新实现/新线程，不增加独立目标系统。用户明确接手后沿已有计划执行；先读AGENTS、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，然后09里程碑/10自检。
 
 每次取关键路径最前可做项，实际实现、验证、修复，按改动需要与当前授权部署/真实UI，留证并本地提交。完成一段继续，不只巡检或重新规划。阶段状态/失败写回文件；上下文重置从这些文件续接，不从旧聊天猜状态。
 

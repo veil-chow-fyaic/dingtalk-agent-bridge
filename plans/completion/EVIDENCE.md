@@ -491,3 +491,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [阶段报告](../../docs/135-composition-api-deployment.md)、[脱敏审计](../../evidence/2026-11-16/composition-api-validation.json)：已部署E133产品2467fe2，23模块与其冻结验证一致。原计划器因WAL/SHM拒绝保留；持有全部数据拥有者锁做单独SQLite快照审查，transport-only覆盖固定cut后再停传输审零积压，最终恢复原Kimi/Pi两gateway。配置/绑定不变，OpenClaw代码随包存在但未启用/真实验收。
 - 群/私聊各一条文字＋两新PNG，一次confirmed；history文字/图序/身份匹配，四张官方下载原件与源/暂存逐字节/SHA一致。34只读检查/5篡改负例全过，旧99任务/240 Agent outbox/session保持；新增2消息/2传输delivery，0模型任务。自身inbox按设计pending_media，离线物化不冒称已normalized。
 - 原生UI本轮一次仍failedToCreateImageDestination，连续两轮同路径停止；未做客户端呈现/AI标识/保存验收，51/11/2及7 MUST保持。UI恢复后核既有E134消息，不重发。无Kimi复查/认证修复/新runtime绑定；原始仅local/composition-api-20261116及local/outbox/composition-api-20261116。
+
+## E135 — 用户要求整体检查与工作交接
+- [HANDOFF](HANDOFF.md)、[脱敏检查](../../evidence/2026-11-16/handoff-review.json)：检查起点9bf2bf3、工作树干净，23产品模块/配置仍匹配E134；14:10只读本地manager/guard/SQLite，三服务running、ready，99任务/240 Agent outbox/session一致，无未终结任务/待确认outbox/未知投递。没有DWS/模型/UI调用或全量旧测试重跑，不声称实时上游/长期健康。
+- 发现实际heartbeat已PAUSED（配置09:42更新），现行ACTIVE说法错误，纠正入口且未更改调度。静态检查发现collector到期未自动采集截止账本/加载版本，这是可独立实现的R13项；后续不再一概等Kimi/UI。本轮仅交接，不实施新采集器或启动新run。
+- 标准保持51/11/2、7 MUST未完整；新增接手入口、代码/证据定位、禁止重跑清单与建议顺序。产品/服务/绑定不改，不新建线程/远程发布，用户已结束本会话的自动推进。
