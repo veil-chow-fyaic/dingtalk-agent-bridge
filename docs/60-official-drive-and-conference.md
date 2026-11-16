@@ -1,5 +1,10 @@
 # E043：官方钉盘与会议边界
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12；仅指当前固定DWS v1.0.67及已绑定liev profile。官方源码checkout的精确tag为v1.0.67；不把本机命令存在或read成功外推为全流程可用。证据official-office-boundary.json覆盖8项核验，原始help/schema/只读回执只在local/office-boundary-20261112。
 
 ## 会议不是一个统一能力

@@ -1,5 +1,10 @@
 # Codex部署与真实私聊验收 E120
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 产品0c6f2da已部署，AIC群保持Kimi，原veil/liev私聊切换为Codex0.164.0。三服务运行、DWS ready；这次闭环检验了真正的钉钉用户输入、普通账号liev回复和文件下载。身份不变，无新bot。
 
 ## 用户结果

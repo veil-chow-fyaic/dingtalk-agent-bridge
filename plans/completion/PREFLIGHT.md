@@ -1,19 +1,11 @@
 # 续作前置核对
 
-E131当前状态（2026-11-15）：群单消息文字＋双PNG已原生发送一次，形成一个任务，两原件缓存/暂存SHA及顺序一致；Kimi返回provider.auth_error 403，提示当前订阅无Kimi Code访问权限。任务failed/runtime_terminal_missing，未见工具/完成事件，无文件交付或重做；接收/失败两回复confirmed并UI/history通过。32只读检查/5篡改负例，旧98任务238 Agent outbox及session保持，现99任务240 outbox。群入站多附件仅部分，矩阵51/11/2，7 MUST不变。需既有Kimi服务权限恢复的新证据才继续群模型任务，禁止登录修复/复制token/换runtime绕过；其余具体阻塞见本轮记录。E130群引用双向通过保留。部署仍E123/e7d82cc、候选E127/500191a，无服务操作。见[本轮记录](../../docs/132-group-multi-image-and-provider-denial.md)。
+1. 读[AGENTS](../../AGENTS.md)、INIT、CURRENT_MISSION、MODE、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER及99-执行偏差日志；核原checkout、codex/complete-bridge、未提交改动归属，不从聊天空目录另做实现。
+2. 从[总览](../../docs/102-user-requirements-and-roadmap.md)区分现场e7d82cc/E123、未部署500191a候选、最近UI E131和文档E132。已有冻结测试不与当前HEAD混比，无代码变化不重跑全量。
+3. 选择未完成且有明确可用入口的项，先读对应证据及loop guard。E131模型403需既有服务访问恢复证据；DWS ready不解除这个条件。旧UI路径和两份旧观察不重复。
+4. 只为下一动作读取必要现场状态，文档工作不制造DWS/模型/UI探针。经理进程running、HTTP健康、released或last_sync.at都不能替代真实覆盖/交付。
+5. 精确会话、显式profile与白名单沿既有授权；仅AIC及原私聊，企业大群/旧群禁测。未知原key对账；维护用原manager实际归属，runtime迁移需原生new/零未决/显式binding。
+6. 用户已登录成功的历史保留，不索取密码/第二账号；禁止auth/doctor/Keychain及自动认证修复等AGENTS动作。凭据故障保持暂停，不能以正常恢复授权绕过。
+7. 提交前更新文档索引、review_documentation、review_acceptance、verify_handoff写manifest并核对、verify_privacy扫暂存blob、git diff --check。原始身份/聊天/截图/日志/下载只留local。
 
-E130历史状态（2026-11-15）：群出站引用及新卡片“回复”入口的群入站引用均已真实UI/history/consumer通过，33只读检查和4篡改负例通过。新增3消息/1 confirmed投递，两路98任务、238 Agent outbox及session保持；无产品/部署/服务/绑定变更。矩阵现为51通过/12阻塞/1部分，7 MUST仍未完整；最近UI为E130，部署仍E123/e7d82cc，候选仍E127/500191a。不能将旧入站UI阻塞外推至未验但已有入口的出站/组合格；下一检查群多附件明确入口，旧样本不重发。见[本轮证据](../../docs/131-group-quote-ui.md)。
-
-E128历史状态（2026-11-15）：固定E127/500191a的22模块，OpenClaw官方CLI父进程死亡与gateway/new链路25检查通过；仅两个合成provider turn。SIGKILL自有gateway后7子进程退出，工具开始后12.06秒无late；两次恢复保持interrupted/原UUID/契约且不重做，原生new归档后新UUID/目录无旧历史。新增3方法在冻结源/同wheel双Python各3通过；旧423×3不重跑，不称426全量。产品、服务、绑定均未改，最近真实部署/UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；OpenClaw真实provider/UI未验，不复制既有凭据。父进程死亡及已过观察/Qwen/旧UI不重复，下一独立项回到剩余MUST的新官方协议/UI入口。49/14/1及7 MUST保持。见[父进程死亡与恢复验证](../../docs/129-openclaw-gateway-lifecycle.md)。
-
-E129公开增量已核：DWS main 4cc7767c相对c4be030e共14提交/23文件，新增VoIP入会字段/纪要设置，不是IM原生消息入口；稳定版仍v68。完整compare无chat/连接阶段变更，chat原文请求超时未计成功；无新入口不重复旧UI或此diff。见[官方增量与边界](../../docs/130-dws-entry-delta-review.md)。
-
-先读AGENTS与当前任务/模式/关键路径/任务池/证据/账本/偏差日志，确认原checkout、codex/complete-bridge和未提交归属。不能从聊天空目录另做实现。
-
-E123三个组件已加载e7d82cc；21模块与E122最终冻结一致，源码/同wheel双Python396及31项部署/UI核验已过，无新变化不重复全量。只有后续动作确需现场状态时才核当前健康/账本；文档工作不制造额外业务探针。不能只看进程running，不能拿当前HEAD冒充旧冻结测试。
-
-E123三服务运行、心跳ACTIVE。精确会话/显式profile/白名单沿当前配置，只在AIC与原私聊操作；企业大群和旧群禁测。已有投递按原key对账，未确认不UI补发。停止/重载只用原manager归属记录，不按历史PID。
-
-用户已登录成功，不索取密码/弹窗名称/第二账号。助手auth/doctor/系统Keychain诊断锁解锁、file-DEK/reset/删凭据/复制token/改权限/重启Mac均禁；故障持久暂停，不自动恢复。两个历史一次查询key已消费。
-
-原reliability-20261111已结束，aic-persistent-env-20261113已由E124收尾，两份故障/维护均保留，不重置或称连续健康。原始账号/聊天/截图/日志/下载件留local或私有工具记录。提交前verify_handoff写manifest并核对、verify_privacy扫暂存blob、git diff --check；review_acceptance只核声明，当前未完整覆盖是正确缺口。
+全部MUST和最终自检尚未满足时，coverage返回未完整是正确结果，不修改判据让检查变绿。

@@ -1,5 +1,10 @@
 # 群单消息双图入站与 Kimi 访问拒绝
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15，E131。veil 在 AIC 群原生发送一次文字＋两张新合成 PNG，history/consumer 形成一条消息和一个任务。两原件的顺序、缓存及执行工作区暂存字节一致；模型闭环失败，Kimi CLI 返回 `provider.auth_error: 403`，明确提示当前订阅没有 Kimi Code 访问权限。任务保留 failed/runtime_terminal_missing，无结果文件、无自动重做；接收及失败两条反馈均 confirmed、history 回读且原生 UI 可见。
 
 这不是完整图片任务通过。群入站多附件格仅从 blocked 改为部分：双 PNG 入站和原件保全有新证据，模型理解、Python计算、交付及任意文件组合仍未完成。矩阵51通过、11阻塞、2部分，7 MUST仍未完整。

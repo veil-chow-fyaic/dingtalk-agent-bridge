@@ -1,5 +1,10 @@
 # 长文实际失败、UTF-16 分段修复与证据边界
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 后续状态：原unknown已由[E019](39-rejection-reconciliation-and-feedback.md)按官方绑定日志对账为rejected，原行完整存入审计表；本文描述E018发现/修复时的冻结证据，失败正文仍未重发。
 
 2026-11-11，veil 原生钉钉 UI 向 liev 私聊交办两个不同内容的长文任务，Kimi 均实际生成文本和文件。首个任务暴露真实投递缺陷：第一段超出官方服务端限制，被拒绝；第二段和文件送达。修复后新任务的两段与文件均 confirmed，两份客户端下载件都在 Quick Look 打开，字节与各自原文一致。完整长聊天气泡尚未逐段目视验收，不能据 API 成功标整项 UI 通过。

@@ -1,5 +1,10 @@
 # 验证协议与当前用例矩阵
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-11。当前组织/群均为深圳市弗忧智能科技有限公司，稳定ID已私存，INTERNAL_GROUP、成员1。旧aic群AX冒烟独立保留。DWS v1.0.61基线与隔离v1.0.67结果分开。本轮新增证据见 [docs/20](20-gap-acceptance-and-reproduction.md)。
 
 ## 身份与执行顺序

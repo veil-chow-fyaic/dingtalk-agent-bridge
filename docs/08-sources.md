@@ -1,5 +1,10 @@
 # 资料来源索引
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 整理更新：2026-11-11。仅 #937/#1429 本轮重新查状态，其他 issue 沿用11-10快照。动态链接会更新；版本相关结论优先引用正式 tag。issue 的 open/closed 仅表示工作流状态，不证明故障已复现或修复。公开 issue 元数据另存 evidence/2026-11-10/upstream-metadata.json。
 
 ## 官方文档与项目

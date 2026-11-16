@@ -1,35 +1,28 @@
-# 通用工具边界与参考实现
+# 通用工具边界与运行器接入
 
-2026-11-11，按用户最新澄清修正：**本项目交付通用 IM bridge，并接入本机 Kimi/Codex 完成真实任务；不要求用户另选 runtime 才能继续开发。**任何 Agent/程序可以通过 CLI 或 HTTP 使用其消息、附件与投递能力。当前指定组织和单人群仅是现场测试范围。
+E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
 
-## 已撤销的错误前提
+## 当前接入层次
 
-此前把“核实团队实际运行的 runtime、再做挂接”列为必过关卡，是错误的范围收窄，现从计划、需求和总状态中移除。没有安装某个 OpenClaw 扩展不阻塞本工具。另一个项目的 Bot-only 产品约束只约束那个项目，不限制本项目的普通账号能力。
-
-组织/profile 是 DWS 的认证与路由上下文；会话通过稳定ID定位；它们不等于产品必须绑定某个组织，也不需要在代码中写公司名。多账号、多会话是工具路由能力。账号登录/平台资源授权仍由钉钉本身决定，不能通过通用接口消除真实平台权限。
-
-## 本地参考资料及采用方式
-
-| 项目 | 固定本地版本 | 采用方式 |
+| 层次 | 责任 | 使用入口 |
 |---|---|---|
-| `/Users/veil/Projects/wecom-bridge` | `1ee7f8ca34b544495cd6770343bdb5177baef453` | 参考HTTP发送、WebSocket事件、组织/会话定位、投递账本、媒体和恢复。组织字段用于路由，不是某个组织专属产品 |
-| `/Users/veil/Projects/wecom-agent-gateway` | `8f7e2416a28720d3884f2a3b7a5336b7a51aadb7` | 参考中立消息模型、parts、引用和能力声明；不修改其Bot-only策略，也不将它的部署列为本工具前置 |
-| `/Users/veil/Projects/agent-facade` | 本轮只读README/runtime接口 | 该仓库说明验证runtime已停止/项目暂停；不唤醒或修改它，不以其可用性判定本工具完成 |
+| 传输 | 显式账号/会话路由，history与持久水位，消息/原件，发送账本与原key对账 | [CLI/HTTP手册](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) |
+| 通用consumer | 事件/游标同事务落盘，物化有序parts/quote/附件，self过滤，异常隔离 | [持久消费说明](22-generic-tool-and-consumer.md) |
+| 可选gateway | 白名单/群命令触发、任务和原生session、取消/new、结果校验与outbox | [运行手册](15-service-runbook.md) |
+| runtime adapter | 本地工具、原生终态/session/中断，按实际能力交付 | [四类运行器状态](architecture/agent-integration-map.md) |
 
-本项目保持独立，不要求接入者采用OpenClaw、Codex、某模型或业务框架。当前提供HTTP游标消费与CLI，未宣称与WeCom WebSocket线协议完全兼容；需要该兼容性时独立扩展。
+原R09至少一个本地执行器已满足。Kimi/Codex/Pi各自真实验收范围保留，当前Kimi受E131订阅访问403限制；OpenClaw薄适配仅合成验证、未部署/真实UI。不得用通道健康、CLI启动或旧测试数量代替具体任务成功。精确当前结论见[总览](102-user-requirements-and-roadmap.md)。
 
-## 已实现的中立接入能力
+## 消费和身份边界
 
-- 账号＋会话路由：`Hub`管理多个group/direct worker，DWS profile仅留在内部配置；每路独立消息游标、附件、发送幂等账本。
-- CLI与HTTP：列会话、事件、文本/文件/图片发送、查询投递、对账、附件下载/修复；[完整使用说明](22-generic-tool-and-consumer.md)。
-- 持久收件箱：事件及游标同事务提交；按消费者独立持久化；下载失败保留pending/failed，后续可恢复。
-- 中立消息模型：有序text/image/file parts、结构化quote、原件路径/大小/SHA256；不将引用附件重复放入正文。
-- 保守消费：本人和未知sender不生成可触发项；无法解释的资源不当成纯文本完整消息；不把raw CLI对象直接交给模型。
+Hub按账号/会话分路，名称只展示；profile留内部配置。同一consumer名字绑定一路，flock防同名并发。事件与游标先持久化，再下载/规范化；normalized不代表模型已经执行，ready()是筛选接口，不是acked状态。
 
-上述传输和通用consumer本身不运行模型。新增独立agent_gateway已使用本机Kimi执行授权任务并回传，任务、会话与投递单独持久化；allowSelfCommands只允许已核验本人的显式/agent指令，不关闭通用consumer的本人过滤。真实接入见[docs/24](24-local-agent-product-and-acceptance.md)。
+本人和未知sender不生成普通可触发消息；allowSelfCommands只覆盖已核身份的显式命令，不关闭通用self过滤。quote保留原目标/原文/已暴露身份字段，未知ID保持未知；显示名不能授权。平台资源未物化不能假称模型已读，引用附件不重复放入顶层。
 
-## 通用consumer阶段验收与当前接入
+更换runtime必须原生new归档、零未决、显式binding迁移；不只改JSON或清空session。一个消息只由一个任务宿主执行，OpenClaw通道插件和本项目gateway不能同时消费同一路任务。
 
-接入runtime之前，18条既有真实合成消息只读消费通过，2条引用、13个媒体部件，12条有媒体的消息完成下载校验；18条全部被self过滤，readyForRuntime=0。重启consumer再读fetched=0，消息总数不变。两个账号/三个会话含DM的路由、参数与幂等隔离有确定性测试；这不冒充多个真实账号现场验收。
+## 参考和历史
 
-当前已增加两轮Kimi实际任务、5条confirmed回复，完整账本25条；51项回归通过。Codex adapter保留但请求超时，不称实测可用。公共契约和可替换runtime是通用性要求；真实执行闭环同样属于用户最新明确的交付要求。
+早期WeCom工具只作需求/交互参照，未承诺兼容其WebSocket线协议，也不采用另一项目的Bot-only限制。当前官方/GitHub优先，CEO任务/交付/runtime契约和Qwen通道事务取舍见[参考采用账](references/adoption-plan.md)，不唤醒或修改其他本地项目。
+
+初期18条self消费、51项回归及两轮Kimi任务属于2026-11-11历史，见[初期接入报告](24-local-agent-product-and-acceptance.md)和Git原页；不作为当前总量或Codex仍不可用的依据。

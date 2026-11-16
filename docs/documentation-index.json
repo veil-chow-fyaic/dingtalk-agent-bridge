@@ -1,0 +1,665 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-11-16",
+  "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
+  "state": {
+    "documentationEvidence": "E132",
+    "latestUiEvidence": "E131",
+    "deployedProduct": "e7d82cc",
+    "deploymentEvidence": "E123",
+    "candidateProduct": "500191a",
+    "uiStateCounts": {
+      "passed": 51,
+      "blocked": 11,
+      "partial": 2
+    },
+    "mustGaps": [
+      "R01",
+      "R04",
+      "R06",
+      "R07",
+      "R12",
+      "R13",
+      "R14"
+    ]
+  },
+  "documents": {
+    "AGENTS.md": {
+      "role": "current"
+    },
+    "README.md": {
+      "role": "current"
+    },
+    "docs/01-research.md": {
+      "role": "historical",
+      "preservedSha256": "a6909a6c4fea6794990af0b986e70df97762652c4952bdb542825f231b753d23"
+    },
+    "docs/02-capability-matrix.md": {
+      "role": "historical",
+      "preservedSha256": "80c59b2a51478c826b047d98b0a59a24c7cd91c1ec0aa9b6ac5888df66a337d5"
+    },
+    "docs/03-wecom-reference.md": {
+      "role": "historical",
+      "preservedSha256": "b9fa69f50668579035ae6790371007598f994859b06201dad6e649b0f0e0fd14"
+    },
+    "docs/04-architecture.md": {
+      "role": "historical",
+      "preservedSha256": "f5941f242a319e645648e68675c79748693ca0b9344202655a506fc367ccb195"
+    },
+    "docs/05-validation.md": {
+      "role": "historical",
+      "preservedSha256": "6451c5188c0a4ad55ffc5f7b9fc45af7dfb268b66cfa06ceaa13c0650dc4ec22"
+    },
+    "docs/06-human-checklist.md": {
+      "role": "historical",
+      "preservedSha256": "858746fb79e4d2e008b07d15852373393430fd2a06d2ecd912577b8ec72d7b0e"
+    },
+    "docs/07-local-results.md": {
+      "role": "historical",
+      "preservedSha256": "73de3c5ff6a6c01880d0d54703c2e1c3a9465c972fab4af3779b95c86b037ea7"
+    },
+    "docs/08-sources.md": {
+      "role": "historical",
+      "preservedSha256": "320a650fdba3bba47fae3d30a062bf84a9b5fb4b1095c7f29682d2cbee5c475d"
+    },
+    "docs/09-decisions.md": {
+      "role": "historical",
+      "preservedSha256": "89043bc6e6db6a862dd4c4d7722ea00138daf815221a235810816e509a92a42a"
+    },
+    "docs/10-protocol-notes.md": {
+      "role": "historical",
+      "preservedSha256": "1e48de21393ea374f68ff8a5442e64eb7e8a074fd31ab2ee08d453ceb526b5ff"
+    },
+    "docs/100-aic-group-resume-and-files.md": {
+      "role": "historical",
+      "preservedSha256": "06b98a444417c552c34fea6eb423248c349ad573ad58c3eeaf182351113f21fc"
+    },
+    "docs/101-aic-group-native-png.md": {
+      "role": "historical",
+      "preservedSha256": "6d0c5a7928dfd6a9cfd058d273f064b70fef9e16006fe04356c3cd859e8eaf3f"
+    },
+    "docs/102-user-requirements-and-roadmap.md": {
+      "role": "current"
+    },
+    "docs/103-aic-group-media-and-result-contract.md": {
+      "role": "historical",
+      "preservedSha256": "145a792d67e4e052f4ca917534f50b5910111076f11421e4759a29d59ae25db9"
+    },
+    "docs/104-aic-group-long-text-and-controls.md": {
+      "role": "historical",
+      "preservedSha256": "19adca47b711d566cac7af2476cc3488af7d1f9865c17f141fe8fad45b4f89ca"
+    },
+    "docs/105-original-24h-observation.md": {
+      "role": "historical",
+      "preservedSha256": "531d81d1383c04d1059815921d03b45f0af853f0fda61dd7e3729e4dd750ad35"
+    },
+    "docs/106-send-evidence-contract.md": {
+      "role": "historical",
+      "preservedSha256": "4f5413e151da8cd686180ec06bf33114e275ffcf350edd2587c4e7b898b29ba4"
+    },
+    "docs/107-runtime-and-session-contracts.md": {
+      "role": "historical",
+      "preservedSha256": "4f6c0461c1affd11865a7e0b5c7a09a4fd8b153c89142989349cabe1a5b3ef88"
+    },
+    "docs/108-codex-cli-timeout-diagnostic.md": {
+      "role": "historical",
+      "preservedSha256": "7e47c7455b730c391315f3eb4f33673f438d3495a9624c814dcde3b802a61cc7"
+    },
+    "docs/109-observation-ledger-reconciliation.md": {
+      "role": "historical",
+      "preservedSha256": "a432558f7afd9a79b9b04ff55c8ef54208c91b1cc4d4bdec35f755918b8a5ddc"
+    },
+    "docs/11-onboarding-lessons.md": {
+      "role": "current"
+    },
+    "docs/110-interrupted-history-current-state.md": {
+      "role": "historical",
+      "preservedSha256": "34ded19c34b85c18533e7dcdf9e20423088af6c78d8acb8e2dee84a1b7f2eaef"
+    },
+    "docs/111-dws-interruption-recovery.md": {
+      "role": "historical",
+      "preservedSha256": "df09c026ee11c9e76562949bed49998a3aedadf2a376afcd8934a2e7a43602fc"
+    },
+    "docs/112-dws-refresh-and-reboot-review.md": {
+      "role": "historical",
+      "preservedSha256": "40c7d951aa2e9a23010d5e77dfea9daaea2efca0bac181f31af1f8e3e6f03f6e"
+    },
+    "docs/113-reboot-recovery-and-runtime-network.md": {
+      "role": "historical",
+      "preservedSha256": "e5536706a26ff88bde90171b99269db369122d6a5f548ae0c5bed1eef96d89be"
+    },
+    "docs/114-dws-risks-and-resolution.md": {
+      "role": "current"
+    },
+    "docs/115-runtime-environment-and-dws-diagnostics.md": {
+      "role": "historical",
+      "preservedSha256": "d72d52ac30a028600b1d0a24d37de2ccc88dbd5f296e132377f142396c363f05"
+    },
+    "docs/116-persistent-environment-deployment-ui.md": {
+      "role": "historical",
+      "preservedSha256": "a722708c2204c4ef92f68300f1e30b2f3b9e91990a837156d9ccfe31d456d167"
+    },
+    "docs/117-dws-cancellation-candidate.md": {
+      "role": "historical",
+      "preservedSha256": "7948f1b3dba0b6e7a70dcfd3c029bf7315c2c177d84bfbc201b44899d915cbb3"
+    },
+    "docs/118-dws-cancellation-upstream-draft.md": {
+      "role": "historical",
+      "preservedSha256": "c8aef5efe3cc9e5a2b8bacce4b17ee03c8410bff2074a8ee6287420ba46a6cce"
+    },
+    "docs/119-codex-environment-and-cancellation-gap.md": {
+      "role": "historical",
+      "preservedSha256": "98a0b31cc293cdd0834d835f5ad45d77dc31dd9427e9648ed6428a625d43ae45"
+    },
+    "docs/12-requirements-and-scope.md": {
+      "role": "historical",
+      "preservedSha256": "35864cec4ce725e951be366ee02f455fbf7f7b43895e2857d63e4398654d0fa5"
+    },
+    "docs/120-codex-native-interrupt.md": {
+      "role": "historical",
+      "preservedSha256": "71aa5dd9e31edd0979938d7e48f4eeb76e30cbae436b42f11081e7822b2d7233"
+    },
+    "docs/121-codex-deployment-and-ui.md": {
+      "role": "historical",
+      "preservedSha256": "3f1d5763acaee9eaebcb4b0dc48fbcf5b1e8c6e913397f112df4b376e6ef5750"
+    },
+    "docs/122-current-clean-handoff.md": {
+      "role": "historical",
+      "preservedSha256": "af072c80daedc612680079d68c3af39d8883a37517df36053e98c1e1b3b7d03b"
+    },
+    "docs/123-pi-runtime-contract.md": {
+      "role": "historical",
+      "preservedSha256": "26f29c985cf0c43ad56e6dcd626b725e365ae3ff930ca8c7cbae2c65a0c0538b"
+    },
+    "docs/124-pi-deployment-and-ui.md": {
+      "role": "historical",
+      "preservedSha256": "9713ed734963a70d1e3a9f3bfeead4d015dbd7cc8289441f6455c6812391afa1"
+    },
+    "docs/125-observation-closeout-and-qwen-transactions.md": {
+      "role": "historical",
+      "preservedSha256": "2fec374e9c413ff2dea5adde1f1e16524aa531981276fc545c4813899e97cd0c"
+    },
+    "docs/126-openclaw-turn-entry-contract.md": {
+      "role": "historical",
+      "preservedSha256": "d0b868e00fbaeb20c09f8fdebc10da6b1f11a871f50d8c94dc07a745b84a1e85"
+    },
+    "docs/127-openclaw-local-host-validation.md": {
+      "role": "historical",
+      "preservedSha256": "e3c3d55f438e12985a21115a3883421fdc8cd1451c58cde2940f0f2421561e63"
+    },
+    "docs/128-openclaw-adapter.md": {
+      "role": "historical",
+      "preservedSha256": "c59bd0fe52992e7da5ef2b4fbaf302949ce63a5133499528bcabcd1bc965d16c"
+    },
+    "docs/129-openclaw-gateway-lifecycle.md": {
+      "role": "historical",
+      "preservedSha256": "bc7fc7da4055e7cfda655fcf67d9e16ec103df02e5f63cce1758593ee4b27b74"
+    },
+    "docs/13-roadmap-and-backlog.md": {
+      "role": "current"
+    },
+    "docs/130-dws-entry-delta-review.md": {
+      "role": "historical",
+      "preservedSha256": "89a646f78416e774dfe41ce6b39c79eecfe8602594f5685556a6f218bafe31fa"
+    },
+    "docs/131-group-quote-ui.md": {
+      "role": "historical",
+      "preservedSha256": "b5425ec7ffc185421ca833eed4d4654c7cc402aa921abdd5ad84d9c06d55d173"
+    },
+    "docs/132-group-multi-image-and-provider-denial.md": {
+      "role": "historical",
+      "preservedSha256": "efeccd96ce80f153d49591ae36a3087b0bf7149f20d394e0fb275743208b0913"
+    },
+    "docs/133-documentation-consistency.md": {
+      "role": "historical",
+      "preservedSha256": "574e25d9f556061f36a39030a8161a503fc407eba1555dd90963255080983894"
+    },
+    "docs/14-solo-test-report.md": {
+      "role": "historical",
+      "preservedSha256": "de8bf7cfadd206dcfac10883a72e13825a2c64b3f4970b0b23df3f6e22382ec5"
+    },
+    "docs/15-service-runbook.md": {
+      "role": "current"
+    },
+    "docs/16-implementation-acceptance.md": {
+      "role": "historical",
+      "preservedSha256": "38623eb01e7c7ded23d2d402cda9876a77e59a17c1ed9236ce95747ba9d31842"
+    },
+    "docs/17-requirements-progress-review.md": {
+      "role": "current"
+    },
+    "docs/18-identity-and-conversation-boundaries.md": {
+      "role": "historical",
+      "preservedSha256": "7b6a1c2273f602db878002dd09d678f308c324105e554bc7225c14be3807f215"
+    },
+    "docs/19-office-tools-and-permissions.md": {
+      "role": "historical",
+      "preservedSha256": "f2bef43945f072b2133c43593d51a9173649ed40ef28296368b48e4ee32ffa28"
+    },
+    "docs/20-gap-acceptance-and-reproduction.md": {
+      "role": "historical",
+      "preservedSha256": "6e5e6cde0e13c3b5ba4766c367cd04a7a15807d08b53df896e893c9a8a5f6298"
+    },
+    "docs/21-existing-runtime-integration.md": {
+      "role": "current"
+    },
+    "docs/22-generic-tool-and-consumer.md": {
+      "role": "current"
+    },
+    "docs/23-continuation-and-migration.md": {
+      "role": "historical",
+      "preservedSha256": "8c3d8e5623d2da19593d0ad29100d2b93384aa0d107984a890177dd983d79075"
+    },
+    "docs/24-local-agent-product-and-acceptance.md": {
+      "role": "historical",
+      "preservedSha256": "64099194f766112372134b3e626e330ce1b9649de1966278e2d3007501f39971"
+    },
+    "docs/25-official-boundary-and-scenarios.md": {
+      "role": "historical",
+      "preservedSha256": "d9db80dc6fe9363b334ea83cfaa782313ad7499ad17ebe5ab618c1dc9a201f0f"
+    },
+    "docs/26-ui-acceptance-and-sender-identity.md": {
+      "role": "historical",
+      "preservedSha256": "6704d07d5dccd6317ba07828472f77fed83faebfa93ce0cbc420730e42a087ae"
+    },
+    "docs/27-two-account-ui-acceptance.md": {
+      "role": "historical",
+      "preservedSha256": "5e11d3f6862a6ea79d5b7dccaa6dd36a8126a323d2b250eb9d35c3a4b89a39b4"
+    },
+    "docs/28-media-matrix-and-real-events.md": {
+      "role": "historical",
+      "preservedSha256": "eb239ddab70dc5d58a70caee922c8066cfe1a5c305007620e62a850dcd35be81"
+    },
+    "docs/29-stream-service-and-offline-recovery.md": {
+      "role": "historical",
+      "preservedSha256": "8a34674c7befa56e22eecde237e3a8cf3d7c9bdd67abbd61c22c61ea27cc85db"
+    },
+    "docs/30-docx-ui-and-reliability-start.md": {
+      "role": "historical",
+      "preservedSha256": "df370042d5e88b411bf08bfaca5822613751518cde6b0e727e8c621c77cded97"
+    },
+    "docs/31-xlsx-zip-ui-acceptance.md": {
+      "role": "historical",
+      "preservedSha256": "99142e130c72c17891d9bb740932da250b6fcb09fa77539721571bf6094ec1c3"
+    },
+    "docs/32-native-image-versus-inline.md": {
+      "role": "historical",
+      "preservedSha256": "c10ab334a741c6c595f88d77409f605127d44f14091ff814e998d356e5267c79"
+    },
+    "docs/33-native-image-bridge.md": {
+      "role": "historical",
+      "preservedSha256": "e4018d962fd5df1ecafa1c01672a513703668053781f631ec60b81bd4121d354"
+    },
+    "docs/34-audio-video-file-progress.md": {
+      "role": "historical",
+      "preservedSha256": "948a35def4012a0411b94c7ad752cb0c468731031c34f34d0e483a3270157fc4"
+    },
+    "docs/35-install-and-doctor.md": {
+      "role": "historical",
+      "preservedSha256": "7797b18a34aa61acbdccb8f502474c2561e9f4120706e26c192f7c41dd7b97fa"
+    },
+    "docs/36-task-control-ui.md": {
+      "role": "historical",
+      "preservedSha256": "b2fcd3f113d6416a41d2795d55c7a5cbe1d9a3aa91ca354d88380de10cd2d6ee"
+    },
+    "docs/37-multiple-files-and-followup.md": {
+      "role": "historical",
+      "preservedSha256": "2c4c1da6eca3c58864fb617bc890eca920cd1d1a0ead7cf39b0eca1e18ea0f35"
+    },
+    "docs/38-long-text-limit-and-regression.md": {
+      "role": "historical",
+      "preservedSha256": "5e073c5e53f057ac3d8c8c6055639f50669ad444dc68bb4656de4a88b90bdfe6"
+    },
+    "docs/39-rejection-reconciliation-and-feedback.md": {
+      "role": "historical",
+      "preservedSha256": "96ac5b0b5b9c214cb4d90d2d08062d7c0de89bc452ff2bded0552d13a0e44925"
+    },
+    "docs/40-service-manager-and-restart-ui.md": {
+      "role": "historical",
+      "preservedSha256": "88c058b7cdd78c7d71a9935e9d6689d91f02c5460430785e0221731d7438e583"
+    },
+    "docs/41-official-office-agent-ui.md": {
+      "role": "historical",
+      "preservedSha256": "63f08a516bf0129340df341cb3d306dd96776b2be11c02901317497f3fdb183b"
+    },
+    "docs/42-long-bubble-native-ui.md": {
+      "role": "historical",
+      "preservedSha256": "36c8fe4208d5deb58e93c93c1113809e155ec816a92551c16d8cec9ee6c9ac05"
+    },
+    "docs/43-history-network-outage-recovery.md": {
+      "role": "historical",
+      "preservedSha256": "62c8fda249d7d886c0b3275cc13307c24e9a2faac729195372aa02a4129c4603"
+    },
+    "docs/44-stream-network-recovery-and-runtime-failure.md": {
+      "role": "historical",
+      "preservedSha256": "dc0fc532a7aaa97029334828cf9419997c0fc57b79552d55dd8d52d7e7d0e31e"
+    },
+    "docs/45-single-message-two-images.md": {
+      "role": "historical",
+      "preservedSha256": "d1857e8a02eb9580a46afde89a69f7b6f0862265f5736e76ae1835ca04942248"
+    },
+    "docs/46-quoted-text-reply.md": {
+      "role": "historical",
+      "preservedSha256": "31ba81f2f91657664991a4281e1b7fb7136e33b763f205f1e96cbf4e8ac52e85"
+    },
+    "docs/47-natural-auth-rollover.md": {
+      "role": "historical",
+      "preservedSha256": "337d5ed9dd1344d19a21fd096f0a270d01e38d18d19ebbe0a66a18f32184fb0d"
+    },
+    "docs/48-jpeg-ui-rotation.md": {
+      "role": "historical",
+      "preservedSha256": "ee88a3939aa8c203d6cfe195e5730d9d8865703fdc9b78c19dcb79d189b4141b"
+    },
+    "docs/49-manager-pre-signal-exit-race.md": {
+      "role": "historical",
+      "preservedSha256": "6e9bd30387f17be0fbd03281b34d452df0a12dd3c0f5d70646029f51e8f27112"
+    },
+    "docs/50-reliability-observation-review.md": {
+      "role": "historical",
+      "preservedSha256": "b3ad8100d06365eca80a1e6a7cd7bfa03f324652b718cecd149c8cf4882e136c"
+    },
+    "docs/51-large-png-file-delivery.md": {
+      "role": "historical",
+      "preservedSha256": "009cce12bdedaea2254ba2140e55e0beb70286d252980d208e1e444253a0fc79"
+    },
+    "docs/52-sha-correction-ui.md": {
+      "role": "historical",
+      "preservedSha256": "323a3b7b946fb7b38aff5892a98ef7442a614118d54eff066d3fb39fdf9e8fe8"
+    },
+    "docs/53-quoted-source-identity.md": {
+      "role": "historical",
+      "preservedSha256": "5f49e7abee6556c4d4dcd5952235c5172ed2d7c18aefc8daa01e80ca07a84b57"
+    },
+    "docs/54-output-limit-and-compressed-recovery.md": {
+      "role": "historical",
+      "preservedSha256": "68fb43cd402106a27e780fd1f2ddcc35ee1d03c22c02083165ce1a3a0379d92a"
+    },
+    "docs/55-exif-orientation-ui.md": {
+      "role": "historical",
+      "preservedSha256": "78d553a0891c53d57e50a1035df7e2ce783df12e8d1bce382bdb752adfa6ad3e"
+    },
+    "docs/56-runtime-process-group-cleanup.md": {
+      "role": "historical",
+      "preservedSha256": "debf60733552bfe23927d0d85a4501dcf0a97435fbd7ff33bdbb6ea8fec15792"
+    },
+    "docs/57-manager-identity-diagnostics.md": {
+      "role": "historical",
+      "preservedSha256": "040e044a8921dd01a85ee3f7f6a1521ce312a81b280c19fc473f8da3e441b947"
+    },
+    "docs/58-attachment-metadata-unicode-csv.md": {
+      "role": "historical",
+      "preservedSha256": "29b79d8d309c9e92d970972b7cd12f8c3a24fed1ce030f0053b1a65be829ddef"
+    },
+    "docs/59-active-gateway-stop-ui.md": {
+      "role": "historical",
+      "preservedSha256": "68b3a540ee22dccd49957959821a40981b08931e08cf846b977719f0c01b341f"
+    },
+    "docs/60-official-drive-and-conference.md": {
+      "role": "historical",
+      "preservedSha256": "2443afa1a0843665fd79f3b8892f8217ea795530344cbb4cf94f7e261abf5491"
+    },
+    "docs/61-official-minutes-ui.md": {
+      "role": "historical",
+      "preservedSha256": "a434cc98b6b2efcf95113a823e4ff2db93831a41329857cf7c9c252bf7d38886"
+    },
+    "docs/62-crash-recovery-uncertainty.md": {
+      "role": "historical",
+      "preservedSha256": "e3d0cc7c3e0f7c24b9fcd7b248cf639192f99515be03925a49910c8b39a9738b"
+    },
+    "docs/63-runtime-parent-death-guard.md": {
+      "role": "historical",
+      "preservedSha256": "ad958c714dcf15d9569451422f983a94fa8233c253d87a045016842f273c24c6"
+    },
+    "docs/64-runtime-timeout-and-installed-wheel.md": {
+      "role": "historical",
+      "preservedSha256": "89232f126d1c7d1085c57dd5f56bb08a14fb85b27ce17e2f31d00191cb254c7a"
+    },
+    "docs/65-finite-runtime-deadlines.md": {
+      "role": "historical",
+      "preservedSha256": "266d4b4e68fdd2f6d562851f8371c86494d2d411b373b9841ed59a1af2421295"
+    },
+    "docs/66-frozen-install-audit-boundary.md": {
+      "role": "historical",
+      "preservedSha256": "380077d5f958b87744c54b06ad942835051b69c2dcfd2ba4aef7b1baf6881e30"
+    },
+    "docs/67-current-handoff-contract.md": {
+      "role": "historical",
+      "preservedSha256": "f2ab147fb8b7f45e50473b7c222b179a925d98fd4001fd9828810ea2ba530de1"
+    },
+    "docs/68-unicode-workspace-install-validation.md": {
+      "role": "historical",
+      "preservedSha256": "66a2a5157f6ce1e935a8f3559f3bef7a7e1af1c08e866acbd61c14c685afebc3"
+    },
+    "docs/69-monotonic-reconciliation-and-ui.md": {
+      "role": "historical",
+      "preservedSha256": "be451d0dd9aca7e96ce551cfefef932007a8783cfb38080fe6eb6e382088f5b5"
+    },
+    "docs/70-malformed-message-isolation.md": {
+      "role": "historical",
+      "preservedSha256": "2d9d2652baa0389be1442f69ab886e5082338f104b9592f9b0e2f291778a57fb"
+    },
+    "docs/71-download-cache-integrity.md": {
+      "role": "historical",
+      "preservedSha256": "756e2c7d9eee537abde8f17bcffd97c9f87d410fb1dc0161ed28011bcda7d1fd"
+    },
+    "docs/72-attachment-download-outage-ui.md": {
+      "role": "historical",
+      "preservedSha256": "320e1c7e258bb0502f884ca33d0dd8a8cd52acb2455e59196b4b4d7eb564a2ec"
+    },
+    "docs/73-official-send-composition-contract.md": {
+      "role": "historical",
+      "preservedSha256": "ae7fc25fbad33df42dfa9613a892ab6898120cc057bc26b0264171ef799c879c"
+    },
+    "docs/74-media-completion-scheduling.md": {
+      "role": "historical",
+      "preservedSha256": "59b85e2a9cd36955f12464dfc18cbbc3f31c3d5a80ed5dbe714488c266bf5b54"
+    },
+    "docs/75-fresh-download-integrity.md": {
+      "role": "historical",
+      "preservedSha256": "8a0c7223d1aee7e0d389efc2870245ee7aa68b340ad92d30c4f8953a665ea284"
+    },
+    "docs/76-atomic-download-manifest.md": {
+      "role": "historical",
+      "preservedSha256": "4f0c740e28d0fda9345293e146dfca3240f70f07919f78976eb61d20b67e4f47"
+    },
+    "docs/77-manager-test-evidence-retention.md": {
+      "role": "historical",
+      "preservedSha256": "cd203034f845266a89c55102bc9fa0211e0a91e9adf351ed8b80b0d3b3fde700"
+    },
+    "docs/78-route-process-recovery.md": {
+      "role": "historical",
+      "preservedSha256": "103e2304f919e7eb7e136ea522152112e7aa15fcff68047b9ae955c9d1762bfb"
+    },
+    "docs/79-manager-exiting-transition.md": {
+      "role": "historical",
+      "preservedSha256": "5b443873484268d1204d6c18c0e8428b7e0b0306462563592946d3b62e5fcfee"
+    },
+    "docs/80-offline-handoff-export.md": {
+      "role": "historical",
+      "preservedSha256": "b6739a46b5393d520f4e3f7757ad8f6aea1013e454789f746a963fa02ab4af27"
+    },
+    "docs/81-image-build-ownership.md": {
+      "role": "historical",
+      "preservedSha256": "8175549f0abc84139bf132cd0f978f02fae63f553792bbf64666a726da71a6f5"
+    },
+    "docs/82-live-keychain-read-failure.md": {
+      "role": "historical",
+      "preservedSha256": "1d8cfff91029343824bae362e34d86f03fcd15d3832a71d7b56f6d253b8d8f23"
+    },
+    "docs/83-official-v1.0.68-boundary-review.md": {
+      "role": "historical",
+      "preservedSha256": "6485b6f4069e72d3406f2069d851111d6846ac4cf2240613782781149f6f0043"
+    },
+    "docs/84-keychain-ui-followup.md": {
+      "role": "historical",
+      "preservedSha256": "5c154b063519927aa6f617e7c47a373d5b40fda393dcd9f627193382330988d3"
+    },
+    "docs/85-credential-store-health-diagnostics.md": {
+      "role": "historical",
+      "preservedSha256": "466c9c0144c81ddabdf98fea268e8560a9ac378b6691de59234f3ff8530679cd"
+    },
+    "docs/86-explicit-group-file-tasks.md": {
+      "role": "historical",
+      "preservedSha256": "4560006af587992bfc56b1e52b6696b7c70191086124da192854423493172855"
+    },
+    "docs/87-authentication-popup-incident.md": {
+      "role": "historical",
+      "preservedSha256": "16861ffe65206abbb8e3175cee70e28a1022ed93d450f4f3db21dbee3ea7453f"
+    },
+    "docs/88-dws-process-containment.md": {
+      "role": "historical",
+      "preservedSha256": "fe4d4f290e66cd18a93800e32e3c0bc4717b88d0c59e7a439023873cf9dac92d"
+    },
+    "docs/89-supervised-official-office-entrypoint.md": {
+      "role": "historical",
+      "preservedSha256": "53076dda0c0e5e14f9b0ef57a071b364949456ff81eec323a053b709db48d458"
+    },
+    "docs/90-guarded-recovery-read-plan.md": {
+      "role": "historical",
+      "preservedSha256": "36e1ab12136bc8833e3c3eb35a3b67039756438c4327d936a7416c3ec89b9984"
+    },
+    "docs/91-acceptance-coverage-review.md": {
+      "role": "historical",
+      "preservedSha256": "d025728beb20eb0e60ac7486b0d8346cc438363e76ab1660b66340cca4b2f3b0"
+    },
+    "docs/92-history-capacity-continuation.md": {
+      "role": "historical",
+      "preservedSha256": "91dcf753e3fe38edad02ffd3ccf1c4a41b74338053ba2ce37894aaf2e1d43be3"
+    },
+    "docs/93-empty-test-discovery.md": {
+      "role": "historical",
+      "preservedSha256": "383083047dc57341462862a2126f25a29ad162f966b339920aa8cc18028715e8"
+    },
+    "docs/94-single-read-unsupported-flag.md": {
+      "role": "historical",
+      "preservedSha256": "9da0b258408902d8e733b10443e6b8ee9a6d07e69db2c24ea933d41fc5e898ee"
+    },
+    "docs/95-official-argument-contract.md": {
+      "role": "historical",
+      "preservedSha256": "e1f632ea0bdd7096d9815afbdaa0f7c948a735acd728e53e7278e112e805f591"
+    },
+    "docs/96-history-deployment-review.md": {
+      "role": "historical",
+      "preservedSha256": "5060b622cccf4405e00d835191feb4d74f2772a1ca4cdf32db10761c74a734b8"
+    },
+    "docs/97-private-chat-recovery-proposal.md": {
+      "role": "historical",
+      "preservedSha256": "68233acfb9bb99315cd1e76eab4481ea7972a935eba4d63e7f5552e385d478a0"
+    },
+    "docs/98-channel-mainline-and-reuse-review.md": {
+      "role": "historical",
+      "preservedSha256": "a89a5fb3d16bcf1be8b7cee89fe723e24bb94202eea4e6281884d57f1bc4281c"
+    },
+    "docs/99-dws-base-failure-diagnosis.md": {
+      "role": "historical",
+      "preservedSha256": "4728b93c15647aa68ea49aaf565542bd88176155dccdd73d2bca1614a8348974"
+    },
+    "docs/INDEX.md": {
+      "role": "current"
+    },
+    "docs/README.md": {
+      "role": "current"
+    },
+    "docs/architecture/agent-integration-map.md": {
+      "role": "reference"
+    },
+    "docs/architecture/dingtalk-agent-middleware.md": {
+      "role": "reference"
+    },
+    "docs/history/through-E035/README.md": {
+      "role": "archive",
+      "preservedSha256": "a7618c894ad6080edb5def00f7122294bea50cdf34d7c633fd96b7a79523be27"
+    },
+    "docs/history/through-E049/README.md": {
+      "role": "archive",
+      "preservedSha256": "611817e23c650e4936ac309991c3957c74149014b57d34e1e608f6f2209f9c61"
+    },
+    "docs/history/through-E076/README.md": {
+      "role": "archive",
+      "preservedSha256": "faf6f2c61386621a59678f933e395f1b784605a58279b70e89c84199aaeebc0a"
+    },
+    "docs/references/README.md": {
+      "role": "reference"
+    },
+    "docs/references/adoption-plan.md": {
+      "role": "reference"
+    },
+    "docs/references/artifact-digest-adoption.md": {
+      "role": "historical",
+      "preservedSha256": "f8f827a63ae0967beaa27aafe3229a9ae715fd5395a475af5249010eafe7c91b"
+    },
+    "docs/references/ceo-deep-dive.md": {
+      "role": "reference"
+    },
+    "evidence/README.md": {
+      "role": "current"
+    },
+    "fixtures/README.md": {
+      "role": "fixture",
+      "preservedSha256": "1f66f3b597aaca3f9d11aa89722c4fba92f40e9240c979fa126c76b902923a5e"
+    },
+    "integrations/dws-contract/README.md": {
+      "role": "reference"
+    },
+    "integrations/dws_image_upload/README.md": {
+      "role": "reference"
+    },
+    "plans/completion/00-README.md": {
+      "role": "current"
+    },
+    "plans/completion/01-PRD.md": {
+      "role": "baseline",
+      "preservedSha256": "cddf3f2b7d13b61678ef9f3105275dbb97f9e2cd8eddb3330ac2bdc2caf2c18d"
+    },
+    "plans/completion/09-执行时序与里程碑.md": {
+      "role": "current"
+    },
+    "plans/completion/10-自检清单.md": {
+      "role": "baseline",
+      "preservedSha256": "e6c21d58537efe20551328446d5864a121c5f0d32aee90bbec63f174eb80fd49"
+    },
+    "plans/completion/99-执行偏差日志.md": {
+      "role": "ledger",
+      "preservedSha256": "8588cc8f4b70403dc6ed98a686cdf6310879e0fee48df73762038daceff8a43d",
+      "preservedPrefixBytes": 65773
+    },
+    "plans/completion/ACCEPTANCE_MATRIX.md": {
+      "role": "baseline",
+      "preservedSha256": "25b1d3ff74ba1129f56c87fb3a81b8637017d3ce0f3f88fa801bd237b83e41cf"
+    },
+    "plans/completion/CRITICAL_PATH.md": {
+      "role": "current"
+    },
+    "plans/completion/CURRENT_MISSION.md": {
+      "role": "current"
+    },
+    "plans/completion/EVIDENCE.md": {
+      "role": "ledger",
+      "preservedSha256": "59c79bd25435893bfbe111b827bf779263f61ba225c1862a539432d8beef3265",
+      "preservedPrefixBytes": 81242
+    },
+    "plans/completion/INIT.md": {
+      "role": "current"
+    },
+    "plans/completion/MODE.md": {
+      "role": "current"
+    },
+    "plans/completion/POLICY.md": {
+      "role": "current"
+    },
+    "plans/completion/PREFLIGHT.md": {
+      "role": "current"
+    },
+    "plans/completion/PROGRESS_LEDGER.md": {
+      "role": "ledger",
+      "preservedSha256": "8f45da78dbd833c84841609ee4bdf77cc71a209db60b572947fba93225fe61f3",
+      "preservedPrefixBytes": 72796
+    },
+    "plans/completion/SKILL_REGISTRY.md": {
+      "role": "current"
+    },
+    "plans/completion/TODO.md": {
+      "role": "current"
+    }
+  }
+}

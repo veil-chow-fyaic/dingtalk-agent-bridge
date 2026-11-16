@@ -1,5 +1,10 @@
 # DWS新增提交与剩余消息入口复核
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15，E129。完成E128父进程死亡/new链路后，转回剩余MUST，仅读取公开官方增量；没有真实DWS调用、升级、UI操作或凭据访问。
 
 [官方main](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/commit/4cc7767c70a874b189463ebfb07ad8a3c424389c)已到`4cc7767c`；[相对E122固定c4be030e的完整比较](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/compare/c4be030ea0470457faea167760613372d761fc5c...4cc7767c70a874b189463ebfb07ad8a3c424389c)返回全部14个提交、23个变更文件。稳定release仍[v1.0.68](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68)，main有v1.0.69-beta.1发布记录，未安装。

@@ -1,5 +1,10 @@
 # 单人群实测与下一轮闭环
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 > 历史阶段记录：保留当时版本、数量和观察。当前状态以 [总览](17-requirements-progress-review.md) 和 [最新增量验收](20-gap-acceptance-and-reproduction.md) 为准；本页的当时待测项不作为当前待办。
 
 2026-11-11，Asia/Shanghai；DWS v1.0.61。本轮固定已有版本建立真实基线，未升级全局 CLI。当前组织和群均为深圳市弗忧智能科技有限公司，账号周威。限定查询精确匹配到 INTERNAL_GROUP，memberCount=1；其他模糊匹配结果未用作测试目标。

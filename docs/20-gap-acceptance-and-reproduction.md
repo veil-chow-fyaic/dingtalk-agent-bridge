@@ -1,5 +1,10 @@
 # 单人缺口验收与复现配方
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 日期 2026-11-11；隔离 DWS v1.0.67；唯一已授权内部测试群、成员1、本人办公对象。无需第二成员。本页记录当日较早的单人新增实验（当时17项回归）；后续通用工具与本聊天续作见[docs/22](22-generic-tool-and-consumer.md)、[docs/23](23-continuation-and-migration.md)，当前共39项回归。原始六种媒体基线见 docs/14，首版服务实验见 docs/16。
 
 ## 执行、验收、保留结果

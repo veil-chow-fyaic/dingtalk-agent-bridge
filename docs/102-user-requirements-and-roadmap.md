@@ -1,103 +1,64 @@
 # 用户需求、交付现状与后续路线
 
-E131：[群双图入站及Kimi访问拒绝](132-group-multi-image-and-provider-denial.md)。原件入站/暂存一致，但Kimi订阅访问403，任务失败且无交付/重做；32只读检查/5负例。现99任务240 Agent outbox，矩阵51/11/2。群模型任务待既有服务权限恢复证据；7 MUST保持，部署未变。
+更新：2026-11-16，E132文档修复。**真实群/私聊任务与文件交付已经成立，完整产品验收尚未完成。** 本页为当前结论入口；历史实验保留在阶段报告和[EVIDENCE](../plans/completion/EVIDENCE.md)，动作清单在[TODO](../plans/completion/TODO.md)。
 
-历史E130：[群引用双向真实UI](131-group-quote-ui.md)通过，33只读核验/4篡改负例，98任务和238 Agent outbox保持。矩阵51/12/1，7 MUST仍未完整；最近UI为E130，最近部署仍E123/e7d82cc。
+## 产品和原验收范围
 
-历史E129：[官方新提交入口复核](130-dws-entry-delta-review.md)已完成，新增VoIP入会/纪要能力未提供剩余IM协议入口；没有新增真实验收，7 MUST缺口保持。
+以官方DWS授权的真人账号为默认身份，把钉钉群聊、私聊连接到可替换Agent：接收文字和媒体原件，在本地真正执行任务，保留多轮上下文，状态、答案、文件回到同一会话，并由用户客户端下载打开核对。
 
-历史E128：[OpenClaw父进程死亡与恢复](129-openclaw-gateway-lifecycle.md)25检查通过，7自有子进程退出、两次恢复不重做、原生new归档及新代隔离已验；新增3专项×3环境通过。22产品模块及部署未变，最近真实UI仍E123，真实OpenClaw模型/UI及7 MUST缺口保持。
+CLI/HTTP/consumer独立，gateway可选；账号、组织、会话及runtime通过配置选择，不新建bot或固化测试组织。官方身份、通讯、历史、资源和办公直接复用DWS；bridge负责路由、白名单、持久任务/session/outbox、原件摘要、幂等、取消及恢复。
 
-历史E127：[OpenClaw薄适配](128-openclaw-adapter.md)已接入原任务/session/outbox，官方完整CLI合成6样本/18检查通过；真实模型/UI未验，本轮22模块尚未部署，现有服务保持E123/e7d82cc。成功副作用的replayInvalid误判及配置边界修正均有原记录。
+原[PRD](../plans/completion/01-PRD.md)保持17项：R01–R14为MUST，R15–R17为SHOULD。R09要求至少一个本地执行器，已满足；四runtime全部真实通过不是新增门槛。办公更多流程、外部群/跨组织、流式审批仍按SHOULD，不通过增加成员或权限扩大现场范围。
 
-历史E124：原24h观察自然到期并完成完整性/后续六库审计，失败及缺截止快照保留；Qwen事务映射和5强杀方法三环境通过，产品未改。最近真实UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；49/14/1及7 MUST缺口保持。[最新状态](125-observation-closeout-and-qwen-transactions.md)。
+## 版本与证据层次
 
-E125入口函数与E126完整宿主是历史阶段，现由E127薄适配继续；真实模型/UI仍未验。见[入口契约](126-openclaw-turn-entry-contract.md)、[完整宿主](127-openclaw-local-host-validation.md)。
-
-E115/E116已完成持久网络环境与安全DWS错误信封的部署/UI验收；E120/E123分别完成Codex/Pi真实闭环。当前心跳ACTIVE，原观察已收尾但不证明连续健康或自然refresh，项目尚未完成。[DWS风险与处置](114-dws-risks-and-resolution.md)。
-
-原需求复盘E097读取了原聊天全部14条用户消息及本聊天指示。本次继续纳入恢复AIC/私聊、用户重启重登及“查清底层风险”的要求；[PRD](../plans/completion/01-PRD.md)17项判据与MUST/SHOULD等级不变。
-
-## 你实际要交付的产品
-
-**以官方DWS授权的真人账号为默认身份，将钉钉群聊/私聊连接到可替换Agent的通用中间件。** 用户在钉钉发文字、图片、文件或任务，Agent在本地真正执行，状态、答案和产物回到同一会话；用户能看到、下载并打开。组织、账号、测试群和运行器都是配置，不是写死的产品前提。
-
-“钉钉—任意主流Agent”是产品方向：Codex、OpenClaw、Pi、Kimi Code逐个适配和验收，共用一套收发、会话、附件和交付契约。当前版本的原验收门槛仍是至少一个本地执行器；不能一方面把Kimi接通冒称四者支持，另一方面临时把四者全部接通加入原版完成门槛。
-
-| 用户要求与来源 | 产品决定 | 验收依据 |
+| 层次 | 最近有证据的版本/事件 | 结论 |
 |---|---|---|
-| 原聊天：群聊/私聊双向文字、媒体、文件；本聊天：“文件信息各种任务，都能承接完成” | 保留消息结构与原件，真实工具执行，回原会话；能力和失败必须明确 | R03–R08；四方向逐格，不以API成功代替UI |
-| 原聊天及本聊天反复强调“通用”，不能绑定组织/Agent | 独立CLI/HTTP/consumer；通道、任务宿主、runtime adapter分层 | R01、R09；配置隔离、原session/账本保持 |
-| “更倾向与dws提供的agent调用真人账号” | 默认DWS显式profile真人账号；机器人不作自动替代或故障回退 | R02、R10；显示实际发送主体及AI标识 |
-| 担心WeCom bot的跨组织/外部群限制 | 分开核DWS实际API、组织授权和会话权限；不把其他平台限制套给钉钉 | R16 SHOULD；外部场景仍待合法现场证据 |
-| “用UI控制钉钉在群里发消息，私聊消息” | veil作为用户在原生UI操作，liev作为DWS主体回复；文件须客户端下载/打开 | 全矩阵；工具、API、UI、下载分别记证 |
-| 参考WeCom、成熟Slack/Telegram；后来纠正“优先抄github社区或者钉钉官方的作业” | 官方/GitHub优先；WeCom只保留历史需求/交互参照。当前深入CEO，同时保留Qwen通道参照 | R10–R11；固定源码/许可证/负例/接缝，不靠README宣传 |
-| 原聊天希望办公文档、邮件、会议、待办等也能使用 | 复用DWS办公工具，受同一账号与调用防护约束；聊天触发权限独立 | R15 SHOULD；代表性闭环已有，不能冒称全权限全流程 |
-| 文档、Git、长过程自主闭环，不反复问“是否继续” | 同一分支小步提交，精确下一步、失败不删；在已授权范围持续执行 | R12–R14；证据/manifest/隐私/可复用交接 |
-| 底座出问题不能靠上层数量遮掩；后来新终端登录成功，要求回主线 | 接受恢复事实，保留事故和未知因果；不再以旧钥匙串问题阻塞正常验收 | R13；不再操作系统钥匙串或自动修登录 |
-| 最新新建“AIC测试群”，禁止企业大群测试 | 群实测仅精确绑定的新AIC；原两人私聊继续。测试名称不进入产品逻辑 | 当前授权，见AGENTS/E095 |
+| 最近真实部署 | E122产品 `e7d82cc`，E123验收 `2fffa7b` | 21模块；AIC保持Kimi，原私聊已原生new归档Codex并显式迁移Pi 0.84.2 |
+| 未部署产品候选 | E127 `500191a` | 22模块，新增OpenClaw薄适配；E128进一步验证生命周期，真实模型/DWS/UI未验 |
+| 最近真实UI | E131 `3a0e3ad` | 群单消息文字＋两PNG入站；Kimi Code订阅访问403，任务失败，接收/失败文字可见 |
+| 本轮E132 | 文档、索引与离线一致性核验 | 未改产品、服务、账号、绑定、部署或UI通过状态；当前HEAD不能冒充现场版本 |
 
-## 哪些历史指示已经被覆盖
+E123现场Pi实际Python533/同session542、JSON/TXT下载打开/SHA、取消95秒无late和9回复均有记录；第一任务是Python算数后write写JSON，不冒称同Python写文件。Kimi/Codex/Pi各自历史通过范围保留，当前Kimi403不能抹除旧成功，也不能以旧成功否定这次拒绝。见[运行器接入表](architecture/agent-integration-map.md)。
 
-早期单人群/多人暂跳过、后来旧三人群许可，均不能覆盖最新的**仅新AIC测试群**。聊天目录附带的“多人暂跳过”是旧入口提示；用户随后明确的新专用群授权及项目AGENTS为当前执行依据。不再使用企业大群或旧群，也不自行增加成员。
+## 最近实际推进
 
-E071事故后停机、E090私聊恢复待许可是历史。用户新终端登录成功并要求回主线、授权AIC测试后，E095已经部署和恢复，E096已在新群实测。两个历史一次查询记录仍不可重放。后台恢复不再是待用户回答的问题。
-
-用户提供的截图证明当次liev登录成功，包含“自动刷新”提示；截图原件只在local。它不能证明所有权限、30天连续可用、跨设备无故障或事故因果根治。用户自行新终端登录有效，不应继续要求重启电脑、系统密码或反复Keychain操作。[截图与恢复记录](100-aic-group-resume-and-files.md)、[事故分层结论](99-dws-base-failure-diagnosis.md)。
-
-## 当前做到哪里
-
-**已经有真实可用的群聊/私聊中间件和Kimi执行闭环；还没有达到可放心长期运行、跨设备复用的完整交付标准。** 不能用一次恢复成功或离线测试数量来替代这个差距。
-
-| 层面 | 已实现、部署或实测 | 仍有边界 |
+| 事件 | 实际产出 | 不应外推的结论 |
 |---|---|---|
-| 身份/通讯 | 显式DWS真人profile；群/私聊独立路由；history-only每15秒补读，持久分页和水位 | 不是bot，不是实时Stream；跨组织/外部群权限未实测 |
-| 通用接口 | 六个CLI入口、loopback HTTP/OpenAPI、持久consumer、配置模板；可不启动Agent而独立使用 | 最终当前版干净检出/安装交接未做；配置不能含本机账号数据 |
-| 任务/会话 | 白名单、群显式命令、状态/取消/new、原session续接、运行器能力/可信终态/兼容性契约 | 不是OS沙箱；不能回滚工具已造成的外部副作用 |
-| 文件/交付 | 常用文档、图片、音视频文件原件、明确关联、真实工具处理、摘要冻结、持久outbox和原key对账 | 音视频文件可播放不等于原生协议；单消息组合和引用仍缺 |
-| 最近两路UI E116 | veil交办；Kimi实际Python与环境检查；群1517→2021/TXT、私聊1003→1159/JSON，env_ready=true；两份客户端下载、Quick Look及SHA一致，原session保持 | 86旧任务/失败保持，6新回复confirmed及history回读；没有新增媒体矩阵格 |
-| DWS故障防护 | 持久暂停、最多两并发、90秒请求及最多15秒清理、办公入口受管、PID/阶段日志；已部署 | 防止持续重试扩大影响；不修复系统钥匙串，也不保证撤销排进系统的授权窗口 |
-| 执行器网络 | E115持久runtime.environment；E116从无代理环境manager重启，两路真实工具检查通过，transport配置不变 | 已有网络依赖仍需在各设备配置；不证明E112超时唯一因果，未创建开机自启 |
-| 当前部署证据 | 最近E123部署e7d82cc/21模块，AIC Kimi/私聊Pi，94旧任务保留后共98；心跳ACTIVE | E124原观察已到期审计，14不可达/16错误采样/9维护保留；不代表健康24h或自然刷新通过 |
-| 自动验证 | E127冻结源码及同wheel Python3.14/3.11各423项，22模块/177素材/六入口/许可一致；完整OpenClaw合成CLI另6样本/18检查 | 419旧绿未覆盖replayInvalid误判，原失败保留；E127未部署/真实UI，E121旧交接不代表新版，最终封版待做 |
+| E124 | 原AIC观察自然到期收尾，Qwen admitted/completed与现有事务映射，5真SIGKILL方法在冻结源/原wheel双Python分别通过 | 2879采样含14不可达、16 poll_error、9维护；后续六库不是截止/共同原子快照，不称健康24h或自然失效refresh |
+| E127–E128 | OpenClaw官方local合成CLI、完整UUID、整JSON终态、取消、父进程死亡、gateway恢复和new隔离 | E127最终423×3；E128只新增3专项×3，不称426全量；真实provider/UI未验 |
+| E129 | 固定DWS main增量14提交/23文件核对 | VoIP入会/纪要字段不是IM原生入口；固定chat原文超时未计已读，不凭旧检查声称今天的上游状态 |
+| E130 | 群出站reply_to及新卡片“回复”入站，UI/history/consumer双向通过；33检查/4负例 | 无引用sender ID不补造；AX mention未知与截图名称分开；没有产品/部署变更 |
+| E131 | 文字＋两新PNG组成一条原生消息和一个任务，顺序、缓存、暂存字节/SHA一致；32审计/5负例 | Kimi只出版本事件，provider.auth_error 403；failed/runtime_terminal_missing，无工具/结果文件/重做。审计通过不是任务成功 |
 
-[矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)仍为64格：**51通过、11阻塞、2部分**；14 MUST为7通过、4部分、3未完成。覆盖分布不是项目完成百分比，历史通过保留其版本/群范围。
+2026-11-16 09:44（北京时间）的本地只读状态核对：三个受管进程running，DWS准入ready，两路last_sync complete。99任务（84 completed、5 cancelled、7 failed、1 blocked、2 interrupted）；240 Agent outbox（239 confirmed、1 rejected）。这是一个时点的已保存状态，不是新UI或连续健康证明。09:44核对时HEAD仍为E131，未发现其后新任务或提交；这一段心跳等待不能算实质推进。本次文档整理不反复查询现场。
 
-未完整MUST：R01最终通用交付，R04引用，R06原生媒体，R07附件组合，R12一致且可复用资料的最终交接，R13长期运行/恢复，R14当前版检出与封版。R08群/私聊控制和R09至少一个本地执行器已满足，不重新加入待办。
+## 验收与剩余工作
 
-## 已产出的东西放在哪里
+[矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)64格为 **51通过、11阻塞、2部分**；14 MUST为 **7通过、4部分、3未完成**。这是覆盖分布，不是项目完成百分比。七项未完整为R01/R04/R06/R07/R12/R13/R14。
 
-| 产出 | 当前入口 | 可以怎样复用 |
+| 缺口 | 已有事实 | 下一条能推进的证据/退出条件 |
 |---|---|---|
-| 产品源码和安装入口 | [dingtalk_bridge](../dingtalk_bridge/)、[pyproject](../pyproject.toml) | CLI/HTTP/consumer独立；gateway可选；Python≥3.11，macOS实机已验，其他OS未实机认证 |
-| 接口/配置 | [OpenAPI](../api/openapi.json)、[多路由模板](../config.routes.example.json)、[执行器模板](../config.agent.example.json)、[单路模板](../config.example.json) | 自己的身份、组织、会话及runtime配置；不分发本机凭据 |
-| 官方窄补充 | [CHAT_IMAGE上传](../integrations/dws_image_upload/README.md)、[CLI参数契约](../integrations/dws-contract/README.md) | 固定官方源码与许可证；不重写OAuth或替换整套通讯 |
-| 公开参考和采用账 | [参考目录](references/README.md)、[固定来源](references/catalog.json)、[CEO深挖](references/ceo-deep-dive.md)、[采用清单](references/adoption-plan.md) | 官方DWS为基础；CEO借任务/交付/会话契约；Qwen借通道接纳边界。没有把参考仓库整套部署成产品 |
-| 测试及合成素材 | [tests](../tests/)、[fixtures](../fixtures/)、[测试入口](../scripts/run_tests_with_evidence.py) | 离线验证不需本机账号；真实UI审计需私有证据，不混称离线可重现 |
-| 证据和验收 | [EVIDENCE](../plans/completion/EVIDENCE.md)、[逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)、[manifest](../evidence/handoff-manifest.json) | 分开实现、部署、工具执行、UI可见、下载打开；保留失败 |
-| 运维和踩坑 | [运行手册](15-service-runbook.md)、[接入经验](11-onboarding-lessons.md)、[故障分层与方案](114-dws-risks-and-resolution.md) | 先分类再处理，不把任何超时都当登录坏了 |
-| 历史与私有现场 | Git/阶段编号文档；local仅本机 | 旧记录不删除；local的聊天、ID、截图、数据库、日志、下载件及账号配置不得整包交接 |
+| R04 私聊入站引用1格 | 群双向及私聊出站已验；E027旧私聊截图没有群卡片同样的明确回复控件 | 明确新的私聊原生回复入口，再核目标ID/原文、history/consumer和UI；不重跑旧右键/菜单/快捷键 |
+| R06 原生语音4格、独立video4格 | 音视频文件原件可获取/播放；没有对应原生协议闭环 | 目标身份可用的原生协议入口或真实事件，四方向逐格核类型、原件及用户呈现 |
+| R07 出站组合2阻塞、群/私聊入站各部分 | E017普通文件拆条；E056单file/重复末项/最多9图计划不是组合闭环；E131群双PNG原件入站已验 | 真实单消息组合及逐原件获取、实际处理和交付。群模型部分先需既有Kimi Code访问恢复的新证据，不登录修复/复制token/换runtime绕过，不重发E131 |
+| R13 长期与自然失效refresh | 两个旧run已结束，失败/维护及缺截止事实封存；预刷新不等于自然失效refresh | 合规自然业务下的新续期事实、稳定版本长期覆盖与同次截止账本；不改token/时钟、不重置旧run或用事后快照补造 |
+| R01/R12/R14 最终通用交付 | 文档、模板、离线安装和历史包已有；E132补文档一致性 | 全部MUST满足后，冻结当前版干净检出/安装/许可/模板/隐私/manifest及最终自检；E121旧包不能代表Pi/OpenClaw版 |
 
-## 官方DWS与bridge的边界
+已有明确入口但未验的项可独立推进，不能一概要求“新API”；受阻旧路径的loop guard保持。没有新入口/外部条件时保持未完成，不循环重做旧实验。OpenClaw真实模型/UI属于独立产品演进，需专用现成授权配置；无此条件不复制其他runtime凭据。CEO C01–C04/C06及Qwen事务对照已完成，不重复实现；C05租约仅有多宿主实际需要时做。
 
-DWS提供官方身份、消息/历史、资源和办公API，是当前已验场景的通讯底座；它不包办一个可靠Agent channel。bridge必须保留触发策略、路由、持久队列/会话、文件进入Agent、可信完成结果、幂等投递、取消/恢复及运行观察。官方已有功能不再自研，只补有证据的缺口。
+## 产出、运行与约束
 
-普通账号不等于桌面用户全部权限：开放API、组织开通和会话权限仍各有限制。故障时不自动切bot/其他账号，不用UI发送替代未知DWS投递。原生图片补充复用固定官方认证/上传，≤2MiB PNG/JPEG走image，较大走file；bridge单输出文件20MiB。
+| 产出 | 入口 |
+|---|---|
+| 产品/安装/六CLI | [源码](../dingtalk_bridge/) · [pyproject](../pyproject.toml) · [运行手册](15-service-runbook.md) |
+| 通用接口/配置 | [OpenAPI](../api/openapi.json) · [路由模板](../config.routes.example.json) · [执行器模板](../config.agent.example.json) · [接口手册](22-generic-tool-and-consumer.md) |
+| 参考采用和来源 | [采用账](references/adoption-plan.md) · [固定catalog](references/catalog.json) · [CEO来源](references/ceo-deep-dive-index.json) |
+| 证据/问题/自检 | [EVIDENCE](../plans/completion/EVIDENCE.md) · [风险清单](114-dws-risks-and-resolution.md) · [最终自检](../plans/completion/10-自检清单.md) |
+| 全部资料 | [导航](README.md) · [完整索引](INDEX.md) · [本轮文档修复](133-documentation-consistency.md) |
 
-## 后续顺序及可检验结果
+只在AIC测试群及原veil/liev私聊实测；企业大群/旧群禁测，不加人/bot/权限。原生客户端veil和显式profile真人liev的身份/AI标识分别取证。禁止真实auth/login/doctor、Keychain读/锁/解锁、认证修复、复制token、改权限、重启Mac或绕系统工具限制，不索取密码/第二账号。
 
-| 优先级/工作 | 具体产出与退出条件 | 关联需求 |
-|---|---|---|
-| 已完成E115/E116 启动环境可复现 | 用通用配置表达runtime环境，局部重载后确认实际继承；不影响transport/HOME/凭据，不把本机代理端口作为默认。用新任务验证文本/产物/UI，保留原失败 | R01/R13；CEO C06 |
-| 已完成E115/E116 错误能归层 | 在现有受管调用日志补安全的category/reason/exit/耗时和阶段。覆盖认证存储、上游超时、进程中断与运行器网络负例；不记录参数/消息/凭据。下次不能只剩一个request_timeout字符串 | R13；风险D02/D05/D08 |
-| P0 DWS长期底座 | 固定binary/profile，补当前AIC部署至少24h观察、自然业务刷新证据、维护/失败处置和终止账本；不能修改token/时钟造场景，不能由“跑了2小时”推定刷新成功 | R13；风险D01/D03/D04 |
-| P1 剩余消息协议 | 11 blocked=原生语音4、独立video4、私聊入站引用1、出站多附件2；群/私聊入站多附件各1部分。E131群双PNG原件入站已验，但Kimi403使模型/交付未完成。已有但未验的明确入口可独立执行，受阻旧路径只有新官方/UI入口才恢复；得出明确能力边界也必须保留原判据，不自行删MUST | R04/R06/R07 |
-| P1 当前版封版 | 干净检出/独立安装、同一冻结源码及包、许可/模板/启动恢复回滚说明、私密排除、14 MUST终审。E075旧包不可当最终包 | R01/R12/R14 |
-| 独立推进 第二runtime | E120 Codex已部署并完成真实工具/续接/取消/交付UI，旧E105/E118失败保留。E123 Pi文字/文件/续接/取消UI已完成；E126/E127 OpenClaw local完整宿主和薄适配合成验证通过，真实provider/UI未验 | 产品演进；原R09已达标 |
-| 条件项 社区对照/扩展 | Qwen admitted/completed与本项目事务对照；有多宿主需要才考虑CEO C05租约。办公、外部群、流式审批保持SHOULD | R11/R15–R17 |
+正常受管业务与已有恢复授权保持；凭据故障持久暂停，不自动恢复。恢复先transport，gateway停机核同一SQLite快照watermark≥固定cut且无history_window，停传输核积压后再开放执行；last_sync.at不代替覆盖。未知投递原key对账，不补发。原始身份、聊天、截图、数据库、下载和日志只留local。
 
-P0启动环境和错误观察代码已经部署/真实UI通过；下一段在当前持续观察期间推进新协议入口、当前版交接及其他runtime；E117官方取消候选已完成离线、未集成部署，E120 Codex UI已完成。不能每次醒来重做登录、旧UI或另起一套计划。底层系统故障的永久修复仍需上游证据；[风险清单](114-dws-risks-and-resolution.md)列出可控改进和各自关闭条件，不能将其虚报已解决，也不无限等待它而停掉独立工作。
-
-CEO C01文件摘要、C02发送事实、C03运行器能力/终态、C04会话兼容性已落地；E109部署，E112补真实续接/UI。C06网络环境构造及安全错误观察已由E115/E116实现并部署，保留本项目更严格的未知投递处理，不抄自动重试、自动切身份或业务人格。参考源码本身不是验收结果。
-
-[TODO](../plans/completion/TODO.md)只列当前工作，[关键路径](../plans/completion/CRITICAL_PATH.md)决定执行次序。本轮已有受管部署与两路新UI证据；登录/权限未改，不增加媒体矩阵格，不宣称全项目完成。
+[AGENTS](../AGENTS.md)约束执行，[关键路径](../plans/completion/CRITICAL_PATH.md)给启动条件；全部MUST及最终自检满足才标完成并停心跳。

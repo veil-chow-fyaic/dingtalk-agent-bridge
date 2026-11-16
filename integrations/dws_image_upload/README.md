@@ -21,6 +21,6 @@ python3 integrations/dws_image_upload/build.py --source local/dws-image-source -
 {"imageUploadBinary":"local/bin/dws-image-upload-v1.0.67/dws-image-upload"}
 ```
 
-`binary` 仍指向原版 DWS。配置后按运维手册重启传输和对应 gateway。先只读核验原投递账本，再用新的明确实验验收；禁止重发旧 key。未配置补充入口时，新的 `image` 请求明确失败，不会暗中改发 Markdown。旧 key 仍返回原回执。
+`binary` 仍指向原版 DWS。配置变更按[运行手册](../../docs/15-service-runbook.md)的任务/投递终态、归属及固定cut补读/积压审查流程维护相关服务；不要直接照历史PID重启。先只读核验原投递账本，再用新的明确实验验收；禁止重发旧 key。未配置补充入口时，新的 `image` 请求明确失败，不会暗中改发 Markdown。旧 key 仍返回原回执。
 
 将来官方发布等价独立上传命令，应替换这个薄入口并重新验证原件和身份，不必更改 runtime 协议。

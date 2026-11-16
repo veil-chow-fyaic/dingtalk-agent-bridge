@@ -1,5 +1,10 @@
 # E093：采用社区文件摘要校验，修复排队后原件变更
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](../102-user-requirements-and-roadmap.md)，操作见[运行手册](../15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 ## 上游选择与依赖
 
 按E092先核Qwen的 `DwsClientLike`、`DwsImMessage`、`messageContent`、`quotedMessageText`、`parseDwsImEvent`。固定[41a3b9f源码](https://github.com/QwenLM/qwen-code/blob/41a3b9f5a6bbaad3c9fa98f341d5ae453b0265a0/packages/channels/dws/src/dws-client.ts)依赖Node进程、`dws-environment`、`dws-event-stream`；stream进一步依赖`@qwen-code/channel-base`。消息接口保留正文和引用文字，没有本项目有序附件/引用来源/原件摘要的等价契约。当前bridge通过官方history稳定text/resourceRefs投影保留这些信息，不将其替换为较窄的模型，也不混用Stream描述与完整原件。

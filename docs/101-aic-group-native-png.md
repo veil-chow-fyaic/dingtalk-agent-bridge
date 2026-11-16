@@ -1,5 +1,10 @@
 # E096：AIC测试群原生PNG出站与下载打开
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 沿用E095的精确AIC新群和普通账号身份，veil在原生钉钉界面发送唯一 `/agent [AIC-E096-PNG]` 任务，要求实际用Python Pillow生成640×360白底、蓝色21/橙色22两根柱子的合成图，并将原件交回本群。没有重做旧图片实验或向企业群发送。
 
 Kimi实际调用Bash/Python/Pillow，生成4762B PNG，再用ReadMediaFile检查。任务completed，三个outbox均confirmed；宿主投递payload是image且绑定原定SHA，不是Markdown图片链接或普通文件降级。产品沿用E093冻结模块，无代码改动/全量测试重跑。

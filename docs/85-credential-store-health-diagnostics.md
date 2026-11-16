@@ -1,5 +1,10 @@
 # E068：凭据存储故障的脱敏健康诊断
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 E065现场故障经DWS.call丢成泛型BridgeError，`/v1/health`和bridge doctor只能报告同步失败。2026-11-12补充明确诊断，帮助定位到官方凭据存储层，不代替官方认证，也不自动修凭据。
 
 只识别固定v1.0.67已捕获的组合：官方error对象的category为internal、整数code为51，message具有完整的macOS DEK读取失败前缀。单独退出51、任意keychain字样、不同类别/代码或未知形状不映射为该原因。标准化异常只携带`credential_store_unavailable`，不保存或转发官方原始message。原始真实失败写在stderr；直接按原stdout/stderr回放分类成功，新增官方调用为零。

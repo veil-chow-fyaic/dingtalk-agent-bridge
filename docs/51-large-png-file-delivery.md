@@ -1,5 +1,10 @@
 # 超2MiB PNG 文件交付与模型摘要错误
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E032。veil原生私聊一次任务，Kimi实际用Python/Pillow生成1024×1024 RGB PNG，像素来自`random.Random(29).randbytes(1024*1024*3)`，`compress_level=0`。文件3,147,861字节，超过原生image的2MiB上限，gateway按既有规则选择官方file投递，未压缩/缩小、未调用图片上传补充。
 
 四条回复全部confirmed（ack、文字、PNG文件、TXT报告）。钉钉把PNG文件显示为带“文件”标签的图片，可打开独立查看器；不是只能显示无预览卡片。查看器下载原件后Finder Quick Look实际打开，1024×1024像素逐字节与独立重建seed=29相同。export、bridge staged、官方资源下载、客户端下载件字节一致。198B报告也从聊天卡片下载、Quick Look打开，完整SHA/尺寸/字节数正确。

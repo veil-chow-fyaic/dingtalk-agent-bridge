@@ -1,5 +1,10 @@
 # E042：真实工具运行中停止私聊gateway与恢复
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12。veil从原生钉钉私聊提交一次前台Python等待任务：写开始标记JSON、等待90秒、再写TXT回传。私有watcher确认新任务处于running，并读取实际Python→Bash→Kimi→私聊gateway的PPID链；manager记录与现场进程身份完全相符后，才对该gateway执行正常stop。没有从任务提供的PID直接发信号，也没有停止传输、群gateway或原24h观察器。
 
 实际Bash命令包含写开始标记、time.sleep(90)和随后写TXT。Python/Shell属于另一个进程组，但Kimi正常退出时也退出了；停止后的现场查询确认四个原进程均已消失。这个结果只覆盖本次正常SIGTERM关闭链，不能据此外推恶意脱离进程、SIGKILL恢复或OS级沙箱。首次取消运行的events.jsonl只有版本元事件，未输出完整工具结果；实际执行证据来自独有开始文件、同次ps命令与父子归属，不虚构完整工具日志。

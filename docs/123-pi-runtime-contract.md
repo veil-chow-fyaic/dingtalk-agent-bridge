@@ -1,5 +1,10 @@
 # Pi 原生执行器契约 E122
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 Pi复用现有任务、session、outbox、工作区、文件交付和取消机制。DWS继续使用显式profile真人身份；执行器切换不引入新钉钉bot，不改群或组织权限。AIC保持Kimi，原私聊从Codex通过显式new和binding迁移进入Pi；E122提交时服务停机待补读和新UI，不把本地运行算作钉钉验收。
 
 ## 固定官方依据

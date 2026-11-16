@@ -1,5 +1,10 @@
 # AIC群长文、上下文与控制：真实客户端闭环
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E100。只在AIC测试群由veil原生客户端发送，liev通过DWS真人账号回复，界面有“通过AI发送”；没有bot、旧群或企业大群测试。[只读核验](../evidence/2026-11-12/aic-group-controls-validation.json)的21项通过与下述原生UI观察分别计证。原生AX及截图见本聊天工具观察；原始任务、执行器工具记录、进程快照和下载原件留在`local/aic-controls-20261112/`及原会话账本。
 
 ## 部署

@@ -1,5 +1,10 @@
 # Bridge 架构草案
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 总体架构与后续方向。2026-11-11 已实现 DWS 历史轮询、HTTP 事件游标、SQLite 发送账本和附件下载；Stream 入站/AX 尚未集成。当前实现与架构完整愿景分别记录，见 [运行手册](15-service-runbook.md)。
 
 当前实施顺序以 [路线清单](13-roadmap-and-backlog.md) 为准。图中 AX 为条件选项；DWS 全部满足时不实现、不部署 AX。用户身份与 bot 的会话覆盖分别验证。

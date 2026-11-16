@@ -1,5 +1,10 @@
 # 路由进程锁与死亡后的持久投递
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E061。既有single_owner只验证同进程第二个Bridge对象，本段用真实独立进程核内核锁与SQLite恢复，provider为无账号合成对象。
 
 两个场景分别在投递confirmed后，以及provider已进入发送调用但尚未返回时暂停。另一个进程争用同一路由立即被拒且不调用发送；独立路由可打开空账本，原owner保持存活。随后仅通过保存的Popen句柄SIGKILL自建owner，实际退出码-9；错误profile重开仍拒绝，再按原profile连续重开两次。

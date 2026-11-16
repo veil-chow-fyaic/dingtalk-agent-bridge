@@ -1,5 +1,10 @@
 # 安装包与只读 doctor
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 本文主体为2026-11-11 E015历史安装检查点；当前六入口及操作步骤见[运行手册](15-service-runbook.md)。当时项目可以安装为 `dingtalk-agent-bridge==0.1.0`，提供五个入口：`dab`（HTTP工具）、`dab-bridge`（传输）、`dab-agent`（可选本地执行器）、`dab-consume`（持久消费）、`dab-doctor`（只读诊断）。传输和通用工具不依赖 Kimi/Codex。
 
 ## 安装与工作目录

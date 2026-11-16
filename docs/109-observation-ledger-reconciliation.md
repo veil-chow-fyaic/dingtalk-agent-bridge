@@ -1,5 +1,10 @@
 # 原观察与持久账本对账
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-13，E106。使用新只读工具[scripts/reconcile_observation_snapshot.py](../scripts/reconcile_observation_snapshot.py)，不实例化Bridge/Hub、不调用HTTP/DWS、不接触凭据。结果为[8项核验](../evidence/2026-11-13/observation-ledger-validation.json)。
 
 原reliability-20261111采到的205条事件（原群9、私聊196）在11月13日只读SQLite事务中全部以同seq、完整event对象、同账号/会话精确匹配。baseline到最后capture的实际数据库行集合也一致，不将AUTOINCREMENT序号空洞误当丢消息。当前原群12confirmed；原私聊171confirmed、1rejected，拒绝记录保持。

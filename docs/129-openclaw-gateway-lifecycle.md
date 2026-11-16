@@ -1,5 +1,10 @@
 # OpenClaw父进程死亡、恢复与原生new链路
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15，E128。产品固定E127 `500191a`，22模块未改；本次只增加可复现工具、三项回归和证据。最近真实部署/UI仍E123/e7d82cc，未操作服务或迁移绑定。
 
 固定官方OpenClaw `41f2b981d240cab9e55b07cba991282a795317b5`、Node26.3.1，复用E126原构建，复核40份契约源文件及构建提交。运行真实Gateway、LocalRuntime、runtime_guard和官方`agent --local`，provider为仅回环的合成HTTP/SSE，投递为内存transport。没有真实账号、DWS、模型或UI调用。

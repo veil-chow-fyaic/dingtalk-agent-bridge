@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "E132",
+  "date": "2026-11-16",
+  "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
+  "scope": "Documentation repair, inventory, immutable historical-body checks; no product/deployment/provider/DWS/UI certification",
+  "documentation": {
+    "ok": true,
+    "scope": "Offline documentation only; no product/UI/health certification",
+    "documents": 166,
+    "roles": {
+      "archive": 3,
+      "baseline": 3,
+      "current": 23,
+      "fixture": 1,
+      "historical": 126,
+      "ledger": 3,
+      "reference": 7
+    },
+    "uiStateCounts": {
+      "passed": 51,
+      "blocked": 11,
+      "partial": 2
+    },
+    "mustGaps": [
+      "R01",
+      "R04",
+      "R06",
+      "R07",
+      "R12",
+      "R13",
+      "R14"
+    ],
+    "errors": []
+  },
+  "changes": {
+    "existingCurrentPages": 22,
+    "existingReferencePages": 7,
+    "appendOnlyLedgers": 3,
+    "existingHistoricalScopeBanners": 125,
+    "newHistoricalReport": 1,
+    "newIndexPage": 1
+  },
+  "protected": {
+    "existingNonMarkdownFiles": 561,
+    "allUnchanged": true,
+    "productModules": 22,
+    "prdMatrixFinalChecklistUnchanged": true,
+    "frozenArchivesAndSourceCatalogsUnchanged": true,
+    "oldEvidenceUnchanged": true,
+    "oldLedgerPrefixesUnchanged": true
+  },
+  "validation": {
+    "documentationTests": {
+      "python": "3.14.6",
+      "methods": 7,
+      "positiveCases": 1,
+      "tamperNegativeCases": 6,
+      "passed": 7,
+      "scope": "New documentation checker only; no old product test suite, wheel rebuild or installed-environment rerun"
+    },
+    "uiStateCounts": {
+      "passed": 51,
+      "blocked": 11,
+      "partial": 2
+    },
+    "mustStateCounts": {
+      "partial": 4,
+      "passed": 7,
+      "open": 3
+    },
+    "mustGaps": [
+      "R01",
+      "R04",
+      "R06",
+      "R07",
+      "R12",
+      "R13",
+      "R14"
+    ],
+    "criterionSha256": {
+      "R01": "c18c66703fd0fc2b42c27f1f10c6c9725262b453bbc3d43b26610adfc9500e03",
+      "R02": "e0d2d8367a6c518f15058d19bb6d69cc84fff55253769d7d6a728d41ec5c5e00",
+      "R03": "c9ff3062662ce1206acbc22b4d3ab3b06c64ecaff18a4ed7958856d03b768a8b",
+      "R04": "c242d8245d5352aea88332e28da6213ab72af83e6f572e27db393cb0da9fe58d",
+      "R05": "8bd0f03da57efa6f9adf77cfeb8a7a7c83a57456e4370cdf78d0ad1488aa13dc",
+      "R06": "db99da9f1b86f5efe043b66140fb3083e0a5e8ac84abc010c897178a331766f4",
+      "R07": "0235793c97e0ea8679ac1816807f892c463d81693465e26a976a283290d47ea9",
+      "R08": "4d9fd845ee5b961d5c78cbe569bbff83cc89ca2198b94d0abc223b00192053d1",
+      "R09": "6e6a5228e76b077ac173f417643edef096db79fd933d155db8997b273328374a",
+      "R10": "afcc616748d7cecafcf2874e8da363e866caa7330d12595cdb25917330d82419",
+      "R11": "d43b140014ca352366fa69d25db526720ea5bf7abb05fa2764876e5ce542d6f9",
+      "R12": "eaa7f7e2d85db5d766d2296f9b8da022cec69eaa6e53bdb6df757116a482709e",
+      "R13": "8544351a84c1752658d2317d705ff92cd938ea66c81ce4295ac1384442df08fa",
+      "R14": "ade0a2f7ae8db08f439f9370919b9d819098d26b69e131a9c8c69a576b6d828f",
+      "R15": "fc1425ddbf09d27d84cad70f36b4539122d000d7dd58ee3d988d6eb69f7e9cba",
+      "R16": "0751f783eecb392c6f0cc15110afeb02b33cf16933818ef35710139f1f087d5f",
+      "R17": "2c4c73318e92eacd4e57a26839cc5bad24bb91cfe5dcac92be5917c5a45178ca"
+    },
+    "acceptanceValid": true,
+    "allDeclaredCovered": false,
+    "handoff": {
+      "ok": true,
+      "files": 731,
+      "topLevelDocs": 135,
+      "scope": "Local links, JSON and manifest; not final product acceptance"
+    },
+    "stagedPrivacy": {
+      "ok": true,
+      "scope": "all staged Git blobs; known private values and private paths"
+    },
+    "diffCheck": {
+      "ok": true
+    }
+  },
+  "sourceSha256": {
+    "scripts/review_documentation.py": "ec8ba5a0b5876759bfa40fb7a4b4dcc557251dfbf06f895fe19b13799078cb23",
+    "tests/test_documentation_review.py": "80f988195a821490b54312a13e5405e74a06f85ba125b2a66d7b9c68931b8976",
+    "docs/documentation-index.json": "45b5461cc46fa4ebde901af88e87010686622dbf40ae23afe29fbd7e810c23ad"
+  },
+  "retainedFailures": [
+    {
+      "stage": "initial_inventory",
+      "error": "FileNotFoundError",
+      "cause": "Git quoted non-ASCII paths in line-based ls-files; fixed with -z NUL delimiters",
+      "productFailure": false
+    },
+    {
+      "stage": "local_edit_driver",
+      "error": "SyntaxError",
+      "cause": "Unterminated string rejected at parse time before writes; corrected before execution",
+      "productFailure": false
+    }
+  ],
+  "notPerformed": [
+    "Product changes or full regression rerun",
+    "Package rebuild or deployment",
+    "Service or binding changes",
+    "Real DWS/provider/UI requests",
+    "Authentication/Keychain operations or credential copying",
+    "Historical observation rerun/reset",
+    "Final project completion or remote publication"
+  ]
+}

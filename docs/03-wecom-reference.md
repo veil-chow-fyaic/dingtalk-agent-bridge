@@ -1,5 +1,10 @@
 # wecom bridge 实现对照
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 本地参考：/Users/veil/Projects/wecom-bridge；remote 为 https://github.com/fyaic/wecom-bridge.git；检出分支 feat/warecheck-native-mentions；提交 1ee7f8c，日期 2026-09-09。此处描述本地检出，不宣称与远端 main 同步。
 
 ## 已核对模块

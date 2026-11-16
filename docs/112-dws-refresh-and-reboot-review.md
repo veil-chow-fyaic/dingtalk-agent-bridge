@@ -1,5 +1,10 @@
 # DWS续期、版本混用与重启后的状态
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-13，E111。用户已自行重启Mac、Codex并重新登录DWS，询问是否每天授权过期或自动续期失败。本轮只读公开仓库、固定源码、二进制构建信息和本地服务账本；没有执行DWS/auth/doctor/Keychain，也没有改全局CLI。
 
 ## 判断

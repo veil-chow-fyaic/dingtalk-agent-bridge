@@ -1,5 +1,10 @@
 # 异常消息隔离与后续任务继续
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E053。修复异常消息正文或资源引用结构导致整个入站批次回滚的问题。异常消息保存在本地quarantined记录中，不创建Agent任务；同一批后续合法消息仍可进入原有白名单与执行流程。
 
 旧实现对raw、resourceRefs元素直接调用get。若raw不是对象，或普通消息/引用中的资源列表含null、字符串、数字，会抛出未被隔离分支处理的AttributeError。入站事务因此回滚，下一轮再次读到同一消息，阻塞后续消息。空对象resourceRefs还有另一问题：会被当成空列表接受。固定官方v1.0.67的chat_result_contracts及chatmsg投影使用资源对象数组；没有把错误形状猜成合法附件。

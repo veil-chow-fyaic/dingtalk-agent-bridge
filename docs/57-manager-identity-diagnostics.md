@@ -1,5 +1,10 @@
 # E040：manager 身份保护错误的私有诊断
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12。E039最终全量回归曾出现两次 during-shutdown 身份保护错误，不能用随后重跑通过消除。本轮补齐故障证据能力，未宣称修复该历史根因。
 
 `process_identity`可将同一次ps的原始stdout、stderr、退出码、时间与解析身份写入内存观察。启动/关闭因身份不匹配而拒绝时，manager把expected、该次observed、阶段与组件追加到本地`local/runtime/manager-identity-errors.ndjson`，权限0600。不会为了诊断重新ps而错过瞬间状态；status仍只读，不写错误文件。记录可能含私有路径/命令，不能进入Git或共享报告。

@@ -476,3 +476,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E131 — 群双PNG原件入站及Kimi订阅拒绝
 - [记录](../../docs/132-group-multi-image-and-provider-denial.md)、[脱敏审计](../../evidence/2026-11-15/group-multi-image-failure-validation.json)：一次原生文字＋两PNG，一个实际任务；两原件缓存/暂存同字节，parts顺序保持。Kimi2.1.1仅版本事件，stderr provider.auth_error 403明确订阅访问拒绝；failed/runtime_terminal_missing，无工具/结果或自动重做。
 - 32只读检查/5篡改负例通过，不等于任务通过；接收/失败两反馈confirmed/history/UI，旧98任务/238 outbox/session保持，现99/240。群组合只记部分，51/11/2，7 MUST仍未完整；无产品/服务/部署/绑定变更。原始仅local/group-multi-image-20261115，需Kimi服务权限恢复新证据，不重发或认证修复。
+
+
+## E132 — 当前文档修复与历史范围保护
+- [记录](../../docs/133-documentation-consistency.md)、[离线核验](../../evidence/2026-11-16/documentation-consistency-validation.json)：统一当前总览/导航/计划，修正部署、最近UI、运行器、旧观察、参考采用及运行手册；166份Markdown逐文件登记，126份阶段报告仅加范围提示并核原正文摘要（含本轮新报告）。
+- 文档检查7专项（1正例/6篡改负例）通过；PRD/矩阵/最终自检、冻结归档/来源、旧证据和产品代码保持，累计账本仅追加。51/11/2及7 MUST不变，未重跑旧产品/模型/UI或观察，不宣称新的部署/真实成功。首次中文Git路径枚举与本地驱动语法失败保留，修正后完成；具体链接/manifest/隐私结果见核验文件。

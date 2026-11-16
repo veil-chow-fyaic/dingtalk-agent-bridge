@@ -1,5 +1,10 @@
 # 双账号媒体与真实事件：2026-11-11第二轮
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 本轮延续用户授权：客户端veil作为用户，DWS显式liev profile，原内部两人群及两者私聊。没有创建bot、邀请成员或扩大监听范围。任务目标与剩余工作见[活动计划](../plans/completion/INIT.md)，此前TXT/CSV、上下文和重启基线见[docs/27](27-two-account-ui-acceptance.md)。
 
 ## 已实际做的事情

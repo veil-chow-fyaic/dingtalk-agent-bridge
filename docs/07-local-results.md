@@ -1,5 +1,10 @@
 # 本机实验记录
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 > 历史阶段记录：保留当时版本、数量和观察。当前状态以 [总览](17-requirements-progress-review.md) 和 [最新增量验收](20-gap-acceptance-and-reproduction.md) 为准；本页的当时待测项不作为当前待办。
 
 日期：2026-11-10；时区 Asia/Shanghai。仅列真实执行和观察，不把公开资料当作本机验证。

@@ -1,5 +1,10 @@
 # E048：在启动前拒绝无效执行时限
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12。代码复核发现 timeoutSeconds 直接进入 deadline 运算。Python JSON读取可接受NaN；与NaN比较恒假，原超时分支可能永不触发。无穷值也无实际截止时间，布尔值会按数字处理，字符串等则在执行中才出错。doctor此前未检查这些配置。本次未将任何无效值注入现网或账号配置。
 
 新增共享 timeout_seconds 校验：只接受有限、严格大于0的 int/float，明确拒绝bool、NaN、正负无穷、零/负数、字符串、null、数组/对象及无法转为有限浮点的巨整型。缺省仍600秒，正小数继续可用，没有新增固定最大时长。LocalRuntime在构造及每次run前验证，run验证先于目录/日志/进程创建，避免构造后配置被改的绕过。Gateway在创建/恢复任何持久状态前验证，即使注入其他runtime实现也适用；doctor只读输出runtime_timeout_seconds错误，不执行命令或打印私密配置。

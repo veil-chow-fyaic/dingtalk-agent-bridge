@@ -1,5 +1,10 @@
 # 采用CEO发送凭据负例：拒绝冲突与错任务状态
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E102。沿用CEO固定`92e360ed`的[发送验证器](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/app/dws_client.py#L3814)及[负例](https://github.com/callzhang/ceo-agent-service/blob/92e360ed1eb35f006afee738916cc9b735c1deb5/tests/test_dingtalk_delivery_verification.py)，对照本项目接缝。不是复制整套业务服务或重做发件箱；新增校验与unittest为本项目编写，上游文件只读核摘要，不运行其服务/测试。
 
 ## 官方边界和真实缺口

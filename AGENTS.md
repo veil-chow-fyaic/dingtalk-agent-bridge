@@ -1,51 +1,50 @@
 # 钉钉 bridge 工作约定
 
-E131当前状态（2026-11-15）：群单消息文字＋双PNG已原生发送一次，形成一个任务，两原件缓存/暂存SHA及顺序一致；Kimi返回provider.auth_error 403，提示当前订阅无Kimi Code访问权限。任务failed/runtime_terminal_missing，未见工具/完成事件，无文件交付或重做；接收/失败两回复confirmed并UI/history通过。32只读检查/5篡改负例，旧98任务238 Agent outbox及session保持，现99任务240 outbox。群入站多附件仅部分，矩阵51/11/2，7 MUST不变。需既有Kimi服务权限恢复的新证据才继续群模型任务，禁止登录修复/复制token/换runtime绕过；其余具体阻塞见本轮记录。E130群引用双向通过保留。部署仍E123/e7d82cc、候选E127/500191a，无服务操作。见[本轮记录](docs/132-group-multi-image-and-provider-denial.md)。
+## 工作位置和读取顺序
 
-E130历史状态（2026-11-15）：群出站引用及新卡片“回复”入口的群入站引用均已真实UI/history/consumer通过，33只读检查和4篡改负例通过。新增3消息/1 confirmed投递，两路98任务、238 Agent outbox及session保持；无产品/部署/服务/绑定变更。矩阵现为51通过/12阻塞/1部分，7 MUST仍未完整；最近UI为E130，部署仍E123/e7d82cc，候选仍E127/500191a。不能将旧入站UI阻塞外推至未验但已有入口的出站/组合格；下一检查群多附件明确入口，旧样本不重发。见[本轮证据](docs/131-group-quote-ui.md)。
+仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-E128历史状态（2026-11-15）：固定E127/500191a的22模块，OpenClaw官方CLI父进程死亡与gateway/new链路25检查通过；仅两个合成provider turn。SIGKILL自有gateway后7子进程退出，工具开始后12.06秒无late；两次恢复保持interrupted/原UUID/契约且不重做，原生new归档后新UUID/目录无旧历史。新增3方法在冻结源/同wheel双Python各3通过；旧423×3不重跑，不称426全量。产品、服务、绑定均未改，最近真实部署/UI仍E123/e7d82cc，AIC Kimi/原私聊Pi；OpenClaw真实provider/UI未验，不复制既有凭据。父进程死亡及已过观察/Qwen/旧UI不重复，下一独立项回到剩余MUST的新官方协议/UI入口。49/14/1及7 MUST保持。见[父进程死亡与恢复验证](docs/129-openclaw-gateway-lifecycle.md)。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E132（2026-11-16）只修正文档；最近真实UI为E131，部署为E122产品e7d82cc/E123验收2fffa7b，OpenClaw候选E127/500191a未部署。不可拿当前HEAD冒充现场。51通过/11阻塞/2部分，7 MUST仍未完整。
 
-E129公开增量已核：DWS main 4cc7767c相对c4be030e共14提交/23文件，新增VoIP入会字段/纪要设置，不是IM原生消息入口；稳定版仍v68。完整compare无chat/连接阶段变更，chat原文请求超时未计成功；无新入口不重复旧UI或此diff。见[官方增量与边界](docs/130-dws-entry-delta-review.md)。
+## 产品与当前执行边界
 
-## 同一项目与当前检查点
+交付runtime/组织无关的普通账号IM工具，CLI/HTTP/consumer独立，gateway可选。DWS负责身份、通讯、历史、资源、办公，bridge补路由/白名单/任务/session/幂等/原件/恢复。原R09至少一个执行器已满足；Kimi/Codex/Pi各自已验范围保留，Pi图片及OpenClaw真实模型/UI未验，不追加四runtime全过门槛。
 
-只在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录仅为入口。先读plans/completion的CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志；同一01-PRD与ACCEPTANCE_MATRIX标准，历史“下一步”不当当前指令。
+E130群引用双向已过；E131文字＋双PNG入站原件一致，但Kimi2.1.1返回provider.auth_error 403、订阅没有Kimi Code访问权限，任务failed/runtime_terminal_missing，无工具/完成事件、结果或重做。需既有Kimi服务访问恢复的新证据才继续群模型任务；禁止登录修复/复制token/换runtime绕过，不重发E131。DWS当时ready不能否定Kimi失败，也不能把403归成DWS凭据故障。
 
-交付runtime/组织无关的普通账号IM工具：群/私聊双向文字、媒体原件、任务、上下文及同会话交付。CLI/HTTP/consumer不绑定测试组织或Agent。官方DWS负责身份、通讯、历史、资源和办公，bridge补路由、白名单、任务、会话、幂等、文件与恢复。至少一个本地执行器即可；Kimi真工具已满足，Codex已验并保留旧超时/取消失败，Pi E123文字/文件/续接/取消UI已验，Pi图片和OpenClaw真实模型/UI未验。公开官方/GitHub优先；CEO任务/交付/runtime契约优先参考，Qwen作通道参照，不转回本地WeCom考古。
+剩余入口和条件见[关键路径](plans/completion/CRITICAL_PATH.md)。私聊入站引用旧右键/菜单/快捷键路径保持loop guard，需明确新原生入口；语音4/video4缺原生协议，出站多附件2及入站各部分仍缺完整组合/逐原件/任务交付。已有明确且尚未验的入口可独立执行，不把所有剩余格一概归为等新API。
 
-E103历史检查点：transport已加载E102/3fa5011的发送凭据校验；两个gateway保留E099/e27547b的结果契约。E102只改core，其他20模块与E099相同。固定源码/同wheel双Python各307通过，21模块/六入口/许可已核；这是E102冻结验证，不反复重跑。三个受管服务运行，history-only15秒，心跳独立保持PAUSED。
+## 授权与身份
 
-E100群长文/上下文/status/cancel/new真实UI及21核验；E103新任务Python1387、两确认回执、真实群UI及15核验。当前49/64通过、14blocked、1partial，14 MUST中7未完整，项目未完成。详见[长文控制](docs/104-aic-group-long-text-and-controls.md)、[发送凭据及部署](docs/106-send-evidence-contract.md)。C03/C04已于E109部署并显式迁移原会话，E112已补新版两路任务/文件UI，E115/E116持久配置和安全错误诊断也已部署/UI通过，下一步当前独立持续观察及剩余协议/执行器，不重做已过样本。
+正常受管DWS业务和既有恢复授权保持；仅 **AIC测试群及原veil/liev私聊**，企业大群/旧群禁止。不加人、不建bot、不改权限、不再索取第二账号。测试群不是产品固定组织。
 
-## 授权与身份范围
+veil是原生客户端真人，liev是显式profile绑定的DWS真人；UI发送者及“通过AI发送”分别取证，[Agent]只是前缀。不跟随默认账号切换，不以显示名授权，不外推跨组织权限。群普通消息/文件只收不执行，需/agent；群文件用--files明确关联，私聊按白名单交办，自身回复不触发。未知投递只按原key对账，不换key或UI补发。
 
-用户完成新终端dws auth login并提供liev成功截图，随后明确只在专用 **AIC测试群** 测试，原veil/liev两人私聊授权保持。禁止企业大群及旧群测试。此授权覆盖此前停机待许可和多人暂跳过，不再索取第二账号或旧恢复许可。新群精确路由/白名单已绑定；旧企业群退出活动配置，原库留存；不加第三人、不建bot、不改权限。
+## 认证、调用与恢复
 
-veil是客户端真人用户，liev是显式profile绑定的DWS真人普通账号，UI显示liev和“通过AI发送”；[Agent]只是前缀。不跟随默认账号切换，普通账号权限不外推跨组织。测试群只是配置，不是固定产品组织。
+用户先前自行登录及重启后的恢复事实保留，最初系统钥匙串根因未知，不宣称根治。禁止助手执行真实auth/login/doctor、Keychain读取/锁/解锁、自动认证修复、file-DEK/reset/删凭据/复制token/改权限/重启Mac或绕系统工具限制；不索取密码或弹窗信息。正常业务沿官方凭据机制执行不等于认证修复许可。
 
-群普通消息/文件只收不执行，需/agent；群文件用--files明确关联，私聊白名单可交办，自身回复不触发。未知投递只按原key对账，不换key或UI补发；失败、取消、拒绝及历史unknown处理证据全部保留。
+受管调用最多两并发、90秒请求＋最多15秒清理，凭据故障持久暂停、不自动恢复。办公doc/todo/calendar/mail/drive/minutes六族同样受管；DM显式启用，群关闭。两个旧查询key dab-auth-read-20261112、dab-auth-read-fixed-20261112均已消费，不重试或换key。
 
-## 认证事故与受管调用
+共享Stream bus按身份Setsid脱组，无本实例独占退出权，不杀共享bus、不用foreground冒充消费者。现场history-only15秒；127.0.0.1:18768与三服务由原manager按实际归属管理，无开机自启，不按历史PID发信号。运行器、清理守护、OpenClaw保护钩子均不是OS沙箱，不保证恶意脱组隔离或回滚外部副作用。
 
-用户登录和真实业务恢复已证，旧事故不再当主线卡点；系统故障与不确定因果保留，不宣称根治或跨设备长期稳定。助手仍禁止auth/login/doctor真实诊断、系统Keychain读取/锁定/解锁、file-DEK/reset/删凭据/复制token/改权限/重启Mac及绕过SecurityAgent/Terminal工具限制。不索取密码、弹窗名称或第二账号。
+必要恢复先transport，gateway保持停止；同一SQLite快照watermark≥固定cut且无history_window，封新调用/排空/停transport后核积压及未知，再恢复允许的执行。last_sync.at不是覆盖。runtime更换先原生new归档、零未决、显式binding迁移，不能只改配置或手改SQLite。
 
-正常受管DWS业务调用沿用官方凭据机制；持久暂停、最多两并发、90秒请求加最多15秒清理，办公六族同样走wrapper。凭据故障则暂停，不自动恢复/反复认证。两个一次查询key（dab-auth-read-20261112、dab-auth-read-fixed-20261112）已消费，原receipt保留，禁止重试或换key。
+## 固定版本和证据
 
-官方Stream bus按身份共享并Setsid脱组，无独占退出权，不杀共享bus，不用foreground冒充消费者。当前history-only不启Stream。守护和运行器不是OS沙箱，不保证恶意脱组/系统失效隔离。127.0.0.1:18768及三个服务由原manager归属管理，无开机自启，不按旧PID发信号。E116两gateway从私有runtime.environment读取已有HTTP(S)代理，manager无代理变量启动的两路真实工具已验；transport配置未变，产品默认不固化本机代理端口。
+- 官方binary固定local/bin/v1.0.67，不静默升级。CHAT_IMAGE窄补充复用固定官方认证/上传，不改原binary；PNG/JPEG≤2MiB用image，较大用file，单个输出文件20MiB。
+- WAV/MP4原件可播放不替代语音条/独立video。E017拆条、E056重复file只留末项/正文互斥/最多9图计划不是组合闭环，无新证据不重跑。
+- E115/E116环境与安全错误信封已部署；E117官方取消候选仅固定源码合成验证，未完整上游集成/部署。E123/E125 request_timeout缺连接细阶段，不断言DNS/TCP/代理/服务端原因，不再真实探针。
+- 原reliability-20261111已由E101/E106收尾相关审计，aic-persistent-env-20261113已由E124收尾；故障、维护、版本和缺截止事实保留。旧run不重置、不重审、不用新计时掩盖失败；自然失效refresh与长期覆盖仍缺。
+- CEO C01–C04/C06、Qwen事务映射已完成，不重复移植；C05仅实际多宿主需求再做。官方/GitHub固定来源优先，不转回本地WeCom考古；未授权不上游发issue/PR。
+- E127最终423×3和E128新增3专项×3分别记证，不称426全量。E121为982ae49历史包，不重导或当当前Pi/OpenClaw交接。
 
-## 文件、参考与证据边界
+## 执行与收口
 
-- 官方binary固定local/bin/v1.0.67，不静默升级。CHAT_IMAGE上传窄叶子复用固定官方源码认证/上传，不改原binary；PNG/JPEG≤2MiB用image，更大用file，输出单文件20MiB。
-- WAV/MP4原件和播放器通过不等于原生语音条/独立video协议。E056重复file仅末项、正文/file互斥、图文最多9本地图引用边界保留，无新入口不重复探针。
-- DM官方办公上下文启用、群关闭；doc/todo/calendar/mail/drive/minutes固定身份受管。不将新聊天验证外推所有办公API。
-- E093 CEO文件摘要已部署；E099结果分类及E102回执一致性已落实。C03能力/终态和C04兼容性已由E109部署/E112真实续接UI通过；C06启动环境及错误观察已由E115/E116完成，下一项当前独立观察及剩余协议/执行器。参考源码不等于上游测试通过。
-- 原reliability-20261111窗口11月11日19:36:08至12日19:36:08已结束，E101完整性13检查通过；1059 unavailable/168 poll_error/52维护保留，不重置或称连续健康24h。当前AIC部署长期覆盖、最终账本核对仍缺。新维护另记，不改已封存原run。
+找未完成且能独立推进的项实际完成；每段代码/工具/真实UI推进后继续，约45分钟落证据、准确下一步及小步本地提交。同路径两轮无新证据停止，转独立项；全部剩余项需外部条件时保持未完成，不制造巡检/重复测试/假通过。正常不变安静，仅实质里程碑、失败、完成或必要用户动作汇报。
 
-## 执行与完成
+测试按当次冻结源码/安装版本核对。API、模型工具、UI可见、客户端下载打开分别计证，审计通过不替代任务成功。失败和初审误判保留，不改旧记录追补事实。
 
-每段推进代码/工具/真实UI，约45分钟记录证据及准确下一步；同路径两轮无新证据停止重复、转独立项。引用旧右键/坐标/快捷键/设置/侧按钮路径已loop guard，只有新入口才试。API、工具、UI、客户端下载打开分别计证，离线数量不抵消UI。
+当前说明写入总览/任务池，阶段结果追加到证据和账本，不再在多个入口叠加“历史当前状态”。更新[文档索引](docs/documentation-index.json)并运行review_documentation；verify_handoff先写manifest再核对，verify_privacy扫描暂存blob，git diff --check。账号ID、凭据、原聊天、截图、日志、数据库和下载只在local或私有工具记录，不入Git、不整包交接。
 
-代码修复有对应验证；安装比当次冻结源码/测试，不能混比HEAD。小步本地提交，verify_handoff先写manifest再核对，verify_privacy扫描暂存blob，git diff --check。账号ID、凭据、聊天、截图、数据库及下载件只留local或私有工具记录，不入Git、不整包交接。
-
-全部MUST/UI、真实故障处置及检出/交接/隐私自检满足才完成并停心跳。当前未完成，E114心跳ACTIVE负责续作；业务服务状态与调度状态分开。正常不变安静，仅实质里程碑、失败、完成或必要用户动作汇报。
+全部MUST及最终自检满足才完成并停bridge心跳。心跳ACTIVE为E114既有调度配置，不等于服务健康；唤醒次数、空等和离线时间不计进度。当前未完成。

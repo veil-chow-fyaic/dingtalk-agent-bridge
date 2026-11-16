@@ -1,5 +1,10 @@
 # veil 发任务、liev 回复：双账号客户端验收
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 ## 2026-11-12 E025：既有CSV客户端补验
 
 原E001已回传CSV，但当时仅下载打开了三份TXT。此次在原私聊原生搜索的“文件”页定位`0-dab-ui-input-summary.csv`（79B），返回原聊天文件卡片下载，保存后用Finder Quick Look实际打开为表格，核对两行小计36、18及TOTAL54。下载件与原Kimi产物SHA-256一致。没有重新发任务、文件或其他聊天消息；群/私聊任务、outbox、投递账本逐行不变。

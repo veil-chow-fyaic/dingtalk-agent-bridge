@@ -1,5 +1,10 @@
 # OpenClaw 本地薄适配 E127
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15：增加可选 `openclaw` 本地执行器，复用既有 gateway、任务、workspace、text/files、outbox 和自有进程 guard。固定官方 `41f2b981` 的完整 CLI 加回环合成 provider 已验证适配链路；尚未验证真实模型或钉钉 UI，未迁移现有会话或部署本轮代码。AIC Kimi、原私聊 Pi 的最近真实部署仍是 E123/e7d82cc。
 
 ## 命令与唯一宿主

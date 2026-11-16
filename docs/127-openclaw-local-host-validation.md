@@ -1,5 +1,10 @@
 # OpenClaw 本地 turn 宿主验证（E126）
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15：在独立 local 目录构建官方固定 `41f2b981d240cab9e55b07cba991282a795317b5`，通过回环合成 provider 执行完整 `agent --local` CLI。文字、同 session 续接、跨状态目录隔离、实际 Python 文件、独占锁拒绝、原生取消、工具期限及两个终态边界已有证据。未注册 bridge 的 OpenClaw 支持，未调用真实模型、认证、Keychain 或钉钉，未迁移 binding 或更改现有服务。
 
 [脱敏证据](../evidence/2026-11-15/openclaw-local-host-validation.json)、[36 个固定源文件摘要](references/openclaw-local-host-contract.json)、[完整入口验证工具](../scripts/probe_openclaw_local_host.py)、[离线复核工具](../scripts/review_openclaw_local_host.py)。E125 的 14 项纯函数检查仍为历史层次，本轮没有重复它，也没有运行上游全量或 bridge 396/401 全量。

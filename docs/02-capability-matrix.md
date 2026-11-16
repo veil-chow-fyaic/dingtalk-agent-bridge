@@ -1,5 +1,10 @@
 # 能力矩阵与证据边界
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 当前目标为深圳市弗忧智能科技有限公司同名内部群，成员 1；旧群结果不自动继承。当前表格截至 2026-11-11，历史问题状态按其检索日期解读。总需求缺口见 [复盘](17-requirements-progress-review.md)；身份×会话完整对照见 [docs/18](18-identity-and-conversation-boundaries.md)，办公权限见 [docs/19](19-office-tools-and-permissions.md)。
 
 状态说明：契约表示公开文档或代码支持；报告表示其他使用者的复现；本机通过必须有本机证据。未验证不等于不支持，issue 开放不等于永久产品政策。

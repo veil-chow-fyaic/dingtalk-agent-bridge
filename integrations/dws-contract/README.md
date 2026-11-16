@@ -11,3 +11,5 @@ The fixture calls `app.NewSchemaSourceRootCommand`, `Find`, `InitDefaultHelpFlag
 Office descendants with DisableFlagParsing are navigation/error stubs; their count is reported separately, never claimed as successful flag parsing. E083 observed 529 declarations: 518 parsed commands and 11 navigation stubs. All 518 inherit profile/format and reject an injected --as. Other families such as chat sending or event can have command-specific --as; it is not a global flag.
 
 First bad fixture results and the eight old-argv failures remain under local/official-argument-contract-20261112. Passing this parser contract does not prove authentication, RPC success or UI delivery.
+
+Current operation and deployment status are maintained in the [runbook](../../docs/15-service-runbook.md) and [project overview](../../docs/102-user-requirements-and-roadmap.md). This fixed parser fixture is not a live authentication or UI test; do not repeat real credential diagnostics to validate it.

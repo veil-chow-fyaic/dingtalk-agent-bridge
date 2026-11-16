@@ -1,5 +1,10 @@
 # Pi 部署与真实私聊验收 E123
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 产品e7d82cc已部署。AIC测试群保留Kimi；原veil/liev私聊已显式迁移Pi 0.84.2，原Codex会话经真人UI的`/agent new`归档。三个服务运行，DWS ready，仍是liev真人账号向veil回复，没有新bot或权限变更。
 
 | 真人客户端动作 | 实际执行和用户可见结果 |

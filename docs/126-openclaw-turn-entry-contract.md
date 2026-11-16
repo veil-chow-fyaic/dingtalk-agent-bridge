@@ -1,5 +1,10 @@
 # OpenClaw 官方入口与终态契约 E125
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-15固定官方 [openclaw/openclaw@41f2b981](https://github.com/openclaw/openclaw/tree/41f2b981d240cab9e55b07cba991282a795317b5)，17份官方文档/源码/测试文件留在local，[逐文件摘要](references/openclaw-turn-contract.json)可复核。只运行无依赖的结果分类函数，没有安装或启动OpenClaw、模型、Gateway、认证或插件。当前PATH未找到OpenClaw。现有bridge产品和Kimi/Pi绑定不变，OpenClaw支持仍未声明。
 
 ## 入口选择

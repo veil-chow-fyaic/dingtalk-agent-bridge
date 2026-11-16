@@ -1,6 +1,7 @@
 # 通用CLI、HTTP路由与持久消费
 
-2026-11-12，接口为E093产品，E095已实际部署。公共工具不依赖固定组织、模型或Agent runtime；官方DWS是传输后端，原生UI用于用户视角验收。当前仅新AIC测试群＋原veil/liev私聊获准，企业大群/旧群禁止测试。三个受管服务运行，history-only，心跳PAUSED；[本轮证据](100-aic-group-resume-and-files.md)明确文件/工具/UI分层。两个历史query key均已消费，不重复执行；系统Keychain/auth诊断禁止项见AGENTS。
+E132（2026-11-16）核对现有接口说明。公共工具独立于组织、模型和Agent runtime；DWS是传输后端，原生UI用于用户视角验收。现状统一见[总览](102-user-requirements-and-roadmap.md)，部署仍e7d82cc/E123，最近UI E131。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
+
 ## 调用方式
 
 从服务工作目录执行；安装后的`dab`等价于`python3 -m dingtalk_bridge.cli`。服务、随包CLI/gateway/consumer使用127.0.0.1:18768；CLI可改`--token-file`，没有远程地址或统一端口选项。运行管理与安装见[运行手册](15-service-runbook.md)。
@@ -64,10 +65,10 @@ Inbox先同事务写原事件与游标，再物化媒体。pending_media、media
 
 历史正文是平台投影；当前恢复实际图片mediaId、文件fileId、quotedMessage为有序parts，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
 
-普通水位前5分钟补读；首次及每30分钟追加最近24h深扫，`sync --deep`可显式触发。部分读取不推进水位，每次最多20页/1000条；更晚索引/超容量仍可能漏。缓存每次尝试独立目录，部分失败不发布成功manifest；磁盘配额/保留期尚未实现，禁止自动清理仍被引用文件。
+普通水位前5分钟补读；首次及每30分钟追加最近24h深扫，`sync --deep`可显式触发。每次最多20页/1000条，部分读取不推进水位；E084已持久化原history_window和nextPageToken，超本轮容量在后续有界调用续读，重启保留游标。恢复要同一快照watermark≥固定cut且无待续窗口；首次无水位仅覆盖最近24h，平台不可见历史及超出补读窗口的迟到索引仍不保证。缓存每次尝试独立目录，部分失败不发布成功manifest；磁盘配额/保留期尚未实现，禁止自动清理仍被引用文件。
 
 ## 证据与限制
 
-实时统计、已安装包版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi已有真实工具及交付，Codex响应超时单独跟踪；通用工具无需二者运行。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，不能推广成所有方向、语音条、任意单消息多文件或外部群通过。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
+有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，OpenClaw仅候选合成验证。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，不能推广成所有方向、语音条、任意单消息多文件或外部群通过。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
 
 产品与合成fixture可分享；身份/令牌、聊天、UI及原始运行证据留本机`local/`。复核已完成实验只读，不再次发送。历史失败、未知和平台阻塞保持原状态，24h按真实时长单独判定。

@@ -1,5 +1,10 @@
 # E074 单次真实查询的准备与 history 恢复边界
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 **当前状态：E082用户已允许并执行下述原key一次，因脚本不支持的--as参数失败；receipt已有attempt，禁止重试/换key。以下为准备时记录，新的真实调用须另行明确允许。见[失败报告](94-single-read-unsupported-flag.md)。**
 
 准备时只完成离线验证和查询准备，真实DWS调用为0。三个服务保持停止，工作区的operator_suspended标志未解除，现场配置和官方binary摘要未变。E073提交8fe6972已修办公入口；本次新增操作员核验脚本与测试，没有修改或重新构建产品wheel。

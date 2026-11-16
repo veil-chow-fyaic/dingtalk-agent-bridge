@@ -1,5 +1,10 @@
 # 私聊附件下载故障与原任务自动恢复
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E055。仅阻断私聊官方DWS `chat +messages-mget` 子进程HTTP网络115.987秒。veil原生上传65B CSV后，消息已进入bridge，但附件任务保持waiting_media且没有启动runtime。故障中另发一次status，原生客户端完整显示“执行中0、排队0、等待附件1”。解除故障后，同一消息自动完成下载、真实Python处理及192B JSON回传；原件已通过钉钉保存并在Quick Look全文打开。
 
 ## 有界故障与官方边界

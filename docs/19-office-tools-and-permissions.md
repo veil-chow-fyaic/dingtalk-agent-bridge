@@ -1,5 +1,10 @@
 # 组织工具、权限与单人办公验收
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12当前接入见[E021官方办公Agent闭环](41-official-office-agent-ui.md)：veil真实私聊交办，Kimi显式使用liev profile完成doc/todo/calendar/draft，三份报告客户端下载打开。官方负责办公API；bridge只补默认关闭的路由工具上下文，真实私聊已启用。独立读取确认本人对象及草稿文件夹；邮件密送字段未暴露，不由缺失推断为空。未分享对象或声称veil已在办公页面打开这些对象。
 
 下表及后续配方保留2026-11-11早期周威本人profile的历史验收，不自动继承为liev权限。DWS v1.0.67模块帮助和schema归档到[office-help](../evidence/2026-11-11/office-help)，E021新增Help在[11月12日归档](../evidence/2026-11-12/office-help)。这些是各自已证实的操作范围，不能推导所有组织或账号都有同样权限。

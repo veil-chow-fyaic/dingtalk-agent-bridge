@@ -1,5 +1,10 @@
 # Codex参数核验与一次新本地任务
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-13，E105。[结构化记录](../evidence/2026-11-13/codex-cli-timeout-diagnostic.json)。E104已提交c5ee1fe；本次产品/配置/服务未变，不重复331项。不是新UI通过证据。
 
 本机官方Codex CLI 0.164.0。仅`--version`、exec/resume帮助和当前适配器完整参数加`--help`四类解析核验均exit0，未启动模型。已实际检索并读取[官方exec文档](https://learn.chatgpt.com/docs/developer-commands#codex-exec)，本机帮助进一步确认两个子命令都支持ignore-user-config、output-schema、JSON和最终消息文件参数；ignore-user-config忽略用户配置但仍使用原CODEX_HOME认证。没有改HOME、读/复制凭据或重新登录。

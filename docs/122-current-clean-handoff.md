@@ -1,5 +1,10 @@
 # 当前版干净交接 E121
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 已从固定Git提交982ae49导出公开源码包，含683项manifest；不含local、.git、符号链接、账号配置、凭据或数据库。完整已知私密值扫描通过。产品21模块与已部署0c6f2da及E119冻结源码相同。
 
 新wheel从这一干净导出离线构建，README元数据已更新至E120。所有产品/许可字节与E119 wheel完全一致；tests/scripts/fixtures/integrations与E119最终冻结测试逐字节一致，因此复用其三环境各374项证据，不重新声称跑了三套测试。新Python3.11独立环境离线安装、site-packages导入、六CLI --help及空工作区status完成，status不产生状态文件；无运行时外部依赖。19核验、13离线步骤通过。

@@ -1,5 +1,10 @@
 # DOCX四方向与真实24h观察启动
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-11 19:36之后继续同一任务，未等待上段[Stream验收](29-stream-service-and-offline-recovery.md)汇报。范围仍是原群及veil/liev私聊，DWS显式liev真人profile。没有远程发布或成员变更。
 
 ## 用户侧文件与任务闭环

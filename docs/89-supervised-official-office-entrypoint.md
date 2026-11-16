@@ -1,5 +1,10 @@
 # E073 运行器官方办公工具统一受管入口
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 **E083纠正：原实现错误地把--as user作为通用办公参数，E082一次真实核验暴露此问题；现已移除强加参数并用固定官方声明树验证。以下E073测试/包为历史版本，未证明官方参数成立，见[修复与官方契约](95-official-argument-contract.md)。**
 
 已消除生成上下文直接暴露原DWS binary的调用路径：schemaVersion 2的binary指向工作区0700私有入口，固定原路由profile、--as user和JSON输出，通过官方CLI完成业务。没有改原版DWS、复制凭据或调用私有协议。

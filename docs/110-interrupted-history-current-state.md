@@ -1,5 +1,10 @@
 # 当前暂停：中断占位，不是已确认的凭据故障
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-13，E107。[只读快照](../evidence/2026-11-13/interrupted-history-snapshot.json)。这条当前状态覆盖E103“受管调用可用”的历史结论；E103真实UI及当时通过仍保留。
 
 三个受管进程身份检查仍running，但DWS持久闩已是suspended/dws_process_interrupted。闩文件mtime为11月13日09:33:56，slot0的active占位mtime为09:33:40；slot1 ready。两slot锁的lsof没有报告打开句柄（exit1、无输出），只能作为当时未见占用的观察，不等于锁归属的完整证明。管理器没有这个时间段的重启记录；实际中断来源尚未确定。以上文件mtime不是精确失败事件时间，旧格式只存state/reason，没有请求归属/阶段可还原。

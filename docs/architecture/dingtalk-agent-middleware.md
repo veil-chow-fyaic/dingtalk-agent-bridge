@@ -1,6 +1,6 @@
 # 钉钉 ↔ 主流 Agent 中间件
 
-状态：E092设计，E097核对当前实现及[统一需求/路线](../102-user-requirements-and-roadmap.md)。优先采用GitHub社区/钉钉官方作业，默认DWS真人账号。CEO现为任务/交付/runtime契约优先参照，Qwen为DWS通道组件参照，不表示新增适配器已实现。
+E132（2026-11-16）同步现有模块与已登记验收。默认官方DWS真人账号，产品独立于组织和runtime；当前版本/部署/剩余工作统一见[总览](../102-user-requirements-and-roadmap.md)。CEO提供任务/交付/runtime契约参考，Qwen提供通道事务参考，均未整包移植。
 
 ## 身份决策
 
@@ -10,7 +10,7 @@ bot/数字员工不是自动替代或故障回退。DWS 失败不自动切 bot�
 
 对每个具体身份/会话分别记录：发现会话、历史、事件、文字发送、引用、文件上传/下载、原生媒体、办公资源。内部群、外部群、含外部成员群、跨组织私聊不能混为一个通过项。
 
-[官方仓库 #937](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/937)截至本轮仍 open：原报告存在外部群历史可读而个人事件失败的对照；后续评论群类型未核实，不能泛化为所有当前外部群都失败或已修复。只有某目标历史确实可读时，才可选 history 补读；不得伪称它是实时 Stream。跨组织/客户场景继续按原矩阵待验，不套用企业微信、Slack、Telegram 或飞书的权限结论。
+[官方仓库 #937](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/937)E092核对时 open（不是本轮重新查询的状态）：原报告存在外部群历史可读而个人事件失败的对照；后续评论群类型未核实，不能泛化为所有当前外部群都失败或已修复。只有某目标历史确实可读时，才可选 history 补读；不得伪称它是实时 Stream。跨组织/客户场景继续按原矩阵待验，不套用企业微信、Slack、Telegram 或飞书的权限结论。
 
 ## 分层与现有代码位置
 
@@ -29,7 +29,7 @@ flowchart LR
 | 收发与路由 | `core.py`、`stream.py`、`routing.py` | 优先对照 Qwen DWS client/stream；保留已验的固定身份、持久续页及未知发送对账 |
 | 中立消息和原件 | `message_model.py`、`consumer.py` | 有序 parts、quote、sender、原件路径/大小/SHA；不能因参考实现只接 text 就丢附件 |
 | 会话/任务/交付 | `agent_gateway.py`、既有 SQLite 账本 | Qwen 队列/会话、CEO 文件回执与恢复设计；保持既有任务和终态 |
-| 本地执行 | `agent_runtime.py`、`runtime_guard.py` | 当前仅 Codex/Kimi CLI；后续按各官方协议隔离，不把协议字段放进 DWS 层 |
+| 本地执行 | `agent_runtime.py`、`runtime_guard.py` | Kimi/Codex/Pi已实现并各有真实范围；OpenClaw在openclaw_runtime.py实现但仅合成验收/未部署；原生协议不进入DWS层 |
 | 对外工具面 | CLI、HTTP、`consume.py` | 任意宿主可独立消费；不要求安装某一个 Agent 框架 |
 
 以上是现有模块映射，不为整理目录搬动产品文件、数据库或运行配置。短期保持当前 Python 传输/账本，通过窄接缝引入采用的组件；没有依赖/测试收益依据时不整体改写语言或 fork 一个大型宿主。
@@ -46,8 +46,8 @@ flowchart LR
 
 ## 当前部署与后续接缝
 
-E095用户自行新终端登录成功后，已部署E093/661b67c的21模块并恢复三个受管服务，双路history-only15秒；E096新AIC群原生PNG已验。仅新AIC测试群及原两人私聊，企业大群/旧群禁测；自动心跳仍PAUSED。E097只审资料，不新增现场健康或发送证据。认证已恢复不等于根因根治或跨设备长期保证；助手auth/doctor/系统Keychain操作仍禁止。
+现场仍为E122产品e7d82cc/E123验收2fffa7b：AIC Kimi、原私聊Pi、history-only15秒。最近真实UI E131中群双PNG原件进入同一任务，Kimi订阅访问403使模型失败；DWS准入与runtime服务访问分开。E127候选500191a增加OpenClaw，E128补生命周期验证，均未部署。详见[运行器接入表](agent-integration-map.md)。
 
-通用目标不等于本轮已实现四个可用 adapter。当前 Kimi 有真实闭环，Codex CLI超时未解决，Pi/OpenClaw 尚未接入。原“至少一个本地执行器”门槛保持；四类适配属于后续扩展路线，不能用研究完成冒充运行完成。
+C01文件摘要、C02发送事实、C03能力/终态、C04兼容性与C06环境已采用并部署；Qwen接纳/完成与inbox/job/outbox事务对照于E124完成。已有等价实现只映射，不重新实现；C05租约仅有多宿主实际需要时引入，不能把当前flock视为缺陷。具体[采用账](../references/adoption-plan.md)。
 
-下一代码接缝见[CEO C02–C06](../references/ceo-deep-dive.md)：发送事实负例、轻量runtime终态/能力/错误协议、会话兼容性。现有consumer独占flock和gateway绑定有效，未来租约按多宿主实际需求引入，不为模仿上游重复实现。所有adapter仍共用同一通道和交付账本。
+仅AIC测试群及原私聊获准，企业大群/旧群禁测；心跳ACTIVE与服务健康分开。系统钥匙串根因、自然失效refresh和长期验收未完成，禁止auth/doctor/Keychain实验。原生语音/video、私聊入站引用及组合缺口不因架构或运行器扩展而通过。

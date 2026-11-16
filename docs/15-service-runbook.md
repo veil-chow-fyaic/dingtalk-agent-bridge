@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-当前E123：e7d82cc已部署，AIC Kimi/原私聊Pi；Codex原会话已归档，既有验收保留。Pi实际Python、续接、取消和JSON/TXT客户端下载打开通过，396×3及31核验；完整MUST仍未完成。[最新状态](124-pi-deployment-and-ui.md)。
+E132（2026-11-16）按现有代码与既有证据更新操作说明。最近部署仍为E122产品e7d82cc/E123验收2fffa7b，AIC Kimi/原私聊Pi；OpenClaw候选500191a未部署。最近真实UI E131出现Kimi Code订阅访问403，不能以旧成功或DWS ready认定模型当前可用。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
@@ -44,7 +44,7 @@ E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。�
 
 HTTP只绑定loopback；所有接口要求Bearer token。首次启动生成`local/runtime/http-token`并设0600，它不是钉钉OAuth令牌。客户端默认从当前目录读取，也可用`dab --token-file PATH`选择已授权本地令牌文件；不要把令牌写进源码或打印出来。
 
-E123检查点服务已运行；以下为本地HTTP读取示例，不为查询另起一套服务：
+以下为读取已有服务本地HTTP状态的示例；仅需要时调用，不为查询另起一套服务，也不把health当作模型/API可用探针：
 
 ```bash
 python3 -m dingtalk_bridge.cli health
@@ -90,7 +90,7 @@ python3 scripts/run_tests_with_evidence.py
 python3 scripts/verify_handoff.py
 ```
 
-诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。原24h观察已结束且故障/维护保留；当前部署的新观察仍需真实时长与截止账本，不能重置旧run。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
+诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。reliability-20261111及aic-persistent-env-20261113两份旧观察均已结束，故障/维护/版本和缺截止事实保留；R13仍需新的合规自然失效refresh、长期覆盖及完整截止证据，不能重置或重审旧run。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
 
 产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；E073生成的受管入口支持doc/todo/calendar/mail/drive/minutes六类，固定身份/JSON，保持官方双流及退出码。它不是OS权限隔离，没有新增bot，见[入口边界](89-supervised-official-office-entrypoint.md)。
 
@@ -98,12 +98,22 @@ python3 scripts/verify_handoff.py
 
 附件缓存命中同时核成功/完整标志、预期资源集合、路径、SHA和准确字节数；损坏缓存拒绝返回，不自动下载或改清单。显式attachments --repair重新调用官方下载到新attempt目录，旧原件保留。见[缓存完整性](71-download-cache-integrity.md)。
 
-## runtime网络配置（E115/E116）
+## runtime网络配置
 
-在私有Agent JSON的runtime.environment中声明所需HTTP_PROXY/HTTPS_PROXY/ALL_PROXY/NO_PROXY，默认空映射继承父环境。只支持这些键的大写/小写，null或空值清除；配置同步大小写并保留回环绕过，不改变HOME/认证/transport。配置值不进入Git或诊断日志。[配置规则与故障分类](115-runtime-environment-and-dws-diagnostics.md)。
+在私有Agent JSON的runtime.environment中声明所需HTTP_PROXY/HTTPS_PROXY/ALL_PROXY/NO_PROXY，默认空映射继承父环境。只支持这些键的大写/小写，null或空值清除；配置同步大小写并保留回环绕过，不改变HOME/认证/transport。OpenClaw同样先经过这层网络变量白名单，随后只从该结果保留最小子进程环境；其专用宿主JSON的env只允许shellEnv.enabled=false，不能混同为禁止bridge的runtime.environment网络配置。配置值不进入Git或诊断日志。[配置规则与故障分类](115-runtime-environment-and-dws-diagnostics.md)。
 
 部署证据：87a3d39由无代理环境manager启动，两个实际Kimi子进程通过持久配置获得所需网络；群/私聊工具和文件UI通过。常规重载须等任务/outbox终态、按manager归属停止再修改配置；transport改动另按固定cut补读/停机积压审查流程。回滚代码前先核旧版对runtime.environment的支持，不能直接回退到忽略该字段的版本后声称网络配置仍有效；保留原库/会话和所有失败回执。
 
+
+## 执行器配置与证据范围
+
+通用Agent模板的runtime指定kind、binary、有限timeoutSeconds及可选model/environment。kind实现包括kimi、codex、pi、openclaw；已实现、已部署和真实验收的范围分开见[接入表](architecture/agent-integration-map.md)。Kimi的历史真工具成功不能解除E131订阅访问403，恢复需要既有服务访问的新证据，不能自动登录、改凭据或切换runtime重试。
+
+Pi使用固定0.84.2的JSON print模式、完整UUID和独立session目录，关闭扩展/skills/prompt templates/themes自动发现；终态要求agent_settled、最后assistant stopReason=stop和exit0。Pi与OpenClaw均未声明image_files，不能靠模型配置声称支持图片。
+
+OpenClaw是未部署候选，固定官方41f2b981/2026.11.3，走agent --local及stdin，非Gateway远端turn或ACP。配置还要求runtime.model和runtime.openclaw的configPath（绝对路径）、configSha256（64位小写SHA），绑定agent main；JSON在任务workspace外且每次校验摘要。专用JSON只接受[实现中明确的结构](../dingtalk_bridge/openclaw_runtime.py)：三处workspace占位、单个明确provider/model、禁插件/任意层include/宿主env覆盖，不合并系统默认配置。既有合成样例只是测试数据，不是可用provider凭据。
+
+宿主使用独立OPENCLAW_HOME/state/cache/profile和最小环境，不改系统HOME；同名系统HOME profile存在时拒绝。这不是OS沙箱，不能保证任意生产binary不读环境外文件。真实模型/UI需要专用现成授权配置；不复制其他runtime的token。候选变更或部署仍需下面的new/绑定门槛，当前文档更新不执行迁移。
 
 ## 执行器更换与回滚（E118–E120）
 

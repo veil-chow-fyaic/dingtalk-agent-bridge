@@ -1,5 +1,10 @@
 # Stream真实断连、历史兜底与模型失败保留
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E024。共享personal Stream已建立的WebSocket隧道被实际关闭89.446秒；官方daemon报告重连，历史补读继续工作。撤除故障后，同一daemon/consumer/bridge进程恢复Stream事件，未重启或重发来完成恢复。两条veil原生UI任务各只执行一次：A产生模型输出格式失败并在客户端提示，B完成3127并交付37B文件，客户端下载Quick Look打开且原件一致。
 
 ## 可控故障装置

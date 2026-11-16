@@ -1,5 +1,10 @@
 # 通用接入续作：迁移、会话发现、持续接收与版本限制
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 本页保留 runtime 接入之前的续作验收快照（18 条事件、39 项回归）。当前 Kimi 实际接入、25 条事件、51 项回归见 [docs/24](24-local-agent-product-and-acceptance.md)；不要把本页历史数量当作当前账本。
 
 2026-11-11。接续原对话后，重新读完全部用户要求、核对原代码与26项测试；本次新增13项测试，合计39项通过。本页描述新增交付，当前总状态仍以 [17](17-requirements-progress-review.md)、工作清单以 [13](13-roadmap-and-backlog.md) 为准。

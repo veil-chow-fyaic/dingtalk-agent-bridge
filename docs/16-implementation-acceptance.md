@@ -1,5 +1,10 @@
 # 实现与验收闭环记录
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 > 历史阶段记录：保留当时版本、数量和观察。当前状态以 [总览](17-requirements-progress-review.md) 和 [最新增量验收](20-gap-acceptance-and-reproduction.md) 为准；本页的当时待测项不作为当前待办。
 
 2026-11-11。用户要求连续推进，不再在每个阶段仅报告“下一步”并结束。本轮部分单人验证已推进到本地实验适配服务；尚有可独立完成的调研和测试，不能把本轮交付解释为它们全部完成。总体缺口与后续优先级以 [复盘](17-requirements-progress-review.md) 和 [当前计划](13-roadmap-and-backlog.md) 为准。

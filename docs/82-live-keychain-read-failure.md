@@ -1,5 +1,10 @@
 # E065：真实DWS登录密钥读取失败，尚未恢复
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12约09:25 CST，现有两路history同步开始报告BridgeError。群最后成功同步为09:25:18、私聊09:25:19；Stream监听仍显示ready，不能据此判定消息同步正常。本轮没有新UI发送、授权操作、凭据改写、服务重启或网络故障注入。
 
 固定官方DWS v1.0.67的一次只读history返回退出51：`resolve access token: load access token: load from keychain: read DEK from macOS Keychain: exit status 51`。随后一次官方doctor进程退出0，但检查结果为auth fail、keychain pass、network pass、runtime_context pass、version warn。官方明确描述为“无法读取 macOS Keychain 中的登录密钥，无法判断登录状态”；默认钥匙串可用不等于能读DWS保存的密钥。不能将doctor退出0当健康，也不能将本错误当作已证实的refresh token过期。

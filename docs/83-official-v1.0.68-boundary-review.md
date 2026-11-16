@@ -1,5 +1,10 @@
 # E066：官方v1.0.68更新的只读边界核对
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，针对E065中doctor的新版本提示，读取[官方v1.0.68发布页](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68)及[v1.0.67到v1.0.68比较](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/compare/v1.0.67...v1.0.68)。正式版发布于2026-11-11 08:50:17 UTC，对应commit `ba02fc6cdbdb3543d21d0cdb70f027bf0d142692`；比较返回53个提交、218个变更文件。本段没有安装或执行新版，没有操作登录态。
 
 | 与当前项目相关的内容 | 核对结果与行动边界 |

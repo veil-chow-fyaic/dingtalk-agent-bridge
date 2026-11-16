@@ -1,5 +1,10 @@
 # E085：只读部署差异与账本清单
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 当前具体恢复候选已由[E090仅私聊方案](97-private-chat-recovery-proposal.md)收窄：群transport与gateway都不恢复。下文E085/E086原两路清单与步骤保留历史，不作为启动授权。
 
 新增scripts/prepare_history_deployment.py，只生成本地私有审查材料，没有apply、start、send、auth或网络入口。当前清单位于local/deployment-reviews/history-deployment-20261112/plan.json；它不是恢复许可，也不能直接部署。

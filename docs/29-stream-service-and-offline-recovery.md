@@ -1,5 +1,10 @@
 # 常驻Stream唤醒与双账号停机补漏：2026-11-11
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 延续原群、veil与liev的私聊范围。veil通过钉钉原生UI输入，liev由官方DWS用户身份发送；没有新增bot、账号权限或第三方联系人。此前独立订阅16条业务事件见[docs/28](28-media-matrix-and-real-events.md)，本轮验证它接入实际服务后的行为。
 
 ## 实现和官方边界

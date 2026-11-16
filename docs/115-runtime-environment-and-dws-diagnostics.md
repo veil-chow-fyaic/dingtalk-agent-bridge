@@ -1,5 +1,10 @@
 # 持久运行环境与DWS结构化错误诊断
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-13，E115。沿用CEO C06“明确子进程环境”的接入思路，产品仍是runtime/组织无关的IM中间件。配置只影响Agent子进程及其工具，不改系统代理、HOME、CLI凭据或transport配置，不新增第三方依赖。
 
 ## 持久配置

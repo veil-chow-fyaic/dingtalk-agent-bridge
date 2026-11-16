@@ -1,5 +1,10 @@
 # Codex 原生取消与部署 E119
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 E118表明仅终止CLI进程组不能停止Codex另建会话的工具：返回取消后约90秒仍写入late。该失败原件保留，不能以cleanup_complete或立即检查无文件替代实际退出验证。
 
 依据固定Codex 0.164.0源码 [exec ctrl_c处理](https://github.com/openai/codex/blob/6aaac694803004a63c6f393d153c96d22521a6b9/codex-rs/exec/src/lib.rs)，对受管Codex先发SIGINT，由官方执行器调用turn/interrupt，最多等5秒，再执行原有限进程组清理。只向仍持有的子进程PID发信号，不扫描杀共享服务。清理期间保持stdout可写并排空，避免取消事件堵管。Kimi/DWS不启原生中断参数。

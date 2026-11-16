@@ -1,5 +1,10 @@
 # 标准化引用保留来源身份
 
+<!-- historical-scope:start -->
+> **阶段历史，非当前操作指令。** 本文正文保持原阶段内容；“当前、下一步、待许可、暂停、未接入”均按本文实验时点解释。现状见[统一总览](102-user-requirements-and-roadmap.md)，操作见[运行手册](15-service-runbook.md)。旧失败及证据不因后续成功而删除，不照抄旧探针或恢复动作。
+<!-- historical-scope:end -->
+
+
 2026-11-12，E034。复核发现`project()`只保留quotedMessage的正文和附件，原消息ID、会话、发送者元数据丢失。现每一层quote增加`id`、`conversationId`、`senderId`、`senderName`，正文及附件顺序保持。缺失、空白或非字符串元数据明确为null；DWS只给显示名时不会猜senderId。顶层消息的身份、白名单、fromSelf和执行指令继续由实际入站发送者决定，引用内容不获得执行权限。schemaVersion仍为1，增加兼容字段；历史已入账模型不自动重写或重新执行。
 
 先新增三个来源字段回归并观察旧实现KeyError，再修复。新增gateway集成回归证明：未授权发送者引用授权者的消息仍不能创建任务；授权请求的原消息ID进入runtime上下文，重启不重复执行。154项全量回归通过（含E031的11项观察器工具测试）。干净导出、新venv安装wheel，六入口可运行，18模块摘要完全一致，无local账号资料。
