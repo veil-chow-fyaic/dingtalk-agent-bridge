@@ -14,6 +14,7 @@ import time
 
 from .doctor import diagnose, fetch_health
 from .routing import route_configs
+from .provenance import source_manifest, verify_startup
 
 
 def process_identity(pid, observation=None):
@@ -162,6 +163,9 @@ class Manager:
             return True
 
     def spawn(self, spec):
+        package = self.root / 'dingtalk_bridge'
+        if not package.is_dir(): package = Path(__file__).parent
+        launch_sources = source_manifest(package)
         log_path = self.folder / ('managed-' + spec['name'] + '.log')
         offset = log_path.stat().st_size if log_path.exists() else 0
         with log_path.open('ab') as log:
@@ -186,7 +190,8 @@ class Manager:
             child.wait(timeout=5)
             raise
         return {**spec, 'pid': child.pid, 'identity': identity, 'log': str(log_path.relative_to(self.root)),
-                'logOffset': offset, 'startedAt': time.time(), 'starting': True}
+                'logOffset': offset, 'startedAt': time.time(), 'starting': True,
+                'launchSourceSha256': launch_sources}
 
     def ready(self, record):
         if self.component_status(record) != 'running':
@@ -200,6 +205,18 @@ class Manager:
                     if isinstance(value, dict): messages.append(value)
                 except ValueError:
                     continue
+        startup = [m['startupEvidence'] for m in messages if 'startupEvidence' in m]
+        if startup:
+            if len(startup) != 1:
+                raise RuntimeError('Ambiguous startup provenance')
+            record['startupEvidence'] = startup[0]
+            paths = [Path(record['config'])]
+            if record['name'] != 'transport': paths.append(self.config)
+            configs = {str(p.resolve()): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+            package = self.root / 'dingtalk_bridge'
+            if not package.is_dir(): package = Path(__file__).parent
+            if not verify_startup(record, source_manifest(package), configs):
+                raise RuntimeError('Service startup source/config changed or provenance mismatched')
         if record['name'] == 'transport':
             if not any(m.get('listening') == 'http://127.0.0.1:18768' for m in messages):
                 return False

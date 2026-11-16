@@ -10,7 +10,7 @@ import time
 from urllib.parse import urlencode
 from urllib.request import Request,urlopen
 from service_observation_evidence import (SCHEMA, safe_version_snapshot, seal,
-                                         snapshot_routes, write_json)
+                                         snapshot_routes, write_json, settle_cutoff, SETTLE_POLICY)
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -26,7 +26,8 @@ def capture(root, folder, routes, get, seconds, interval, stop, clock=time.time,
     baseline_at = clock()
     started = monotonic(); wall = clock(); cut = wall + seconds
     baseline = {'schemaVersion': SCHEMA, 'at': baseline_at, 'cursors': list(cursors), 'routes': routes,
-                'health': health, 'snapshots': snapshots, 'version': version, 'cutoffAt': cut}
+                'health': health, 'snapshots': snapshots, 'version': version, 'cutoffAt': cut,
+                'capturePolicy': SETTLE_POLICY}
     write_json(folder / 'baseline.json', baseline)
     status = {'schemaVersion': SCHEMA, 'active': True, 'pid': os.getpid(), 'startedAt': wall,
               'cutoffAt': cut, 'duration_seconds': seconds, 'interval_seconds': interval,
@@ -71,8 +72,11 @@ def capture(root, folder, routes, get, seconds, interval, stop, clock=time.time,
         # Capture even for signal/exception; reviewer will refuse completion.
         # SIGKILL leaves active status or an absent seal; never resume/repair it.
         try:
+            rows, attempts = settle_cutoff(root, routes, baseline['cursors'], cut, stop,
+                                          snapshot=snapshot_routes, clock=clock) if reason == 'duration_reached' else (
+                                              snapshot_routes(root, routes, baseline['cursors']), [])
             ledger = {'schemaVersion': SCHEMA, 'cutoffAt': cut,
-                      'routes': snapshot_routes(root, routes, baseline['cursors']),
+                      'routes': rows, 'coverageAttempts': attempts,
                       'version': safe_version_snapshot(root)}
             write_json(folder / 'ledger.json', ledger)
             status.update(active=False, stop_reason=reason)

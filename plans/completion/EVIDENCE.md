@@ -501,3 +501,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [实现/边界](../../docs/136-observation-cutoff.md)、[脱敏验证](../../evidence/2026-11-16/observation-cutoff-validation.json)：schema v2自动固定cut、逐路SQLite只读事务账本/时间/watermark/续页、产品与采集器/配置磁盘摘要、manager身份/维护以及原子文件/最终seal；缺失、迟到、变更、异常退出均不能假完成。账本尾部与HTTP采样分开，不声称跨库原子或cut瞬间快照。
 - 15新增＋15既有观察方法在冻结源码Python3.14.6/3.11.15各30通过，包含并发WAL提交和真实合成子进程SIGKILL。23产品模块与E133/E134相同，无部署/业务HTTP/DWS/模型/UI/调度操作，无新真实观察，旧run封存。
 - 当前磁盘不是加载源码证明；manager尚无启动来源记录，uniform_loaded_version_proven/stability_pass保持false，下一独立项是启动版本证据及collector核验。R13、7 MUST与51/11/2保持。
+
+## E137 — 启动来源及实际观察准备
+- [实现](../../docs/137-startup-provenance.md)、[冻结验证](../../evidence/2026-11-16/startup-provenance-validation.json)：transport/gateway记录启动源码/模块来源和实际解析配置摘要，manager核PID/入口/启动前与ready后源码并持久保存，collector核启动证据；旧记录不补造。
+- 24模块同wheel冻结源码/安装Python3.14及3.11各472方法通过；随后仅工具补单调时钟收尾边界，观察专项34×3，不称473全量。新run开始声明30/45秒收尾，固定cut不改，逐次覆盖尝试保留，旧v2仍按旧策略。
+- 官方main未变，补读原先未读chat文档确认audio/video是file兼容语义，无新原生入口。无真实消息/模型/UI或部署；下一步立即部署与实际短采集/新run。原51/11/2及7 MUST未完整。

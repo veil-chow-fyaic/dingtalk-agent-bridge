@@ -12,11 +12,13 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dingtalk_bridge.routing import route_configs
 from dingtalk_bridge.service_manager import Manager
+from dingtalk_bridge.provenance import verify_startup
 
 SCHEMA = 2
 # These are evidence tolerances, not an assertion of an instantaneous snapshot.
 CUTOFF_START_BUDGET = 5
 CUTOFF_END_BUDGET = 15
+SETTLE_POLICY = {'mode': 'bounded_history_settle', 'startBudget': 30, 'endBudget': 45}
 SEALED_FILES = ('baseline.json', 'status.json', 'observations.ndjson',
                 'ledger.json', 'maintenance.ndjson')
 
@@ -77,12 +79,39 @@ def snapshot_routes(root, routes, cursors=None, clock=time.time):
     return rows
 
 
-def version_snapshot(root):
-    """Source/config fingerprints and owned process records, not memory attestation.
+def covers_cut(row, cut):
+    try:
+        watermark = datetime.fromisoformat(row['watermark'])
+        return watermark.tzinfo is not None and watermark.timestamp() >= cut and row['history_window'] is None
+    except (KeyError, TypeError, ValueError):
+        return False
 
-    The existing manager does not record source hashes at process load. Keep
-    that absence explicit; matching today's disk cannot establish loaded code.
+
+def settle_cutoff(root, routes, cursors, cut, stop, snapshot=snapshot_routes, clock=time.time,
+                  monotonic=time.monotonic):
+    """Wait only for existing history polling, without initiating upstream calls.
+
+    Keep the fixed cutoff and every attempt's timing/coverage. A database error,
+    stop signal or exhausted declared budget is a failure, never a new deadline.
     """
+    attempts = []
+    deadline = monotonic() + max(0, min(SETTLE_POLICY['startBudget'],
+                                      cut + SETTLE_POLICY['startBudget'] - 1 - clock()))
+    while True:
+        rows = snapshot(root, routes, cursors)
+        attempts.append([{**{k: v for k, v in r.items() if k != 'events'},
+                          'eventsSha256': digest(json.dumps(r.get('events', []), sort_keys=True).encode())}
+                         for r in rows])
+        if (any('error' in r for r in rows) or all(covers_cut(r, cut) for r in rows)
+                or stop.is_set() or monotonic() >= deadline
+                or clock() >= cut + SETTLE_POLICY['startBudget'] - 1):
+            return rows, attempts
+        stop.wait(min(1, max(0, deadline - monotonic()),
+                      max(0, cut + SETTLE_POLICY['startBudget'] - 1 - clock())))
+
+
+def version_snapshot(root):
+    """Source/config fingerprints, startup provenance and owned process records."""
     root = root.resolve()
     started = time.time()
     manager = Manager(root)
@@ -104,13 +133,21 @@ def version_snapshot(root):
                    'startedAt': c['startedAt'], 'configSha256': c.get('configSha256'),
                    'configMatches': c.get('configSha256') == configs[str(Path(c['config']).resolve().relative_to(root))],
                    'status': manager.component_status(c)} for c in state['components']]
+    startup_verified = []
+    for record in state['components']:
+        paths = [Path(record['config']).resolve()]
+        if record['name'] != 'transport': paths.append((root / 'local/service-config.json').resolve())
+        selected_configs = {str(p): configs[str(p.relative_to(root))] for p in paths}
+        startup_verified.append(verify_startup(record, {Path(p).name: h for p, h in sources.items()}, selected_configs))
     journal = root / 'local/runtime/manager-events.ndjson'
     journal_data = journal.read_bytes() if journal.exists() else b''
     return {'startedAt': started, 'endedAt': time.time(), 'sourceSha256': sources,
             'collectorSha256': collectors, 'configSha256': configs, 'components': components,
             'managerJournal': journal_data.decode(), 'managerJournalSha256': digest(journal_data),
             'loadedSourceProven': False,
-            'limit': 'Disk fingerprints and process identity only; no startup source attestation'}
+            'startupEvidence': [c.get('startupEvidence') for c in state['components']],
+            'startupSourceVerified': bool(components) and all(startup_verified),
+            'limit': 'Launch/ready source and parsed-config provenance; no memory or OS attestation'}
 
 
 def safe_version_snapshot(root):
@@ -128,13 +165,24 @@ def seal(folder):
 def review_cutoff(baseline, status, samples, ledger, maintenance):
     """Fail closed on missing/late/mutated evidence without changing old v1 runs."""
     cut = baseline['cutoffAt']
+    policy = baseline.get('capturePolicy')
+    start_budget = SETTLE_POLICY['startBudget'] if policy else CUTOFF_START_BUDGET
+    end_budget = SETTLE_POLICY['endBudget'] if policy else CUTOFF_END_BUDGET
     checks = {
+        'declared_cutoff_policy': policy is None or policy == SETTLE_POLICY,
         'fixed_cut': cut == status['startedAt'] + status['duration_seconds'] == status['cutoffAt'],
         'terminal_duration': status['active'] is False and status.get('stop_reason') == 'duration_reached',
         'ledger_bound': ledger['schemaVersion'] == SCHEMA and ledger['cutoffAt'] == cut,
         'route_count': len(ledger['routes']) == len(baseline['routes']),
         'baseline_route_count': len(baseline['snapshots']) == len(baseline['routes']),
     }
+    if policy:
+        attempts = ledger.get('coverageAttempts', [])
+        final_summary = [{**{k: v for k, v in r.items() if k != 'events'},
+                          'eventsSha256': digest(json.dumps(r.get('events', []), sort_keys=True).encode())}
+                         for r in ledger['routes']]
+        checks['settle_attempts_retained'] = bool(attempts) and attempts[-1] == final_summary
+        checks['settle_without_database_errors'] = not any('error' in row for attempt in attempts for row in attempt)
     tails = []
     for index, route in enumerate(baseline['routes']):
         matches = [r for r in ledger['routes'] if r['routeIndex'] == index]
@@ -152,14 +200,9 @@ def review_cutoff(baseline, status, samples, ledger, maintenance):
             for r in (start, row))
         checks[prefix + 'baseline'] = (start['highSequence'] == base and start['after'] is None
             and start['snapshotStartedAt'] <= start['snapshotAcquiredAt'] <= start['snapshotEndedAt'] <= baseline['at'] <= status['startedAt'])
-        checks[prefix + 'timely'] = (cut <= row['snapshotStartedAt'] <= cut + CUTOFF_START_BUDGET
-            and row['snapshotStartedAt'] <= row['snapshotAcquiredAt'] <= row['snapshotEndedAt'] <= cut + CUTOFF_END_BUDGET)
-        try:
-            watermark = datetime.fromisoformat(row['watermark'])
-            covered = watermark.tzinfo is not None and watermark.timestamp() >= cut
-        except (TypeError, ValueError):
-            covered = False
-        checks[prefix + 'coverage'] = covered and row['history_window'] is None
+        checks[prefix + 'timely'] = (cut <= row['snapshotStartedAt'] <= cut + start_budget
+            and row['snapshotStartedAt'] <= row['snapshotAcquiredAt'] <= row['snapshotEndedAt'] <= cut + end_budget)
+        checks[prefix + 'coverage'] = covers_cut(row, cut)
         stored = row['events']
         captured = [i['event'] for s in samples for i in s['events'] if i['route'] == index]
         seqs = [e['seq'] for e in stored]
@@ -185,9 +228,12 @@ def review_cutoff(baseline, status, samples, ledger, maintenance):
         checks['no_recorded_maintenance'] = not maintenance and all(
             v['managerJournal'] == first['managerJournal'] and digest(v['managerJournal'].encode()) == v['managerJournalSha256']
             for v in versions)
+    startup_verified = all(v.get('startupSourceVerified') is True for v in versions)
+    checks['startup_source_verified'] = startup_verified
     return {'checks': checks, 'cutoff_evidence_valid': all(checks.values()), 'routes': tails,
             # No existing producer can attest loaded modules. Do not trust an input boolean.
             'uniform_loaded_version_proven': False, 'natural_refresh_proven': False,
+            'uniform_startup_version_verified': all(checks.values()) and startup_verified,
             'limits': ['Per-route SQLite snapshots, not a shared atomic snapshot or exact instant at cutoff',
                        'Ledger-only tail rows were not observed by HTTP and are counted separately',
                        'Source/config fingerprints are sampled disk evidence, not loaded-code attestation',

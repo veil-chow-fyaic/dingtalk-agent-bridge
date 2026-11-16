@@ -479,14 +479,18 @@ class Gateway:
 def main():
     os.umask(0o077)
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--config',default='local/agent-config.json')
-    args=p.parse_args();root=Path.cwd();settings=json.loads((root/args.config).read_text())
-    routes=list(route_configs(json.loads((root/settings.get('bridgeConfig','local/service-config.json')).read_text())))
+    args=p.parse_args();root=Path.cwd();config_path=root/args.config;config_bytes=config_path.read_bytes()
+    settings=json.loads(config_bytes)
+    bridge_path=root/settings.get('bridgeConfig','local/service-config.json');bridge_bytes=bridge_path.read_bytes()
+    routes=list(route_configs(json.loads(bridge_bytes)))
     matches=[r for r in routes if r[0]['accountId']==settings['accountId'] and r[0]['group']==settings['conversationId']]
     if len(matches)!=1:raise ValueError('Select exactly one configured route')
     route,state=matches[0];gateway=Gateway(root,route,state,settings)
     signal.signal(signal.SIGTERM,lambda *_:gateway.stop.set())
     signal.signal(signal.SIGINT,lambda *_:gateway.stop.set())
+    from .provenance import startup_evidence
     print(json.dumps({'gateway':'ready','runtime':settings['runtime']['kind'],
+                      'startupEvidence':startup_evidence({config_path:config_bytes,bridge_path:bridge_bytes}),
                       'runtimeSurface':runtime_manifest(settings['runtime']),
                       'auto_reply':True,'scope':'one configured route'}),flush=True)
     gateway.run()

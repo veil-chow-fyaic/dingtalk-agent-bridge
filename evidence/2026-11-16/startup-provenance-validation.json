@@ -1,0 +1,111 @@
+{
+  "evidence": "E137",
+  "ok": true,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+    "agent_gateway.py": "0b2ee16d72f4044b4d65238cfbb25c7e31ff12c1bf4f6e9ce9494a330f53418e",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "5f13ff258074273b9366244ab1e19e48be93848e01072a079b46a99183035f88",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "__main__.py": "f003b4d42231cf365ca91761a667ab47b491d14ae3f4c44b99fc0792ce9d36bd",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "wheelSha256": "375d87a391c8e90f03993ea7628dc77bfcf141aef3285cb2af5fca242e465b75",
+  "wheelModulesMatch": true,
+  "licenses": {
+    "dingtalk_bridge/licenses/ceo-agent-service.txt": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85"
+  },
+  "licensesMatch": true,
+  "entrypointsDefinition": "[console_scripts]\ndab = dingtalk_bridge.cli:main\ndab-agent = dingtalk_bridge.agent_gateway:main\ndab-bridge = dingtalk_bridge.__main__:main\ndab-consume = dingtalk_bridge.consume:main\ndab-doctor = dingtalk_bridge.doctor:main\ndab-service = dingtalk_bridge.service_manager:main\n",
+  "results": [
+    {
+      "ok": true,
+      "testsRun": 472,
+      "refusalsRetained": 11,
+      "label": "source",
+      "exitCode": 0,
+      "python": "Python 3.14.6"
+    },
+    {
+      "ok": true,
+      "testsRun": 472,
+      "refusalsRetained": 11,
+      "label": "py314",
+      "exitCode": 0,
+      "python": "Python 3.14.6",
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "dabSendHelp": true
+    },
+    {
+      "ok": true,
+      "testsRun": 472,
+      "refusalsRetained": 11,
+      "label": "py311",
+      "exitCode": 0,
+      "python": "Python 3.11.15",
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "dabSendHelp": true
+    }
+  ],
+  "materialsCount": 184,
+  "deployed": false,
+  "finalToolValidation": {
+    "materials": {
+      "tests/test_observation_snapshot.py": "41fc8d0a687488333b0fa0f91a6ed84aae2fefb4124ca6a189cf06c066455b19",
+      "tests/test_observation_review.py": "d81b2f1ed6a6382a797cb4254da00a690ffb2ede7d4a3194a0c28170a990de43",
+      "tests/test_observation_capture.py": "d8473270901549e88fe402ef622ec6f5608513e86e025539269c502068f68d42",
+      "scripts/capture_service_observations.py": "c6d5d2505c23c15a59dc1de68f598ef0091007e26b27c9434a890dec1d61e807",
+      "scripts/service_observation_evidence.py": "eaf90414f9167ceba4ae98e99c672834582c0936dc15f00c574aa723f5ee3067",
+      "scripts/review_service_observations.py": "81460e112ac4be0a113ea5a94c6675128982aa351cdd856fb213cb98caabb55a",
+      "scripts/reconcile_observation_snapshot.py": "55e465b7eeafa56d193e83f3267372ae29efe7bf0279d35e5b6df3d0e27bc8f5"
+    },
+    "results": [
+      {
+        "label": "source",
+        "exitCode": 0,
+        "testsRun": 34,
+        "logSha256": "e5a17aa59ee9fc5dc8bf30ae2e2e527c52865501a9b34393974c5dfc716ce829"
+      },
+      {
+        "label": "py314",
+        "exitCode": 0,
+        "testsRun": 34,
+        "logSha256": "31ebd9659ff7c8f3d1846f25225f367f02649fc12d4278fcdcb1c4c2b0e32cfd"
+      },
+      {
+        "label": "py311",
+        "exitCode": 0,
+        "testsRun": 34,
+        "logSha256": "e1ed81e4abe5e6d2b333edf2e2f2884b7b7286717ab1e64b19c7eb6da1d16d87"
+      }
+    ]
+  },
+  "scope": "Startup source/config provenance; synthetic tests and offline installs only",
+  "newProductTestMethods": 6,
+  "newObservationMethods": 4,
+  "fullTestsScope": "472 methods on frozen source and the same installed wheel; later monotonic-settle fix validated by 34 observation methods in all three environments, not a full 473 run",
+  "limits": [
+    "Startup source and parsed configuration provenance, not OS or process memory attestation",
+    "No live DWS/model/UI acceptance in this implementation stage",
+    "Natural credential refresh and real 24h stability remain unproven"
+  ]
+}

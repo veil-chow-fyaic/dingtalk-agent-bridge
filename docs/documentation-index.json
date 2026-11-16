@@ -3,11 +3,11 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E136",
+    "documentationEvidence": "E137",
     "latestUiEvidence": "E131",
     "deployedProduct": "2467fe2",
     "deploymentEvidence": "E134",
-    "candidateProduct": "E133",
+    "candidateProduct": "E137",
     "uiStateCounts": {
       "passed": 51,
       "blocked": 11,
@@ -678,6 +678,10 @@
     "docs/136-observation-cutoff.md": {
       "role": "historical",
       "preservedSha256": "ef0b8d46fe2099c1e51bfbcbe57228c664fb5e1b0f670746a4bbe8bff8a7416a"
+    },
+    "docs/137-startup-provenance.md": {
+      "role": "historical",
+      "preservedSha256": "ddbf749598cc467d54298b4127d29f164a701f9610c214c3509fb87f16ccb0d3"
     }
   }
 }

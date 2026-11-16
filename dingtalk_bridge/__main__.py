@@ -12,6 +12,7 @@ from urllib.parse import urlparse, parse_qs, unquote
 from .core import BridgeError, ArtifactIntegrityError
 from .routing import Hub
 from .stream import StreamListener
+from .provenance import startup_evidence
 
 
 def main():
@@ -24,7 +25,9 @@ def main():
     if not 5 <= a.poll_seconds <= 3600:
         p.error('poll-seconds must be 5..3600')
     root = Path.cwd().resolve()
-    config = json.loads((root / a.config).read_text())
+    config_path = root / a.config
+    config_bytes = config_path.read_bytes()
+    config = json.loads(config_bytes)
     hub = Hub(root, config)
     for bridge in hub.routes.values():bridge.validate_target()
     token_path = root / 'local/runtime/http-token'
@@ -141,7 +144,8 @@ def main():
     for stream_worker in stream_workers:stream_worker.start()
     signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
     print(json.dumps({'listening': f'http://127.0.0.1:{a.port}', 'mode': 'experimental',
-                      'token_file': str(token_path), 'auto_reply': False}), flush=True)
+                      'token_file': str(token_path), 'auto_reply': False,
+                      'startupEvidence': startup_evidence({config_path: config_bytes})}), flush=True)
     try:
         server.serve_forever(poll_interval=0.5)
     except KeyboardInterrupt:

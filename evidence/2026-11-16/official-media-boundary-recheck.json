@@ -1,0 +1,11 @@
+{
+  "evidence": "E137",
+  "date": "2026-11-16",
+  "source": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/skills/mono/references/products/chat.md",
+  "head": "4cc7767c70a874b189463ebfb07ad8a3c424389c",
+  "headChangedSinceE129": false,
+  "previouslyUnreadDocumentNowRead": true,
+  "finding": "audio/video are compatible file-semantic aliases; native voice/video and ordinary multifile sending are not established by this document",
+  "nativeProtocolAcceptance": false,
+  "binaryChanged": false
+}

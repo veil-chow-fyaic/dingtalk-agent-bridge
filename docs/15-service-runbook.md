@@ -126,3 +126,9 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 不要只改runtime.kind后重启：任务库runtime_binding会拒绝不匹配身份，这保护旧会话免被另一CLI错误续接。正常更换先在已授权会话发`/agent new`，等控制任务和其outbox终态，原native session会归档。停目标gateway并保留原配置；`scripts/migrate_agent_runtime_binding.py`以旧/新配置产生私有计划，apply时重核库、配置摘要及归属，事务保留旧绑定。该工具不写配置、不启动服务、不调用DWS或模型；其精确CLI见`--help`，现场实测见[部署UI](121-codex-deployment-and-ui.md)。没有new、存在活动session/未决任务/未确认回执或计划过期时应拒绝，不能手改SQLite绕过。
 
 当前Pi回退到e7d82cc之前会失去Pi适配，须停目标gateway并按原生new/显式binding迁移选择兼容运行器，不能把Pi会话交给旧CLI。代码回滚须保持当前任务/outbox/session账本，不能恢复旧快照覆盖后来的真实消息。先停止相关服务，固定目标commit和wheel并核模块摘要，核目标版本是否支持当前runtime/session契约及runtime.environment。Codex回滚到0c6f2da之前会重新暴露已知取消迟到写入缺口，应保持该gateway停机；若改回Kimi，按上段归档/显式迁移，再按固定cut和积压审查恢复。未知投递只用原key核对。回滚不包含复制令牌、登录修复或杀共享bus；复杂降级有不兼容时保持停止并记录，不声称已自动回滚成功。
+
+## 观察版本与截止账本
+
+新服务ready记录启动源码及实际解析配置摘要，manager与启动前/ready后摘要和PID核对，collector持续采集。旧服务不自动补造来源，需正常受管部署后才具备新证据；不是进程内存或OS证明。正常维护仍按上文固定cut/排空/积压流程。
+
+新观察使用`python3 scripts/capture_service_observations.py --run-id <新的唯一ID> --seconds 86400 --interval 30`。运行时把收尾窗口写入基线，截止后只读等待既有轮询覆盖，30秒开始/45秒完成，保留每次尝试；失败不改cut、不重置旧run。审查用`python3 scripts/review_service_observations.py --run-dir <已冻结的run目录> --require-complete`，输出须在原run目录以外。24h、零记录错误、统一启动来源与自然refresh分开判断；详见[范围](137-startup-provenance.md)。

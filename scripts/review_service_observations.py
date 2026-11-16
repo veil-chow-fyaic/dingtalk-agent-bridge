@@ -114,7 +114,9 @@ def load_review(folder):
         report['ledger_reconciliation'] = reconcile_ledger(json.loads(files['baseline.json']), samples, ledger)
         report['evidence_valid'] &= report['ledger_reconciliation']['exact_match']
         report['observation_complete_24h'] &= report['evidence_valid']
-    report['stability_pass'] = False  # Loaded source and natural refresh need independent evidence.
+    report['stability_pass'] = bool(report['observation_complete_24h'] and report['zero_recorded_errors']
+        and report.get('cutoff', {}).get('uniform_startup_version_verified'))
+    report['stability_scope'] = 'Recorded 24h availability and verified startup sources; natural refresh and upstream loss are separate'
     if any((folder / n).read_bytes() != data for n, data in files.items()):
         raise ValueError('Snapshot changed while reading; use a frozen copy')
     report['sourceSha256'] = {n: hashlib.sha256(data).hexdigest() for n, data in files.items()}

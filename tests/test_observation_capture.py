@@ -28,6 +28,7 @@ def version():
             'components': [{'name': 'transport', 'pid': 123, 'identity': 'synthetic',
                             'status': 'running', 'configMatches': True}],
             'managerJournal': '', 'managerJournalSha256': evidence.digest(b''),
+            'startupSourceVerified': True,
             'loadedSourceProven': False}
 
 
@@ -78,7 +79,7 @@ class ObservationCaptureTests(unittest.TestCase):
         self.save_bundle(self.bundle())
         report = reviewer.load_review(self.run)
         self.assertTrue(report['evidence_valid']); self.assertTrue(report['observation_complete_24h'])
-        self.assertFalse(report['stability_pass'])
+        self.assertTrue(report['stability_pass'])
         self.assertFalse(report['cutoff']['uniform_loaded_version_proven'])
         self.assertFalse(report['cutoff']['natural_refresh_proven'])
         self.assertEqual(self.snapshot()['deliveries'], {'outcome_unknown': 1})
@@ -184,6 +185,62 @@ class ObservationCaptureTests(unittest.TestCase):
         self.assertFalse(evidence.review_cutoff(*bundle, [{'at': 20, 'reason': 'maintenance'}])['cutoff_evidence_valid'])
         bundle[3]['version']['loadedSourceProven'] = True
         self.assertFalse(evidence.review_cutoff(*bundle, [])['uniform_loaded_version_proven'])
+        bundle[3]['version']['startupSourceVerified'] = False
+        self.assertFalse(evidence.review_cutoff(*bundle, [])['cutoff_evidence_valid'])
+
+    def test_declared_settle_window_records_initial_lag_and_fixed_cut(self):
+        bundle = self.bundle(); bundle[0]['capturePolicy'] = evidence.SETTLE_POLICY
+        class Clock:
+            now = 86410
+            def time(self): return self.now
+            def wait(self, seconds): self.now += seconds
+            def is_set(self): return False
+        clock = Clock()
+        def snapshot(*args):
+            row = self.snapshot(0, clock.now)
+            if clock.now < 86420: row['watermark'] = iso(86409)
+            return [row]
+        rows, attempts = evidence.settle_cutoff(self.root, [self.route], [0], 86410, clock, snapshot, clock.time)
+        self.assertEqual(len(attempts), 11); self.assertEqual(attempts[0][0]['watermark'], iso(86409))
+        bundle[3].update(routes=rows, coverageAttempts=attempts)
+        self.assertTrue(evidence.review_cutoff(*bundle, [])['cutoff_evidence_valid'])
+        bundle[3]['coverageAttempts'] = []
+        self.assertFalse(evidence.review_cutoff(*bundle, [])['cutoff_evidence_valid'])
+
+    def test_settle_budget_exhaustion_or_database_failure_never_becomes_coverage(self):
+        class Clock:
+            now = 86410
+            def time(self): return self.now
+            def wait(self, seconds): self.now += seconds
+            def is_set(self): return False
+        clock = Clock()
+        def snapshot(*args):
+            row = self.snapshot(0, clock.now); row['watermark'] = iso(86409); return [row]
+        rows, attempts = evidence.settle_cutoff(self.root, [self.route], [0], 86410, clock, snapshot, clock.time)
+        self.assertEqual(clock.now, 86439); self.assertFalse(evidence.covers_cut(rows[0], 86410))
+        failed, attempts = evidence.settle_cutoff(self.root, [self.route], [0], 86410, clock,
+            lambda *args: [{'routeIndex': 0, 'error': 'OperationalError'}], clock.time)
+        self.assertEqual(len(attempts), 1); self.assertIn('error', failed[0])
+
+    def test_declared_settle_window_cannot_be_extended_after_start(self):
+        bundle = self.bundle(); bundle[0]['capturePolicy'] = {**evidence.SETTLE_POLICY, 'startBudget': 500}
+        self.assertFalse(evidence.review_cutoff(*bundle, [])['cutoff_evidence_valid'])
+
+    def test_settle_wall_clock_rollback_does_not_extend_monotonic_budget(self):
+        class Clock:
+            wall = 86410
+            mono = 0
+            def time(self): return self.wall
+            def monotonic(self): return self.mono
+            def wait(self, seconds): self.wall -= seconds; self.mono += seconds
+            def is_set(self): return False
+        clock = Clock()
+        def snapshot(*args):
+            row = self.snapshot(0, clock.wall); row['watermark'] = iso(86409); return [row]
+        rows, attempts = evidence.settle_cutoff(self.root, [self.route], [0], 86410, clock,
+            snapshot, clock.time, clock.monotonic)
+        self.assertEqual(clock.mono, 29); self.assertLess(clock.wall, 86410)
+        self.assertFalse(evidence.covers_cut(rows[0], 86410))
 
     def test_version_snapshot_hashes_config_without_copying_values_or_claiming_loaded_source(self):
         (self.root / 'dingtalk_bridge').mkdir()
