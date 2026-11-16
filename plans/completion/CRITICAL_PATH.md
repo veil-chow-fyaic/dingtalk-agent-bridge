@@ -24,4 +24,4 @@ CEO C01–C04/C06、E124 Qwen事务映射已完成。OpenClaw E125入口研究�
 
 ## 操作约束
 
-按[AGENTS](../../AGENTS.md)只在AIC及原私聊、单Agent原分支本地提交。受管DWS固定身份/两并发/90+15秒/history-only15秒，共享bus不杀。恢复先transport、gateway停机同快照watermark≥固定cut且无history_window、停传输核积压后再开放执行，last_sync.at不是覆盖。凭据故障不自动恢复，未知发送原key核对；禁止auth/doctor/Keychain及凭据复制等系统动作。
+按[AGENTS](../../AGENTS.md)只在AIC及原私聊；按用户最新指令子Agent分工候选实现，主Agent负责原分支集成、本地提交和现场操作。受管DWS固定身份/两并发/90+15秒/history-only15秒，共享bus不杀。恢复先transport、gateway停机同快照watermark≥固定cut且无history_window、停传输核积压后再开放执行，last_sync.at不是覆盖。凭据故障不自动恢复，未知发送原key核对；禁止auth/doctor/Keychain及凭据复制等系统动作。

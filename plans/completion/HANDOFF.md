@@ -2,7 +2,7 @@
 
 2026-11-16，E142。用户要求负责后续全部闭环，不再安排定时任务。项目尚未完成；旧E135停止指令、E139恢复心跳和E140等待截止后部署的安排均已被后续用户指令及实际执行取代。
 
-仅在`/Users/veil/Projects/dingtalk-agent-bridge`，复用`codex/complete-bridge`，单Agent，不派生、不另建实现、不远程发布。先读[AGENTS](../../AGENTS.md)、[当前任务](CURRENT_MISSION.md)、[关键路径](CRITICAL_PATH.md)、[TODO](TODO.md)；需求解释见[总览](../../docs/102-user-requirements-and-roadmap.md)，沿用同一[PRD](01-PRD.md)、[矩阵](ACCEPTANCE_MATRIX.md)、[最终自检](10-自检清单.md)。
+仅在`/Users/veil/Projects/dingtalk-agent-bridge`，复用`codex/complete-bridge`。用户最新要求sub agents分工推进，主Agent统管集成与现场操作；子Agent只在各自/tmp冻结源码候选实现/离线验证，不递归派生，不改运行服务或业务数据。不另建产品实现、不远程发布。先读[AGENTS](../../AGENTS.md)、[当前任务](CURRENT_MISSION.md)、[关键路径](CRITICAL_PATH.md)、[TODO](TODO.md)；需求解释见[总览](../../docs/102-user-requirements-and-roadmap.md)，沿用同一[PRD](01-PRD.md)、[矩阵](ACCEPTANCE_MATRIX.md)、[最终自检](10-自检清单.md)。
 
 ## 当前实物
 
