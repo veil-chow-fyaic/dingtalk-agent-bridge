@@ -528,3 +528,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E142 — HTTP修复实际部署，停止以观察为执行前置
 - [部署报告](../../docs/142-local-http-deployment.md)、[脱敏证据](../../evidence/2026-11-16/local-http-deployment.json)：10758eb/25模块与E140候选及已测wheel一致；实际受管维护、通用空WAL审查、固定cut/零积压/恢复完成，99任务/240 outbox/session/配置/绑定保持。
 - 原观察1.82小时/218样本主动中止，未满24h及缺原截止事实保留；新版本CLI查询、实际来源及60秒12样本零错误/截止通过，新loopback-http观察固定北京时间2026-11-17 17:19:08截止。没有聊天定时任务、模型或业务消息/UI新样本，MUST不改级。
+
+## E143 — 三分支实修、统一验证及部署
+- [报告](../../docs/143-parallel-hardening.md)、[验证](../../evidence/2026-11-16/parallel-hardening-validation.json)、[部署](../../evidence/2026-11-16/parallel-hardening-deployment.json)：历史不完整健康可见、坏图片标记/单条缓存隔离、通用离线导出；主审补3.11循环链接及数据库路径拒绝。最终冻结源码/同wheel双安装504×3通过，早期并行/串行失败及CLI退出测试契约修正保留。
+- 已部署2b479a8/25模块，原99任务/240 outbox/session/绑定保持；固定cut/零积压、来源/CLI/短采集通过。旧loopback-http观察中断不计通过，新run固定北京时间2026-11-17 18:29:37截止；无聊天定时任务、业务消息/模型/UI新样本，七MUST保持未完整。

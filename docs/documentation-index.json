@@ -3,11 +3,11 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E142",
+    "documentationEvidence": "E143",
     "latestUiEvidence": "E131",
-    "deployedProduct": "10758eb",
-    "deploymentEvidence": "E142",
-    "candidateProduct": "E140",
+    "deployedProduct": "2b479a8",
+    "deploymentEvidence": "E143",
+    "candidateProduct": "E143",
     "uiStateCounts": {
       "passed": 51,
       "blocked": 11,
@@ -699,6 +699,13 @@
     "docs/142-local-http-deployment.md": {
       "role": "historical",
       "preservedSha256": "4c3373157ff48b5a31a9e923851cec5ee6f2f2968ff79cc0679d4f1239f7ffcf"
+    },
+    "docs/143-parallel-hardening.md": {
+      "role": "historical",
+      "preservedSha256": "d48a1df2119a89e24ec9eb2835ba1e5ef0767af69a32187af58afb4114eb2988"
+    },
+    "docs/144-offline-release-export.md": {
+      "role": "current"
     }
   }
 }

@@ -1,0 +1,109 @@
+{
+  "evidence": "E143",
+  "productCommit": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "productModules": 25,
+  "startupSourcesAndConfigsVerified": true,
+  "servicesRunning": 3,
+  "preservedTasks": 99,
+  "preservedOutbox": 240,
+  "sessionsConfigsBindingsPreserved": true,
+  "maintenanceChecks": {
+    "0_scope": true,
+    "0_tasks_session_binding_outbox_kept": true,
+    "0_inbox_kept": true,
+    "0_zero_pending": true,
+    "0_cut_covered_in_same_snapshot": true,
+    "1_scope": true,
+    "1_tasks_session_binding_outbox_kept": true,
+    "1_inbox_kept": true,
+    "1_zero_pending": true,
+    "1_cut_covered_in_same_snapshot": true,
+    "zero_candidate_tasks_or_unknown_models": true,
+    "configs_kept": true,
+    "validated_candidate_product": true
+  },
+  "shortRun": {
+    "samples": 12,
+    "evidence_valid": true,
+    "zero_recorded_errors": true,
+    "observation_complete_24h": false,
+    "stability_pass": false
+  },
+  "shortCutoff": {
+    "checks": {
+      "declared_cutoff_policy": true,
+      "fixed_cut": true,
+      "terminal_duration": true,
+      "ledger_bound": true,
+      "route_count": true,
+      "baseline_route_count": true,
+      "settle_attempts_retained": true,
+      "settle_without_database_errors": true,
+      "route_0_captured": true,
+      "route_0_identity": true,
+      "route_0_baseline": true,
+      "route_0_timely": true,
+      "route_0_coverage": true,
+      "route_0_sequence_bounds": true,
+      "route_0_event_identity": true,
+      "route_0_sampled_range_exact": true,
+      "route_1_captured": true,
+      "route_1_identity": true,
+      "route_1_baseline": true,
+      "route_1_timely": true,
+      "route_1_coverage": true,
+      "route_1_sequence_bounds": true,
+      "route_1_event_identity": true,
+      "route_1_sampled_range_exact": true,
+      "version_records_present": true,
+      "source_and_config_unchanged": true,
+      "owned_processes_unchanged": true,
+      "no_recorded_maintenance": true,
+      "startup_source_verified": true
+    },
+    "cutoff_evidence_valid": true,
+    "routes": [
+      {
+        "routeIndex": 0,
+        "ledgerOnlyTailEvents": 0
+      },
+      {
+        "routeIndex": 1,
+        "ledgerOnlyTailEvents": 0
+      }
+    ],
+    "uniform_loaded_version_proven": false,
+    "natural_refresh_proven": false,
+    "uniform_startup_version_verified": true,
+    "limits": [
+      "Per-route SQLite snapshots, not a shared atomic snapshot or exact instant at cutoff",
+      "Ledger-only tail rows were not observed by HTTP and are counted separately",
+      "Source/config fingerprints are sampled disk evidence, not loaded-code attestation",
+      "Seals detect changed/missing artifacts, not malicious rewriting of all evidence",
+      "Maintenance/errors/late snapshots are never forgiven; no upstream-loss guarantee"
+    ]
+  },
+  "interruptedRun": {
+    "runId": "loopback-http-24h-20261116",
+    "samples": 133,
+    "elapsed_hours": 1.106,
+    "zero_recorded_errors": false,
+    "unavailable_samples": 0,
+    "poll_error_samples": 1,
+    "route_poll_error_occurrences": 1,
+    "stop_reason": "signal",
+    "observation_complete_24h": false,
+    "evidence_valid": false
+  },
+  "newRun": {
+    "runId": "parallel-hardening-24h-20261116",
+    "startedAt": 1794824977.1896808,
+    "cutoffAt": 1794911377.1896808,
+    "seconds": 86400,
+    "intervalSeconds": 30,
+    "complete": false
+  },
+  "chatAutomation": "deleted; no replacement",
+  "fullProductAcceptance": false,
+  "privateEvidence": "local/parallel-hardening-20261116/"
+}

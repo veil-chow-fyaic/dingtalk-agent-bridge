@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E142（2026-11-16）已部署产品10758eb（25模块，含本机HTTP直连/拒绝重定向修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI仍E131，Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
+E143（2026-11-16）已部署产品2b479a8（25模块，含历史错误可见、异常附件消费隔离及此前HTTP直连修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI仍E131，Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
@@ -136,3 +136,7 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 ## 空WAL旁文件的部署审查
 
 通用scripts/prepare_history_deployment.py默认仍拒绝SQLite旁文件。在已有维护授权且gateway/transport都已停止、DWS已封新调用并排空、原owner锁可取得时，可显式增加--allow-empty-wal；仅允许WAL缺失/0字节及遗留SHM，immutable读取主库且保存/重核旁文件原样。非空WAL、任何journal、锁冲突或审查后变化均拒绝，不删除或checkpoint源库来规避。validation必须选本次实际测试版本，不沿用脚本历史默认记录；CLI只产生私有审查，不执行启动/回滚。runtime绑定使用产品共同契约，包含OpenClaw宿主身份。详见[E141](141-deployment-review-and-direct-ownership.md)。
+
+## 可复用离线交付
+
+使用[scripts/export_release.py](../scripts/export_release.py)从指定Git提交和已测wheel生成包，步骤见[离线导出说明](144-offline-release-export.md)。先过manifest/暂存隐私门；导出不运行归档代码、不读账号数据、不部署，不把包校验当最终MUST签署。
