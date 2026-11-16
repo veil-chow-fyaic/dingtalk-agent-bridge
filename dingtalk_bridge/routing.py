@@ -81,8 +81,17 @@ class Hub:
             key=(route['account_id'],route['conversation_id'])
             row={**route,**self.routes[key].health()}
             with self.status_lock:
-                detail=self.poll_error_details[key]
-                row.update(poll_error=self.poll_errors[key],poll_error_detail=dict(detail) if detail else None)
+                error=self.poll_errors[key];detail=self.poll_error_details[key]
+                detail=dict(detail) if detail else None
+            # A valid CLI response may still report failed/incomplete history.
+            # Derive this from the persisted sync result so explicit /sync and
+            # process restart cannot hide it. Safe budget paging is progress,
+            # even when the page adds no new events; it is not a poll failure.
+            sync=row.get('last_sync')
+            if (error is None and sync and sync.get('complete') is False
+                    and sync.get('continuing') is not True):
+                error='HistoryIncomplete'
+            row.update(poll_error=error,poll_error_detail=detail)
             rows.append(row)
         if len(rows)==1:return {**rows[0],'route_count':1,'runtime_required':False,'dws_access':self.access.status()}
         return {'mode':'experimental','route_count':len(rows),'routes':rows,'runtime_required':False,

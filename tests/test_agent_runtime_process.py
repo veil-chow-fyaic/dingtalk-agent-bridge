@@ -105,13 +105,13 @@ print(json.dumps({'type':'turn.completed'}),flush=True)
         with patch('dingtalk_bridge.agent_runtime.os.killpg',side_effect=PermissionError):
             self.assertEqual(self.run_provider(self.runtime(body))['text'],'完成')
 
-    def forked_tool(self):
-        return """import os,signal,time
+    def forked_tool(self,lifetime=6):
+        return f"""import os,signal,time
 from pathlib import Path
 if os.fork() == 0:
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     Path('child-ready').touch()
-    end=time.monotonic()+6
+    end=time.monotonic()+{lifetime}
     while not Path('release-child').exists() and time.monotonic()<end: time.sleep(.01)
     if Path('release-child').exists(): Path('late-artifact').write_text('must not run after return')
     os._exit(0)
@@ -125,12 +125,13 @@ while not Path('child-ready').exists(): time.sleep(.01)
         time.sleep(.3)
         self.assertFalse((self.workspace/'late-artifact').exists())
 
-    def test_exited_leader_cannot_leave_a_writing_tool_after_timeout(self):
-        body=self.forked_tool()+'os._exit(0)\n'
-        # The supervisor now observes the CLI exit and closes inherited tool
-        # stdout promptly; failure no longer needs to wait for the deadline.
+    def test_exited_leader_cannot_leave_a_writing_tool_after_cli_exit(self):
+        # This case tests cleanup on CLI exit, not a two-second cold-start
+        # deadline. Keep the tool alive beyond the default ten-second safety
+        # deadline: natural tool exit must not hide a broken group cleanup.
+        body=self.forked_tool(lifetime=30)+'os._exit(0)\n'
         with self.assertRaisesRegex(RuntimeError,'runtime_terminal_missing'):
-            self.run_provider(self.runtime(body,timeout=2))
+            self.run_provider(self.runtime(body))
         self.assert_tool_stopped()
 
     def test_completed_runtime_cleans_term_ignoring_tool_before_return(self):

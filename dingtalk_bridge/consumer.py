@@ -1,4 +1,5 @@
 """Durable shadow inbox independent of runtime choice. No send or model execution."""
+import errno
 import fcntl
 import hashlib
 import json
@@ -6,6 +7,17 @@ from itertools import islice
 from pathlib import Path
 import sqlite3
 from .message_model import normalize,media_parts,materialize
+
+
+def _resolve_cache_path(path):
+    try:
+        return path.resolve(strict=True)
+    except RuntimeError as exc:
+        # Python 3.11 pathlib wraps only symlink loops in RuntimeError.
+        # Keep unrelated runtime/programming errors visible to the caller.
+        cause=exc.__context__
+        if not isinstance(cause,OSError) or cause.errno!=errno.ELOOP:raise
+        raise OSError(errno.ELOOP,'cache_symlink_loop') from exc
 
 
 class HydrationPending(Exception):
@@ -89,14 +101,19 @@ class Inbox:
         for row in self.db.execute('SELECT seq,model FROM inbox WHERE state="normalized" ORDER BY seq'):
             model=json.loads(row['model'])
             if model['fromSelf'] is False and not model['issues']:
-                valid=True
+                valid=True;error='cache_changed'
                 for part in media_parts(model):
-                    path=Path(part.get('path','')).resolve()
-                    if not path.is_relative_to(self.cache_root.resolve()) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=part.get('sha256'):
-                        valid=False;break
+                    try:
+                        path=_resolve_cache_path(Path(part.get('path','')))
+                        if not path.is_relative_to(_resolve_cache_path(self.cache_root)) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=part.get('sha256'):
+                            valid=False;break
+                    except OSError:
+                        # A missing/unreadable original belongs to this message;
+                        # keep later input available without downloading here.
+                        valid=False;error='cache_unavailable';break
                 if valid:result.append({'seq':row['seq'],'message':model})
                 else:
-                    with self.db:self.db.execute('UPDATE inbox SET state="media_failed",error="cache_changed" WHERE seq=?',(row['seq'],))
+                    with self.db:self.db.execute('UPDATE inbox SET state="media_failed",error=? WHERE seq=?',(error,row['seq']))
         return result
     def summary(self):
         ready_count=len(self.ready())

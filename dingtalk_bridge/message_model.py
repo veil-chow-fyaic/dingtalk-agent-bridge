@@ -62,7 +62,8 @@ def project(raw, group, depth=0):
             if match.start()>offset:parts.append({'type':'text','text':text[offset:match.start()]})
             media('mediaId',match[1],'image');offset=match.end()
         if offset<len(text):parts.append({'type':'text','text':text[offset:]})
-        if ('[图片消息]' in text and not IMAGE.search(text)) or ('[文件]' in text and not file_match):
+        # Every marker must be parsed, even beside another complete image.
+        if '[图片消息]' in IMAGE.sub('', text) or ('[文件]' in text and not file_match):
             issues.append('unparsed_media_marker')
     # The native client can expose a second mediaId for the same image. Do not
     # discard it or guess its placement. Hydration must prove byte equality with
