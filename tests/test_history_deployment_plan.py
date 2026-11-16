@@ -161,5 +161,82 @@ class HistoryDeploymentPlanTests(unittest.TestCase):
         self.assertEqual(p.returncode,1);self.assertNotIn('changed-private-value',p.stdout+p.stderr)
         self.assertEqual((self.root/'local/deployment-reviews/cli/plan.json').read_bytes(),saved)
 
+    def test_checkpointed_empty_wal_and_shm_require_opt_in_and_remain_unchanged(self):
+        # An open, idle SQLite handle retains real SHM after TRUNCATE checkpoint.
+        # It never writes during this test; the planner must not alter either file.
+        with closing(sqlite3.connect(self.dbpaths[0])) as db:
+            db.execute('PRAGMA journal_mode=WAL')
+            db.execute('INSERT OR REPLACE INTO meta VALUES ("empty_wal_marker","kept")');db.commit()
+            self.assertEqual(db.execute('PRAGMA wal_checkpoint(TRUNCATE)').fetchone(),(0,0,0))
+            self.assertEqual(Path(str(self.dbpaths[0])+'-wal').stat().st_size,0)
+            self.assertTrue(Path(str(self.dbpaths[0])+'-shm').exists())
+            before=self.files()
+            with self.assertRaisesRegex(ValueError,'sidecar'):self.create()
+            result=planner.create_plan(self.root,self.config,self.agents,self.validation,allow_empty_wal=True)
+            planner.check_snapshot(self.root,result)
+            self.assertEqual(result['sqliteReviewPolicy'],'checkpointed_empty_wal')
+            self.assertEqual(before,self.files())
+            self.assertIn('empty_wal_marker',[r['key'] for r in result['routes'][0]['bridge']['meta']['rows']])
+
+    def test_nonempty_committed_wal_and_any_journal_still_refuse(self):
+        with closing(sqlite3.connect(self.dbpaths[0])) as db:
+            db.execute('PRAGMA journal_mode=WAL');db.execute('PRAGMA wal_autocheckpoint=0')
+            db.execute('INSERT OR REPLACE INTO meta VALUES ("wal_only","must_not_be_ignored")');db.commit()
+            self.assertGreater(Path(str(self.dbpaths[0])+'-wal').stat().st_size,0)
+            before=self.files()
+            with self.assertRaisesRegex(ValueError,'sidecar'):
+                planner.create_plan(self.root,self.config,self.agents,self.validation,allow_empty_wal=True)
+            self.assertEqual(before,self.files())
+        for content in (b'',b'pending rollback'):
+            path=Path(str(self.dbpaths[0])+'-journal');path.write_bytes(content);before=self.files()
+            with self.assertRaisesRegex(ValueError,'sidecar'):
+                planner.create_plan(self.root,self.config,self.agents,self.validation,allow_empty_wal=True)
+            self.assertEqual(before,self.files());path.unlink()
+
+    def test_empty_wal_review_keeps_lock_fence_and_rejects_later_sidecar_changes(self):
+        side=Path(str(self.dbpaths[0])+'-shm');side.write_bytes(b'checkpointed shared-memory fixture')
+        with (self.root/'local/runtime/manager.lock').open('rb') as handle:
+            fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            with self.assertRaisesRegex(ValueError,'owner_lock_busy'):
+                planner.create_plan(self.root,self.config,self.agents,self.validation,allow_empty_wal=True)
+        result=planner.create_plan(self.root,self.config,self.agents,self.validation,allow_empty_wal=True)
+        side.write_bytes(b'changed shared-memory fixture')
+        with self.assertRaisesRegex(ValueError,'snapshot_changed'):planner.check_snapshot(self.root,result)
+        with self.assertRaises(ValueError):planner.publish(self.root,'changed-shm',result)
+        self.assertFalse((self.root/'local/deployment-reviews/changed-shm').exists())
+
+    def test_current_openclaw_host_binding_is_verified_without_reading_host_credentials(self):
+        from dingtalk_bridge.agent_runtime import runtime_binding
+        agent_path=self.root/self.agents[0];agent=json.loads(agent_path.read_text())
+        agent['runtime']={'kind':'openclaw','binary':'never-execute','timeoutSeconds':30,
+                          'openclaw':{'configPath':str(self.root/'must-not-read-host.json'),'configSha256':'a'*64}}
+        agent_path.write_text(json.dumps(agent))
+        route,_=next(route_configs(json.loads((self.root/self.config).read_text())))
+        scope=json.dumps([route['accountId'],route['profile'],route['group'],route['conversationType']])
+        with closing(sqlite3.connect(self.dbpaths[1])) as db,db:
+            db.execute('UPDATE meta SET value=? WHERE key="binding"',(runtime_binding(scope,agent['runtime']),))
+        before=self.files();self.create();self.assertEqual(before,self.files())
+        agent['runtime']['openclaw']['configSha256']='b'*64;agent_path.write_text(json.dumps(agent))
+        with self.assertRaisesRegex(ValueError,'gateway_binding_mismatch'):self.create()
+        self.assertFalse((self.root/'must-not-read-host.json').exists())
+
+    def test_cli_empty_wal_review_is_explicit_and_stale_check_remains_read_only(self):
+        side=Path(str(self.dbpaths[0])+'-shm');side.write_bytes(b'idle shared-memory fixture')
+        command=[sys.executable,str(ROOT/'scripts/prepare_history_deployment.py'),'--root',str(self.root),
+                 '--key','empty-wal-cli','--validation',self.validation]
+        for agent in self.agents:command+=['--agent-config',agent]
+        env=dict(__import__('os').environ)
+        original=subprocess.run(command,capture_output=True,text=True,env=env,timeout=15)
+        self.assertEqual(original.returncode,1)
+        result=subprocess.run(command+['--allow-empty-wal'],capture_output=True,text=True,env=env,timeout=15)
+        self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertFalse(json.loads(result.stdout)['backgroundStartAllowed'])
+        result=subprocess.run(command+['--check'],capture_output=True,text=True,env=env,timeout=15)
+        self.assertEqual(result.returncode,0)
+        Path(str(self.dbpaths[0])+'-wal').write_bytes(b'new pending data')
+        result=subprocess.run(command+['--check'],capture_output=True,text=True,env=env,timeout=15)
+        self.assertEqual(result.returncode,1)
+        self.assertNotIn('new pending data',result.stdout+result.stderr)
+
 
 if __name__=='__main__':unittest.main()

@@ -3,7 +3,7 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E140",
+    "documentationEvidence": "E141",
     "latestUiEvidence": "E131",
     "deployedProduct": "f322402",
     "deploymentEvidence": "E138",
@@ -23,9 +23,9 @@
       "R14"
     ],
     "openclawCandidateProduct": "500191a",
-    "automationStatus": "ACTIVE",
+    "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
-    "automationPurpose": "observation_closeout_once"
+    "automationPurpose": "none_user_requested_direct_ownership"
   },
   "documents": {
     "AGENTS.md": {
@@ -691,6 +691,10 @@
     "docs/140-local-http-and-actionable-followup.md": {
       "role": "historical",
       "preservedSha256": "efc63a2d19233f9c2c5163cd384a4e8ec665e75c932e93ce853584c86e852a9e"
+    },
+    "docs/141-deployment-review-and-direct-ownership.md": {
+      "role": "historical",
+      "preservedSha256": "37110200dc0c549a8166286e683a35d984b0a1ff515058e080a847636cbf58b0"
     }
   }
 }

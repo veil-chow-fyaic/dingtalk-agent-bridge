@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Create a PRIVATE, read-only deployment review. No apply/start/DWS/network path.
 
-Requires existing owner locks and checkpointed SQLite files without sidecars.
+Requires owner locks and checkpointed SQLite files; explicit empty-WAL review is optional.
 Never checkpoint a database, instantiate a worker, copy credentials or replay work.
 """
 import argparse
@@ -18,6 +18,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dingtalk_bridge.routing import route_configs
+from dingtalk_bridge.agent_runtime import runtime_binding
 
 TERMINAL = {'confirmed', 'failed', 'rejected'}
 JOB_TERMINAL = {'completed', 'failed', 'blocked', 'interrupted', 'cancelled'}
@@ -36,8 +37,9 @@ def digest(data):
 
 
 class Snapshot:
-    def __init__(self, root):
+    def __init__(self, root, *, allow_empty_wal=False):
         self.root = Path(root).resolve()
+        self.allow_empty_wal = allow_empty_wal
         self.inputs = {}
 
     def path(self, name):
@@ -95,11 +97,15 @@ class Snapshot:
     def database(self, name):
         path = self.path(name)
         self.read(path)
-        for suffix in SIDECARS:
-            if self.read(str(path)+suffix, optional=True) is not None:
+        sidecars = {suffix:self.read(str(path)+suffix, optional=True) for suffix in SIDECARS}
+        if any(data is not None for data in sidecars.values()):
+            if (not self.allow_empty_wal or sidecars['-journal'] is not None
+                    or sidecars['-wal'] not in (None, b'')):
                 raise ValueError('sqlite_sidecar_requires_separate_review')
-        # immutable avoids creating/modifying shm; permitted only after rejecting
-        # every sidecar and acquiring existing writer-owner locks. No WAL ignored.
+        # Under the existing writer-owner locks, absent/zero-byte WAL has no
+        # frames to replay. SHM alone contains no committed database pages.
+        # Immutable reads never create/delete/checkpoint source sidecars; all
+        # original bytes and sidecar existence are rechecked before publication.
         db = sqlite3.connect(path.as_uri()+'?mode=ro&immutable=1', uri=True)
         db.row_factory = sqlite3.Row
         try:
@@ -132,8 +138,8 @@ def meta_value(db, key):
     return row[0] if row else None
 
 
-def create_plan(root, config, agents, validation):
-    snap=Snapshot(root);root=snap.root
+def create_plan(root, config, agents, validation, *, allow_empty_wal=False):
+    snap=Snapshot(root, allow_empty_wal=allow_empty_wal);root=snap.root
     with ExitStack() as locks:
         for name in ('local/runtime/manager.lock','local/runtime/dws-access.lock'):
             locks.enter_context(snap.owner_lock(name))
@@ -178,7 +184,7 @@ def create_plan(root, config, agents, validation):
                     [('meta','key',False,True),('events','seq',False,False),('deliveries','key',True,True),
                      ('image_uploads','key',True,True),('rejection_audit','key',False,True)]}
             with snap.database(tasks_path) as db:
-                if meta_value(db,'binding') != json.dumps([scope,agent['runtime']['kind'],agent['runtime']['binary']]):
+                if meta_value(db,'binding') != runtime_binding(scope,agent['runtime']):
                     raise ValueError('gateway_binding_mismatch')
                 tasks={name:inventory(db,name,ident,state=state) for name,ident,state in
                        [('meta','key',False),('jobs','id',True),('outbox','key',True)]}
@@ -205,10 +211,11 @@ def create_plan(root, config, agents, validation):
                  'historicalNonSuccessJobs':historical,'currentMatchesValidated':versions['matchesValidated'],
                  'priorSingleReadState':auth_state,'newDwsCallsAllowed':False,'backgroundStartAllowed':False}
         return {'schemaVersion':1,'purpose':'private_review_only','executable':False,
+                'sqliteReviewPolicy':'checkpointed_empty_wal' if allow_empty_wal else 'no_sidecars',
                 'plannerSha256':digest(Path(__file__).read_bytes()),
                 'capturedAt':datetime.now(timezone.utc).isoformat(),'versions':versions,'routes':items,
                 'proposedPollSeconds':15,'summary':summary,'inputSnapshot':snap.inputs,
-                'requires':['New explicit authorization before any real DWS call or background start',
+                'requires':['Follow current session authorization; this report never authorizes DWS calls or service changes',
                             'Recheck this snapshot before deciding any action; stale plan is not approval',
                             'Review original uncertain keys without resend, re-key or replay',
                             'Review queued/running/waiting-media effects before any gateway start',
@@ -246,6 +253,8 @@ def main():
     p.add_argument('--validation',default='evidence/2026-11-12/history-continuation-applied-validation.json')
     p.add_argument('--key',required=True)
     p.add_argument('--check',action='store_true',help='Only check an existing review for changed inputs; never rewrite it')
+    p.add_argument('--allow-empty-wal',action='store_true',
+                   help='Allow absent/empty WAL and existing SHM under owner locks; reject all journals and nonempty WAL')
     args=p.parse_args()
     try:
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,63}',args.key):raise ValueError('invalid_review_key')
@@ -255,7 +264,7 @@ def main():
             print(json.dumps({'ok':True,'snapshotUnchanged':True,'reviewWritten':False,
                               'newDwsCallsAllowed':False,'backgroundStartAllowed':False}))
             return 0
-        plan=create_plan(args.root,args.config,args.agent_config,args.validation)
+        plan=create_plan(args.root,args.config,args.agent_config,args.validation,allow_empty_wal=args.allow_empty_wal)
         publish(args.root,args.key,plan)
     except (OSError,ValueError,KeyError,TypeError,IndexError,sqlite3.Error) as exc:
         # Never echo raw config, SQL, account values or absolute private paths.

@@ -1,0 +1,74 @@
+{
+  "evidence": "E141",
+  "date": "2026-11-16",
+  "ok": true,
+  "scope": "Offline deployment-review tool and explicit removal of automation",
+  "automation": {
+    "id": "bridge",
+    "deletedThroughTool": true,
+    "configurationAbsent": true,
+    "replacementCreated": false,
+    "userExplicitlyRequestedNoScheduledTasks": true
+  },
+  "changes": [
+    "Opt-in checkpointed empty-WAL/SHM read-only review under existing owner locks",
+    "Reject every nonempty WAL and every rollback journal",
+    "Use the product runtime_binding helper including OpenClaw host identity",
+    "Review output follows existing session authorization; does not itself authorize calls or startup"
+  ],
+  "validation": [
+    {
+      "label": "source",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 12,
+      "modulesMatch": true,
+      "python": "Python 3.14.6"
+    },
+    {
+      "label": "py314",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 12,
+      "modulesMatch": true,
+      "python": "Python 3.14.6"
+    },
+    {
+      "label": "py311",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 12,
+      "modulesMatch": true,
+      "python": "Python 3.11.15"
+    }
+  ],
+  "newMethods": 5,
+  "existingMethods": 7,
+  "fullProductSuiteRerun": false,
+  "toolSha256": {
+    "scripts/prepare_history_deployment.py": "6b66f205f88762296a1cc2b3d12db52fd6652bd17504861736eeda015c4edb43",
+    "tests/test_history_deployment_plan.py": "dcd689366b3b3888979dfff16c7faacf75542b7fcbb96b076cacc860414baf82"
+  },
+  "deployedProduct": "f322402",
+  "productModulesUnchanged": 24,
+  "liveServicesChanged": false,
+  "realLedgerRead": false,
+  "realDwsOrModelCalls": false,
+  "pendingProductPatch": "docs/patches/E140-local-http-candidate.patch",
+  "observationRun": "startup-provenance-24h-20261116",
+  "limits": [
+    "Nonempty WAL still requires separate transactional backup review",
+    "This is a private review plan, not an apply/start/rollback executor",
+    "No new live deployment or UI acceptance; no prior failure reclassified"
+  ],
+  "nativeUiAttempt": {
+    "inventoryAccessible": true,
+    "appBindingSucceeded": false,
+    "error": "failedToCreateImageDestination",
+    "errorCode": -10005,
+    "newReadableUiEvidence": false,
+    "messagesSent": 0,
+    "furtherRetries": 0
+  },
+  "collectorFilesUnchanged": true
+}

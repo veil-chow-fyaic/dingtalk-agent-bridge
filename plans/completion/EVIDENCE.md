@@ -520,3 +520,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E140 — 取消空巡检并修复实际安装客户端缺陷
 - [报告](../../docs/140-local-http-and-actionable-followup.md)、[验证](../../evidence/2026-11-16/local-http-candidate-validation.json)：原安装CLI在合成本机代理配置下转交了本机请求和合成令牌，实际服务连接由审计钩子阻止；无真实凭据使用或泄露事实。三客户端共用直连及拒绝重定向修复、4新方法/10重定向子例和冻结源/同wheel双Python完整验证通过。
 - 修复以可应用补丁保存，候选25模块；运行24模块仍f322402，观察封存后正常部署。30分钟巡检已取消，同一任务仅安排原观察到期验收/报告后删除；没有新的DWS/模型/UI样本或MUST通过格。
+
+## E141 — 删除自动化并完善可复用部署审查
+- 用户明确要求本Agent全权负责且不再安排定时任务；已正式删除bridge、配置不存在，无替代调度，业务服务/采集器不动。
+- [工具结果](../../docs/141-deployment-review-and-direct-ownership.md)、[脱敏验证](../../evidence/2026-11-16/deployment-review-empty-wal-validation.json)：显式空WAL/遗留SHM只读审查及runtime_binding复用；5新增＋7既有在冻结源码/原wheel双Python各12过。非空WAL、所有journal、锁/来源变化继续拒绝，无真实账本或DWS/模型调用，24运行模块保持。

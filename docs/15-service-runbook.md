@@ -132,3 +132,7 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 新服务ready记录启动源码及实际解析配置摘要，manager与启动前/ready后摘要和PID核对，collector持续采集。旧服务不自动补造来源，需正常受管部署后才具备新证据；不是进程内存或OS证明。正常维护仍按上文固定cut/排空/积压流程。
 
 新观察使用`python3 scripts/capture_service_observations.py --run-id <新的唯一ID> --seconds 86400 --interval 30`。运行时把收尾窗口写入基线，截止后只读等待既有轮询覆盖，30秒开始/45秒完成，保留每次尝试；失败不改cut、不重置旧run。审查用`python3 scripts/review_service_observations.py --run-dir <已冻结的run目录> --require-complete`，输出须在原run目录以外。24h、零记录错误、统一启动来源与自然refresh分开判断；详见[范围](137-startup-provenance.md)。
+
+## 空WAL旁文件的部署审查
+
+通用scripts/prepare_history_deployment.py默认仍拒绝SQLite旁文件。在已有维护授权且gateway/transport都已停止、DWS已封新调用并排空、原owner锁可取得时，可显式增加--allow-empty-wal；仅允许WAL缺失/0字节及遗留SHM，immutable读取主库且保存/重核旁文件原样。非空WAL、任何journal、锁冲突或审查后变化均拒绝，不删除或checkpoint源库来规避。validation必须选本次实际测试版本，不沿用脚本历史默认记录；CLI只产生私有审查，不执行启动/回滚。runtime绑定使用产品共同契约，包含OpenClaw宿主身份。详见[E141](141-deployment-review-and-direct-ownership.md)。
