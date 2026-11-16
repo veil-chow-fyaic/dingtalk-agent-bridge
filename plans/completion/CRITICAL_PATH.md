@@ -1,6 +1,6 @@
 # 当前关键路径
 
-E136已从[HANDOFF](HANDOFF.md)接手，先完成截止采集工具与合成反例，未启动实际观察。E134独立组合API/原件实测后仍为同一通用IM任务；Kimi不是通道前置依赖。[总览](../../docs/102-user-requirements-and-roadmap.md)列版本/验收事实，[TODO](TODO.md)为唯一活动清单。51通过/11阻塞/2部分，7 MUST保持；部署2467fe2/E134，最近真实UI E131。
+E138已部署f322402并启动新24h观察，E139按用户批准恢复原bridge心跳并迁到本聊天。Kimi不是通道前置依赖。[总览](../../docs/102-user-requirements-and-roadmap.md)列实际用户能力、版本/验收事实，[TODO](TODO.md)为唯一活动清单。51通过/11阻塞/2部分，7 MUST原基线保持，最近真实UI E131。优先DWS CLI，只补实际缺口；WAV/MP4附件已可用、MP4客户端播放已验，不为独立协议名称增加实现。
 
 ## 仍需完成及启动条件
 

@@ -1,0 +1,38 @@
+{
+  "evidence": "E139",
+  "date": "2026-11-16",
+  "recordedAt": "2026-11-16T07:32:55.742451+00:00",
+  "scope": "Authorized existing heartbeat update and user-facing capability clarification; no new business or media tests",
+  "automation": {
+    "id": "bridge",
+    "kind": "heartbeat",
+    "status": "ACTIVE",
+    "intervalMinutes": 30,
+    "targetIsCurrentChat": true,
+    "originalCreatedAtPreserved": true,
+    "updatedAt": 1794814375524,
+    "promptSha256": "0745062f60a255089b4d163f61dacb7b83cf344c9885bc6c01ed576b84150445",
+    "duplicatesCreated": 0,
+    "explicitUserApproval": true
+  },
+  "userDirection": "Use DWS CLI first; add custom code only for actual unmet needs",
+  "mediaClarification": {
+    "mp4FileTransferAndClientVideoPlayback": "Existing group and direct evidence, E014/E098",
+    "wavFileTransferAndExternalPlayer": "Existing group and direct evidence, E013/E014/E098",
+    "nativeVoiceBubble": "Unverified",
+    "separateVideoProtocol": "Unverified; distinct from already verified MP4 client playback",
+    "acceptanceBaselineChanged": false,
+    "newLiveMediaTests": false
+  },
+  "deployedProduct": "f322402",
+  "deploymentEvidence": "E138",
+  "observationRun": "startup-provenance-24h-20261116",
+  "observationFixedCutBeijing": "2026-11-17 15:20:14",
+  "servicesChanged": false,
+  "sourceReferences": [
+    "plans/completion/ACCEPTANCE_MATRIX.md",
+    "docs/34-audio-video-file-progress.md",
+    "docs/33-native-image-bridge.md",
+    "docs/135-composition-api-deployment.md"
+  ]
+}
