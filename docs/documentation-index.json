@@ -3,10 +3,10 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E137",
+    "documentationEvidence": "E138",
     "latestUiEvidence": "E131",
-    "deployedProduct": "2467fe2",
-    "deploymentEvidence": "E134",
+    "deployedProduct": "f322402",
+    "deploymentEvidence": "E138",
     "candidateProduct": "E137",
     "uiStateCounts": {
       "passed": 51,
@@ -682,6 +682,10 @@
     "docs/137-startup-provenance.md": {
       "role": "historical",
       "preservedSha256": "ddbf749598cc467d54298b4127d29f164a701f9610c214c3509fb87f16ccb0d3"
+    },
+    "docs/138-provenance-deployment-and-observation.md": {
+      "role": "historical",
+      "preservedSha256": "b55da9b268188e8c03e1d33ee9d7b67ac9bcc60ee45de2a8412081ffd5b61c66"
     }
   }
 }

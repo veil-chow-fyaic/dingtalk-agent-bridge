@@ -506,3 +506,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [实现](../../docs/137-startup-provenance.md)、[冻结验证](../../evidence/2026-11-16/startup-provenance-validation.json)：transport/gateway记录启动源码/模块来源和实际解析配置摘要，manager核PID/入口/启动前与ready后源码并持久保存，collector核启动证据；旧记录不补造。
 - 24模块同wheel冻结源码/安装Python3.14及3.11各472方法通过；随后仅工具补单调时钟收尾边界，观察专项34×3，不称473全量。新run开始声明30/45秒收尾，固定cut不改，逐次覆盖尝试保留，旧v2仍按旧策略。
 - 官方main未变，补读原先未读chat文档确认audio/video是file兼容语义，无新原生入口。无真实消息/模型/UI或部署；下一步立即部署与实际短采集/新run。原51/11/2及7 MUST未完整。
+
+## E138 — 启动来源正式部署、实际截止采集及新24h启动
+- [阶段结果](../../docs/138-provenance-deployment-and-observation.md)、[脱敏证据](../../evidence/2026-11-16/startup-provenance-deployment.json)：部署f322402/24模块，固定cut补读、停传输持锁审零积压/未知，三服务恢复且来源验证通过；原99任务/240 outbox/session/配置/绑定保持。无业务消息/模型/UI新样本。
+- 60秒实际run 12采样、零记录错误，自动截止账本/两路覆盖/版本/seal完整；不是24h。新run `startup-provenance-24h-20261116` 于北京时间2026-11-16 15:20:14启动，固定2026-11-17 15:20:14截止，尚未完成；旧run封存。
+- f322402无凭据候选源码751文件/750manifest及已测wheel24模块匹配，已知私有值扫描通过；非最终签署。原心跳PAUSED/旧聊天，已异步询问迁到当前聊天并恢复，未获答复前不改。51/11/2、7 MUST保持。

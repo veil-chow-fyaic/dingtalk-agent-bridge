@@ -1,6 +1,6 @@
 # 钉钉 bridge 完成交付长任务
 
-E135交接入口：[HANDOFF](HANDOFF.md)。用户要求停止本会话新增推进；心跳实查已PAUSED，未改调度，正常业务服务保持。
+持续执行入口：[TODO](TODO.md)、[CURRENT_MISSION](CURRENT_MISSION.md)、[AGENTS](../../AGENTS.md)。[HANDOFF](HANDOFF.md)保留旧交接和续作更新，用户现已交办本Agent完成后续闭环。
 
 仅在原项目/原分支单Agent续作；本目录是同一计划，不重建需求或实现。先读[INIT](INIT.md)和[AGENTS](../../AGENTS.md)，再读当前任务、模式、前置、关键路径、任务池和累计记录。
 

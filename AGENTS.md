@@ -1,12 +1,12 @@
 # 钉钉 bridge 工作约定
 
-2026-11-16 E137：用户明确要求本Agent完成后续所有闭环，沿原通用IM初衷单Agent持续执行。启动来源/实际配置摘要已实现，冻结产品472×3、最终观察专项34×3；下一动作是受管部署及短采集/新实际观察，不止于工具实现。原心跳最后已知PAUSED，不擅自恢复或新建调度。
+2026-11-16 E138：用户明确交办全部后续闭环。产品f322402已部署，24模块启动来源/配置核对通过，60秒真实截止采集通过；新run `startup-provenance-24h-20261116` 正运行，固定北京时间2026-11-17 15:20:14截止。到期审原run，不能提前标完成或重置。心跳实查PAUSED/旧聊天，迁到当前聊天并恢复的异步答复待定；不得在答复前改调度。
 
 ## 工作位置和读取顺序
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E134（2026-11-16）已部署E133产品2467fe2，群/私聊各一条文字＋双PNG组合confirmed，history及官方下载四原件字节/SHA一致；无模型任务。最近真实UI仍E131，当前23模块含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E138已部署E137产品f322402及验证短采集，当前24模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
 
 ## 产品与当前执行边界
 
