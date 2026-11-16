@@ -1,6 +1,6 @@
 # 通用工具边界与运行器接入
 
-E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
+E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。E133新增CLI/HTTP的composition候选，接收字面文字和逐张绑定SHA的有序图片；不改gateway的现有逐件交付，见[接口说明](22-generic-tool-and-consumer.md)。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
 
 ## 当前接入层次
 

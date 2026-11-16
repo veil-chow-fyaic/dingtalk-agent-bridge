@@ -1,6 +1,6 @@
 # 文档导航
 
-当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132于2026-11-16整理文档，未新增部署或真实UI证据。
+当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132于2026-11-16整理文档，E133新增独立IM组合发送候选；两者均未新增部署或真实UI通过项。
 
 | 要解决的问题 | 阅读入口 |
 |---|---|

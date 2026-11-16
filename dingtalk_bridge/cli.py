@@ -21,6 +21,7 @@ def main():
     send.add_argument('--expected-sha256',help='Require these exact file/image bytes before a new send (lowercase SHA256)')
     content=send.add_mutually_exclusive_group(required=True)
     content.add_argument('--text');content.add_argument('--text-stdin',action='store_true');content.add_argument('--file');content.add_argument('--image')
+    content.add_argument('--composition-json', help='JSON file with literal text and 1-9 ordered images: path + expected sha256 (experimental rich text)')
     for action in ['status','reconcile']:
         command=sub.add_parser(action);command.add_argument('--key',required=True)
         if action=='reconcile':command.add_argument('--rejection-evidence',help='Private local official-log JSON; never resends')
@@ -35,6 +36,10 @@ def main():
         for field in ('text','file','image','reply_to','expected_sha256'):
             if getattr(a,field,None) is not None:data[field]=getattr(a,field)
         if a.text_stdin:data['text']=sys.stdin.read(65537)
+        if a.composition_json:
+            with Path(a.composition_json).open('rb') as handle:raw=handle.read(1024*1024+1)
+            if len(raw)>1024*1024:p.error('Composition JSON exceeds 1 MiB')
+            data['composition']=json.loads(raw)
         path='/v1/send'
     elif a.action=='reconcile':
         path='/v1/reconcile';data={**selector,'idempotency_key':a.key}

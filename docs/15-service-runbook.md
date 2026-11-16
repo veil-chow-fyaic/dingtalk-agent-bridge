@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E132（2026-11-16）按现有代码与既有证据更新操作说明。最近部署仍为E122产品e7d82cc/E123验收2fffa7b，AIC Kimi/原私聊Pi；OpenClaw候选500191a未部署。最近真实UI E131出现Kimi Code订阅访问403，不能以旧成功或DWS ready认定模型当前可用。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
+E133（2026-11-16）同步组合候选接口；E132既有运维整理保留。最近部署仍为E122产品e7d82cc/E123验收2fffa7b，AIC Kimi/原私聊Pi；OpenClaw候选500191a未部署。最近真实UI E131出现Kimi Code订阅访问403，不能以旧成功或DWS ready认定模型当前可用。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
@@ -58,7 +58,7 @@ python3 -m dingtalk_bridge.cli conversations
 | GET /v1/discovery | account_id、cursor、limit；只发现会话，不激活路由 |
 | GET /v1/events | after、limit（1–200）、wait_seconds（0–30）；返回events/next_cursor |
 | POST /v1/sync | 可选deep=true；有界补读，complete=false不推进水位 |
-| POST /v1/send | idempotency_key＋text/file/image三选一；纯文本可加reply_to |
+| POST /v1/send | idempotency_key＋text/file/image/composition四选一；纯文本可加reply_to；composition仅候选 |
 | GET /v1/deliveries/{key} | 已持久化状态；未找到404，不发送 |
 | POST /v1/reconcile | idempotency_key；可选本机rejection_evidence，见下文 |
 | POST /v1/attachments | message_id、可选repair=true；仅选定路由已观察消息 |
@@ -113,7 +113,7 @@ Pi使用固定0.84.2的JSON print模式、完整UUID和独立session目录，关
 
 OpenClaw是未部署候选，固定官方41f2b981/2026.11.3，走agent --local及stdin，非Gateway远端turn或ACP。配置还要求runtime.model和runtime.openclaw的configPath（绝对路径）、configSha256（64位小写SHA），绑定agent main；JSON在任务workspace外且每次校验摘要。专用JSON只接受[实现中明确的结构](../dingtalk_bridge/openclaw_runtime.py)：三处workspace占位、单个明确provider/model、禁插件/任意层include/宿主env覆盖，不合并系统默认配置。既有合成样例只是测试数据，不是可用provider凭据。
 
-宿主使用独立OPENCLAW_HOME/state/cache/profile和最小环境，不改系统HOME；同名系统HOME profile存在时拒绝。这不是OS沙箱，不能保证任意生产binary不读环境外文件。真实模型/UI需要专用现成授权配置；不复制其他runtime的token。候选变更或部署仍需下面的new/绑定门槛，当前文档更新不执行迁移。
+宿主使用独立OPENCLAW_HOME/state/cache/profile和最小环境，不改系统HOME；同名系统HOME profile存在时拒绝。这不是OS沙箱，不能保证任意生产binary不读环境外文件。真实模型/UI需要专用现成授权配置；不复制其他runtime的token。候选变更或部署仍需下面的new/绑定门槛，E133组合候选也不执行迁移或部署。
 
 ## 执行器更换与回滚（E118–E120）
 

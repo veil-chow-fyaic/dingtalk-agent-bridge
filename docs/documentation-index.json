@@ -3,11 +3,11 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E132",
+    "documentationEvidence": "E133",
     "latestUiEvidence": "E131",
     "deployedProduct": "e7d82cc",
     "deploymentEvidence": "E123",
-    "candidateProduct": "500191a",
+    "candidateProduct": "E133",
     "uiStateCounts": {
       "passed": 51,
       "blocked": 11,
@@ -21,7 +21,8 @@
       "R12",
       "R13",
       "R14"
-    ]
+    ],
+    "openclawCandidateProduct": "500191a"
   },
   "documents": {
     "AGENTS.md": {
@@ -660,6 +661,10 @@
     },
     "plans/completion/TODO.md": {
       "role": "current"
+    },
+    "docs/134-outbound-composition.md": {
+      "role": "historical",
+      "preservedSha256": "fd166a5ea9fb83bdb372ba41bf3033762c3245a1309cf00c14b3faebcd9c8bf3"
     }
   }
 }

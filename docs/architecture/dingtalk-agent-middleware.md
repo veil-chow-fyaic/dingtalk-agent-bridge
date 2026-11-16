@@ -26,11 +26,13 @@ flowchart LR
 | 层 | 当前文件 | 复用来源/边界 |
 |---|---|---|
 | 官方调用和暂停 | `dws_access.py`、`official_proxy.py` | 官方 DWS；不复制认证、token 或 OAuth 状态机 |
-| 收发与路由 | `core.py`、`stream.py`、`routing.py` | 优先对照 Qwen DWS client/stream；保留已验的固定身份、持久续页及未知发送对账 |
+| 收发与路由 | `core.py`、`composition.py`、`stream.py`、`routing.py` | 优先对照 Qwen DWS client/stream；保留已验的固定身份、持久续页及未知发送对账 |
 | 中立消息和原件 | `message_model.py`、`consumer.py` | 有序 parts、quote、sender、原件路径/大小/SHA；不能因参考实现只接 text 就丢附件 |
 | 会话/任务/交付 | `agent_gateway.py`、既有 SQLite 账本 | Qwen 队列/会话、CEO 文件回执与恢复设计；保持既有任务和终态 |
 | 本地执行 | `agent_runtime.py`、`runtime_guard.py` | Kimi/Codex/Pi已实现并各有真实范围；OpenClaw在openclaw_runtime.py实现但仅合成验收/未部署；原生协议不进入DWS层 |
 | 对外工具面 | CLI、HTTP、`consume.py` | 任意宿主可独立消费；不要求安装某一个 Agent 框架 |
+
+E133的composition是未部署的通道能力：输入字面文字及有序原图摘要，暂存后通过官方Markdown一次发送，统一原key对账；不调用模型，不承诺原生image卡片或客户端原件获取。Kimi服务拒绝只影响绑定的可选gateway任务，不阻塞这层开发。
 
 以上是现有模块映射，不为整理目录搬动产品文件、数据库或运行配置。短期保持当前 Python 传输/账本，通过窄接缝引入采用的组件；没有依赖/测试收益依据时不整体改写语言或 fork 一个大型宿主。
 

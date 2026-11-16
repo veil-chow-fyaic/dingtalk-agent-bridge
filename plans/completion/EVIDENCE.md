@@ -481,3 +481,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E132 — 当前文档修复与历史范围保护
 - [记录](../../docs/133-documentation-consistency.md)、[离线核验](../../evidence/2026-11-16/documentation-consistency-validation.json)：统一当前总览/导航/计划，修正部署、最近UI、运行器、旧观察、参考采用及运行手册；166份Markdown逐文件登记，126份阶段报告仅加范围提示并核原正文摘要（含本轮新报告）。
 - 文档检查7专项（1正例/6篡改负例）通过；PRD/矩阵/最终自检、冻结归档/来源、旧证据和产品代码保持，累计账本仅追加。51/11/2及7 MUST不变，未重跑旧产品/模型/UI或观察，不宣称新的部署/真实成功。首次中文Git路径枚举与本地驱动语法失败保留，修正后完成；具体链接/manifest/隐私结果见核验文件。
+
+## E133 — 独立IM组合发送候选与Kimi单次复查
+- [实现/边界](../../docs/134-outbound-composition.md)、[脱敏证据](../../evidence/2026-11-16/outbound-composition-validation.json)：新增composition及CLI/HTTP入口，字面文字＋1–9个有序PNG/JPEG，逐原件预期SHA、≤2MiB、全部校验后暂存/一次投递，未知/崩溃/重启不重传。同key源删除仍读原回执，内容/顺序/摘要变化拒绝；复用已冻结官方Markdown入口，不重跑E056。
+- 新增15方法，最终冻结源码/同wheel Python3.14.6、3.11.15各448通过；23模块/许可一致，180份tests/scripts/fixtures/api素材按本轮范围冻结。只执行新增参数的dab send --help，六入口定义比对，不重跑旧六CLI或真实UI/观察。文档后续单独核对。
+- 用户明确纠正Kimi不是通道主线前置依赖。新授权一次最小CLI请求约1.7秒退出1，只有system.version、同类订阅403，无周限额/重置时间、工具或完成事件；未重放gateway网络环境，不能代替群恢复验收。未重发E131或登录修复；原生UI首次读取failedToCreateImageDestination，未绕过。无真实DWS组合发送、部署/服务/绑定变化，51/11/2及7 MUST不变。下一独立IM新样本须原生UI可读及部署前核对；群模型另等既有服务恢复。

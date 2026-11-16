@@ -111,7 +111,7 @@ def main():
                     return self.respond(200, bridge.sync(deep=data.get('deep') is True))
                 if write and u.path == '/v1/send':
                     value = bridge.send(data.get('idempotency_key'), data.get('text'), data.get('file'), data.get('image'),
-                                        data.get('reply_to'), data.get('expected_sha256'))
+                                        data.get('reply_to'), data.get('expected_sha256'), data.get('composition'))
                     return self.respond(200 if value['state'] == 'confirmed' else 202, value)
                 if write and u.path == '/v1/reconcile':
                     return self.respond(200, bridge.reconcile(data['idempotency_key'], data.get('rejection_evidence')))

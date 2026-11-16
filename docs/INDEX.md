@@ -55,6 +55,7 @@
 | [docs/131-group-quote-ui.md](131-group-quote-ui.md) | 阶段历史 |
 | [docs/132-group-multi-image-and-provider-denial.md](132-group-multi-image-and-provider-denial.md) | 阶段历史 |
 | [docs/133-documentation-consistency.md](133-documentation-consistency.md) | 阶段历史 |
+| [docs/134-outbound-composition.md](134-outbound-composition.md) | 阶段历史 |
 | [docs/14-solo-test-report.md](14-solo-test-report.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |

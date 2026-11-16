@@ -10,4 +10,4 @@
 | 累计历史 | [EVIDENCE](EVIDENCE.md) · [PROGRESS_LEDGER](PROGRESS_LEDGER.md) · [偏差日志](99-执行偏差日志.md) |
 | 文档全貌 | [导航](../../docs/README.md) · [完整索引](../../docs/INDEX.md) |
 
-E132只整理资料，最近真实UI E131，最近部署e7d82cc/E123，OpenClaw候选未部署；旧观察已收尾，不声称持续观察仍在运行。原判据和失败证据保持，项目未完成。
+E133推进独立IM组合候选，E132资料整理保留；最近真实UI E131，最近部署e7d82cc/E123，OpenClaw候选未部署；旧观察已收尾，不声称持续观察仍在运行。原判据和失败证据保持，项目未完成。

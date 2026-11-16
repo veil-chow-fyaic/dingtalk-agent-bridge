@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-E132（2026-11-16）核对现有接口说明。公共工具独立于组织、模型和Agent runtime；DWS是传输后端，原生UI用于用户视角验收。现状统一见[总览](102-user-requirements-and-roadmap.md)，部署仍e7d82cc/E123，最近UI E131。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
+E133（2026-11-16）同步新增组合候选接口；E132原有接口核对保留。公共工具独立于组织、模型和Agent runtime；DWS是传输后端，原生UI用于用户视角验收。现状统一见[总览](102-user-requirements-and-roadmap.md)，部署仍e7d82cc/E123，最近UI E131。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
 
 ## 调用方式
 
@@ -27,13 +27,33 @@ python3 -m dingtalk_bridge.cli --account-id A --conversation-id C attachments --
 python3 -m dingtalk_bridge.cli --account-id A --conversation-id C sync --deep
 ```
 
-这些send是互斥的独立用法示例，不能用同一个业务键轮流发送不同内容。全局选择参数在子命令前；`--text`、`--text-stdin`、`--file`、`--image`四选一，stdin读至EOF。`--reply-to`只配纯文本，且原消息已在选定路由观察、发送者已知。文件/图片是服务工作目录的允许相对路径，不是HTTP上传；文件≤20MiB、原生PNG/JPEG≤2MiB且需图片补充配置。
+这些send是互斥的独立用法示例，不能用同一个业务键轮流发送不同内容。全局选择参数在子命令前；`--text`、`--text-stdin`、`--file`、`--image`、`--composition-json`五选一，stdin读至EOF。`--reply-to`只配纯文本，且原消息已在选定路由观察、发送者已知。文件/图片是服务工作目录的允许相对路径，不是HTTP上传；文件≤20MiB、原生PNG/JPEG≤2MiB且需图片补充配置。
 
 E093增加文件/图片的可选`--expected-sha256`，HTTP/Python字段为`expected_sha256`：小写64位hex，与真正交给发送快照的字节核对。新请求不一致返回409 `artifact_integrity_mismatch` / `delivery_attempted:false`，不上传或创建投递；已存在相同key与原定摘要则返回原回执并允许对账，不因生产者文件后来变动/删除而重发。新Agent结果自动携带任务完成时的原摘要，旧未终态队列只能从原任务已存摘要补齐，无证据时保持未决。普通调用者未传此字段仍使用当次文件字节，不能声称绑定更早的版本。[采用与验证](references/artifact-digest-adoption.md)
 
 成功HTTP响应以JSON输出；HTTP错误以非0退出。202仍会退出0，必须检查state，不能自动重试未知结果。status只读已有投递；reconcile查询原task，或显式用匹配的本机官方日志完成窄拒绝审计，均不发送。repair重新下载原件到新目录并更新缓存清单，旧件不覆盖。完整输入见[OpenAPI](../api/openapi.json)，未知发送与恢复规则见运行手册。
 
 附件接口的200返回资源清单，需检查`ok`、`partial`、`failedCount`。首次下载与缓存命中均核资源标识/唯一性、路径、字节数；首次计算SHA，缓存还比对已存SHA。坏首次响应返回502且不写成功清单；合法部分结果或缺少必要资源返回`ok:false`，后续只读下载可重试。坏缓存必须显式repair；repair的新响应若校验失败，原好清单和旧文件保留。[验证边界](75-fresh-download-integrity.md)。成功清单在同目录私有临时文件完整写入并fsync后原子替换；写失败保旧，崩溃遗留临时文件不用于缓存读取，不宣称掉电持久。[提交边界](76-atomic-download-manifest.md)
+
+## 文字＋多图单消息（E133候选，未部署）
+
+CLI用`send --key BUSINESS-KEY --composition-json local/composition.json`。文件是调用端读取的JSON；其中图片路径相对于**服务**工作目录。HTTP向`POST /v1/send`传`idempotency_key`和`composition`对象，与顶层text/file/image/reply_to/expected_sha256互斥。不依赖gateway、Kimi或其他runtime。JSON结构模板如下，摘要必须换成调用者确认过的真实原件SHA256：
+
+```json
+{
+  "text": "两张原图，按下列顺序",
+  "images": [
+    {"path": "local/outbox/first.png", "sha256": "填写第一张原件的64位小写SHA256"},
+    {"path": "local/outbox/second.png", "sha256": "填写第二张原件的64位小写SHA256"}
+  ]
+}
+```
+
+images为1–9个有序条目，每项只允许path和sha256；text可省略。路径限定fixtures/或local/outbox/，PNG/JPEG每份≤2MiB，无bridge压缩；缺失、扩展名/文件头/摘要/大小错误在新投递入账和DWS调用前拒绝；完整图像解码仍由官方加载器判定。重复图片仍占引用数并保持位置；不代表上游上传次数。文字按字面转义，不能插入额外Markdown/HTML/远程图片；整个生成正文含图片路径不得超过5120 UTF-16单元，超限拒绝、不拆条。
+
+一次调用先核全部原件，原子发布内容寻址暂存，再持久化一个投递键，调用固定官方`+messages-send --markdown`。官方内部完成本地图上传及一条图文消息发送；bridge不按图片循环发消息。顺序、正文、各原件摘要/名称进入指纹，同key不同内容拒绝；已入账同key即使生产者文件删除仍返回原回执。中断、上传/发送结果不明统一保持原key的outcome_unknown，不自动重传/改key/降级成多条独立图片；有task_id才继续原task对账。
+
+这属于**图文候选能力**，不是独立原生image卡片、任意普通文件附件数组或原件可下载承诺。E056只证明官方入口计划；E011旧内联图原件获取失败保留。E133只验本地字节、CLI/HTTP及合成DWS调用，真实群/私聊发送、用户逐图保存和摘要仍待验。gateway现有逐件产物交付不自动切换到composition。[阶段验证](134-outbound-composition.md)
 
 ## 配置、发现与状态隔离
 

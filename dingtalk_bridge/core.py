@@ -13,6 +13,7 @@ import time
 import uuid
 from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
+from .composition import ArtifactIntegrityError, prepare as prepare_composition, stage as stage_composition, markdown as composition_markdown
 from .rejection import read_length_rejection
 from .dws_access import (BridgeError, DWSCredentialStoreUnavailable, DWSAccessSuspended,
                          DWSAccess, access_diagnostic, credential_failure, run_dws,operation_kind,response_failed)
@@ -35,12 +36,6 @@ class DWSBusinessError(BridgeError):
         reason=next((diagnostic.get(key) for key in ('server_error_code','reason')
                      if diagnostic.get(key) not in (None,'unclassified')), 'DWS business failure')
         super().__init__(reason)
-
-
-class ArtifactIntegrityError(ValueError):
-    """The intended bytes changed before any new delivery was reserved."""
-    def __init__(self):
-        super().__init__('artifact_integrity_mismatch')
 
 
 def provider_ids(value, fields):
@@ -370,19 +365,29 @@ class Bridge:
                             'AND state NOT IN ("confirmed","failed","rejected")', (str(error), key))
         return self.delivery(key)
 
-    def send(self, key, text=None, file=None, image=None, reply_to=None, expected_sha256=None):
+    def send(self, key, text=None, file=None, image=None, reply_to=None, expected_sha256=None, composition=None):
         if not isinstance(key, str) or not key or len(key) > 128:
             raise ValueError('A stable idempotency key is required (1-128 chars)')
-        if sum(x is not None for x in (text, file, image)) != 1:
-            raise ValueError('Provide exactly one of text, file or image')
-        if expected_sha256 is not None and (text is not None or not isinstance(expected_sha256, str)
+        if sum(x is not None for x in (text, file, image, composition)) != 1:
+            raise ValueError('Provide exactly one of text, file, image or composition')
+        if expected_sha256 is not None and (text is not None or composition is not None or not isinstance(expected_sha256, str)
                 or re.fullmatch(r'[0-9a-f]{64}', expected_sha256) is None):
             raise ValueError('expected_sha256 requires file/image and 64 lowercase hex characters')
         if reply_to is not None and (text is None or not isinstance(reply_to, str) or
                                      not reply_to.strip() or reply_to != reply_to.strip() or len(reply_to) > 2048):
             raise ValueError('reply_to requires text and a nonempty message ID (up to 2048 chars)')
         payload = {}
-        if text is not None:
+        if composition is not None:
+            payload, sources = prepare_composition(self.root, self.local, composition)
+            intended = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+            with self.lock:
+                row = self.db.execute('SELECT fingerprint FROM deliveries WHERE key=?', (key,)).fetchone()
+                if row:
+                    if row[0] != hashlib.sha256(intended.encode()).hexdigest():
+                        raise ValueError('Idempotency key already belongs to another payload')
+                    return {**self.delivery(key), 'replayed': True}
+                stage_composition(self.root, payload, sources)
+        elif text is not None:
             if not isinstance(text, str) or not text or len(text.encode()) > 65536 or '![' in text:
                 raise ValueError('Use plain text up to 64 KiB; inline images need a separate verified route')
             payload = {'kind': 'text', 'text': text}
@@ -485,6 +490,10 @@ class Bridge:
                 args += ['--open-dingtalk-id', self.config['peerOpenDingTalkId']]
         elif text is not None:
             args += ['--text', text]
+        elif composition is not None:
+            # Official DWS performs local-image uploads and ONE rich-text send.
+            # Any uncertain result owns this reservation; replay never uploads again.
+            args += ['--markdown', composition_markdown(payload)]
         elif image is not None:
             try:
                 media_id = self.dws.upload_image(payload['staged'])

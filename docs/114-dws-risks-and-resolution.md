@@ -1,6 +1,6 @@
 # DWS风险、已验证处置与未解决根因
 
-E132（2026-11-16）同步已登记证据，未做新网络或认证探针。最近部署e7d82cc/E123，最近UI E131；公开来源的最近增量核对为E129，以下issue状态均按原核对日期解释。当前总览及各项启动条件见[现状](102-user-requirements-and-roadmap.md)。
+E133（2026-11-16）同步一次用户授权Kimi最小业务请求及原生UI读取失败；未做DWS认证诊断。最近部署e7d82cc/E123，最近UI E131；公开来源的最近增量核对为E129，以下issue状态均按原核对日期解释。当前总览及各项启动条件见[现状](102-user-requirements-and-roadmap.md)。
 
 **结论：尚未找到本机最初系统钥匙串故障的确定根因和永久修复。已查到失败层级、一个独立可复现的官方取消缺口，并部署了防止故障扩散的bridge防护；用户重新登录/重启后业务恢复已实测。恢复、止损、根因修复是三个不同结论。**
 
@@ -16,8 +16,8 @@ E132（2026-11-16）同步已登记证据，未做新网络或认证探针。最
 | D06 事故弹窗被我们放大 | 当时未先隔离后台调用，又安排锁定/解锁；处置错误，不能归咎用户 | 相关操作停用；办公和通讯共同走受管暂停，不再反复要求密码 | 不使用login/doctor作为高频健康检查，不自动解除暂停，不照社区评论停系统守护/绕权限；同一路径两轮无新证据就停止 |
 | D07 Kimi OAuth端点连接超时 | E112两任务在auth.kimi.com连接失败，DWS仍能收任务/回失败通知。现有系统代理与gateway环境不同；独立Python可达不能证明Kimi网络栈可达 | 两空闲gateway继承本机已有代理后，新两路真实工具/文件/UI成功，原两失败保持 | E115/E116已完成runtime.environment持久配置及无代理manager重启、真实工具env_ready=true/两路下载UI。有效样本不等于唯一根因，更不是DWS auth修复 |
 | D08 DWS conversation-info request_timeout | E112启动首读约3.87s失败，只有reason/traceback，未保存结构化错误信封；网络/上游deadline/其他原因尚不能分清 | 新的无凭据网络证据后，同目标受管业务读约1.14s成功，再进行有界恢复；原失败保留 | E115已实现安全category/reason/exit/耗时/阶段，合成错误和写日志失败已验；E116真实58个正常result已落日志。原E112缺失信封不可补造，后续真实失败再归因，不反复重启 |
-| D10 Kimi Code服务访问403 | E131 Kimi2.1.1 stderr为provider.auth_error 403，明确订阅无Kimi Code访问权限；stdout只有版本事件。DWS同期ready/同步完成，两条反馈confirmed | 群双PNG原件已物化，任务failed/runtime_terminal_missing，无工具/结果文件/重做；32只读审计及5负例保留失败 | 需既有Kimi服务访问恢复的新证据；不登录修复/复制token/换runtime绕过，不重发E131。不是DWS凭据故障，也不是已证网络超时根因 |
-| D09 UI failedToCreateImageDestination | 钉钉和Finder均失败，属于共享UI读取路径；当时两路DWS仍同步。OS内部根因未知 | 用户重启后UI恢复，E112实际下载打开完成 | UI不可读时不能声称通过，也不能反推DWS认证坏了；不为取截图改变系统权限或操纵系统守护 |
+| D10 Kimi Code服务访问403 | E131 Kimi2.1.1 stderr为provider.auth_error 403，明确订阅无Kimi Code访问权限；stdout只有版本事件。DWS同期ready/同步完成，两条反馈confirmed | 群双PNG原件已物化，任务failed/runtime_terminal_missing，无工具/结果文件/重做；32只读审计及5负例保留失败 | 需既有Kimi服务访问恢复的新证据；不登录修复/复制token/换runtime绕过，不重发E131。E133最小请求仍同类403，无周限额/重置时间；只影响对应模型任务，不阻塞IM通道工作。不是DWS凭据故障，也不是已证网络超时根因 |
+| D09 UI failedToCreateImageDestination | 钉钉和Finder均失败，属于共享UI读取路径；当时两路DWS仍同步。OS内部根因未知 | 用户重启后UI恢复，E112实际下载打开完成；E133首次DingTalk读取再次返回该错误、未获得新界面 | UI不可读时不能声称通过，也不能反推DWS认证坏了；不为取截图改变系统权限或操纵系统守护 |
 
 E118 Codex取消迟到写入是保留的历史失败，不能归因DWS/auth；E119原生SIGINT修复及E120真实延迟验收已完成，见[修复](120-codex-native-interrupt.md)与[UI](121-codex-deployment-and-ui.md)。随后原私聊经new归档/显式绑定迁至Pi，不能继续执行旧“回滚Kimi/等待修复”指令。CLI组cleanup_complete仍不保证任意恶意脱组工具已停。
 

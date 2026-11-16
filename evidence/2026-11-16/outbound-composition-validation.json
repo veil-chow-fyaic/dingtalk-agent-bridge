@@ -1,0 +1,194 @@
+{
+  "date": "2026-11-16",
+  "evidence": "E133",
+  "scope": "Undeployed generic IM composition candidate; no real DingTalk composition or UI acceptance",
+  "ok": true,
+  "productChanged": true,
+  "deployed": false,
+  "newDingTalkMessages": 0,
+  "latestUiEvidence": "E131",
+  "deployedProduct": "e7d82cc",
+  "deploymentEvidence": "E123",
+  "uiStateCounts": {
+    "passed": 51,
+    "blocked": 11,
+    "partial": 2
+  },
+  "mustGaps": [
+    "R01",
+    "R04",
+    "R06",
+    "R07",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "newTestMethods": 15,
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "agent_gateway.py": "3b4337aa197ae2a9cbe489eea79838b63b1181f69820fa2599616e2bdcbd5018",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "5f13ff258074273b9366244ab1e19e48be93848e01072a079b46a99183035f88",
+    "consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "__main__.py": "b23856a69746ee251756304eca19606136581f39eb43433e45485d06d444ef2d",
+    "consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f"
+  },
+  "wheelSha256": "0bc754ce176a5f630a64626cb69e664864df733fafa5f6bd43e5887937f768eb",
+  "wheelModulesMatch": true,
+  "licenses": {
+    "dingtalk_bridge/licenses/ceo-agent-service.txt": "aa701f916a7668c604baf6a7e15650090b45d023157ce662ff5b9e2d41db5f85"
+  },
+  "licensesMatch": true,
+  "entrypointDefinitionsMatch": true,
+  "executedEntrypointHelp": [
+    "dab send --help"
+  ],
+  "sixEntrypointHelpRerun": false,
+  "frozenMaterialsScope": [
+    "tests",
+    "scripts",
+    "fixtures",
+    "api"
+  ],
+  "frozenMaterialsCount": 180,
+  "runs": [
+    {
+      "ok": true,
+      "testsRun": 448,
+      "refusalsRetained": 11,
+      "label": "source",
+      "exitCode": 0,
+      "python": "Python 3.14.6"
+    },
+    {
+      "ok": true,
+      "testsRun": 448,
+      "refusalsRetained": 11,
+      "label": "py314",
+      "exitCode": 0,
+      "python": "Python 3.14.6",
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "dabSendHelp": true
+    },
+    {
+      "ok": true,
+      "testsRun": 448,
+      "refusalsRetained": 11,
+      "label": "py311",
+      "exitCode": 0,
+      "python": "Python 3.11.15",
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "dabSendHelp": true
+    }
+  ],
+  "officialSources": {
+    "internal/helpers/chat_markdown_images.go": {
+      "sha256": "f1daf034874e696f15e89f342e59a6daa2357debcb1905bf742f95ecc6307227",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_markdown_images.go"
+    },
+    "internal/helpers/chat_markdown_image_upload.go": {
+      "sha256": "0a90e9e88df79e5ab91ef5baadd617c99457d5f981bfd7bd655a838aaa3b69c6",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/helpers/chat_markdown_image_upload.go"
+    },
+    "internal/shortcut/chat/unified_send.go": {
+      "sha256": "01859e34a48b8b5f5c4668e3f102666464671d27d1b666c5eba46487f7e83611",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/v1.0.67/internal/shortcut/chat/unified_send.go"
+    }
+  },
+  "sourceReview": {
+    "all_product_bytes_match_freeze": true,
+    "official_composition_sources_match_E056": true
+  },
+  "kimiSingleUserAuthorizedRequest": {
+    "scope": "one_new_minimal_prompt_no_group_message",
+    "exit": 1,
+    "timeout": false,
+    "seconds": 1.7,
+    "event_types": [
+      "system.version"
+    ],
+    "provider_auth_error_403": true,
+    "subscription_access_denied": true,
+    "weekly_limit_reported": false,
+    "session_resume_hint": false,
+    "guard_cleanup_complete": true
+  },
+  "quotaCauseProven": false,
+  "kimiGatewayEnvironmentReplayed": false,
+  "uiRead": {
+    "source": "computer-use tool result",
+    "operation": "cua.getApp(DingTalk)",
+    "attempts": 1,
+    "errorCode": -10005,
+    "error": "failedToCreateImageDestination",
+    "newUiStateObtained": false,
+    "alternativeUiControlAttempted": false
+  },
+  "artifactsSha256": {
+    "kimi-help.stdout": "38366cf8f3a746da0527b722bb8f017d5cdcecd16e6885148a05b19794ef0ca0",
+    "kimi-provider-help.stdout": "cc2fa5d35f52f924cabd3f3d5ce3b5e57aee7e28a6c49251829d9bc156d6dc51",
+    "kimi-check.stdout": "dc15709072ae2f224327312af8413bd4f1d0ce3244a37efb0fa4a1cd1bf7527d",
+    "kimi-check.stderr": "e5ed26ee946445c0ec1dc599b51ef8fe682512c34ec6581eba6338f1b447dcdf",
+    "kimi-check.json": "e74de3e7a397d849f9326c9f51e84330211cb3572e5a16ec0726158e65a2e1e5",
+    "validation/freeze.json": "7bd4804092e52c2ef0454dbac1c1fe61c3a9f141de14e382382c73960442c4c3",
+    "validation/install-report.json": "bf4e94be521d2496b9fe7c3f7af6c2987d2459d76e07bb20f32f49cdace8fdc5",
+    "validation/source-tests.log": "749f6d7b84631c63bf3e096e805187b83f818ec0b78ae8e471551cdc6b2804d1",
+    "validation/py314-tests.log": "1f9ff445451e8c69db32ef4c3139b79959464b44ff6656210d99f9782b0a0f2f",
+    "validation/py311-tests.log": "adf9e50b739d462738b844bee053cf3baa82ae006ef01f419bddc06418a44dac"
+  },
+  "limits": [
+    "Synthetic DWS/loopback HTTP only; not official live upload or client original retrieval",
+    "Official source reused from E056; no old dry-run or UI menu rerun",
+    "No normal service or runtime binding change",
+    "Bridge checks extension/signature/size/SHA; official loader retains full decoding responsibility",
+    "Kimi 403 has no explicit weekly limit or reset time",
+    "Final current-version handoff still pending all MUST"
+  ],
+  "documentationReview": {
+    "ok": true,
+    "scope": "Offline documentation only; no product/UI/health certification",
+    "documents": 167,
+    "roles": {
+      "archive": 3,
+      "baseline": 3,
+      "current": 23,
+      "fixture": 1,
+      "historical": 127,
+      "ledger": 3,
+      "reference": 7
+    },
+    "uiStateCounts": {
+      "passed": 51,
+      "blocked": 11,
+      "partial": 2
+    },
+    "mustGaps": [
+      "R01",
+      "R04",
+      "R06",
+      "R07",
+      "R12",
+      "R13",
+      "R14"
+    ],
+    "errors": []
+  }
+}

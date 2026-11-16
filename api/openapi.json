@@ -166,7 +166,7 @@
     },
     "/v1/send": {
       "post": {
-        "summary": "Send to one route; one of text, file or image; stable key required",
+        "summary": "Send one text, file, native image or experimental rich-text composition to a route; stable key required",
         "responses": {
           "200": {
             "description": "JSON result. Delivery state must be checked; submission is not receipt/read confirmation.",
@@ -206,7 +206,7 @@
             "description": "JSON body Content-Length is negative or exceeds 1 MiB."
           },
           "409": {
-            "description": "artifact_integrity_mismatch: file/image differs from expected_sha256; this request created no delivery reservation or DWS call. Existing matching keys return their stored receipt instead.",
+            "description": "artifact_integrity_mismatch: file/image or composition original differs from expected SHA256; this request created no delivery reservation or DWS call. Existing matching keys return their stored receipt.",
             "content": {
               "application/json": {
                 "schema": {
@@ -266,6 +266,45 @@
                     "type": "string",
                     "pattern": "^[0-9a-f]{64}$",
                     "description": "Optional expected SHA256 for file/image. Reject changed bytes before a new delivery reservation; replay an existing matching key from its original receipt even if the producer file changed or disappeared. Text cannot use this field."
+                  },
+                  "composition": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "images"
+                    ],
+                    "description": "Experimental literal text plus 1-9 ordered PNG/JPEG references in ONE official Markdown message. Each original <=2 MiB; expected SHA256 required, no bridge compression. Does not promise native image cards, client original retrieval or ordinary file bundles. No automatic fallback/re-upload after unknown outcome.",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "description": "Optional literal text; escaped before rendering. Entire generated body, including image paths, <=5120 UTF-16 units."
+                      },
+                      "images": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 9,
+                        "description": "Order and duplicate references are preserved; repeated images count toward 9.",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "path",
+                            "sha256"
+                          ],
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "description": "Service-root-relative PNG/JPEG in fixtures/ or local/outbox/; no URLs or traversal."
+                            },
+                            "sha256": {
+                              "type": "string",
+                              "pattern": "^[0-9a-f]{64}$",
+                              "description": "Expected original byte digest; matching existing key returns stored receipt even after original deletion."
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 "required": [
@@ -287,6 +326,11 @@
                           "required": [
                             "image"
                           ]
+                        },
+                        {
+                          "required": [
+                            "composition"
+                          ]
                         }
                       ]
                     }
@@ -306,6 +350,11 @@
                           "required": [
                             "image"
                           ]
+                        },
+                        {
+                          "required": [
+                            "composition"
+                          ]
                         }
                       ]
                     }
@@ -324,6 +373,45 @@
                         {
                           "required": [
                             "file"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "composition"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "composition"
+                    ],
+                    "not": {
+                      "anyOf": [
+                        {
+                          "required": [
+                            "text"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "file"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "image"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "reply_to"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "expected_sha256"
                           ]
                         }
                       ]
