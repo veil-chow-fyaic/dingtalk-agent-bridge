@@ -1,0 +1,77 @@
+{
+  "evidence": "E140",
+  "date": "2026-11-16",
+  "baseCommit": "299fd989d9881f4cb92d36c0f0df0ce1ded2b2b4",
+  "deployedProduct": "f322402",
+  "liveProductUnchanged": true,
+  "deployed": false,
+  "finding": "Installed CLI inherited an HTTP proxy and sent a synthetic local bearer request to it; gateway and consumer used the same default opener",
+  "reproduction": {
+    "installedPublicCliExit": 0,
+    "syntheticProxyRequests": [
+      {
+        "targetIsLocalBridge": true,
+        "receivedSyntheticAuthorization": true
+      }
+    ],
+    "reproduced": true,
+    "realServiceConnectionsAllowed": false,
+    "realCredentialsUsed": false
+  },
+  "candidatePatch": "docs/patches/E140-local-http-candidate.patch",
+  "patchSha256": "4172e75d9dfdaab3c0ed05b53f8c8338c3765f43d8c2170c0e9a9453160b7e40",
+  "candidateWheelSha256": "28400b9bfba556241247055b1108a44f2249b6b51cf24780cdfa115dc2cc6586",
+  "candidateModules": 25,
+  "wheelModulesMatch": true,
+  "validation": [
+    {
+      "label": "source",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 477,
+      "refusalsRetained": 11
+    },
+    {
+      "label": "py314",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 477,
+      "refusalsRetained": 11
+    },
+    {
+      "label": "py311",
+      "ok": true,
+      "exitCode": 0,
+      "testsRun": 477,
+      "refusalsRetained": 11
+    }
+  ],
+  "validationRawSummaryKeys": [
+    "ok",
+    "testsRun",
+    "refusalsRetained",
+    "evidence",
+    "label",
+    "exitCode"
+  ],
+  "newTestMethods": 4,
+  "redirectSubcases": 10,
+  "automation": {
+    "id": "bridge",
+    "status": "ACTIVE",
+    "nextIntendedRunBeijing": "2026-11-17 15:22:00",
+    "intervalPollingRemoved": true,
+    "promptCharacters": 502,
+    "promptSha256": "fb0c036312093e59007b8707cba90885af4add543f4984d34cbd935b55b8306e",
+    "purpose": "One observation closeout; task deletes itself after report",
+    "sameChat": true
+  },
+  "limits": [
+    "Synthetic tokens, owned loopback servers; no actual token disclosure established",
+    "No DWS or model requests",
+    "No live service or observed product changes",
+    "Candidate patch must be applied after the active fixed-version observation closes and then normally deployed",
+    "This is client transport isolation, not OS sandboxing or overall product acceptance"
+  ],
+  "patchAppliedOutputMatchesTestedCandidate": true
+}

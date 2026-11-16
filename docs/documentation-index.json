@@ -3,11 +3,11 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E139",
+    "documentationEvidence": "E140",
     "latestUiEvidence": "E131",
     "deployedProduct": "f322402",
     "deploymentEvidence": "E138",
-    "candidateProduct": "E137",
+    "candidateProduct": "E140",
     "uiStateCounts": {
       "passed": 51,
       "blocked": 11,
@@ -24,7 +24,8 @@
     ],
     "openclawCandidateProduct": "500191a",
     "automationStatus": "ACTIVE",
-    "handoff": "plans/completion/HANDOFF.md"
+    "handoff": "plans/completion/HANDOFF.md",
+    "automationPurpose": "observation_closeout_once"
   },
   "documents": {
     "AGENTS.md": {
@@ -686,6 +687,10 @@
     "docs/138-provenance-deployment-and-observation.md": {
       "role": "historical",
       "preservedSha256": "b55da9b268188e8c03e1d33ee9d7b67ac9bcc60ee45de2a8412081ffd5b61c66"
+    },
+    "docs/140-local-http-and-actionable-followup.md": {
+      "role": "historical",
+      "preservedSha256": "efc63a2d19233f9c2c5163cd384a4e8ec665e75c932e93ce853584c86e852a9e"
     }
   }
 }

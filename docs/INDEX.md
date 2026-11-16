@@ -61,6 +61,7 @@
 | [docs/137-startup-provenance.md](137-startup-provenance.md) | 阶段历史 |
 | [docs/138-provenance-deployment-and-observation.md](138-provenance-deployment-and-observation.md) | 阶段历史 |
 | [docs/14-solo-test-report.md](14-solo-test-report.md) | 阶段历史 |
+| [docs/140-local-http-and-actionable-followup.md](140-local-http-and-actionable-followup.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |
