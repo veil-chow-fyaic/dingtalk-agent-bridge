@@ -48,6 +48,6 @@ DWS 官方源码快照来自此前固定的公开 commit，不改变已安装 bi
 
 后续真正移植代码时，在同一提交保留原 LICENSE/NOTICE/版权头、记录源文件和 commit、列修改与依赖闭包，并跑对应契约测试。MIT/Apache 条件按原文件保留；未授权仓库仅作文档/设计参照，不把“GitHub 公开”当任意复制许可。
 
-E122/E123新增采用：Pi固定0.84.2官方JSON终态、session及print清理语义，复用现有runtime契约，未整包移植。文字/文件/续接/取消私聊UI已过，Pi图片未声明；OpenClaw后来在E127实现薄适配/E128验证合成生命周期，但未部署/真实模型UI。[实现与固定来源](../123-pi-runtime-contract.md)、[真实UI](../124-pi-deployment-and-ui.md)。
+E122/E123新增采用：Pi固定0.84.2官方JSON终态、session及print清理语义，复用现有runtime契约，未整包移植。文字/文件/续接/取消私聊UI已过，Pi图片未声明；OpenClaw后来在E127实现薄适配/E128验证合成生命周期，代码随后随E134部署，但未启用绑定/真实模型UI。[实现与固定来源](../123-pi-runtime-contract.md)、[真实UI](../124-pi-deployment-and-ui.md)。
 
 最近DWS公开增量为[E129固定main核对](../130-dws-entry-delta-review.md)，不自动升级本机binary；OpenClaw固定41f2b981来源与当前adapter范围见[接入表](../architecture/agent-integration-map.md)。旧catalog里的候选接口不是今天采用协议的说明。

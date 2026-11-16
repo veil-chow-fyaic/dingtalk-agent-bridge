@@ -33,11 +33,11 @@ CEO不仅有DWS文件/回执，还有发送事实校验、runtime契约、会话
 | CEO C06 | E115/E116持久网络环境和安全DWS错误信封；E120 Codex及E123 Pi后来各自完成真实闭环 | 不把网络可达等同模型成功，不引入认证恢复/自动failover |
 | Qwen admitted/completed | E124映射inbox/job/outbox既有事务；5真SIGKILL方法冻结源/原wheel双Python各通过 | 等价实现不重写，不采用满队列丢弃/落盘失败继续发送降级 |
 | Pi | E122固定914cf147/0.84.2，E123真实文字/文件/续接/取消UI | 图片未声明 |
-| OpenClaw | E125入口研究、E126完整合成宿主、E127薄适配、E128父进程死亡/gateway恢复/new | 未部署/真实provider/UI；不是远端Gateway或插件模式的证明，不重复旧样本 |
+| OpenClaw | E125入口研究、E126完整合成宿主、E127薄适配、E128父进程死亡/gateway恢复/new | 代码随E134部署，未配置绑定/真实provider/UI；不是远端Gateway或插件模式的证明，不重复旧样本 |
 | C05租约 | 当前已有consumer flock和gateway绑定 | 仅真实多宿主场景需要时增加，不为模仿上游重写 |
 
 真正采用源码时固定commit、逐文件范围、依赖和许可证/NOTICE，保留本项目异常语义，按变更运行有意义的验证。源码或测试文件已阅读不等于测试已运行；合成provider不等于真实模型或用户UI。E097的31文件深挖是研究交付，E093实际导入范围另记。
 
-现场/版本以[总览](../102-user-requirements-and-roadmap.md)为准：最后部署e7d82cc/E123，最近真实UI E131，OpenClaw候选500191a未部署。原E125“local待核”、旧E116“最近现场”、Codex“仍待验”的描述不再是当前指令。
+现场/版本以[总览](../102-user-requirements-and-roadmap.md)为准：最后部署2467fe2/E134，最近真实UI E131，OpenClaw 500191a代码随包部署但未配置绑定/真实模型验收。原E125“local待核”、旧E116“最近现场”、Codex“仍待验”的描述不再是当前指令。
 
 官方取消候选E117仍未完整上游集成/部署/发布。剩余主线回到私聊入站引用、原生语音/video、单消息组合及R13可靠性；群模型当前需既有Kimi Code服务访问恢复证据。没有对应新证据不循环重跑，也不新增四runtime全过门槛。

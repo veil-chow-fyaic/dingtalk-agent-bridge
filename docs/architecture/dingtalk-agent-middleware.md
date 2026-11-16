@@ -29,10 +29,10 @@ flowchart LR
 | 收发与路由 | `core.py`、`composition.py`、`stream.py`、`routing.py` | 优先对照 Qwen DWS client/stream；保留已验的固定身份、持久续页及未知发送对账 |
 | 中立消息和原件 | `message_model.py`、`consumer.py` | 有序 parts、quote、sender、原件路径/大小/SHA；不能因参考实现只接 text 就丢附件 |
 | 会话/任务/交付 | `agent_gateway.py`、既有 SQLite 账本 | Qwen 队列/会话、CEO 文件回执与恢复设计；保持既有任务和终态 |
-| 本地执行 | `agent_runtime.py`、`runtime_guard.py` | Kimi/Codex/Pi已实现并各有真实范围；OpenClaw在openclaw_runtime.py实现但仅合成验收/未部署；原生协议不进入DWS层 |
+| 本地执行 | `agent_runtime.py`、`runtime_guard.py` | Kimi/Codex/Pi已实现并各有真实范围；OpenClaw在openclaw_runtime.py实现、随E134部署，但未配置绑定/真实模型验收；原生协议不进入DWS层 |
 | 对外工具面 | CLI、HTTP、`consume.py` | 任意宿主可独立消费；不要求安装某一个 Agent 框架 |
 
-E133的composition是未部署的通道能力：输入字面文字及有序原图摘要，暂存后通过官方Markdown一次发送，统一原key对账；不调用模型，不承诺原生image卡片或客户端原件获取。Kimi服务拒绝只影响绑定的可选gateway任务，不阻塞这层开发。
+E133的composition已于E134随2467fe2部署，两路API/history/官方逐原件已验：输入字面文字及有序原图摘要，暂存后通过官方Markdown一次发送，统一原key对账；不调用模型，不承诺原生image卡片或客户端原件获取。Kimi服务拒绝只影响绑定的可选gateway任务，不阻塞这层开发。
 
 以上是现有模块映射，不为整理目录搬动产品文件、数据库或运行配置。短期保持当前 Python 传输/账本，通过窄接缝引入采用的组件；没有依赖/测试收益依据时不整体改写语言或 fork 一个大型宿主。
 
@@ -48,7 +48,7 @@ E133的composition是未部署的通道能力：输入字面文字及有序原�
 
 ## 当前部署与后续接缝
 
-现场仍为E122产品e7d82cc/E123验收2fffa7b：AIC Kimi、原私聊Pi、history-only15秒。最近真实UI E131中群双PNG原件进入同一任务，Kimi订阅访问403使模型失败；DWS准入与runtime服务访问分开。E127候选500191a增加OpenClaw，E128补生命周期验证，均未部署。详见[运行器接入表](agent-integration-map.md)。
+现场为E133产品2467fe2/E134部署：AIC Kimi、原私聊Pi、history-only15秒。最近真实UI E131中群双PNG原件进入同一任务，Kimi订阅访问403使模型失败；DWS准入与runtime服务访问分开。E127的500191a增加OpenClaw，E128补合成生命周期验证；代码随E134部署，未启用OpenClaw绑定或调用真实provider。详见[运行器接入表](agent-integration-map.md)。
 
 C01文件摘要、C02发送事实、C03能力/终态、C04兼容性与C06环境已采用并部署；Qwen接纳/完成与inbox/job/outbox事务对照于E124完成。已有等价实现只映射，不重新实现；C05租约仅有多宿主实际需要时引入，不能把当前flock视为缺陷。具体[采用账](../references/adoption-plan.md)。
 

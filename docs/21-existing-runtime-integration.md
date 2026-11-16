@@ -1,6 +1,6 @@
 # 通用工具边界与运行器接入
 
-E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。E133新增CLI/HTTP的composition候选，接收字面文字和逐张绑定SHA的有序图片；不改gateway的现有逐件交付，见[接口说明](22-generic-tool-and-consumer.md)。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
+E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。E133新增、E134部署CLI/HTTP的composition，接收字面文字和逐张绑定SHA的有序图片；不改gateway的现有逐件交付，见[接口说明](22-generic-tool-and-consumer.md)。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
 
 ## 当前接入层次
 
@@ -11,7 +11,7 @@ E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可�
 | 可选gateway | 白名单/群命令触发、任务和原生session、取消/new、结果校验与outbox | [运行手册](15-service-runbook.md) |
 | runtime adapter | 本地工具、原生终态/session/中断，按实际能力交付 | [四类运行器状态](architecture/agent-integration-map.md) |
 
-原R09至少一个本地执行器已满足。Kimi/Codex/Pi各自真实验收范围保留，当前Kimi受E131订阅访问403限制；OpenClaw薄适配仅合成验证、未部署/真实UI。不得用通道健康、CLI启动或旧测试数量代替具体任务成功。精确当前结论见[总览](102-user-requirements-and-roadmap.md)。
+原R09至少一个本地执行器已满足。Kimi/Codex/Pi各自真实验收范围保留，当前Kimi受E131订阅访问403限制；OpenClaw薄适配代码随E134部署，仍仅合成模型验证，未配置绑定或真实UI验收。不得用通道健康、CLI启动或旧测试数量代替具体任务成功。精确当前结论见[总览](102-user-requirements-and-roadmap.md)。
 
 ## 消费和身份边界
 

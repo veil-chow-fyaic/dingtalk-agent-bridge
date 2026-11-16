@@ -1,6 +1,6 @@
 # 文档导航
 
-当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132于2026-11-16整理文档，E133新增独立IM组合发送候选；两者均未新增部署或真实UI通过项。
+当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132整理文档，E133新增独立IM组合发送，E134于2026-11-16部署2467fe2并补群/私聊真实API及原件证据；组合客户端UI仍未验。
 
 | 要解决的问题 | 阅读入口 |
 |---|---|
@@ -9,8 +9,8 @@
 | 接口、配置和持久消费 | [CLI/HTTP/consumer](22-generic-tool-and-consumer.md) · [中立接入边界](21-existing-runtime-integration.md) · [OpenAPI](../api/openapi.json) |
 | 运行器实际支持到哪一步 | [接入表](architecture/agent-integration-map.md) · [中间件架构](architecture/dingtalk-agent-middleware.md) |
 | 最新真实UI及保留的失败 | [E130群引用双向](131-group-quote-ui.md) · [E131群双图与Kimi拒绝](132-group-multi-image-and-provider-denial.md) |
-| 最近部署 | [E122 Pi产品](123-pi-runtime-contract.md) · [E123 Pi部署/私聊UI](124-pi-deployment-and-ui.md) |
-| 未部署候选 | [E127 OpenClaw薄适配](128-openclaw-adapter.md) · [E128父进程死亡/恢复](129-openclaw-gateway-lifecycle.md) · [E117官方取消候选](117-dws-cancellation-candidate.md) |
+| 最近部署 | [E134组合API与部署](135-composition-api-deployment.md)；Pi历史真实UI见[E123](124-pi-deployment-and-ui.md) |
+| 尚未完整验收范围 | [E127 OpenClaw薄适配](128-openclaw-adapter.md)（E134代码随包部署、未配置绑定/真实模型UI） · [E128父进程死亡/恢复](129-openclaw-gateway-lifecycle.md) · [E117官方取消候选](117-dws-cancellation-candidate.md) |
 | 故障已修什么、还缺什么 | [风险与关闭条件](114-dws-risks-and-resolution.md) · [E124观察收尾](125-observation-closeout-and-qwen-transactions.md) |
 | 官方/社区来源与采用情况 | [参考目录](references/README.md) · [采用账](references/adoption-plan.md) · [CEO深挖](references/ceo-deep-dive.md) |
 | 执行与验收 | [计划入口](../plans/completion/00-README.md) · [PRD](../plans/completion/01-PRD.md) · [矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [最终自检](../plans/completion/10-自检清单.md) |

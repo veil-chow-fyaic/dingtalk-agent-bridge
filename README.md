@@ -2,14 +2,14 @@
 
 使用官方 DWS 授权的真人账号，将钉钉群聊、私聊接入可替换 Agent 的通用中间件。CLI、HTTP 和持久 consumer 可独立使用；可选 gateway 管理本地任务、原生会话和结果交付。账号、组织、会话及运行器均通过配置选择。
 
-**已有真实任务和文件交付闭环，项目仍未完成。** 当前结论统一见[需求、进度与下一步](docs/102-user-requirements-and-roadmap.md)。E133（2026-11-16）新增独立的文字＋多图组合发送候选，未部署或新增现场通过项；E132的文档修复保留。最近真实 UI 是 E131，最近部署仍为 E122 产品 `e7d82cc` / E123 验收 `2fffa7b`。OpenClaw 候选 `500191a` 尚未部署。
+**已有真实任务和文件交付闭环，项目仍未完成。** 当前结论统一见[需求、进度与下一步](docs/102-user-requirements-and-roadmap.md)。E134（2026-11-16）部署产品 `2467fe2`，群/私聊各一次文字＋双PNG组合confirmed，历史及官方资源下载四原件字节/SHA一致。最近真实 UI 仍是 E131，组合客户端呈现/逐图保存尚未验。OpenClaw代码随包部署，尚未绑定或进行真实模型/UI验收。
 
 ## 能力与限制
 
 - 官方 DWS 提供身份、通讯、历史、资源及办公；bridge 提供多路由、白名单、持久任务/session/outbox、原件缓存、摘要校验、幂等及恢复。现场固定 DWS v1.0.67、history-only 每15秒补读。
 - Kimi、Codex、Pi 各自有真实工具、续接、取消或交付的登记证据，范围见[运行器接入表](docs/architecture/agent-integration-map.md)。E131 的 Kimi Code 订阅访问403使该次任务失败；需既有服务访问恢复的新证据才能继续群模型任务。DWS ready 不代表模型可用。E133按用户要求做了一次最小请求，仍为订阅访问403，无周限额/重置时间信息；这只限制对应模型任务，不阻塞通用IM通道工作。
 - 文字、长文、常用文档、PNG/JPEG、WAV/MP4文件和任务控制已有真实样本；群引用双向已过。私聊入站引用、原生语音/独立video、单消息附件组合仍有缺口。文件可播放不等于原生媒体协议。
-- E133候选新增`composition` / `dab send --composition-json`：字面文字＋1–9张有序PNG/JPEG，每张要求原始SHA256且≤2MiB；复用官方Markdown单消息入口。CLI/HTTP独立于runtime，未知结果不自动重传；客户端下载原件仍未验，普通多文件组合仍不支持。见[接口说明](docs/22-generic-tool-and-consumer.md)。
+- E133新增、E134已部署`composition` / `dab send --composition-json`：字面文字＋1–9张有序PNG/JPEG，每张要求原始SHA256且≤2MiB；复用官方Markdown单消息入口。CLI/HTTP独立于runtime，未知结果不自动重传；客户端下载原件仍未验，普通多文件组合仍不支持。见[接口说明](docs/22-generic-tool-and-consumer.md)。
 - 原生图片窄补充复用固定官方上传入口：PNG/JPEG≤2MiB，较大走file；单个输出文件≤20MiB。执行器和工具 wrapper 不是 OS 沙箱。
 - 受管 DWS 有持久暂停、最多两并发、90秒请求与最多15秒清理。系统钥匙串根因、自然失效刷新和长期可靠性尚未证实；两个旧观察 run 已结束，失败和缺截止证据保留。
 
@@ -21,7 +21,7 @@
 | CLI / HTTP / consumer | [接口说明](docs/22-generic-tool-and-consumer.md) · [OpenAPI](api/openapi.json) |
 | 独立配置 | [路由模板](config.routes.example.json) · [执行器模板](config.agent.example.json) |
 | 现状、缺口和证据 | [当前总览](docs/102-user-requirements-and-roadmap.md) · [PRD](plans/completion/01-PRD.md) · [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) |
-| 最近现场 | [E130群引用](docs/131-group-quote-ui.md) · [E131群双图与模型拒绝](docs/132-group-multi-image-and-provider-denial.md) |
+| 最近现场 | [E134组合API/部署](docs/135-composition-api-deployment.md) · [E130群引用](docs/131-group-quote-ui.md) · [E131群双图与模型拒绝](docs/132-group-multi-image-and-provider-denial.md) |
 | 续作 | [AGENTS](AGENTS.md) · [关键路径](plans/completion/CRITICAL_PATH.md) · [TODO](plans/completion/TODO.md) |
 | 全部文档和历史范围 | [导航](docs/README.md) · [完整索引](docs/INDEX.md) · [证据账本](plans/completion/EVIDENCE.md) |
 | 官方与社区取舍 | [架构](docs/architecture/dingtalk-agent-middleware.md) · [公开参考](docs/references/README.md) · [采用清单](docs/references/adoption-plan.md) |

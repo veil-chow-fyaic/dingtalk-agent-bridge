@@ -3,10 +3,10 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E133",
+    "documentationEvidence": "E134",
     "latestUiEvidence": "E131",
-    "deployedProduct": "e7d82cc",
-    "deploymentEvidence": "E123",
+    "deployedProduct": "2467fe2",
+    "deploymentEvidence": "E134",
     "candidateProduct": "E133",
     "uiStateCounts": {
       "passed": 51,
@@ -214,6 +214,14 @@
     "docs/133-documentation-consistency.md": {
       "role": "historical",
       "preservedSha256": "574e25d9f556061f36a39030a8161a503fc407eba1555dd90963255080983894"
+    },
+    "docs/134-outbound-composition.md": {
+      "role": "historical",
+      "preservedSha256": "fd166a5ea9fb83bdb372ba41bf3033762c3245a1309cf00c14b3faebcd9c8bf3"
+    },
+    "docs/135-composition-api-deployment.md": {
+      "role": "historical",
+      "preservedSha256": "bb850b20407243e28d6a3bb079d33a5f4a6dd8da9b8531f1628614dad832528a"
     },
     "docs/14-solo-test-report.md": {
       "role": "historical",
@@ -661,10 +669,6 @@
     },
     "plans/completion/TODO.md": {
       "role": "current"
-    },
-    "docs/134-outbound-composition.md": {
-      "role": "historical",
-      "preservedSha256": "fd166a5ea9fb83bdb372ba41bf3033762c3245a1309cf00c14b3faebcd9c8bf3"
     }
   }
 }

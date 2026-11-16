@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-E133（2026-11-16）同步新增组合候选接口；E132原有接口核对保留。公共工具独立于组织、模型和Agent runtime；DWS是传输后端，原生UI用于用户视角验收。现状统一见[总览](102-user-requirements-and-roadmap.md)，部署仍e7d82cc/E123，最近UI E131。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
+E134（2026-11-16）部署E133的组合接口，产品2467fe2；两路真实发送/history/官方原件下载已验，客户端验收仍未完整，最近真实UI E131。公共工具独立于组织、模型和Agent runtime；现状统一见[总览](102-user-requirements-and-roadmap.md)。既有心跳ACTIVE不是业务健康证明；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
 
 ## 调用方式
 
@@ -35,7 +35,7 @@ E093增加文件/图片的可选`--expected-sha256`，HTTP/Python字段为`expec
 
 附件接口的200返回资源清单，需检查`ok`、`partial`、`failedCount`。首次下载与缓存命中均核资源标识/唯一性、路径、字节数；首次计算SHA，缓存还比对已存SHA。坏首次响应返回502且不写成功清单；合法部分结果或缺少必要资源返回`ok:false`，后续只读下载可重试。坏缓存必须显式repair；repair的新响应若校验失败，原好清单和旧文件保留。[验证边界](75-fresh-download-integrity.md)。成功清单在同目录私有临时文件完整写入并fsync后原子替换；写失败保旧，崩溃遗留临时文件不用于缓存读取，不宣称掉电持久。[提交边界](76-atomic-download-manifest.md)
 
-## 文字＋多图单消息（E133候选，未部署）
+## 文字＋多图单消息（E133实现，E134部署/API验收）
 
 CLI用`send --key BUSINESS-KEY --composition-json local/composition.json`。文件是调用端读取的JSON；其中图片路径相对于**服务**工作目录。HTTP向`POST /v1/send`传`idempotency_key`和`composition`对象，与顶层text/file/image/reply_to/expected_sha256互斥。不依赖gateway、Kimi或其他runtime。JSON结构模板如下，摘要必须换成调用者确认过的真实原件SHA256：
 
@@ -53,7 +53,7 @@ images为1–9个有序条目，每项只允许path和sha256；text可省略。�
 
 一次调用先核全部原件，原子发布内容寻址暂存，再持久化一个投递键，调用固定官方`+messages-send --markdown`。官方内部完成本地图上传及一条图文消息发送；bridge不按图片循环发消息。顺序、正文、各原件摘要/名称进入指纹，同key不同内容拒绝；已入账同key即使生产者文件删除仍返回原回执。中断、上传/发送结果不明统一保持原key的outcome_unknown，不自动重传/改key/降级成多条独立图片；有task_id才继续原task对账。
 
-这属于**图文候选能力**，不是独立原生image卡片、任意普通文件附件数组或原件可下载承诺。E056只证明官方入口计划；E011旧内联图原件获取失败保留。E133只验本地字节、CLI/HTTP及合成DWS调用，真实群/私聊发送、用户逐图保存和摘要仍待验。gateway现有逐件产物交付不自动切换到composition。[阶段验证](134-outbound-composition.md)
+这是官方Markdown图文入口，不能外推为独立原生image卡片或普通文件附件数组。E134群/私聊各一条文字＋两张新PNG confirmed；history保留文字和图序，四张官方下载原件与源/暂存字节及SHA一致。客户端显示、发送者/AI标识和用户逐图保存尚未验；1–9图及JPEG的全范围仍按E133合成验证计。E011旧内联图原件获取失败保留，不能用本次成功改写。gateway仍逐件交付，自身媒体过滤后可保持pending_media，不触发runtime；离线物化另计。[实现验证](134-outbound-composition.md) · [真实API验证](135-composition-api-deployment.md)
 
 ## 配置、发现与状态隔离
 

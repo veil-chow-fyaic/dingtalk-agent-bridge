@@ -486,3 +486,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [实现/边界](../../docs/134-outbound-composition.md)、[脱敏证据](../../evidence/2026-11-16/outbound-composition-validation.json)：新增composition及CLI/HTTP入口，字面文字＋1–9个有序PNG/JPEG，逐原件预期SHA、≤2MiB、全部校验后暂存/一次投递，未知/崩溃/重启不重传。同key源删除仍读原回执，内容/顺序/摘要变化拒绝；复用已冻结官方Markdown入口，不重跑E056。
 - 新增15方法，最终冻结源码/同wheel Python3.14.6、3.11.15各448通过；23模块/许可一致，180份tests/scripts/fixtures/api素材按本轮范围冻结。只执行新增参数的dab send --help，六入口定义比对，不重跑旧六CLI或真实UI/观察。文档后续单独核对。
 - 用户明确纠正Kimi不是通道主线前置依赖。新授权一次最小CLI请求约1.7秒退出1，只有system.version、同类订阅403，无周限额/重置时间、工具或完成事件；未重放gateway网络环境，不能代替群恢复验收。未重发E131或登录修复；原生UI首次读取failedToCreateImageDestination，未绕过。无真实DWS组合发送、部署/服务/绑定变化，51/11/2及7 MUST不变。下一独立IM新样本须原生UI可读及部署前核对；群模型另等既有服务恢复。
+
+## E134 — 两路独立组合API与正式受管部署
+- [阶段报告](../../docs/135-composition-api-deployment.md)、[脱敏审计](../../evidence/2026-11-16/composition-api-validation.json)：已部署E133产品2467fe2，23模块与其冻结验证一致。原计划器因WAL/SHM拒绝保留；持有全部数据拥有者锁做单独SQLite快照审查，transport-only覆盖固定cut后再停传输审零积压，最终恢复原Kimi/Pi两gateway。配置/绑定不变，OpenClaw代码随包存在但未启用/真实验收。
+- 群/私聊各一条文字＋两新PNG，一次confirmed；history文字/图序/身份匹配，四张官方下载原件与源/暂存逐字节/SHA一致。34只读检查/5篡改负例全过，旧99任务/240 Agent outbox/session保持；新增2消息/2传输delivery，0模型任务。自身inbox按设计pending_media，离线物化不冒称已normalized。
+- 原生UI本轮一次仍failedToCreateImageDestination，连续两轮同路径停止；未做客户端呈现/AI标识/保存验收，51/11/2及7 MUST保持。UI恢复后核既有E134消息，不重发。无Kimi复查/认证修复/新runtime绑定；原始仅local/composition-api-20261116及local/outbox/composition-api-20261116。

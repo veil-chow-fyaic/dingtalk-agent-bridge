@@ -7,7 +7,7 @@ E132（2026-11-16）按本项目实现及已有证据更新。协议研究、适
 | Kimi Code | CLI stream-json，原生session；工作区文件输入 | 历史Read/Write/Bash、群/私聊文件交付、续接/控制样本；E115/E116持久网络环境和两路UI | AIC保持Kimi；E131 2.1.1返回订阅服务访问403，只有版本事件，无工具/结果；E133用户授权最小请求仍同类403、无周限额明确信息，需既有访问恢复证据；不阻塞IM通道 |
 | Codex | exec/resume、JSON事件和结构化结果；原生SIGINT→turn/interrupt | E119修复取消，E120真实Python/续接/取消/下载UI；旧E118迟到写入失败保留 | 旧私聊原生new归档后已迁Pi；未实现独立App Server adapter，旧超时不再被写成当前“尚不可用” |
 | Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | 已部署原私聊；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
-| OpenClaw | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 候选500191a未部署，真实模型/DWS/UI未验；image_files未声明；不是ACP或远端Gateway适配 |
+| OpenClaw | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
 
 ## 共同契约与各自终态
 

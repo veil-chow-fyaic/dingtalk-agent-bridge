@@ -4,7 +4,7 @@
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E133（2026-11-16）新增通用IM组合发送候选，尚未部署/真实UI验收；E132文档修复保留。最近真实UI为E131，部署为E122产品e7d82cc/E123验收2fffa7b，OpenClaw候选E127/500191a未部署。不可拿当前HEAD冒充现场。51通过/11阻塞/2部分，7 MUST仍未完整。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E134（2026-11-16）已部署E133产品2467fe2，群/私聊各一条文字＋双PNG组合confirmed，history及官方下载四原件字节/SHA一致；无模型任务。最近真实UI仍E131，当前23模块含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
 
 ## 产品与当前执行边界
 
@@ -12,7 +12,7 @@
 
 E130群引用双向已过；E131文字＋双PNG入站原件一致，但Kimi2.1.1返回provider.auth_error 403、订阅没有Kimi Code访问权限，任务failed/runtime_terminal_missing，无工具/完成事件、结果或重做。需既有Kimi服务访问恢复的新证据才继续群模型任务；禁止登录修复/复制token/换runtime绕过，不重发E131。DWS当时ready不能否定Kimi失败，也不能把403归成DWS凭据故障。E133用户明确授权复查的一次最小请求仍为同类403，无周限额/重置时间证据；不循环探测。Kimi是可选执行器，其故障只限制对应模型任务，不阻塞通用IM通道主线。
 
-剩余入口和条件见[关键路径](plans/completion/CRITICAL_PATH.md)。私聊入站引用旧右键/菜单/快捷键路径保持loop guard，需明确新原生入口；语音4/video4缺原生协议，出站多附件2及入站各部分仍缺完整组合/逐原件/任务交付。已有明确且尚未验的入口可独立执行，不把所有剩余格一概归为等新API。E133实现显式composition（字面文字＋1–9张PNG/JPEG，逐张预期SHA、≤2MiB），使用官方Markdown一次发送、未知不重传；不是原生图片卡片/普通多文件组合，也未证明客户端下载原件。当前原生UI读取failedToCreateImageDestination，未绕过或重复旧菜单。
+剩余入口和条件见[关键路径](plans/completion/CRITICAL_PATH.md)。私聊入站引用旧右键/菜单/快捷键路径保持loop guard，需明确新原生入口；语音4/video4缺原生协议，出站多附件2及入站各部分仍缺完整组合/逐原件/任务交付。已有明确且尚未验的入口可独立执行，不把所有剩余格一概归为等新API。E133实现显式composition（字面文字＋1–9张PNG/JPEG，逐张预期SHA、≤2MiB），使用官方Markdown一次发送、未知不重传；不是原生图片卡片/普通多文件组合，也未证明客户端下载原件。E134补齐两路真实API/history/官方下载原件，客户端呈现及逐图保存仍未验。原生UI连续两轮返回failedToCreateImageDestination，停止同路径重试，需新的可读证据；未绕过或重复旧菜单。自身两条媒体在gateway inbox按设计保持pending_media，离线物化不等于该inbox已normalized。
 
 ## 授权与身份
 
