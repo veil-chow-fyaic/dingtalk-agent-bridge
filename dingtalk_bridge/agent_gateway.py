@@ -11,7 +11,8 @@ import sqlite3
 import threading
 import time
 from urllib.parse import urlencode,quote
-from urllib.request import Request,urlopen
+from urllib.request import Request
+from .local_http import urlopen
 from urllib.error import HTTPError
 from .agent_runtime import (LocalRuntime,RuntimeStopped,RuntimeFailure,RuntimeSessionError,RuntimeResultError,
                             timeout_seconds,validate_runtime_result,runtime_manifest,checked_session,require_capabilities,

@@ -3,7 +3,8 @@ import argparse,json
 from pathlib import Path
 import sys
 from urllib.parse import urlencode,quote
-from urllib.request import Request,urlopen
+from urllib.request import Request
+from .local_http import urlopen
 from urllib.error import HTTPError
 
 def main():

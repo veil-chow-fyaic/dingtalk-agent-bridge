@@ -1,7 +1,8 @@
 """Run one bounded durable shadow intake; no model calls or messages sent."""
 import argparse,json,os
 from pathlib import Path
-from urllib.request import Request,urlopen
+from urllib.request import Request
+from .local_http import urlopen
 from .consumer import Inbox
 from .routing import route_configs
 from urllib.parse import urlencode
