@@ -9,8 +9,81 @@ import threading
 import time
 from urllib.parse import urlencode
 from urllib.request import Request,urlopen
+from service_observation_evidence import (SCHEMA, safe_version_snapshot, seal,
+                                         snapshot_routes, write_json)
 
 ROOT=Path(__file__).resolve().parents[1]
+
+def capture(root, folder, routes, get, seconds, interval, stop, clock=time.time, monotonic=time.monotonic):
+    """Only local HTTP reads and SQLite read transactions. No service lifecycle calls."""
+    snapshots = snapshot_routes(root, routes)
+    if any('error' in row for row in snapshots):
+        write_json(folder / 'baseline-failed.json', {'snapshots': snapshots})
+        raise ValueError('Baseline snapshot failed')
+    cursors = [row['highSequence'] for row in snapshots]
+    version = safe_version_snapshot(root)
+    health = get('/v1/health')
+    baseline_at = clock()
+    started = monotonic(); wall = clock(); cut = wall + seconds
+    baseline = {'schemaVersion': SCHEMA, 'at': baseline_at, 'cursors': list(cursors), 'routes': routes,
+                'health': health, 'snapshots': snapshots, 'version': version, 'cutoffAt': cut}
+    write_json(folder / 'baseline.json', baseline)
+    status = {'schemaVersion': SCHEMA, 'active': True, 'pid': os.getpid(), 'startedAt': wall,
+              'cutoffAt': cut, 'duration_seconds': seconds, 'interval_seconds': interval,
+              'samples': 0, 'unavailable_samples': 0, 'new_events': 0, 'elapsed_seconds': 0}
+
+    def save_status():
+        status.update(updatedAt=clock(), elapsed_seconds=monotonic() - started)
+        write_json(folder / 'status.json', status)
+
+    reason = 'exception'
+    save_status()
+    # Explicit empty maintenance log. Manager journal changes are independently
+    # retained in every version record, so an empty file cannot erase restarts.
+    with (folder / 'maintenance.ndjson').open('x') as out:
+        out.flush(); os.fsync(out.fileno())
+    try:
+        with (folder / 'observations.ndjson').open('x') as out:
+            while not stop.is_set() and monotonic() - started < seconds:
+                sample = {'observedAt': clock(), 'events': []}
+                try:
+                    sample['health'] = get('/v1/health')
+                    for index, route in enumerate(routes):
+                        if stop.is_set() or monotonic() - started >= seconds:
+                            raise TimeoutError('Observation deadline')
+                        batch = get('/v1/events?' + urlencode({'account_id': route['accountId'],
+                            'conversation_id': route['conversationId'], 'after': cursors[index], 'limit': 200}))
+                        cursors[index] = batch['next_cursor']
+                        sample['events'].extend({'route': index, 'event': e, 'firstObservedAt': clock()}
+                                                for e in batch['events'])
+                except Exception as exc:
+                    status['unavailable_samples'] += 1; sample['error'] = type(exc).__name__
+                sample['version'] = safe_version_snapshot(root)
+                status['samples'] += 1; status['new_events'] += len(sample['events'])
+                out.write(json.dumps(sample, ensure_ascii=False) + '\n'); out.flush(); os.fsync(out.fileno())
+                save_status()
+                stop.wait(min(interval, max(0, seconds - (monotonic() - started))))
+        reason = 'signal' if stop.is_set() else 'duration_reached'
+    except BaseException as exc:
+        status['error'] = type(exc).__name__
+        raise
+    finally:
+        # Capture even for signal/exception; reviewer will refuse completion.
+        # SIGKILL leaves active status or an absent seal; never resume/repair it.
+        try:
+            ledger = {'schemaVersion': SCHEMA, 'cutoffAt': cut,
+                      'routes': snapshot_routes(root, routes, baseline['cursors']),
+                      'version': safe_version_snapshot(root)}
+            write_json(folder / 'ledger.json', ledger)
+            status.update(active=False, stop_reason=reason)
+            save_status()
+            seal(folder)
+        except BaseException as exc:
+            status.update(active=False, stop_reason='finalization_failed', finalization_error=type(exc).__name__)
+            save_status()
+            raise
+    return status
+
 
 def main():
     os.umask(0o077);p=argparse.ArgumentParser(description=__doc__)
@@ -25,43 +98,6 @@ def main():
     def get(path):
         request=Request('http://127.0.0.1:18768'+path,headers={'Authorization':'Bearer '+token})
         with urlopen(request,timeout=8) as response:return json.load(response)
-    def events(route,cursor):
-        return get('/v1/events?'+urlencode({'account_id':route['accountId'],'conversation_id':route['conversationId'],
-                                         'after':cursor,'limit':200}))
-    cursors=[]
-    # Establish a durable baseline without re-emitting old events.
-    for route in routes:
-        cursor=0
-        while True:
-            batch=events(route,cursor);cursor=batch['next_cursor']
-            if len(batch['events'])<200:break
-        cursors.append(cursor)
-    (folder/'baseline.json').write_text(json.dumps({'at':time.time(),'cursors':cursors,'routes':routes,'health':get('/v1/health')}))
-    started=time.monotonic();samples=failures=received=0
-    status={'active':True,'pid':os.getpid(),'startedAt':time.time(),'duration_seconds':args.seconds,
-            'interval_seconds':args.interval,'samples':0,'unavailable_samples':0,'new_events':0,'elapsed_seconds':0}
-    def save_status():
-        status['updatedAt']=time.time()
-        temp=folder/'status.tmp';temp.write_text(json.dumps(status));temp.replace(folder/'status.json')
-    save_status()
-    with (folder/'observations.ndjson').open('a') as out:
-        while not stop.is_set() and time.monotonic()-started<args.seconds:
-            sample={'observedAt':time.time(),'events':[]}
-            try:
-                sample['health']=get('/v1/health')
-                for index,route in enumerate(routes):
-                    batch=events(route,cursors[index]);cursors[index]=batch['next_cursor']
-                    sample['events'].extend({'route':index,'event':e,'firstObservedAt':time.time()} for e in batch['events'])
-                    received+=len(batch['events'])
-            except Exception as exc:
-                failures+=1;sample['error']=type(exc).__name__
-            samples+=1;out.write(json.dumps(sample,ensure_ascii=False)+'\n');out.flush()
-            status.update(samples=samples,unavailable_samples=failures,new_events=received,
-                          elapsed_seconds=round(time.monotonic()-started,2))
-            save_status()
-            stop.wait(min(args.interval,max(0,args.seconds-(time.monotonic()-started))))
-    status.update(active=False,elapsed_seconds=round(time.monotonic()-started,2),
-                  stop_reason='signal' if stop.is_set() else 'duration_reached')
-    save_status();print(json.dumps(status))
+    print(json.dumps(capture(ROOT, folder, routes, get, args.seconds, args.interval, stop)))
 
 if __name__=='__main__':main()

@@ -496,3 +496,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [HANDOFF](HANDOFF.md)、[脱敏检查](../../evidence/2026-11-16/handoff-review.json)：检查起点9bf2bf3、工作树干净，23产品模块/配置仍匹配E134；14:10只读本地manager/guard/SQLite，三服务running、ready，99任务/240 Agent outbox/session一致，无未终结任务/待确认outbox/未知投递。没有DWS/模型/UI调用或全量旧测试重跑，不声称实时上游/长期健康。
 - 发现实际heartbeat已PAUSED（配置09:42更新），现行ACTIVE说法错误，纠正入口且未更改调度。静态检查发现collector到期未自动采集截止账本/加载版本，这是可独立实现的R13项；后续不再一概等Kimi/UI。本轮仅交接，不实施新采集器或启动新run。
 - 标准保持51/11/2、7 MUST未完整；新增接手入口、代码/证据定位、禁止重跑清单与建议顺序。产品/服务/绑定不改，不新建线程/远程发布，用户已结束本会话的自动推进。
+
+## E136 — 新观察截止采集与拒绝假通过
+- [实现/边界](../../docs/136-observation-cutoff.md)、[脱敏验证](../../evidence/2026-11-16/observation-cutoff-validation.json)：schema v2自动固定cut、逐路SQLite只读事务账本/时间/watermark/续页、产品与采集器/配置磁盘摘要、manager身份/维护以及原子文件/最终seal；缺失、迟到、变更、异常退出均不能假完成。账本尾部与HTTP采样分开，不声称跨库原子或cut瞬间快照。
+- 15新增＋15既有观察方法在冻结源码Python3.14.6/3.11.15各30通过，包含并发WAL提交和真实合成子进程SIGKILL。23产品模块与E133/E134相同，无部署/业务HTTP/DWS/模型/UI/调度操作，无新真实观察，旧run封存。
+- 当前磁盘不是加载源码证明；manager尚无启动来源记录，uniform_loaded_version_proven/stability_pass保持false，下一独立项是启动版本证据及collector核验。R13、7 MUST与51/11/2保持。

@@ -1,0 +1,67 @@
+{
+  "evidence": "E136",
+  "scope": "Frozen observation tooling tests only; no live service/HTTP/DWS/model/UI calls",
+  "newTestMethods": 15,
+  "existingObservationMethods": 15,
+  "results": [
+    {
+      "label": "py314",
+      "python": "Python 3.14.6",
+      "exitCode": 0,
+      "testsRun": 30,
+      "logSha256": "599fd7a97a0f1021be116e6f6d0e502c679b817668cf1381f0f60d47541c5a15"
+    },
+    {
+      "label": "py311",
+      "python": "Python 3.11.15",
+      "exitCode": 0,
+      "testsRun": 30,
+      "logSha256": "4ce8e97390bfecf4445f5844877789d83234c4d003af0c0abd7a7cfdc8eb3bb4"
+    }
+  ],
+  "sourceSha256": {
+    "dingtalk_bridge/rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "dingtalk_bridge/message_model.py": "539fee83aea67d9937ff0887d98d515a1caca5d5c6cdc69d9fe416e8534b728c",
+    "dingtalk_bridge/openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "dingtalk_bridge/configure.py": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+    "dingtalk_bridge/dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "dingtalk_bridge/runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "dingtalk_bridge/agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "dingtalk_bridge/discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "dingtalk_bridge/service_manager.py": "57e5752d5157d541fa6db322dc13954ce080bc61c0382b8131b3fdef4e59a002",
+    "dingtalk_bridge/agent_gateway.py": "3b4337aa197ae2a9cbe489eea79838b63b1181f69820fa2599616e2bdcbd5018",
+    "dingtalk_bridge/__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "dingtalk_bridge/core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "dingtalk_bridge/text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "dingtalk_bridge/stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "dingtalk_bridge/cli.py": "5f13ff258074273b9366244ab1e19e48be93848e01072a079b46a99183035f88",
+    "dingtalk_bridge/consumer.py": "43a3f60170be586e4b63c894f28a871e256896e373d0f512989fa4faa10ecadd",
+    "dingtalk_bridge/routing.py": "1ba44436eb2520d3ba12029509a444730d2fa104b799f17d9712545c4739dbf2",
+    "dingtalk_bridge/official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "dingtalk_bridge/composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "dingtalk_bridge/official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "dingtalk_bridge/doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "dingtalk_bridge/__main__.py": "b23856a69746ee251756304eca19606136581f39eb43433e45485d06d444ef2d",
+    "dingtalk_bridge/consume.py": "521a7c4524436bf15751c1d049629f9e9e6fe10b54a7dd6de5bca92ef282a85f",
+    "scripts/capture_service_observations.py": "4d3024d7876beae242f8e4891b947e9126cba80648e283d9504c4dfc2a6eee63",
+    "scripts/service_observation_evidence.py": "fe12ac375c2cf195144fb1f6d10d018d386d3639bdcab8203a80595d6373820f",
+    "scripts/review_service_observations.py": "70f0d0be41e316bb5141da23e749c5d0a89776f74331bad9a5716dd8b56621a4",
+    "scripts/reconcile_observation_snapshot.py": "55e465b7eeafa56d193e83f3267372ae29efe7bf0279d35e5b6df3d0e27bc8f5",
+    "tests/test_observation_snapshot.py": "41fc8d0a687488333b0fa0f91a6ed84aae2fefb4124ca6a189cf06c066455b19",
+    "tests/test_observation_review.py": "d81b2f1ed6a6382a797cb4254da00a690ffb2ede7d4a3194a0c28170a990de43",
+    "tests/test_observation_capture.py": "9b155306af70db5c067fddcaab2e468a85ba307210e6af1b308401049f7892d3"
+  },
+  "productModulesUnchangedFromE133": true,
+  "liveObservationStarted": false,
+  "deployed": false,
+  "loadedSourceProven": false,
+  "stabilityProven": false,
+  "initialFailures": [
+    "First run: two test assertions incorrectly expected mutation of an empty file and insignificant seal whitespace to fail; fixed test cases",
+    "Added version test exposed unresolved /var vs /private/var root; resolved root in version_snapshot"
+  ],
+  "remaining": [
+    "Startup loaded-source provenance",
+    "New stable-version real observation and natural refresh evidence"
+  ]
+}

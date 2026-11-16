@@ -8,7 +8,7 @@ git:
   target_branch: codex/complete-bridge
   remote_publish: false
 runtime:
-  mode: 交接，等待用户指定接手
+  mode: 单Agent手动续作，心跳不自动恢复
   checkpoint_minutes: 45
   single_agent: true
 goal:
@@ -24,3 +24,5 @@ E135用户要求整体检查后交接，当前以[HANDOFF](HANDOFF.md)为接手�
 E132补充：阶段报告按历史时点解释，现状只在总览及活动清单维护。受阻路径无新证据不重试；全部剩余依赖外部条件时保持未完成，不制造巡检。文档索引及历史正文检查见 `scripts/review_documentation.py`。
 
 E133用户明确纠正主线：IM通道独立于可选runtime，Kimi订阅拒绝只阻塞绑定它的模型任务。E134已部署组合并验两路API/官方下载原件，仍按通道字节/API/真实UI分层验收，不把离线代码通过换算成R07通过。
+
+E136接手更新：本轮从用户给出的HANDOFF继续独立截止采集工具，冻结观察专项30×2通过，未改产品/部署/调度或启动真实观察；加载版本证据仍缺，现行动作见TODO。E135交接停止仅描述上轮会话。

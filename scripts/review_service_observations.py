@@ -8,6 +8,10 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from service_observation_evidence import SCHEMA, SEALED_FILES, digest, review_cutoff
 
 
 def review(baseline, status, samples, maintenance):
@@ -81,14 +85,38 @@ def load_review(folder):
     report = review(json.loads(files['baseline.json']), json.loads(files['status.json']),
                     [json.loads(line) for line in files['observations.ndjson'].splitlines()],
                     [json.loads(line) for line in files.get('maintenance.ndjson', b'').splitlines()])
+    baseline = json.loads(files['baseline.json']); status = json.loads(files['status.json'])
+    schema = baseline.get('schemaVersion', 1)
+    if schema not in (1, SCHEMA) or status.get('schemaVersion', 1) != schema:
+        raise ValueError('Unknown or inconsistent observation schema')
     ledger_path = folder / 'ledger.json'
-    if ledger_path.exists():
+    if schema == 1 and ('cutoffAt' in baseline or 'cutoffAt' in status
+            or (folder / 'completion.json').exists()
+            or ledger_path.exists() and json.loads(ledger_path.read_bytes()).get('schemaVersion') == SCHEMA):
+        raise ValueError('New cutoff evidence cannot be downgraded to legacy review')
+    if schema == SCHEMA:
+        files['ledger.json'] = ledger_path.read_bytes()
+        files['completion.json'] = (folder / 'completion.json').read_bytes()
+        completion = json.loads(files['completion.json'])
+        if completion['schemaVersion'] != SCHEMA or completion['sha256'] != {
+                n: digest(files[n]) for n in SEALED_FILES}:
+            raise ValueError('Missing or changed completion artifacts')
+        samples = [json.loads(line) for line in files['observations.ndjson'].splitlines()]
+        cutoff = review_cutoff(baseline, status, samples, json.loads(files['ledger.json']),
+                              [json.loads(line) for line in files['maintenance.ndjson'].splitlines()])
+        report['cutoff'] = cutoff
+        report['evidence_valid'] &= cutoff['cutoff_evidence_valid']
+        report['observation_complete_24h'] &= report['evidence_valid']
+    elif ledger_path.exists():
         files[ledger_path.name] = ledger_path.read_bytes()
         ledger = json.loads(files[ledger_path.name])
         samples = [json.loads(line) for line in files['observations.ndjson'].splitlines()]
         report['ledger_reconciliation'] = reconcile_ledger(json.loads(files['baseline.json']), samples, ledger)
         report['evidence_valid'] &= report['ledger_reconciliation']['exact_match']
         report['observation_complete_24h'] &= report['evidence_valid']
+    report['stability_pass'] = False  # Loaded source and natural refresh need independent evidence.
+    if any((folder / n).read_bytes() != data for n, data in files.items()):
+        raise ValueError('Snapshot changed while reading; use a frozen copy')
     report['sourceSha256'] = {n: hashlib.sha256(data).hexdigest() for n, data in files.items()}
     return report
 
@@ -113,6 +141,8 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--require-complete', action='store_true')
     args = parser.parse_args()
+    if args.output and args.output.resolve().is_relative_to(args.run_dir.resolve()):
+        parser.error('Write the review outside the preserved observation directory')
     try:
         report = load_review(args.run_dir)
     except (OSError, ValueError, KeyError, TypeError, IndexError) as error:

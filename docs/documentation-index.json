@@ -3,7 +3,7 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E135",
+    "documentationEvidence": "E136",
     "latestUiEvidence": "E131",
     "deployedProduct": "2467fe2",
     "deploymentEvidence": "E134",
@@ -674,6 +674,10 @@
     },
     "plans/completion/TODO.md": {
       "role": "current"
+    },
+    "docs/136-observation-cutoff.md": {
+      "role": "historical",
+      "preservedSha256": "ef0b8d46fe2099c1e51bfbcbe57228c664fb5e1b0f670746a4bbe8bff8a7416a"
     }
   }
 }

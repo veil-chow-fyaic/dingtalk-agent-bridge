@@ -1,6 +1,6 @@
 # 当前任务
 
-E135交接状态：用户已要求本会话停止推进并交接；先读[HANDOFF](HANDOFF.md)。本轮仅只读检查/文档修正，心跳已PAUSED且未更改，不自动恢复。产品功能与未完标准如下。
+E136：从用户提供的[HANDOFF](HANDOFF.md)接手，新增截止采集工具及30项观察专项双Python验证。仅工具/合成测试；未启动真实观察或操作服务/调度。加载版本证据仍缺，下一项见[TODO](TODO.md)。E135心跳PAUSED为最后已知状态，不自动恢复。
 
 交付官方DWS真人账号到可替换Agent的通用IM中间件，沿同一[PRD](01-PRD.md)、[验收矩阵](ACCEPTANCE_MATRIX.md)、[最终自检](10-自检清单.md)。当前结论统一见[总览](../../docs/102-user-requirements-and-roadmap.md)，授权和禁止项见[AGENTS](../../AGENTS.md)。
 

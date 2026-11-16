@@ -57,6 +57,7 @@
 | [docs/133-documentation-consistency.md](133-documentation-consistency.md) | 阶段历史 |
 | [docs/134-outbound-composition.md](134-outbound-composition.md) | 阶段历史 |
 | [docs/135-composition-api-deployment.md](135-composition-api-deployment.md) | 阶段历史 |
+| [docs/136-observation-cutoff.md](136-observation-cutoff.md) | 阶段历史 |
 | [docs/14-solo-test-report.md](14-solo-test-report.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
