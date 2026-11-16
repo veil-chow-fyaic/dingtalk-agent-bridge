@@ -1,0 +1,121 @@
+{
+  "evidence": "E142",
+  "productCommit": "10758ebcd78a4631c2831ebf93b8f5219443805d",
+  "productModules": 25,
+  "candidateValidation": "E140 frozen source and same wheel installed on Python 3.14 and 3.11: each 477 methods passed",
+  "wheelSha256": "28400b9bfba556241247055b1108a44f2249b6b51cf24780cdfa115dc2cc6586",
+  "maintenance": {
+    "stoppedAndBackedUp": true,
+    "fixedCutCoveredInSameSnapshots": true,
+    "emptyWalPlannerUsed": true,
+    "backlogChecks": {
+      "0_scope": true,
+      "0_tasks_session_binding_outbox_kept": true,
+      "0_inbox_kept": true,
+      "0_zero_pending": true,
+      "0_cut_covered_in_same_snapshot": true,
+      "1_scope": true,
+      "1_tasks_session_binding_outbox_kept": true,
+      "1_inbox_kept": true,
+      "1_zero_pending": true,
+      "1_cut_covered_in_same_snapshot": true,
+      "zero_candidate_tasks_or_unknown_models": true,
+      "configs_kept": true,
+      "validated_candidate_product": true
+    },
+    "preservedJobs": 99,
+    "preservedAgentOutbox": 240,
+    "configsSessionsBindingsPreserved": true
+  },
+  "deployed": {
+    "ownedServicesRunning": 3,
+    "startupSourcesAndParsedConfigsVerified": true,
+    "cliHealthAndConversationsPassed": true,
+    "runtimeOrBindingChange": false
+  },
+  "interruptedRun": {
+    "runId": "startup-provenance-24h-20261116",
+    "samples": 218,
+    "elapsed_hours": 1.817,
+    "stop_reason": "signal",
+    "zero_recorded_errors": true,
+    "evidence_valid": false,
+    "observation_complete_24h": false,
+    "stability_pass": false,
+    "reason": "Deploy verified local HTTP fix instead of blocking work on unfinished observation; original fixed cut unchanged"
+  },
+  "shortRun": {
+    "runId": "loopback-http-short-20261116",
+    "samples": 12,
+    "zero_recorded_errors": true,
+    "evidence_valid": true,
+    "observation_complete_24h": false,
+    "stability_pass": false,
+    "cutoff": {
+      "checks": {
+        "declared_cutoff_policy": true,
+        "fixed_cut": true,
+        "terminal_duration": true,
+        "ledger_bound": true,
+        "route_count": true,
+        "baseline_route_count": true,
+        "settle_attempts_retained": true,
+        "settle_without_database_errors": true,
+        "route_0_captured": true,
+        "route_0_identity": true,
+        "route_0_baseline": true,
+        "route_0_timely": true,
+        "route_0_coverage": true,
+        "route_0_sequence_bounds": true,
+        "route_0_event_identity": true,
+        "route_0_sampled_range_exact": true,
+        "route_1_captured": true,
+        "route_1_identity": true,
+        "route_1_baseline": true,
+        "route_1_timely": true,
+        "route_1_coverage": true,
+        "route_1_sequence_bounds": true,
+        "route_1_event_identity": true,
+        "route_1_sampled_range_exact": true,
+        "version_records_present": true,
+        "source_and_config_unchanged": true,
+        "owned_processes_unchanged": true,
+        "no_recorded_maintenance": true,
+        "startup_source_verified": true
+      },
+      "cutoff_evidence_valid": true,
+      "routes": [
+        {
+          "routeIndex": 0,
+          "ledgerOnlyTailEvents": 0
+        },
+        {
+          "routeIndex": 1,
+          "ledgerOnlyTailEvents": 0
+        }
+      ],
+      "uniform_loaded_version_proven": false,
+      "natural_refresh_proven": false,
+      "uniform_startup_version_verified": true,
+      "limits": [
+        "Per-route SQLite snapshots, not a shared atomic snapshot or exact instant at cutoff",
+        "Ledger-only tail rows were not observed by HTTP and are counted separately",
+        "Source/config fingerprints are sampled disk evidence, not loaded-code attestation",
+        "Seals detect changed/missing artifacts, not malicious rewriting of all evidence",
+        "Maintenance/errors/late snapshots are never forgiven; no upstream-loss guarantee"
+      ]
+    }
+  },
+  "newRun": {
+    "runId": "loopback-http-24h-20261116",
+    "startedAt": 1794820748.831176,
+    "cutoffAt": 1794907148.831176,
+    "seconds": 86400,
+    "intervalSeconds": 30,
+    "purpose": "bounded local evidence collector; not chat automation",
+    "complete": false
+  },
+  "automation": "deleted; no replacement",
+  "fullProductAcceptance": false,
+  "privateEvidence": "local/loopback-deployment-20261116/"
+}

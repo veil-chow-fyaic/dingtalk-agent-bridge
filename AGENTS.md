@@ -1,12 +1,12 @@
 # 钉钉 bridge 工作约定
 
-2026-11-16 E141：用户明确要求本Agent全权负责后续推进，不再安排定时任务。原bridge自动化已删除、配置不存在；不得新建替代调度。通用部署审查已补空WAL/SHM显式只读路径和运行器绑定核对，12专项×3通过。产品仍f322402/E138，24模块启动来源/配置与60秒实际截止采集已过；新run `startup-provenance-24h-20261116` 正运行，固定北京时间2026-11-17 15:20:14截止，到期审原run，不提前标完成或重置。
+2026-11-16 E142：产品10758eb已实际部署，25模块及实际配置的启动来源、三服务运行和CLI查询通过；原99任务/240 Agent outbox/session/绑定保持。E140修复不再待部署。旧startup-provenance观察主动中止，1.82小时/218采样，24h未通过且原记录保留。新run `loopback-http-24h-20261116` 固定北京时间2026-11-17 17:19:08截止；仅本地有界证据采集，无聊天调度。原bridge自动化已删除，不创建替代任务。
 
 ## 工作位置和读取顺序
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`，单Agent，不派生、不另开实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E138已部署E137产品f322402及验证短采集，当前24模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E142已部署10758eb及验证短采集，当前25模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
 
 ## 产品与当前执行边界
 
@@ -53,6 +53,6 @@ veil是原生客户端真人，liev是显式profile绑定的DWS真人；UI发送
 
 全部MUST及最终自检满足才可标完成；用户要求交接不等于完成。E135暂停是历史，E141已按用户明确指示删除全部本任务调度，由本Agent直接推进；不新建替代定时任务。调度与业务服务分开，唤醒次数、空等和离线时间不计进度。当前未完成。
 
-E140独立安装检查复现本机CLI继承HTTP代理并转交合成令牌。三客户端禁止代理/重定向的修复已在隔离源码及同wheel双Python完整验证，以docs/patches/E140-local-http-candidate.patch保存；当前运行源码未改。观察截止封存后应用并受管部署，详见docs/140。不要把候选称为现场已修复，也不要只检查观察而遗漏此可执行后续。
+E140的共用本机HTTP直连/拒绝重定向修复已于E142应用并部署为10758eb；25模块与477×3验证候选及同wheel一致。补丁只是历史交付材料，不再次应用。新观察不作为其他独立工作的前置，发生必要维护时如实记中断，不能保计时而搁置已完成修复。
 
 E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL不存在/严格0字节及遗留SHM；必须原owner锁/operator_suspended，非空WAL或任何journal仍拒绝，不能删旁文件绕过。不再把历史“需要新授权”字符串当作重复索取本会话已有许可的理由。工具不执行部署，现场停止/排空/cut/积压顺序仍按上文。

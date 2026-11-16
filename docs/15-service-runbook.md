@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E138（2026-11-16）已部署E137产品f322402（24模块），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI仍E131，Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
+E142（2026-11-16）已部署产品10758eb（25模块，含本机HTTP直连/拒绝重定向修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI仍E131，Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。

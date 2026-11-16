@@ -3,10 +3,10 @@
   "updated": "2026-11-16",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E141",
+    "documentationEvidence": "E142",
     "latestUiEvidence": "E131",
-    "deployedProduct": "f322402",
-    "deploymentEvidence": "E138",
+    "deployedProduct": "10758eb",
+    "deploymentEvidence": "E142",
     "candidateProduct": "E140",
     "uiStateCounts": {
       "passed": 51,
@@ -695,6 +695,10 @@
     "docs/141-deployment-review-and-direct-ownership.md": {
       "role": "historical",
       "preservedSha256": "37110200dc0c549a8166286e683a35d984b0a1ff515058e080a847636cbf58b0"
+    },
+    "docs/142-local-http-deployment.md": {
+      "role": "historical",
+      "preservedSha256": "4c3373157ff48b5a31a9e923851cec5ee6f2f2968ff79cc0679d4f1239f7ffcf"
     }
   }
 }

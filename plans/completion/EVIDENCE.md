@@ -524,3 +524,7 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E141 — 删除自动化并完善可复用部署审查
 - 用户明确要求本Agent全权负责且不再安排定时任务；已正式删除bridge、配置不存在，无替代调度，业务服务/采集器不动。
 - [工具结果](../../docs/141-deployment-review-and-direct-ownership.md)、[脱敏验证](../../evidence/2026-11-16/deployment-review-empty-wal-validation.json)：显式空WAL/遗留SHM只读审查及runtime_binding复用；5新增＋7既有在冻结源码/原wheel双Python各12过。非空WAL、所有journal、锁/来源变化继续拒绝，无真实账本或DWS/模型调用，24运行模块保持。
+
+## E142 — HTTP修复实际部署，停止以观察为执行前置
+- [部署报告](../../docs/142-local-http-deployment.md)、[脱敏证据](../../evidence/2026-11-16/local-http-deployment.json)：10758eb/25模块与E140候选及已测wheel一致；实际受管维护、通用空WAL审查、固定cut/零积压/恢复完成，99任务/240 outbox/session/配置/绑定保持。
+- 原观察1.82小时/218样本主动中止，未满24h及缺原截止事实保留；新版本CLI查询、实际来源及60秒12样本零错误/截止通过，新loopback-http观察固定北京时间2026-11-17 17:19:08截止。没有聊天定时任务、模型或业务消息/UI新样本，MUST不改级。
