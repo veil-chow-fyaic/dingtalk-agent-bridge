@@ -570,3 +570,9 @@ E148[隔离历史验证](../../evidence/2026-11-17/github-history-normalization-
 仓库已公开MIT并推送main，四个原MUST任务/里程碑及私密漏洞报告已启用。首次run44036471963的Ubuntu两项各519通过并核wheel，macOS两项各11失败；诊断run44038398119同样失败，两个macOS栈均在HTTPServer.server_bind调用getfqdn，token已创建而服务未就绪。原8秒断言不放宽，失败保留。
 
 当前准备隔离候选的真实loopback启动修复与已验E144配置修复，尚未四环境通过或应用分支保护。候选与实际运行目录分开，原25模块/产品2b479a8/观察不动；cut后才维护部署。公开发布不关闭R01/R06/R07/R13。
+
+### E149收口 — 公开仓库、真实CI修复与安装候选
+
+[阶段报告](../../docs/149-github-public-launch-and-ci.md)记录两轮macOS失败及getfqdn栈，loopback真实修复与E144配置候选在隔离ref整合，运行目录25模块不变。原22fea99/公开366212d等树，真实run44041215622四环境各525及安装元数据门通过。main保护/四检查/PR/禁强推删除及私密漏洞报告均已回读。
+
+新MIT wheel ea2d49f4…67cc9cfc首次安装3.14的525失败保留；只修改测试契约，原2秒deadline、真实close/reap和no-retry不放宽，四定向检查按预期。随后双安装新契约各526通过，源码525与安装526分别记证，不称526×3。原系统时序细因未确定；候选/公开HEAD不冒充部署2b479a8，原cut与四MUST不变。

@@ -8,7 +8,9 @@
 
 - 主代码采用 MIT；原第三方声明保留。已公开[GitHub仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，版本仍为开发阶段。
 
-### 已验证、待部署
+### 已验证、待本机受管部署
+
+- 固定 loopback HTTP 服务启动不再等待反向主机名解析；保留真实 TCP 绑定、线程、端口和认证行为。托管 macOS 两版本的实际阻塞栈已定位，修复节点四环境各525项通过；新测试契约双安装各526项另计。[范围与原失败](docs/149-github-public-launch-and-ci.md)
 
 - 配置助手 `select` 为同账号新增会话时继承已有图片上传 helper，避免新增路由原生图片在上传前失败；同步修正 `migrate` 离线、`select` 需只读 DWS 核对目标的帮助。候选已经源码与独立安装验证，当前运行产品尚未应用。[验证范围](docs/145-delivery-and-recovery-closeout.md)
 
