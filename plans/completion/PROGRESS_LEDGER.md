@@ -401,3 +401,9 @@ f322402经原manager维护流程部署，固定cut、六库保留、停机积压
 - [MIT打包验证](../../evidence/2026-11-17/mit-packaging-validation.json)：显式PEP639许可、根LICENSE进manifest与wheel，元数据/路径/原字节精确核对；25专项在3.14/3.11分别通过，整合后25过。新MIT与真实旧E143 wheel各独立安装字节门通过；旧源码/旧wheel可导出，新MIT源码配旧wheel拒绝。实际setuptools84.2.1，声明最低77.0.3未单独实测；不是新产品全量或部署验证。
 - [独立内容审查](../../evidence/2026-11-17/publication-content-review.json)：b5288a2可达144提交/2869blob/803历史路径未确认新秘密/真实聊天标识，13二进制均fixtures；未知秘密全面排除不作保证。补齐DWS固定上游NOTICE与[第三方范围](../../THIRD_PARTY_NOTICES.md)，原许可/历史不重写；作者邮箱仅核既有公开提交散列，不输出原值。
 - 25运行模块、原第三方许可和采集器未改；原固定cut与四项MUST保持，未调用DWS/模型/认证或操作现场服务，无新聊天调度。
+
+## E149 — 公开上线与实际macOS启动缺陷
+
+仓库已公开MIT并推送main，四个原MUST任务/里程碑及私密漏洞报告已启用。首次run44036471963的Ubuntu两项各519通过并核wheel，macOS两项各11失败；诊断run44038398119同样失败，两个macOS栈均在HTTPServer.server_bind调用getfqdn，token已创建而服务未就绪。原8秒断言不放宽，失败保留。
+
+当前准备隔离候选的真实loopback启动修复与已验E144配置修复，尚未四环境通过或应用分支保护。候选与实际运行目录分开，原25模块/产品2b479a8/观察不动；cut后才维护部署。公开发布不关闭R01/R06/R07/R13。

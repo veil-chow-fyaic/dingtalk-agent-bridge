@@ -6,7 +6,7 @@
 
 ### 项目许可与协作
 
-- 主代码采用 MIT；原第三方声明保留。GitHub仓库为 `veil-chow-fyaic/dingtalk-agent-bridge`，版本仍为开发阶段。
+- 主代码采用 MIT；原第三方声明保留。已公开[GitHub仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，版本仍为开发阶段。
 
 ### 已验证、待部署
 

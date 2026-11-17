@@ -58,3 +58,5 @@ E140的共用本机HTTP直连/拒绝重定向修复已于E142应用并部署为1
 E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL不存在/严格0字节及遗留SHM；必须原owner锁/operator_suspended，非空WAL或任何journal仍拒绝，不能删旁文件绕过。不再把历史“需要新授权”字符串当作重复索取本会话已有许可的理由。工具不执行部署，现场停止/排空/cut/积压顺序仍按上文。
 
 E144候选只修改configure.py的图片helper继承及帮助，不影响当前两路配置；原固定cut自然收尾审计后再按维护规范集成，不再因非紧急配置助手修复中断长观察。资料/Git检出两项R12/R14按原判据独立通过，E146后四项MUST仍未完整。
+
+E149公开仓库实际CI已确认macOS的HTTPServer构造卡在getfqdn。为保持原观察，产品修复仅在隔离冻结树及`codex/publish-candidate`候选ref整合/验证/发布，主运行checkout不检出产品候选；原固定cut审计后才按维护规范快进合入并部署。候选后续提交需把当前`codex/complete-bridge`文档HEAD纳入父图，保证最终可快进，不能让公开HEAD冒充现场部署。公开贡献者在自己的clone工作；本文件中的绝对路径、原分支和现场身份仅适用于原维护工作区。

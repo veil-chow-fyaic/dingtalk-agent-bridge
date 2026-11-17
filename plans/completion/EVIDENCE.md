@@ -564,3 +564,9 @@ E146主审补[36检查/12篡改负例](../../evidence/2026-11-17/native-ui-recov
 E148发布元数据增量：GH007拒绝后，145提交隔离邮箱转换已核；公开对象无原改写前commit、无alternates，tree/message/name/date/父拓扑保持且原repo HEAD/refs/对象字节未改。公开[映射](../../evidence/2026-11-17/github-history-map-6706175.json)覆盖原6706175之前历史；此为发布准备验证，不冒称远端或CI已经成功。
 
 E148[隔离历史验证](../../evidence/2026-11-17/github-history-normalization-validation.json)：5合成测试通过，独立145对比较及4178物理对象全量核对通过，最终无旧提交对象/旧邮箱字节、只有main且无alternates；严格fsck通过。私密漏洞报告入口已启用并回读。
+
+## E149 — 公开上线与实际macOS启动缺陷
+
+仓库已公开MIT并推送main，四个原MUST任务/里程碑及私密漏洞报告已启用。首次run44036471963的Ubuntu两项各519通过并核wheel，macOS两项各11失败；诊断run44038398119同样失败，两个macOS栈均在HTTPServer.server_bind调用getfqdn，token已创建而服务未就绪。原8秒断言不放宽，失败保留。
+
+当前准备隔离候选的真实loopback启动修复与已验E144配置修复，尚未四环境通过或应用分支保护。候选与实际运行目录分开，原25模块/产品2b479a8/观察不动；cut后才维护部署。公开发布不关闭R01/R06/R07/R13。
