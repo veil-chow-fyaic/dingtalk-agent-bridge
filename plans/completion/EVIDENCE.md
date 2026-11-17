@@ -560,3 +560,7 @@ E146主审补[36检查/12篡改负例](../../evidence/2026-11-17/native-ui-recov
 - [MIT打包验证](../../evidence/2026-11-17/mit-packaging-validation.json)：显式PEP639许可、根LICENSE进manifest与wheel，元数据/路径/原字节精确核对；25专项在3.14/3.11分别通过，整合后25过。新MIT与真实旧E143 wheel各独立安装字节门通过；旧源码/旧wheel可导出，新MIT源码配旧wheel拒绝。实际setuptools84.2.1，声明最低77.0.3未单独实测；不是新产品全量或部署验证。
 - [独立内容审查](../../evidence/2026-11-17/publication-content-review.json)：b5288a2可达144提交/2869blob/803历史路径未确认新秘密/真实聊天标识，13二进制均fixtures；未知秘密全面排除不作保证。补齐DWS固定上游NOTICE与[第三方范围](../../THIRD_PARTY_NOTICES.md)，原许可/历史不重写；作者邮箱仅核既有公开提交散列，不输出原值。
 - 25运行模块、原第三方许可和采集器未改；原固定cut与四项MUST保持，未调用DWS/模型/认证或操作现场服务，无新聊天调度。
+
+E148发布元数据增量：GH007拒绝后，145提交隔离邮箱转换已核；公开对象无原改写前commit、无alternates，tree/message/name/date/父拓扑保持且原repo HEAD/refs/对象字节未改。公开[映射](../../evidence/2026-11-17/github-history-map-6706175.json)覆盖原6706175之前历史；此为发布准备验证，不冒称远端或CI已经成功。
+
+E148[隔离历史验证](../../evidence/2026-11-17/github-history-normalization-validation.json)：5合成测试通过，独立145对比较及4178物理对象全量核对通过，最终无旧提交对象/旧邮箱字节、只有main且无alternates；严格fsck通过。私密漏洞报告入口已启用并回读。

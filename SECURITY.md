@@ -6,7 +6,7 @@ DingTalk Agent Bridge 在本机调用官方 DWS，使用操作者明确配置的
 
 ## 报告问题
 
-涉及令牌、账号身份、聊天内容或可利用漏洞时，通过已有私密沟通渠道联系仓库维护者；当前未公布专用安全邮箱或报告地址。不要在公开 issue、PR、日志或截图里披露秘密。
+涉及令牌、账号身份、聊天内容或可利用漏洞时，使用已启用的[GitHub私密漏洞报告](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/security/advisories/new)联系维护者。不要在公开 issue、PR、日志或截图里披露秘密。
 
 提供最小合成复现、源码 commit、Python/DWS/运行器版本、预期与实际行为、可能影响的边界即可。先脱敏路径和身份；无需提供原始凭据、完整 `local/`、真实消息数据库或可继续使用的访问链接。维护者确认私有接收方式后再提供必要的更多证据。
 

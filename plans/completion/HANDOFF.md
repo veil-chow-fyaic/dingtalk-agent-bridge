@@ -19,3 +19,5 @@ E146已用系统ImageIO的ENOENT日志与缺失目录检查形成新条件，仅
 本轮结果见[阶段报告](../../docs/145-delivery-and-recovery-closeout.md)、[证据](EVIDENCE.md)、[账本](PROGRESS_LEDGER.md)。
 
 E145私有阶段`local/dws-causes-and-release-20261117/`保存DWS完整候选/审查/失败日志、UI一次尝试及定位、图片安装3.14与维护材料。公开部署输入为`evidence/2026-11-17/configure-image-install-validation.json`，精确对应E144候选wheel，不得套旧E143模块摘要；原cut审计后才按维护流程应用。DWS完整候选仍只保存补丁，禁止直接执行编译的DO-NOT-RUN产物或原测试全集。
+
+E148已按用户确认创建公开MIT仓库及四任务。原Git首推受GH007邮箱隐私保护拒绝；发布工具`local/github-publication-20261117/history-rewrite_public_history.py`仅在隔离bare替换邮箱并保留tree/正文/姓名/日期/拓扑，原本地分支和证据SHA不动。原6706175之前145条映射见公开evidence/2026-11-17/github-history-map-6706175.json；5合成测试及独立145对/4178对象审查通过。后续只向main发布经此工具核验的映射后HEAD，不直接推原邮箱历史、不force、不关隐私保护。工具对后续ref需选新输出目录；执行时保持源HEAD/refs/对象不变。远端传输已确认需按精确仓库URL使用本机既有代理，通用proxy参数会被原URL空值覆盖。

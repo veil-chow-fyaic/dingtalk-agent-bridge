@@ -1,0 +1,27 @@
+{
+  "reviewedScriptSha256": "51d746890b5c431e24d44662c258cfd06b6ee9dae29f3ff5f6757ba89a4b3201",
+  "reviewedMapSha256": "e49ae6148496ac7017a31b95e229d0785f39d024a06dd20baabf0e27e9e81bf7",
+  "sourceCommit": "670617502cc5708e953709693947dfb24fe6519b",
+  "publicCommit": "d4c2a9ae05b938009779595a5196439fa622c499",
+  "independentExactCommitComparisons": 145,
+  "objectCount": 4178,
+  "checks": {
+    "headerNameDateTreeAndOtherBytesPreserved": true,
+    "messageBytesPreserved": true,
+    "orderedParentMappingPreserved": true,
+    "onlyRequestedNoreplyAuthorCommitterEmail": true,
+    "physicalObjectsEqualReachableObjects": true,
+    "noOriginalCommitObjectsAnyType": true,
+    "noOldEmailBytesInAnyFinalPhysicalObject": true,
+    "onlyMainRef": true,
+    "noAlternates": true,
+    "reportedSourceBeforeEqualsAfter": true
+  },
+  "oldEmailValuesPrinted": false,
+  "productTestsRun": false,
+  "sourceOrPublicRepoMutated": false,
+  "scope": "Independent read-only audit; no push or rewrite rerun",
+  "evidence": "E148",
+  "syntheticHistoryTests": 5,
+  "sourceHistoryUnchanged": true
+}
