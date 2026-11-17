@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ArtifactHTTPTests(unittest.TestCase):
     def test_expected_digest_http_cli_and_gateway_error_contract(self):
-        with tempfile.TemporaryDirectory() as temp:
+        with tempfile.TemporaryDirectory() as temp, tempfile.TemporaryFile() as child_log:
             root = Path(temp); (root / 'local/outbox').mkdir(parents=True)
             original = b'approved synthetic artifact'; digest = hashlib.sha256(original).hexdigest()
             artifact = root / 'local/outbox/result.txt'; artifact.write_bytes(b'changed')
@@ -52,9 +52,16 @@ print(json.dumps(d))
                 'binary': binary.name, 'selfSenderId': 'fixture-self', 'receiveMode': 'history'}))
             with socket.socket() as sock:
                 sock.bind(('127.0.0.1', 0)); port = sock.getsockname()[1]
-            child = subprocess.Popen([sys.executable, '-m', 'dingtalk_bridge', '--port', str(port)],
+            # This synthetic child has no account or real provider. Retain its startup
+            # traceback before the unchanged 8-second readiness deadline; otherwise
+            # a blocked interpreter/server constructor is indistinguishable from
+            # an HTTP failure when stderr is discarded.
+            bootstrap = ("import faulthandler,runpy; "
+                         "faulthandler.dump_traceback_later(4,repeat=False); "
+                         "runpy.run_module('dingtalk_bridge',run_name='__main__',alter_sys=True)")
+            child = subprocess.Popen([sys.executable, '-c', bootstrap, '--port', str(port)],
                 cwd=root, env={**os.environ, 'PYTHONPATH': str(ROOT)},
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                stdout=child_log, stderr=subprocess.STDOUT)
             token_path = root / 'local/runtime/http-token'
             opener = build_opener(ProxyHandler({})); base = f'http://127.0.0.1:{port}'
             def request(path, data=None):
@@ -64,16 +71,22 @@ print(json.dumps(d))
             def routed_urlopen(req, timeout=None):
                 return opener.open(Request(req.full_url.replace('http://127.0.0.1:18768', base),
                     data=req.data, headers=dict(req.header_items())), timeout=5)
+            def startup_failure():
+                output = os.pread(child_log.fileno(), 16384, 0).decode('utf-8', errors='replace')
+                return ('Synthetic HTTP service did not start; '
+                        f'child_exit={child.poll()!r}; token_created={token_path.exists()}; '
+                        f'last_probe={last_probe!r}; child_output={output!r}')
             try:
+                last_probe = 'not attempted: token absent'
                 deadline = time.monotonic() + 8
                 while time.monotonic() < deadline:
-                    self.assertIsNone(child.poll())
+                    if child.poll() is not None: self.fail(startup_failure())
                     if token_path.exists():
                         try:
                             with request('/v1/health'): break
-                        except OSError: pass
+                        except OSError as exc: last_probe = f'{type(exc).__name__}: {exc}'
                     time.sleep(.03)
-                else: self.fail('Synthetic HTTP service did not start')
+                else: self.fail(startup_failure())
                 payload = {'idempotency_key': 'original-key', 'file': 'local/outbox/result.txt', 'expected_sha256': digest}
                 with self.assertRaises(HTTPError) as caught: request('/v1/send', payload)
                 with caught.exception as response:

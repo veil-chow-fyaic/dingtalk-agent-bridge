@@ -1,5 +1,7 @@
 # DingTalk Agent Bridge
 
+[![CI](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/workflows/ci.yml)
+
 通过官方 DWS CLI，把普通账号的钉钉群聊和私聊接入本地程序。
 
 提供统一 CLI、本机 HTTP API 和持久消息消费者，支持多账号/多会话路由、文件原件、引用、幂等发送与故障恢复。需要自动执行任务时，再接入可选 Agent gateway；通道本身不依赖特定模型、运行器或测试组织。

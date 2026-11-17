@@ -39,7 +39,7 @@ python3 -m venv .venv
 
 ## CI
 
-[工作流](.github/workflows/ci.yml)在 push、PR 和手动触发时检查文档/manifest/暂存私密边界，运行合成测试，构建 wheel 并核独立安装的模块、许可、元数据和六入口。矩阵为 Ubuntu 24.04、macOS 15 与 Python 3.11/3.14；托管平台实际通过情况以对应 commit 的 Actions 结果为准，不能从本机 macOS 测试推断 Linux 已通过。
+[工作流](.github/workflows/ci.yml)在 main push、PR 和手动触发时检查文档/manifest/暂存私密边界，运行合成测试，构建 wheel 并核独立安装的模块、许可、元数据和六入口。矩阵为 Ubuntu 24.04、macOS 15 与 Python 3.11/3.14；托管平台实际通过情况以对应 commit 的 Actions 结果为准，不能从本机 macOS 测试推断 Linux 已通过。
 
 CI 不配置业务账号或模型凭据，也不运行真实 DWS、登录或部署。构建阶段需要下载 Python/build 工具；“离线检查”指不连接业务后端，不是整个 Actions 作业断网。Actions 固定完整提交 SHA，依赖更新只提 PR，不自动合并。依赖更新改变受清单保护的文件时，维护者审阅后同步 manifest；不要跳过摘要门。
 

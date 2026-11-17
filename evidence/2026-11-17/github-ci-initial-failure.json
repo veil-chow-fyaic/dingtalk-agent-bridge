@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "stage": "E149 diagnosis in progress",
+  "repository": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge",
+  "visibility": "public",
+  "license": "MIT",
+  "sourceCommit": "17158dc4a050a98224deeda919a01f8be3250542",
+  "publicCommit": "3d76eff0dc94e9785ee2417d4a51ece88388ebff",
+  "firstRun": {
+    "id": 44036471963,
+    "url": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/runs/44036471963",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "id": 133880440491,
+        "runner": "ubuntu-24.04",
+        "python": "3.11",
+        "tests": 519,
+        "conclusion": "success",
+        "wheelInstallChecked": true
+      },
+      {
+        "id": 133880440181,
+        "runner": "ubuntu-24.04",
+        "python": "3.14",
+        "tests": 519,
+        "conclusion": "success",
+        "wheelInstallChecked": true
+      },
+      {
+        "id": 133880440633,
+        "runner": "macos-15",
+        "python": "3.11",
+        "tests": 519,
+        "failures": 11,
+        "conclusion": "failure",
+        "wheelInstallChecked": false
+      },
+      {
+        "id": 133880440581,
+        "runner": "macos-15",
+        "python": "3.14",
+        "tests": 519,
+        "failures": 11,
+        "conclusion": "failure",
+        "wheelInstallChecked": false
+      }
+    ]
+  },
+  "diagnostic": {
+    "scope": "One synthetic HTTP test captures child startup trace after 4 seconds; original 8-second readiness assertion retained. No product or collector changes.",
+    "parentLocalTests": 1,
+    "parentLocalPassed": true,
+    "injectedReadinessFailureRetained": true,
+    "actualRootCause": "unconfirmed; awaiting hosted diagnostic run"
+  },
+  "acceptance": "R01/R06/R07/R13 remain incomplete; CI is not live acceptance."
+}
