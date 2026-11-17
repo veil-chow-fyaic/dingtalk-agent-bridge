@@ -5,7 +5,9 @@ from pathlib import Path
 import re
 from zoneinfo import ZoneInfo
 
-IMAGE = re.compile(r'\[图片消息\]\(mediaId=([^\s)]+)\)')
+# Fixed DWS history preserves this exact voice marker beside any transcription.
+# A marker still needs its resourceRef and verified original before readiness.
+MEDIA = re.compile(r'\[(图片|语音)消息\]\(mediaId=([^\s)]+)\)')
 FILE = re.compile(r'^\[文件\]\s*(.*?)\s+fileId:\s*(\S+)\s*$')
 
 
@@ -58,12 +60,13 @@ def project(raw, group, depth=0):
         media('fileId',file_match[2],'file',file_match[1])
     else:
         offset=0
-        for match in IMAGE.finditer(text):
+        for match in MEDIA.finditer(text):
             if match.start()>offset:parts.append({'type':'text','text':text[offset:match.start()]})
-            media('mediaId',match[1],'image');offset=match.end()
+            media('mediaId',match[2],'image' if match[1]=='图片' else 'audio');offset=match.end()
         if offset<len(text):parts.append({'type':'text','text':text[offset:]})
-        # Every marker must be parsed, even beside another complete image.
-        if '[图片消息]' in IMAGE.sub('', text) or ('[文件]' in text and not file_match):
+        # Every marker must be parsed, even beside another complete media part.
+        remaining=MEDIA.sub('',text)
+        if any(marker in remaining for marker in ('[图片消息]','[语音消息]')) or ('[文件]' in text and not file_match):
             issues.append('unparsed_media_marker')
     # The native client can expose a second mediaId for the same image. Do not
     # discard it or guess its placement. Hydration must prove byte equality with

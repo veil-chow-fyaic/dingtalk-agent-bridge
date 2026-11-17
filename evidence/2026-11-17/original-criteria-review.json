@@ -1,0 +1,239 @@
+{
+  "recordedAtUtc": "2026-11-17T09:34:58.136685+00:00",
+  "baselineCommit": "c3e1b1788e8a228008a62c855fc86f575783d8c3",
+  "original17CriteriaAndLevelsUnchanged": true,
+  "criterionSha256": {
+    "R01": "c18c66703fd0fc2b42c27f1f10c6c9725262b453bbc3d43b26610adfc9500e03",
+    "R02": "e0d2d8367a6c518f15058d19bb6d69cc84fff55253769d7d6a728d41ec5c5e00",
+    "R03": "c9ff3062662ce1206acbc22b4d3ab3b06c64ecaff18a4ed7958856d03b768a8b",
+    "R04": "c242d8245d5352aea88332e28da6213ab72af83e6f572e27db393cb0da9fe58d",
+    "R05": "8bd0f03da57efa6f9adf77cfeb8a7a7c83a57456e4370cdf78d0ad1488aa13dc",
+    "R06": "db99da9f1b86f5efe043b66140fb3083e0a5e8ac84abc010c897178a331766f4",
+    "R07": "0235793c97e0ea8679ac1816807f892c463d81693465e26a976a283290d47ea9",
+    "R08": "4d9fd845ee5b961d5c78cbe569bbff83cc89ca2198b94d0abc223b00192053d1",
+    "R09": "6e6a5228e76b077ac173f417643edef096db79fd933d155db8997b273328374a",
+    "R10": "afcc616748d7cecafcf2874e8da363e866caa7330d12595cdb25917330d82419",
+    "R11": "d43b140014ca352366fa69d25db526720ea5bf7abb05fa2764876e5ce542d6f9",
+    "R12": "eaa7f7e2d85db5d766d2296f9b8da022cec69eaa6e53bdb6df757116a482709e",
+    "R13": "8544351a84c1752658d2317d705ff92cd938ea66c81ce4295ac1384442df08fa",
+    "R14": "ade0a2f7ae8db08f439f9370919b9d819098d26b69e131a9c8c69a576b6d828f",
+    "R15": "fc1425ddbf09d27d84cad70f36b4539122d000d7dd58ee3d988d6eb69f7e9cba",
+    "R16": "0751f783eecb392c6f0cc15110afeb02b33cf16933818ef35710139f1f087d5f",
+    "R17": "2c4c73318e92eacd4e57a26839cc5bad24bb91cfe5dcac92be5917c5a45178ca"
+  },
+  "sourceSha256": {
+    "plans/completion/01-PRD.md": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea",
+    "plans/completion/10-自检清单.md": "e6c21d58537efe20551328446d5864a121c5f0d32aee90bbec63f174eb80fd49",
+    "docs/26-ui-acceptance-and-sender-identity.md": "d93a5550eeaca02fd846199a55c8e21f96c8f4d84424e3c3a9865786dbdcd9a8",
+    "docs/100-aic-group-resume-and-files.md": "df8b80335258f1e9f9c5fa258fc91b4dfc890a3725cd30f08be98734e43a5f53",
+    "docs/47-natural-auth-rollover.md": "8aacd71719a4974822a73ce9726e1e3a0761004903a4acf31a5a438a5329ab35",
+    "docs/112-dws-refresh-and-reboot-review.md": "17ec2f0075c33677ab8474b6ceaba80f2d3e82b08a83194972653cb051c765c9",
+    "scripts/review_service_observations.py": "81460e112ac4be0a113ea5a94c6675128982aa351cdd856fb213cb98caabb55a"
+  },
+  "findings": {
+    "R07": {
+      "originalCriterion": "附件能进入Agent、真实工具完成工作、文件回原会话",
+      "coreEvidence": [
+        "E095: group UI two input files, explicit single task, real Python, same-group two outputs, individual client download/open/SHA",
+        "E017/E026: direct multi-file task and single-message dual-image processing"
+      ],
+      "assessment": "Core criterion has evidence; combination-specific UI gaps remain separate and unchanged. No new successful UI result claimed.",
+      "preservedFailures": [
+        "E131 group dual-image Kimi subscription denial",
+        "E146 composition inline-image save failure"
+      ]
+    },
+    "R13": {
+      "originalCriterion": "持久收发、重复/断线/未知状态/附件完整性/重启、可观察错误",
+      "zeroNetworkErrorsIsExplicitOriginalCriterion": false,
+      "normalRefreshEvidence": "E028: observed natural pre-expiry refresh and subsequent synchronization past former access expiry",
+      "invalidRefreshCredentialRecoveryProven": false,
+      "current24hComplete": null,
+      "assessment": "Audit original fixed run after natural cutoff; keep zero-error metric separately and preserve fault-recovery evidence. Do not infer current pass before audit."
+    },
+    "R06": {
+      "originalCriterion": "图片/语音/视频分别验收内容、类型、原件和呈现",
+      "latestUserInstruction": "Investigate and verify native voice both directions; when unavailable list implemented and unimplemented capabilities and continue next steps",
+      "actualVoiceClientAcceptance": false,
+      "assessment": "Inbound implementation candidate only; real sample and native outbound remain unproven. MP4 card/playback/file success remains valid."
+    }
+  },
+  "limits": [
+    "Evidence review only; not a new product, service or UI test",
+    "No original criterion/level or historical failure changed",
+    "Does not claim exhaustive recovery of all historic chat messages"
+  ],
+  "independentReview": {
+    "schemaVersion": 1,
+    "scope": "Independent read-only baseline/document/evidence/script review; no active-run read, audit execution, tests, credentials or live calls",
+    "baselineCommit": "c3e1b1788e8a228008a62c855fc86f575783d8c3",
+    "originalPRDSha256": "e58f6996fc72a903e8046682be21d70e829f54a8f429ba53d32b244622ba75d3",
+    "currentPRDSha256": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea",
+    "all17CriteriaAndLevelsUnchanged": true,
+    "comparison": [
+      {
+        "id": "R01",
+        "level": "MUST",
+        "criterion": "runtime/组织无关的CLI、HTTP、配置，group/direct多路由，稳定身份隔离",
+        "currentMatches": true
+      },
+      {
+        "id": "R02",
+        "level": "MUST",
+        "criterion": "普通账号身份与bot边界准确；用户能看清谁在发消息",
+        "currentMatches": true
+      },
+      {
+        "id": "R03",
+        "level": "MUST",
+        "criterion": "群普通消息与私聊入站、回同会话；显式执行策略独立于收消息能力",
+        "currentMatches": true
+      },
+      {
+        "id": "R04",
+        "level": "MUST",
+        "criterion": "文本双向，长文/换行/中文/emoji/相同正文不同消息、引用",
+        "currentMatches": true
+      },
+      {
+        "id": "R05",
+        "level": "MUST",
+        "criterion": "TXT/CSV/PDF/DOCX/XLSX/ZIP等常用附件双向原件与用户获取；失败明确",
+        "currentMatches": true
+      },
+      {
+        "id": "R06",
+        "level": "MUST",
+        "criterion": "图片/语音/视频分别验收内容、类型、原件和呈现",
+        "currentMatches": true
+      },
+      {
+        "id": "R07",
+        "level": "MUST",
+        "criterion": "附件能进入Agent、真实工具完成工作、文件回原会话",
+        "currentMatches": true
+      },
+      {
+        "id": "R08",
+        "level": "MUST",
+        "criterion": "会话上下文、任务状态/取消、新会话、失败不重复执行、路由不串",
+        "currentMatches": true
+      },
+      {
+        "id": "R09",
+        "level": "MUST",
+        "criterion": "至少一个本地Codex或Kimi真实执行，接口可替换",
+        "currentMatches": true
+      },
+      {
+        "id": "R10",
+        "level": "MUST",
+        "criterion": "官方优先：认证、通讯、资源、办公用DWS；自研补队列/路由/会话/恢复；AX仅补具体缺口",
+        "currentMatches": true
+      },
+      {
+        "id": "R11",
+        "level": "MUST",
+        "criterion": "参考WeCom AX和成熟Slack/Telegram的可靠性与交互，不硬搬实现",
+        "currentMatches": true
+      },
+      {
+        "id": "R12",
+        "level": "MUST",
+        "criterion": "可复用知识库、开通/权限/身份/版本/坑/验收/运行步骤一致可复核",
+        "currentMatches": true
+      },
+      {
+        "id": "R13",
+        "level": "MUST",
+        "criterion": "持久收发、重复/断线/未知状态/附件完整性/重启、可观察错误",
+        "currentMatches": true
+      },
+      {
+        "id": "R14",
+        "level": "MUST",
+        "criterion": "本地Git分阶段提交、私密数据排除、可回滚、无需账号数据即可检出验证",
+        "currentMatches": true
+      },
+      {
+        "id": "R15",
+        "level": "SHOULD",
+        "criterion": "Agent使用官方组织工具：文档、邮件、待办、日程、会议等",
+        "currentMatches": true
+      },
+      {
+        "id": "R16",
+        "level": "SHOULD",
+        "criterion": "覆盖跨组织/外部联系人/外部群，确认普通账号与各bot实际差异",
+        "currentMatches": true
+      },
+      {
+        "id": "R17",
+        "level": "SHOULD",
+        "criterion": "原生流式卡片/工具审批/执行中追问等成熟插件体验",
+        "currentMatches": true
+      }
+    ],
+    "submittedReviewSha256": "6fda06218fd2a8f1fe94eb81c67ee084095b23d4cd8d886873516252dd4ec2ff",
+    "submittedSourceDigestsMatch": {
+      "plans/completion/01-PRD.md": true,
+      "plans/completion/10-自检清单.md": true,
+      "docs/26-ui-acceptance-and-sender-identity.md": true,
+      "docs/100-aic-group-resume-and-files.md": true,
+      "docs/47-natural-auth-rollover.md": true,
+      "docs/112-dws-refresh-and-reboot-review.md": true,
+      "scripts/review_service_observations.py": true
+    },
+    "sourceSha256": {
+      "plans/completion/01-PRD.md": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea",
+      "plans/completion/10-自检清单.md": "e6c21d58537efe20551328446d5864a121c5f0d32aee90bbec63f174eb80fd49",
+      "plans/completion/ACCEPTANCE_MATRIX.md": "a03d3cb41174723bcca0b9dbf3d271dd42ae95f19fd8e4d3703cbaa4bdc9ccb3",
+      "docs/100-aic-group-resume-and-files.md": "df8b80335258f1e9f9c5fa258fc91b4dfc890a3725cd30f08be98734e43a5f53",
+      "docs/47-natural-auth-rollover.md": "8aacd71719a4974822a73ce9726e1e3a0761004903a4acf31a5a438a5329ab35",
+      "docs/112-dws-refresh-and-reboot-review.md": "17ec2f0075c33677ab8474b6ceaba80f2d3e82b08a83194972653cb051c765c9",
+      "evidence/2026-11-12/aic-resume-validation.json": "85c51eb161fd33fd95690a018659bb403c14a14e7d5d6e35fd0fdd1879d6ab7b",
+      "evidence/2026-11-12/auth-rollover-ledger.json": "0b5a4e49c33119cd3dbe195809573243e3f0a12d3621aad768062d6829677aa3",
+      "evidence/2026-11-12/auth-rollover-validation.json": "a61a73b15f6c37316d7419f24ce171cb27697f1cf5d626e100997318c7e11407",
+      "evidence/2026-11-17/delivery-and-recovery-closeout.json": "2d872aa375a440f5f127907bc44578e01f9ddf61ce066fd5e20927af79250fbb",
+      "scripts/accept_auth_rollover.py": "e982839c6156754bda3db4c995022c2d864b891ac5a4c0cdaa056a8abad454f7",
+      "scripts/review_service_observations.py": "81460e112ac4be0a113ea5a94c6675128982aa351cdd856fb213cb98caabb55a",
+      "scripts/service_observation_evidence.py": "eaf90414f9167ceba4ae98e99c672834582c0936dc15f00c574aa723f5ee3067"
+    },
+    "R07": {
+      "coreCriterionSupported": true,
+      "evidence": "E095 22 checks plus explicit native UI observations; group originals, one explicit job, real tool calculation, same-group output files and individual client retrieval. E017/E026 add direct-chat/multi-image coverage.",
+      "suggestedCoreStatus": "Core original criterion has documented L5 evidence in tested scenarios; explicit reassessment of existing evidence is justified. Existing combination-specific matrix cells stay unchanged.",
+      "notProven": [
+        "E131 single-message group dual-image model success or delivery",
+        "E134/E146 inline image individual client save/open/SHA",
+        "Arbitrary single-message multi-file combinations",
+        "All runtimes, all media, all organizations or fresh current-deployment native-UI retest"
+      ]
+    },
+    "R13": {
+      "zeroNetworkErrorsExplicitInOriginalCriterion": false,
+      "normalNaturalPreexpiryRolloverAlreadyProven": true,
+      "normalRefreshEvidence": "E028 59 samples, 19 positive checks, three retained negative checks, expiry extended before old expiry and both routes synchronized after old expiry",
+      "invalidRefreshCredentialRecoveryProven": false,
+      "currentRunRead": false,
+      "currentRunAudited": false,
+      "current24hComplete": null,
+      "corePassAfterCutoff": "Conditional on complete sealed original-run evidence, fixed-cut ledger coverage, unchanged verified startup sources, scoped recovery review, and retained earlier positive/negative feature evidence. Review exit 0 alone is insufficient.",
+      "strictZeroErrorStabilityPass": "Must remain false if any recorded unavailable/poll error exists; known E144 prefix already contains errors. Do not change script or old metric."
+    },
+    "limits": [
+      "E028 is a historical normal-refresh observation, not this deployment/run proof and not revoked/expired refresh recovery",
+      "E095 does not erase E131/E146 failures or promote unverified matrix cells",
+      "Full product acceptance and all-media maturity are not granted by this review",
+      "Original-run fixed cutoff, timing policy, source hashes and failures may not be rewritten"
+    ]
+  },
+  "assessmentAtCloseout": {
+    "R07CorePassed": true,
+    "R13CorePassed": true,
+    "original24hReviewedSeparately": true,
+    "zeroErrorStrictStabilityPassed": false,
+    "R06RealVoiceAccepted": false,
+    "fullProductAcceptance": false
+  }
+}

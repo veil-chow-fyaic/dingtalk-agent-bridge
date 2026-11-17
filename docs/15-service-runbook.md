@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E143（2026-11-16）已部署产品2b479a8（25模块，含历史错误可见、异常附件消费隔离及此前HTTP直连修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI为E146：私聊引用入站通过，既有组合图文可见但保存未通过；Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
+E150已部署0e151fb，25模块/原配置/原绑定保持，具体部署和观察见[当前总览](102-user-requirements-and-roadmap.md)。E146已验引用/组合呈现，组合逐图保存和真实原生语音仍缺；Kimi403未解除。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
@@ -90,7 +90,7 @@ python3 scripts/run_tests_with_evidence.py
 python3 scripts/verify_handoff.py
 ```
 
-诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。reliability-20261111及aic-persistent-env-20261113两份旧观察均已结束，故障/维护/版本和缺截止事实保留；R13仍需新的合规自然失效refresh、长期覆盖及完整截止证据，不能重置或重审旧run。外部会话、原生语音条、独立video及部分引用/组合仍有缺口，详见矩阵。
+诊断入口在测试fixture清理前保留manager同次拒绝观察，输出到被Git忽略的`local/test-evidence/`；预期负向用例也会留记录，须关联测试结果判定。诊断写入失败使入口失败，不掩盖原错误。单元测试不需账号数据；本机UI审计需要对应`local/`原始证据。API、实际工具、可见回复和客户端下载打开分别验收，不能互相替代。reliability-20261111及aic-persistent-env-20261113两份旧观察均已结束，故障/维护/版本和缺截止事实保留；E150审计了新原run的24h完整性、截止覆盖与来源；旧run不得重置/重审。E028正常access续期已证，无效refresh恢复仍未知。外部会话、真实原生语音条、独立video及组合逐图保存仍有缺口，详见矩阵。
 
 产品、合成fixtures、脱敏evidence可共享；`local/`内的身份配置、OAuth、本机令牌、原聊天/AX/截图、账本和下载件不入Git、不整包分享。官方办公API仍由相同精确profile的DWS承接，DM显式启用上下文，群关闭；E073生成的受管入口支持doc/todo/calendar/mail/drive/minutes六类，固定身份/JSON，保持官方双流及退出码。它不是OS权限隔离，没有新增bot，见[入口边界](89-supervised-official-office-entrypoint.md)。
 
@@ -143,7 +143,7 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 
 ## 新增路由的当前已知缺陷
 
-E144确认当前产品2b479a8的`python -m dingtalk_bridge.configure select`生成新路由时遗漏同账号基准路由的`imageUploadBinary`；文本/文件配置仍有效，新路由原生图片会在上传前明确失败。当前两个已配置会话不受影响。修复候选及安装验证见[阶段报告](145-delivery-and-recovery-closeout.md)，尚未应用运行目录。接入新会话时先检查候选JSON是否明确包含所需helper路径；本工具只生成候选，不替你激活配置。`migrate`离线，`select`会通过官方DWS只读核对目标；不应把全部配置命令称为离线。
+E150已部署配置助手修复：`select`新增会话时继承同账号基准路由的`imageUploadBinary`；跨账号不继承。仍应检查候选JSON中的helper路径，配置助手只生成候选而不激活监听。`migrate`离线，`select`通过受管DWS只读核对目标。
 
 ## 原生截图临时目录故障
 

@@ -6,4 +6,4 @@
 
 用户2026-11-17要求整理所有文档并更新GitHub，已取代旧“不远程发布”。上传范围仍排除local及私有原始材料，用户已明确目标`veil-chow-fyaic/dingtalk-agent-bridge`、公开仓库和MIT许可，保留第三方原声明。仓库工程规范不等于全部产品验收通过。
 
-原聊天自动化已删除，不再创建定时任务。当前固定观察按[HANDOFF](HANDOFF.md)记录自然截止并审原run，不重置旧run或用后续快照补造截止。现状见[总览](../../docs/102-user-requirements-and-roadmap.md)，执行顺序见[关键路径](CRITICAL_PATH.md)。现场范围及认证/系统禁令见[AGENTS](../../AGENTS.md)。
+原聊天自动化已删除，不再创建定时任务。原固定观察已自然截止并完成一次审计，结果见[HANDOFF](HANDOFF.md)，不重置旧run或用后续快照补造截止。现状见[总览](../../docs/102-user-requirements-and-roadmap.md)，执行顺序见[关键路径](CRITICAL_PATH.md)。现场范围及认证/系统禁令见[AGENTS](../../AGENTS.md)。

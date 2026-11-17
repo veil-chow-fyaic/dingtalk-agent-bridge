@@ -1,0 +1,105 @@
+{
+  "scope": "Recorded observation integrity/duration only; not UI acceptance or proof of no lost upstream messages",
+  "checks": {
+    "nonempty_samples": true,
+    "sane_run_parameters": true,
+    "baseline_before_start": true,
+    "sample_count_matches_status": true,
+    "unavailable_count_matches_status": true,
+    "event_count_matches_status": true,
+    "timestamps_finite_and_increasing": true,
+    "samples_within_run": true,
+    "wall_and_elapsed_consistent": true,
+    "sample_gaps_within_budget": true,
+    "event_route_identity_matches_baseline": true,
+    "event_sequences_increase": true,
+    "no_duplicate_message_ids_per_route": true
+  },
+  "evidence_valid": true,
+  "observation_complete_24h": true,
+  "zero_recorded_errors": false,
+  "samples": 2877,
+  "elapsed_hours": 24.005,
+  "observed_span_seconds": 86390.296,
+  "maximum_sample_gap_seconds": 30.23,
+  "gap_budget_seconds": 89.0,
+  "tail_budget_seconds": 59.0,
+  "unavailable_samples": 0,
+  "poll_error_samples": 18,
+  "route_poll_error_occurrences": 29,
+  "new_events": 1,
+  "duplicate_event_count": 0,
+  "maintenance_records": 0,
+  "active": false,
+  "stop_reason": "duration_reached",
+  "limits": [
+    "Maintenance records are listed, never subtracted from error counts",
+    "Sparse samples can miss short outages; event sequence gaps do not prove message loss",
+    "Code changes/restarts require separate version/maintenance review",
+    "A completed 24h observation with errors is not a zero-error stability pass"
+  ],
+  "cutoff": {
+    "checks": {
+      "declared_cutoff_policy": true,
+      "fixed_cut": true,
+      "terminal_duration": true,
+      "ledger_bound": true,
+      "route_count": true,
+      "baseline_route_count": true,
+      "settle_attempts_retained": true,
+      "settle_without_database_errors": true,
+      "route_0_captured": true,
+      "route_0_identity": true,
+      "route_0_baseline": true,
+      "route_0_timely": true,
+      "route_0_coverage": true,
+      "route_0_sequence_bounds": true,
+      "route_0_event_identity": true,
+      "route_0_sampled_range_exact": true,
+      "route_1_captured": true,
+      "route_1_identity": true,
+      "route_1_baseline": true,
+      "route_1_timely": true,
+      "route_1_coverage": true,
+      "route_1_sequence_bounds": true,
+      "route_1_event_identity": true,
+      "route_1_sampled_range_exact": true,
+      "version_records_present": true,
+      "source_and_config_unchanged": true,
+      "owned_processes_unchanged": true,
+      "no_recorded_maintenance": true,
+      "startup_source_verified": true
+    },
+    "cutoff_evidence_valid": true,
+    "routes": [
+      {
+        "routeIndex": 0,
+        "ledgerOnlyTailEvents": 0
+      },
+      {
+        "routeIndex": 1,
+        "ledgerOnlyTailEvents": 0
+      }
+    ],
+    "uniform_loaded_version_proven": false,
+    "natural_refresh_proven": false,
+    "uniform_startup_version_verified": true,
+    "limits": [
+      "Per-route SQLite snapshots, not a shared atomic snapshot or exact instant at cutoff",
+      "Ledger-only tail rows were not observed by HTTP and are counted separately",
+      "Source/config fingerprints are sampled disk evidence, not loaded-code attestation",
+      "Seals detect changed/missing artifacts, not malicious rewriting of all evidence",
+      "Maintenance/errors/late snapshots are never forgiven; no upstream-loss guarantee"
+    ]
+  },
+  "stability_pass": false,
+  "stability_scope": "Recorded 24h availability and verified startup sources; natural refresh and upstream loss are separate",
+  "sourceSha256": {
+    "baseline.json": "cedcaef471d7ea85e7e5d085f436d42e7267672c29c10192344cc8d6dc7f7390",
+    "status.json": "fd5ab01fe51b39d419720a0974018d448f446d96c227b553fe0f89c5afda8a6b",
+    "observations.ndjson": "055a747a43b5c8a53325bbe81287edf5e8642dae5d4ecdad24357a7d61b58d8b",
+    "maintenance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ledger.json": "93c0569750c53d754d3e6a964d7c6e96843b5ed2702bd9811f57ffe05e5e5082",
+    "completion.json": "0560dd4fcff84ba0235e62965d881e5596cc3f86fae82d50f6f36f254f344167"
+  }
+}

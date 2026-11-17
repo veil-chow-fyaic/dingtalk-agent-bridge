@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "scope": "Sealed sampled-health recovery only; no new calls, no business-audit attribution, no natural refresh or upstream-loss proof",
+  "inputIntegrityValid": true,
+  "checks": {
+    "sealedInputsMatch": true,
+    "reviewDigestBound": true,
+    "originalFixedWindow": true,
+    "complete24hAndCutoffReview": true,
+    "startupSourcesVerifiedByBoundReview": true,
+    "noUnknownSamples": true,
+    "allObservedRouteErrorsRecovered": true,
+    "lastSampleAllRoutesCompleteAndClear": true
+  },
+  "recoveryEvidenceComplete": true,
+  "recoveryDemonstrated": true,
+  "observedRouteErrorCount": 29,
+  "unresolvedRouteErrorCount": 0,
+  "samples": 2877,
+  "unavailableSamples": 0,
+  "pollErrorSamples": 18,
+  "unknownSamples": 0,
+  "unknownReasons": {},
+  "maximumObservedStartDeltaSeconds": 30.158712,
+  "maximumObservationEndUpperBoundSeconds": 30.186892,
+  "lastSampleBeforeCutSeconds": 9.70344,
+  "routes": [
+    {
+      "routeIndex": 0,
+      "routeType": "group",
+      "errorOccurrences": 16,
+      "recoveredOccurrences": 16,
+      "unresolvedOccurrences": 0,
+      "unknownSamples": 0,
+      "occurrences": [
+        {
+          "errorSampleIndex": 112,
+          "recovered": true,
+          "recoverySampleIndex": 113,
+          "observedStartDeltaSeconds": 30.042047,
+          "observationEndUpperBoundSeconds": 30.071175,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 138,
+          "recovered": true,
+          "recoverySampleIndex": 139,
+          "observedStartDeltaSeconds": 30.036577,
+          "observationEndUpperBoundSeconds": 30.067452,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 306,
+          "recovered": true,
+          "recoverySampleIndex": 307,
+          "observedStartDeltaSeconds": 30.039062,
+          "observationEndUpperBoundSeconds": 30.071,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 497,
+          "recovered": true,
+          "recoverySampleIndex": 498,
+          "observedStartDeltaSeconds": 30.045959,
+          "observationEndUpperBoundSeconds": 30.080639,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 841,
+          "recovered": true,
+          "recoverySampleIndex": 842,
+          "observedStartDeltaSeconds": 30.158712,
+          "observationEndUpperBoundSeconds": 30.186892,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1040,
+          "recovered": true,
+          "recoverySampleIndex": 1041,
+          "observedStartDeltaSeconds": 30.040402,
+          "observationEndUpperBoundSeconds": 30.063343,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1118,
+          "recovered": true,
+          "recoverySampleIndex": 1119,
+          "observedStartDeltaSeconds": 30.038873,
+          "observationEndUpperBoundSeconds": 30.065839,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1121,
+          "recovered": true,
+          "recoverySampleIndex": 1122,
+          "observedStartDeltaSeconds": 30.042838,
+          "observationEndUpperBoundSeconds": 30.067971,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1383,
+          "recovered": true,
+          "recoverySampleIndex": 1384,
+          "observedStartDeltaSeconds": 30.042359,
+          "observationEndUpperBoundSeconds": 30.060126,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1474,
+          "recovered": true,
+          "recoverySampleIndex": 1475,
+          "observedStartDeltaSeconds": 30.044357,
+          "observationEndUpperBoundSeconds": 30.072447,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1492,
+          "recovered": true,
+          "recoverySampleIndex": 1493,
+          "observedStartDeltaSeconds": 30.04392,
+          "observationEndUpperBoundSeconds": 30.072036,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1573,
+          "recovered": true,
+          "recoverySampleIndex": 1574,
+          "observedStartDeltaSeconds": 30.039731,
+          "observationEndUpperBoundSeconds": 30.069148,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1799,
+          "recovered": true,
+          "recoverySampleIndex": 1800,
+          "observedStartDeltaSeconds": 30.033768,
+          "observationEndUpperBoundSeconds": 30.064125,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1910,
+          "recovered": true,
+          "recoverySampleIndex": 1911,
+          "observedStartDeltaSeconds": 30.023377,
+          "observationEndUpperBoundSeconds": 30.056699,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 2211,
+          "recovered": true,
+          "recoverySampleIndex": 2212,
+          "observedStartDeltaSeconds": 30.042059,
+          "observationEndUpperBoundSeconds": 30.071052,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 2514,
+          "recovered": true,
+          "recoverySampleIndex": 2515,
+          "observedStartDeltaSeconds": 30.030777,
+          "observationEndUpperBoundSeconds": 30.064495,
+          "newSyncStartedAfterError": true
+        }
+      ],
+      "lastState": {
+        "present": true,
+        "sampleHasUnknown": false,
+        "pollError": false,
+        "syncComplete": true,
+        "syncTimestampValid": true,
+        "syncAgeAtSampleStartSeconds": 7.811887
+      }
+    },
+    {
+      "routeIndex": 1,
+      "routeType": "direct",
+      "errorOccurrences": 13,
+      "recoveredOccurrences": 13,
+      "unresolvedOccurrences": 0,
+      "unknownSamples": 0,
+      "occurrences": [
+        {
+          "errorSampleIndex": 138,
+          "recovered": true,
+          "recoverySampleIndex": 139,
+          "observedStartDeltaSeconds": 30.036577,
+          "observationEndUpperBoundSeconds": 30.067452,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 306,
+          "recovered": true,
+          "recoverySampleIndex": 307,
+          "observedStartDeltaSeconds": 30.039062,
+          "observationEndUpperBoundSeconds": 30.071,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 497,
+          "recovered": true,
+          "recoverySampleIndex": 498,
+          "observedStartDeltaSeconds": 30.045959,
+          "observationEndUpperBoundSeconds": 30.080639,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 841,
+          "recovered": true,
+          "recoverySampleIndex": 842,
+          "observedStartDeltaSeconds": 30.158712,
+          "observationEndUpperBoundSeconds": 30.186892,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1040,
+          "recovered": true,
+          "recoverySampleIndex": 1041,
+          "observedStartDeltaSeconds": 30.040402,
+          "observationEndUpperBoundSeconds": 30.063343,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1118,
+          "recovered": true,
+          "recoverySampleIndex": 1119,
+          "observedStartDeltaSeconds": 30.038873,
+          "observationEndUpperBoundSeconds": 30.065839,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1121,
+          "recovered": true,
+          "recoverySampleIndex": 1122,
+          "observedStartDeltaSeconds": 30.042838,
+          "observationEndUpperBoundSeconds": 30.067971,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1474,
+          "recovered": true,
+          "recoverySampleIndex": 1475,
+          "observedStartDeltaSeconds": 30.044357,
+          "observationEndUpperBoundSeconds": 30.072447,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1492,
+          "recovered": true,
+          "recoverySampleIndex": 1493,
+          "observedStartDeltaSeconds": 30.04392,
+          "observationEndUpperBoundSeconds": 30.072036,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1601,
+          "recovered": true,
+          "recoverySampleIndex": 1602,
+          "observedStartDeltaSeconds": 30.043621,
+          "observationEndUpperBoundSeconds": 30.075064,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1859,
+          "recovered": true,
+          "recoverySampleIndex": 1860,
+          "observedStartDeltaSeconds": 30.036778,
+          "observationEndUpperBoundSeconds": 30.073748,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 1910,
+          "recovered": true,
+          "recoverySampleIndex": 1911,
+          "observedStartDeltaSeconds": 30.023377,
+          "observationEndUpperBoundSeconds": 30.056699,
+          "newSyncStartedAfterError": true
+        },
+        {
+          "errorSampleIndex": 2514,
+          "recovered": true,
+          "recoverySampleIndex": 2515,
+          "observedStartDeltaSeconds": 30.030777,
+          "observationEndUpperBoundSeconds": 30.064495,
+          "newSyncStartedAfterError": true
+        }
+      ],
+      "lastState": {
+        "present": true,
+        "sampleHasUnknown": false,
+        "pollError": false,
+        "syncComplete": true,
+        "syncTimestampValid": true,
+        "syncAgeAtSampleStartSeconds": 7.163992
+      }
+    }
+  ],
+  "zeroRecordedErrors": false,
+  "strictStabilityPassFromReviewer": false,
+  "originalInputSha256": {
+    "baseline.json": "cedcaef471d7ea85e7e5d085f436d42e7267672c29c10192344cc8d6dc7f7390",
+    "status.json": "fd5ab01fe51b39d419720a0974018d448f446d96c227b553fe0f89c5afda8a6b",
+    "observations.ndjson": "055a747a43b5c8a53325bbe81287edf5e8642dae5d4ecdad24357a7d61b58d8b",
+    "ledger.json": "93c0569750c53d754d3e6a964d7c6e96843b5ed2702bd9811f57ffe05e5e5082",
+    "maintenance.ndjson": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "completion.json": "0560dd4fcff84ba0235e62965d881e5596cc3f86fae82d50f6f36f254f344167"
+  },
+  "reviewSha256": "4c507a5b62c6afcfcf4af8d6c40a3f13138fc9383cc4b081cdac61f20d5b1c25",
+  "limits": [
+    "Every error occurrence is counted, including repeated samples of one episode",
+    "Unknown samples remain gaps even if later errors recover",
+    "observedAt is before HTTP reads; version.endedAt bounds later observation completion",
+    "Recovery sync.at is call start, strictly after error sample start; not transaction-watermark proof",
+    "No errors means no recovery demonstrated; maximum durations are null",
+    "No current run/R13/full-product verdict; retain strict zero-error result unchanged"
+  ]
+}

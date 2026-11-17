@@ -48,7 +48,7 @@ cp -n config.routes.example.json local/service-config.json
 | `name` | 仅供显示，不承担授权或路由判断 |
 | `historyTimezone` | 无时区历史时间的解释时区；模板为 `Asia/Shanghai` |
 
-默认通过 history 轮询，先不要增加 `stream_hint`。如需原生 PNG/JPEG 发送，另按[图片上传补充](../integrations/dws_image_upload/README.md)准备 `imageUploadBinary`；文本和普通文件不需要它。当前 `configure select` 新增路由尚不继承该字段，须显式检查候选配置。
+默认通过 history 轮询，先不要增加 `stream_hint`。如需原生 PNG/JPEG 发送，另按[图片上传补充](../integrations/dws_image_upload/README.md)准备 `imageUploadBinary`；文本和普通文件不需要它。源码中的 `configure select` 已修复为同账号新增路由继承已有 helper；原账号没有配置该字段时仍需自行填写。生成后核对候选配置，不把另一个账号的 profile 或权限借给新路由。
 
 配置助手的 `migrate` 是离线迁移；`select` 会调用 DWS 只读核对目标，两者都只生成新候选文件、不激活监听。使用已有单路账本时，先读[迁移说明](23-continuation-and-migration.md)，不要手动清除 `stateStorage=legacy`。
 
@@ -87,6 +87,8 @@ cp -n config.routes.example.json local/service-config.json
 
 完成后可扩展文件、引用和图文组合，完整用法见[接口参考](22-generic-tool-and-consumer.md)。文件必须在服务工作目录允许的 `fixtures/` 或 `local/outbox/` 内；上限、原件摘要与实际客户端保存应分别核对。
 
+WAV 音频文件和 MP4 视频文件已有群/私聊双向原件与播放证据。原生聊天语音条另计：当前入站解析只有代码和合成验证，尚未完成真实语音收取；固定 DWS 的 `audio` 发送仍是文件，不能生成语音条。需要多个文件一起处理时，可使用已有附件关联与逐件输出流程；单条图文组合可供浏览，但客户端逐图保存仍有缺口。[完整范围](150-native-voice-and-acceptance-scope.md)
+
 ## 6. 用独立 consumer 持续接收
 
 consumer 保存事件游标与规范化 inbox，可按需下载原件，不调用模型、不自动回复。每个账号/会话使用独立名字，同名消费者不能并发写入。
@@ -99,6 +101,8 @@ consumer 保存事件游标与规范化 inbox，可按需下载原件，不调�
 第一条只处理一批；第二条跟随最多 10 批。复用同一名字和路由会继续已保存游标。`--max-batches 0` 持续到中断；`Ctrl-C` 正常结束。状态位于 `local/consumers/my-reader/`。附件物化可能调用真实 DWS 下载，因此这不是纯离线操作。
 
 `normalized` 表示这一条成功规范化，不表示任何 Agent 已处理；`pending_media`、`media_failed`、`quarantined` 保留不同问题，不能通过删除账本或改名重建消费者掩盖。
+
+语音入站代码只把 DWS 的明确语音标记与对应资源归一化为 `audio`，原件完整下载并校验后才可消费；不会自动录音、转写或调用模型。DWS 提供的转写正文原样保留，不替代音频原件。已有 inbox 行不会因升级自动重新解析。
 
 ## 下一步
 

@@ -183,15 +183,44 @@ class DWSContainmentTests(unittest.TestCase):
         finally:stop.set();worker.join(timeout=8)
         self.assertFalse(worker.is_alive())
 
+    def test_stream_handshake_deadline_latches_without_assuming_descendant_readiness(self):
+        self.binary('import time\ntime.sleep(60)')
+        listener=StreamListener(self.root,{**self.config,'group':'synthetic'},lambda:None)
+        with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
+            listener.run_once(threading.Event(),handshake_timeout=2)
+        self.assertEqual(DWSAccess(self.root).status(), {'state':'suspended','reason':'dws_timeout'})
+        audit=self.root/'local/runtime/dws-call-audit.ndjson';before=audit.read_bytes()
+        with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
+            listener.run_once(threading.Event())
+        self.assertEqual(audit.read_bytes(),before)
+        self.assertEqual(listener.status()['connections'],1)
+
     def test_stream_handshake_timeout_cleans_child_and_latches(self):
         self.addCleanup(self.cleanup_child)
         self.binary(self.spawn_code('time.sleep(60)'))
         listener=StreamListener(self.root,{**self.config,'group':'synthetic'},lambda:None)
-        with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
-            listener.run_once(threading.Event(),handshake_timeout=2)
-        self.until(lambda:not self.alive(int((self.root/'child.pid').read_text())))
-        with self.assertRaises(DWSAccessSuspended):listener.run_once(threading.Event())
-        self.assertEqual(listener.status()['connections'],1)
+        # Unlike run_dws, run_once starts its handshake clock BEFORE constructing
+        # the supervisor. Prepare a real owned descendant outside that clock;
+        # only construction is supplied, never time, stop, close or reap.
+        command=listener.command(3600)
+        owned=SupervisedDWS(command,self.root,keep_stdin_open=True)
+        try:
+            self.until(lambda:(self.root/'child.pid').exists() and (self.root/'child.ready').exists())
+            # The one-shot factory also rejects any unexpected second startup.
+            with patch('dingtalk_bridge.stream.SupervisedDWS',side_effect=[owned]) as factory:
+                with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
+                    listener.run_once(threading.Event(),handshake_timeout=2)
+                self.until(lambda:not self.alive(int((self.root/'child.pid').read_text())))
+                self.assertFalse((self.root/'late-write').exists())
+                self.assertEqual(DWSAccess(self.root).status(), {'state':'suspended','reason':'dws_timeout'})
+                audit=self.root/'local/runtime/dws-call-audit.ndjson';before=audit.read_bytes()
+                with self.assertRaisesRegex(DWSAccessSuspended,'dws_timeout'):
+                    listener.run_once(threading.Event())
+                self.assertEqual(audit.read_bytes(),before)
+                self.assertEqual(listener.status()['connections'],1)
+                factory.assert_called_once_with(command,self.root,keep_stdin_open=True)
+        finally:
+            owned.close()
 
     def test_stream_ready_then_pretty_error_cannot_resume_automatically(self):
         self.binary('import sys\nprint("[event] ready",file=sys.stderr,flush=True)\nprint('+
