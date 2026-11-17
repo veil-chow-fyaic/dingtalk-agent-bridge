@@ -3,19 +3,18 @@
   "updated": "2026-11-17",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E145",
-    "latestUiEvidence": "E131",
+    "documentationEvidence": "E146",
+    "latestUiEvidence": "E146",
     "deployedProduct": "2b479a8",
     "deploymentEvidence": "E143",
     "candidateProduct": "E144",
     "uiStateCounts": {
-      "passed": 51,
-      "blocked": 11,
+      "passed": 52,
+      "blocked": 10,
       "partial": 2
     },
     "mustGaps": [
       "R01",
-      "R04",
       "R06",
       "R07",
       "R13"
@@ -224,9 +223,52 @@
       "role": "historical",
       "preservedSha256": "bb850b20407243e28d6a3bb079d33a5f4a6dd8da9b8531f1628614dad832528a"
     },
+    "docs/136-observation-cutoff.md": {
+      "role": "historical",
+      "preservedSha256": "ef0b8d46fe2099c1e51bfbcbe57228c664fb5e1b0f670746a4bbe8bff8a7416a"
+    },
+    "docs/137-startup-provenance.md": {
+      "role": "historical",
+      "preservedSha256": "ddbf749598cc467d54298b4127d29f164a701f9610c214c3509fb87f16ccb0d3"
+    },
+    "docs/138-provenance-deployment-and-observation.md": {
+      "role": "historical",
+      "preservedSha256": "b55da9b268188e8c03e1d33ee9d7b67ac9bcc60ee45de2a8412081ffd5b61c66"
+    },
     "docs/14-solo-test-report.md": {
       "role": "historical",
       "preservedSha256": "de8bf7cfadd206dcfac10883a72e13825a2c64b3f4970b0b23df3f6e22382ec5"
+    },
+    "docs/140-local-http-and-actionable-followup.md": {
+      "role": "historical",
+      "preservedSha256": "efc63a2d19233f9c2c5163cd384a4e8ec665e75c932e93ce853584c86e852a9e"
+    },
+    "docs/141-deployment-review-and-direct-ownership.md": {
+      "role": "historical",
+      "preservedSha256": "37110200dc0c549a8166286e683a35d984b0a1ff515058e080a847636cbf58b0"
+    },
+    "docs/142-local-http-deployment.md": {
+      "role": "historical",
+      "preservedSha256": "4c3373157ff48b5a31a9e923851cec5ee6f2f2968ff79cc0679d4f1239f7ffcf"
+    },
+    "docs/143-parallel-hardening.md": {
+      "role": "historical",
+      "preservedSha256": "d48a1df2119a89e24ec9eb2835ba1e5ef0767af69a32187af58afb4114eb2988"
+    },
+    "docs/144-offline-release-export.md": {
+      "role": "current"
+    },
+    "docs/145-delivery-and-recovery-closeout.md": {
+      "role": "historical",
+      "preservedSha256": "2f0d75ede7dba3d0f6cd0d65a33d039bbd872dfe3b03e2f040e5d4df338e2d98"
+    },
+    "docs/146-dws-root-cause-and-integration.md": {
+      "role": "historical",
+      "preservedSha256": "6d12f948cf18f0131725178725cdedcfadd994ee6015f12794a2965e1ae24bcc"
+    },
+    "docs/147-native-ui-recovery-and-dm-quote.md": {
+      "role": "historical",
+      "preservedSha256": "ba8495e103b189448049e00f69f989fc630c856e4ba1a2d47e029479b8757c0f"
     },
     "docs/15-service-runbook.md": {
       "role": "current"
@@ -617,9 +659,17 @@
     "plans/completion/00-README.md": {
       "role": "current"
     },
+    "plans/completion/01-PRD.before-E144.md": {
+      "role": "archive",
+      "preservedSha256": "cddf3f2b7d13b61678ef9f3105275dbb97f9e2cd8eddb3330ac2bdc2caf2c18d"
+    },
+    "plans/completion/01-PRD.before-E146.md": {
+      "role": "archive",
+      "preservedSha256": "4183329814db66608b1c44ebbe39368012a942e8f051ca575d591204c7655d1d"
+    },
     "plans/completion/01-PRD.md": {
       "role": "baseline",
-      "preservedSha256": "4183329814db66608b1c44ebbe39368012a942e8f051ca575d591204c7655d1d"
+      "preservedSha256": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea"
     },
     "plans/completion/09-执行时序与里程碑.md": {
       "role": "current"
@@ -633,9 +683,17 @@
       "preservedSha256": "8588cc8f4b70403dc6ed98a686cdf6310879e0fee48df73762038daceff8a43d",
       "preservedPrefixBytes": 65773
     },
+    "plans/completion/ACCEPTANCE_MATRIX.before-E144.md": {
+      "role": "archive",
+      "preservedSha256": "25b1d3ff74ba1129f56c87fb3a81b8637017d3ce0f3f88fa801bd237b83e41cf"
+    },
+    "plans/completion/ACCEPTANCE_MATRIX.before-E146.md": {
+      "role": "archive",
+      "preservedSha256": "0f4001aadf35f6cabab1d6f799de3d1f86c8c2265b8c16d444e9e81ec270771c"
+    },
     "plans/completion/ACCEPTANCE_MATRIX.md": {
       "role": "baseline",
-      "preservedSha256": "0f4001aadf35f6cabab1d6f799de3d1f86c8c2265b8c16d444e9e81ec270771c"
+      "preservedSha256": "a03d3cb41174723bcca0b9dbf3d271dd42ae95f19fd8e4d3703cbaa4bdc9ccb3"
     },
     "plans/completion/CRITICAL_PATH.md": {
       "role": "current"
@@ -673,53 +731,6 @@
     },
     "plans/completion/TODO.md": {
       "role": "current"
-    },
-    "docs/136-observation-cutoff.md": {
-      "role": "historical",
-      "preservedSha256": "ef0b8d46fe2099c1e51bfbcbe57228c664fb5e1b0f670746a4bbe8bff8a7416a"
-    },
-    "docs/137-startup-provenance.md": {
-      "role": "historical",
-      "preservedSha256": "ddbf749598cc467d54298b4127d29f164a701f9610c214c3509fb87f16ccb0d3"
-    },
-    "docs/138-provenance-deployment-and-observation.md": {
-      "role": "historical",
-      "preservedSha256": "b55da9b268188e8c03e1d33ee9d7b67ac9bcc60ee45de2a8412081ffd5b61c66"
-    },
-    "docs/140-local-http-and-actionable-followup.md": {
-      "role": "historical",
-      "preservedSha256": "efc63a2d19233f9c2c5163cd384a4e8ec665e75c932e93ce853584c86e852a9e"
-    },
-    "docs/141-deployment-review-and-direct-ownership.md": {
-      "role": "historical",
-      "preservedSha256": "37110200dc0c549a8166286e683a35d984b0a1ff515058e080a847636cbf58b0"
-    },
-    "docs/142-local-http-deployment.md": {
-      "role": "historical",
-      "preservedSha256": "4c3373157ff48b5a31a9e923851cec5ee6f2f2968ff79cc0679d4f1239f7ffcf"
-    },
-    "docs/143-parallel-hardening.md": {
-      "role": "historical",
-      "preservedSha256": "d48a1df2119a89e24ec9eb2835ba1e5ef0767af69a32187af58afb4114eb2988"
-    },
-    "docs/144-offline-release-export.md": {
-      "role": "current"
-    },
-    "plans/completion/01-PRD.before-E144.md": {
-      "role": "archive",
-      "preservedSha256": "cddf3f2b7d13b61678ef9f3105275dbb97f9e2cd8eddb3330ac2bdc2caf2c18d"
-    },
-    "plans/completion/ACCEPTANCE_MATRIX.before-E144.md": {
-      "role": "archive",
-      "preservedSha256": "25b1d3ff74ba1129f56c87fb3a81b8637017d3ce0f3f88fa801bd237b83e41cf"
-    },
-    "docs/145-delivery-and-recovery-closeout.md": {
-      "role": "historical",
-      "preservedSha256": "2f0d75ede7dba3d0f6cd0d65a33d039bbd872dfe3b03e2f040e5d4df338e2d98"
-    },
-    "docs/146-dws-root-cause-and-integration.md": {
-      "role": "historical",
-      "preservedSha256": "6d12f948cf18f0131725178725cdedcfadd994ee6015f12794a2965e1ae24bcc"
     }
   }
 }

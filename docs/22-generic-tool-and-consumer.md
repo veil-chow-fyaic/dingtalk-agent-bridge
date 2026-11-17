@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-E134（2026-11-16）部署E133的组合接口，产品2467fe2；两路真实发送/history/官方原件下载已验，客户端验收仍未完整，最近真实UI E131。公共工具独立于组织、模型和Agent runtime；现状统一见[总览](102-user-requirements-and-roadmap.md)。E135实查心跳已PAUSED，调度状态不等于业务健康；只在AIC及原私聊，禁止项见[AGENTS](../AGENTS.md)。
+实际产品2b479a8/E143；E134两路composition发送/history/官方原件已验，E146完整图文/身份/AI标识已验但逐图保存未成功。E146私聊原生引用UI/history/consumer通过。公共工具独立于组织、模型和runtime；现状见[总览](102-user-requirements-and-roadmap.md)。聊天调度已删除，业务服务独立；范围与禁止项见[AGENTS](../AGENTS.md)。
 
 ## 调用方式
 
@@ -53,7 +53,7 @@ images为1–9个有序条目，每项只允许path和sha256；text可省略。�
 
 一次调用先核全部原件，原子发布内容寻址暂存，再持久化一个投递键，调用固定官方`+messages-send --markdown`。官方内部完成本地图上传及一条图文消息发送；bridge不按图片循环发消息。顺序、正文、各原件摘要/名称进入指纹，同key不同内容拒绝；已入账同key即使生产者文件删除仍返回原回执。中断、上传/发送结果不明统一保持原key的outcome_unknown，不自动重传/改key/降级成多条独立图片；有task_id才继续原task对账。
 
-这是官方Markdown图文入口，不能外推为独立原生image卡片或普通文件附件数组。E134群/私聊各一条文字＋两张新PNG confirmed；history保留文字和图序，四张官方下载原件与源/暂存字节及SHA一致。客户端显示、发送者/AI标识和用户逐图保存尚未验；1–9图及JPEG的全范围仍按E133合成验证计。E011旧内联图原件获取失败保留，不能用本次成功改写。gateway仍逐件交付，自身媒体过滤后可保持pending_media，不触发runtime；离线物化另计。[实现验证](134-outbound-composition.md) · [真实API验证](135-composition-api-deployment.md)
+这是官方Markdown图文入口，不能外推为独立原生image卡片或普通文件附件数组。E134群/私聊各一条文字＋两张新PNG confirmed；history保留文字和图序，四张官方下载原件与源/暂存字节及SHA一致。E146客户端完整文字/双图顺序、发送者/AI标识已验；逐图保存重复E011三点击仍失败后停止，客户端原件尚未验；1–9图及JPEG的全范围仍按E133合成验证计。E011旧内联图原件获取失败保留，不能用本次成功改写。gateway仍逐件交付，自身媒体过滤后可保持pending_media，不触发runtime；离线物化另计。[实现验证](134-outbound-composition.md) · [真实API验证](135-composition-api-deployment.md)
 
 ## 配置、发现与状态隔离
 

@@ -2,7 +2,7 @@
 
 工作交接：[HANDOFF](../plans/completion/HANDOFF.md)。E135只读检查修正心跳PAUSED事实并指出R13独立采集缺口；未启动新业务实验。
 
-当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132整理文档，E133新增独立IM组合发送，E134于2026-11-16部署2467fe2并补群/私聊真实API及原件证据；组合客户端UI仍未验。
+当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132整理文档，E133新增独立IM组合发送，E134于2026-11-16部署2467fe2并补群/私聊真实API及原件证据；E146已补组合完整图文/身份/AI标识及私聊原生引用，逐图保存未成功；运行产品仍2b479a8/E143。
 
 | 要解决的问题 | 阅读入口 |
 |---|---|

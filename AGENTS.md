@@ -1,12 +1,12 @@
 # 钉钉 bridge 工作约定
 
-2026-11-17 E145：已补DWS取消候选完整CLI构建、原测试编译及17+5方法普通/race跨层验证；系统钥匙串根因仍未确认，候选未替换固定v67。E144图片修复同wheel补独立Python3.14安装2+9专项，部署/导出输入已准备。用户澄清手动UI正常，本轮自动化仍-10005、无可用句柄或原生输入。实际产品2b479a8及原观察不动，固定11月17日18:29:37截止；5 MUST、51/11/2保持，无调度。
+2026-11-17 E146：ImageIO日志确认本次截图临时目标ENOENT，补建缺失目录后原CUA读取/点击/截图恢复；目录消失机制未知。原私聊一次原生引用经UI/history/consumer验证且未触发任务，R04通过。E134两路完整图文/发送者/AI标识已见，逐图保存仍失败；52通过/10阻塞/2部分，剩R01/R06/R07/R13四项MUST。产品2b479a8、固定v67及原观察不动，11月17日18:29:37固定截止，无调度。
 
 ## 工作位置和读取顺序
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`。用户2026-11-16明确要求sub agents分别实现与推进，取代旧单Agent/不派生限制：主Agent统管集成、提交和一切现场业务/维护；子Agent仅在各自/tmp冻结源码候选中实现及离线验证，不改运行产品、采集器、配置或业务数据，不递归派生。不另开产品实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E143已部署2b479a8及验证短采集，当前25模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，5 MUST仍未完整。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E143已部署2b479a8及验证短采集，当前25模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI为E146：私聊引用入站通过，既有组合图文可见但保存未通过，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。52通过/10阻塞/2部分，R01/R06/R07/R13四项MUST仍未完整。
 
 ## 产品与当前执行边界
 
@@ -16,7 +16,7 @@ E139用户重申：优先DWS CLI，只有实际需求缺口才自己补。按用
 
 E130群引用双向已过；E131文字＋双PNG入站原件一致，但Kimi2.1.1返回provider.auth_error 403、订阅没有Kimi Code访问权限，任务failed/runtime_terminal_missing，无工具/完成事件、结果或重做。需既有Kimi服务访问恢复的新证据才继续群模型任务；禁止登录修复/复制token/换runtime绕过，不重发E131。DWS当时ready不能否定Kimi失败，也不能把403归成DWS凭据故障。E133用户明确授权复查的一次最小请求仍为同类403，无周限额/重置时间证据；不循环探测。Kimi是可选执行器，其故障只限制对应模型任务，不阻塞通用IM通道主线。
 
-剩余入口和条件见[关键路径](plans/completion/CRITICAL_PATH.md)。私聊入站引用旧右键/菜单/快捷键路径保持loop guard，需明确新原生入口；语音4/video4缺原生协议，出站多附件2及入站各部分仍缺完整组合/逐原件/任务交付。已有明确且尚未验的入口可独立执行，不把所有剩余格一概归为等新API。E133实现显式composition（字面文字＋1–9张PNG/JPEG，逐张预期SHA、≤2MiB），使用官方Markdown一次发送、未知不重传；不是原生图片卡片/普通多文件组合，也未证明客户端下载原件。E134补齐两路真实API/history/官方下载原件，客户端呈现及逐图保存仍未验。原生UI连续两轮返回failedToCreateImageDestination，停止同路径重试，需新的可读证据；未绕过或重复旧菜单。自身两条媒体在gateway inbox按设计保持pending_media，离线物化不等于该inbox已normalized。
+剩余入口和条件见[关键路径](plans/completion/CRITICAL_PATH.md)。E146私聊原生引用入站已过，旧右键/菜单/快捷键失败保留，不重跑已过样本；语音4/video4缺原生协议，出站多附件2及入站各部分仍缺完整组合/逐原件/任务交付。已有明确且尚未验的入口可独立执行，不把所有剩余格一概归为等新API。E133实现显式composition（字面文字＋1–9张PNG/JPEG，逐张预期SHA、≤2MiB），使用官方Markdown一次发送、未知不重传；不是原生图片卡片/普通多文件组合，也未证明客户端下载原件。E134补齐两路真实API/history/官方下载原件，E146补客户端完整文字/双图顺序/发送者/AI标识。缺失截图临时目录补建后原CUA恢复，目录消失机制未知；逐图保存重复E011三点击仍失败后停止，不把可见或API原件充当客户端下载。自身两条媒体在gateway inbox按设计保持pending_media，离线物化不等于该inbox已normalized。
 
 ## 授权与身份
 
@@ -57,4 +57,4 @@ E140的共用本机HTTP直连/拒绝重定向修复已于E142应用并部署为1
 
 E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL不存在/严格0字节及遗留SHM；必须原owner锁/operator_suspended，非空WAL或任何journal仍拒绝，不能删旁文件绕过。不再把历史“需要新授权”字符串当作重复索取本会话已有许可的理由。工具不执行部署，现场停止/排空/cut/积压顺序仍按上文。
 
-E144候选只修改configure.py的图片helper继承及帮助，不影响当前两路配置；原固定cut自然收尾审计后再按维护规范集成，不再因非紧急配置助手修复中断长观察。资料/Git检出两项R12/R14按原判据独立通过，五MUST仍未完整。
+E144候选只修改configure.py的图片helper继承及帮助，不影响当前两路配置；原固定cut自然收尾审计后再按维护规范集成，不再因非紧急配置助手修复中断长观察。资料/Git检出两项R12/R14按原判据独立通过，E146后四项MUST仍未完整。

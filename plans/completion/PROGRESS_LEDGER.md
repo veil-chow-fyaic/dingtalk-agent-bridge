@@ -385,3 +385,8 @@ f322402经原manager维护流程部署，固定cut、六库保留、停机积压
 - [报告](../../docs/146-dws-root-cause-and-integration.md)、[DWS候选验证](../../evidence/2026-11-17/dws-full-integration-validation.json)：三类故障分别定性；官方主源仍无适用根治确认。固定v67完整CLI构建、两原测试文件集合编译，17 DWS+5 keyring方法普通/race通过；独立审查及主审补丁重建过，未运行新CLI或真实Keychain。
 - [图片候选安装记录](../../evidence/2026-11-17/configure-image-install-validation.json)：同73f0 wheel独立Python3.14新增2+既有9通过；源码2/双安装各11明确为专项，现有验证解析器接受，维护材料准备完整，未部署。
 - 用户手动客户端正常；自动化新一次getApp仍-10005且无句柄，0原生输入/消息。现有25模块、固定DWS、服务、原24h观察不动；5 MUST及51/11/2不变，无调度/远程发布。
+
+## E146 — 原生UI恢复、私聊引用收口与组合保存失败保留
+- [阶段报告](../../docs/147-native-ui-recovery-and-dm-quote.md)、[脱敏证据](../../evidence/2026-11-17/native-ui-recovery-and-dm-quote.json)：ImageIO截图临时目标ENOENT及目录缺失已核，仅mkdir0700后原CUA恢复；未改既有权限/重启，缺失机制未知，不称Keychain或永久根治。
+- 11:24:05一次原私聊原生引用，history新增一条且精确源关系、不递归旧双图；consumer normalized/attempts0/errorNone、quote.parts纯文本/issues空。99jobs/240Agentoutbox/tasksmeta、两路delivery及manager/25模块保持，未触发模型任务。
+- E134既有两路组合完整文字/双图顺序/发送者/AI标识可见；重复E011三点击保存仍失败后停止，不重发、不充当客户端下载。R04通过，52/10/2，四MUST R01/R06/R07/R13仍未完整；原产品/观察/cut不动。

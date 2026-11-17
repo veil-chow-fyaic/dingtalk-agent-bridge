@@ -12,4 +12,4 @@
 | 累计历史 | [EVIDENCE](EVIDENCE.md) · [PROGRESS_LEDGER](PROGRESS_LEDGER.md) · [偏差日志](99-执行偏差日志.md) |
 | 文档全貌 | [导航](../../docs/README.md) · [完整索引](../../docs/INDEX.md) |
 
-E134部署并验独立IM组合API/history/官方下载原件，E132资料整理保留；最近真实UI E131，最近部署2467fe2/E134，OpenClaw代码随包存在但未绑定/真实模型验收；旧观察已收尾，不声称持续观察仍在运行。原判据和失败证据保持，项目未完成。
+E134两路组合API/history/官方原件已验，E146补完整图文/身份/AI标识及私聊原生引用；逐图保存未成功。当前部署2b479a8/E143、最近真实UI E146；OpenClaw未绑定/真实模型验收。原parallel-hardening观察固定11月17日18:29:37截止，旧观察已收尾；原判据与失败保持，项目未完成。

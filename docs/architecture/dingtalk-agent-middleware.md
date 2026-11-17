@@ -48,8 +48,8 @@ E133的composition已于E134随2467fe2部署，两路API/history/官方逐原件
 
 ## 当前部署与后续接缝
 
-现场为E133产品2467fe2/E134部署：AIC Kimi、原私聊Pi、history-only15秒。最近真实UI E131中群双PNG原件进入同一任务，Kimi订阅访问403使模型失败；DWS准入与runtime服务访问分开。E127的500191a增加OpenClaw，E128补合成生命周期验证；代码随E134部署，未启用OpenClaw绑定或调用真实provider。详见[运行器接入表](agent-integration-map.md)。
+现场产品2b479a8/E143：AIC Kimi、原私聊Pi、history-only15秒。最近UI E146补私聊原生引用及既有组合可见层，逐图保存未通过；E131群双PNG原件进入任务但Kimi订阅403失败的历史保留。DWS准入与模型服务访问分开；OpenClaw代码存在但未绑定/真实provider，见[运行器接入表](agent-integration-map.md)。
 
 C01文件摘要、C02发送事实、C03能力/终态、C04兼容性与C06环境已采用并部署；Qwen接纳/完成与inbox/job/outbox事务对照于E124完成。已有等价实现只映射，不重新实现；C05租约仅有多宿主实际需要时引入，不能把当前flock视为缺陷。具体[采用账](../references/adoption-plan.md)。
 
-仅AIC测试群及原私聊获准，企业大群/旧群禁测；E135实查心跳已PAUSED，调度与服务健康分开。系统钥匙串根因、自然失效refresh和长期验收未完成，禁止auth/doctor/Keychain实验。原生语音/video、私聊入站引用及组合缺口不因架构或运行器扩展而通过。
+仅AIC测试群及原私聊获准，企业大群/旧群禁测；E141已删除聊天调度，调度与服务健康分开。系统钥匙串根因、自然失效refresh和长期验收未完成，禁止auth/doctor/Keychain实验。E146私聊入站引用已过；原生语音/video及组合剩余保存/任务缺口不因架构或运行器扩展而通过。

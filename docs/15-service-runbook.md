@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E143（2026-11-16）已部署产品2b479a8（25模块，含历史错误可见、异常附件消费隔离及此前HTTP直连修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI仍E131，Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
+E143（2026-11-16）已部署产品2b479a8（25模块，含历史错误可见、异常附件消费隔离及此前HTTP直连修复），AIC Kimi/原私聊Pi绑定保持；两路composition真实发送/history/官方下载原件已验。OpenClaw代码随包部署但未绑定/真实模型/UI验收。最近真实UI为E146：私聊引用入站通过，既有组合图文可见但保存未通过；Kimi Code订阅访问403仍未解除。版本、矩阵和启动条件统一见[当前总览](102-user-requirements-and-roadmap.md)。
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
@@ -144,3 +144,9 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 ## 新增路由的当前已知缺陷
 
 E144确认当前产品2b479a8的`python -m dingtalk_bridge.configure select`生成新路由时遗漏同账号基准路由的`imageUploadBinary`；文本/文件配置仍有效，新路由原生图片会在上传前明确失败。当前两个已配置会话不受影响。修复候选及安装验证见[阶段报告](145-delivery-and-recovery-closeout.md)，尚未应用运行目录。接入新会话时先检查候选JSON是否明确包含所需helper路径；本工具只生成候选，不替你激活配置。`migrate`离线，`select`会通过官方DWS只读核对目标；不应把全部配置命令称为离线。
+
+## 原生截图临时目录故障
+
+E146已用系统原生日志定位ImageIO创建截图临时目标返回ENOENT。出现相同错误时，先只读核对同次SkyComputerUseService日志中的目标及错误；仅在确认目标目录缺失、父目录归当前用户且为私有目录后，创建那个缺失的同用户临时目录（mode0700），再从原CUA入口验证。不得仅凭-10005猜路径或递归创建不明位置；不改已有对象权限、不操作凭据/Keychain、不重启系统或换底层工具绕过。目录已经存在、归属不符或没有同次ENOENT证据时，不重复mkdir或试探其他目录，保留日志另行定位。
+
+本次原SkyComputerUseService进程保持，原getApp及后续AX/点击/截图成功，已核修复后日志窗口无同一ImageIO写出错误；目录消失机制仍未知，不能当永久根治。UI入口恢复后按具体用户判据继续验收，不能退回笼统“等待用户解决UI”，也不能把可见图文直接算客户端下载。见[E146](147-native-ui-recovery-and-dm-quote.md)。

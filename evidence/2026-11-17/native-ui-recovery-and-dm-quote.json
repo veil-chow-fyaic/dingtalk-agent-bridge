@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E146",
+  "date": "2026-11-17",
+  "ok": true,
+  "checks": {
+    "one_native_send_no_new_dws_send": true,
+    "exactly_one_direct_event": true,
+    "existing_quote_source": true,
+    "incoming_sender_route_and_body": true,
+    "official_quote_exact_source": true,
+    "sample_flat_quote_no_media": true,
+    "native_message_not_ai_flag": true,
+    "history_consumer_record_binding": true,
+    "consumer_normalized_and_covered": true,
+    "consumer_top_level_exact": true,
+    "consumer_quote_exact": true,
+    "filter_prefix_without_mention": true,
+    "group_jobs_outbox_sessions_unchanged": true,
+    "group_all_old_events_preserved": true,
+    "group_delivery_upload_rejection_unchanged": true,
+    "group_old_inbox_preserved": true,
+    "direct_jobs_outbox_sessions_unchanged": true,
+    "direct_all_old_events_preserved": true,
+    "direct_delivery_upload_rejection_unchanged": true,
+    "direct_old_inbox_preserved": true,
+    "group_no_new_history_or_inbox": true,
+    "only_one_new_inbox_record": true,
+    "99_jobs_240_outbox_preserved": true,
+    "manager_and_product_unchanged": true,
+    "actual_source_equals_deployment": true,
+    "three_owned_process_identities": true,
+    "dws_guard_ready_at_both_reads": true,
+    "missing_directory_observed": true,
+    "same_user_private_directory_created": true,
+    "post_repair_directory_lstat": true,
+    "native_imageio_enoent_evidence": true,
+    "seven_original_native_frames": true,
+    "native_ui_review_recorded": true,
+    "save_limit_not_promoted": true,
+    "draft_ax_excerpt_matches": true,
+    "sent_ax_excerpt_matches": true
+  },
+  "negativeChecks": [
+    {
+      "case": "wrong_source",
+      "rejected": true
+    },
+    {
+      "case": "wrong_body",
+      "rejected": true
+    },
+    {
+      "case": "extra_job",
+      "rejected": true
+    },
+    {
+      "case": "changed_frame",
+      "rejected": true
+    },
+    {
+      "case": "empty_manager_components",
+      "rejected": true
+    },
+    {
+      "case": "wrong_model_route",
+      "rejected": true
+    },
+    {
+      "case": "duplicate_history_id",
+      "rejected": true
+    },
+    {
+      "case": "aliased_frames",
+      "rejected": true
+    },
+    {
+      "case": "symlink_directory",
+      "rejected": true
+    },
+    {
+      "case": "wrong_history_envelope",
+      "rejected": true
+    },
+    {
+      "case": "unrelated_process_identity",
+      "rejected": true
+    },
+    {
+      "case": "false_directory_precondition",
+      "rejected": true
+    }
+  ],
+  "newMatrixCells": [
+    "direct_inbound_quote"
+  ],
+  "matrix": {
+    "passed": 52,
+    "blocked": 10,
+    "partial": 2
+  },
+  "remainingMust": [
+    "R01",
+    "R06",
+    "R07",
+    "R13"
+  ],
+  "newNativeMessages": 1,
+  "newRuntimeJobs": 0,
+  "newAgentOutbox": 0,
+  "compositionClientSaves": 0,
+  "deployedProduct": "2b479a8",
+  "dwsVersion": "v1.0.67",
+  "privateEvidence": "local/ui-repair-20261117",
+  "evidenceSha256": {
+    "directory-repair.json": "cdee306a25d4701ef65fac1957ea1a05ccfdf2103fcaacc7dad9334a31f673b7",
+    "image-output-error.log": "30f1154ca45693f9714e2ccdfb4cfda3814f45dffc55218f201a409e992c8e1b",
+    "reviewed-frames.json": "ff6aced436b8f85e41de1a194e2dc363474999622c9c1d1a20bfc3f2f60a1e08",
+    "before-quote.json": "3b272690b64f4ed06c8f245b6e1a84876e895df7927d9ac20e1a8afff252ef78",
+    "after-quote.json": "9ff32612be211c8e2fe9282236a03fc31ed41247f7ec532bcb99f893534df25f",
+    "quote-source-event.json": "5724b0acd39dbbaae29ee5d2ddcebac7ab85fd011b7ac1b8bd7e514d3557ee81",
+    "quote-intent.json": "399abb4277b6e69e41d95a9d2a66941fc0dce7e2bd04e6801c00b7ef13644ea4",
+    "ui-observations.json": "532b9b9bfa415514586546a01d2b8bf7b11b5af63918cc9763de95c9b2cabdd8",
+    "managed-identity-after.json": "84bcca9d2a0e5e728914095d58f9d2c2704e3325a7db832cf136589c2aa3e025",
+    "directory-after-review.json": "655835a30edec70bd4594e288732db44dd7d42d06e51aa98c0e46c2149d3ed33"
+  },
+  "limitations": [
+    "Directory disappearance mechanism unknown; recovery is not proof against recurrence or a Keychain fix",
+    "Native tool screenshots visually reviewed; AX excerpts are copied from actual tool output, not full-tree exports",
+    "Composition rendering passed; original per-image client save/open remains unverified",
+    "One flat text quote only; no arbitrary nesting, attachment reply or model execution claim",
+    "Per-database read transactions are not a common cutoff snapshot",
+    "No deployment, collector change, new natural refresh or 24-hour reliability success claim"
+  ]
+}
