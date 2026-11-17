@@ -12,6 +12,12 @@ license-files = ["LICENSE"]
 requires-python = ">=3.11"
 dependencies = []
 
+[project.urls]
+Repository = "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge"
+Documentation = "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/blob/main/docs/getting-started.md"
+Issues = "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues"
+Changelog = "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/blob/main/CHANGELOG.md"
+
 [project.scripts]
 dab = "dingtalk_bridge.cli:main"
 dab-bridge = "dingtalk_bridge.__main__:main"

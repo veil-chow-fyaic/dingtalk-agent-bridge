@@ -1,6 +1,6 @@
 # 当前任务
 
-E147已整合用户指南、CI/工程规范与[剩余任务路线图](../../docs/ROADMAP.md)，工程候选源码双Python各512通过，安装字节核对另计。用户已确认GitHub目标`veil-chow-fyaic/dingtalk-agent-bridge`、公开和MIT许可；仓库及四个验收Issue已创建，当前在发布前许可/隐私核验与打包阶段，尚未推送/运行托管CI。无聊天调度，原产品/观察边界保持。
+E149已公开[GitHub仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，采用MIT，四项MUST已有Issue/里程碑，私密漏洞报告已启用。两轮真实Actions中Ubuntu双Python通过，macOS各11项失败；第二轮栈已确认HTTPServer启动卡在getfqdn。正在隔离候选内修复并合入E144配置候选，尚未声明四环境CI通过或启用分支保护。运行目录的25模块、部署2b479a8及原固定观察保持；R01/R06/R07/R13未完成。
 
 2026-11-17 E146：ImageIO日志确认本次截图临时目标ENOENT，补建缺失目录后原CUA读取/点击/截图恢复；目录消失机制未知。原私聊一次原生引用经UI/history/consumer验证且未触发任务，R04通过。E134两路完整图文/发送者/AI标识已见，逐图保存仍失败；52通过/10阻塞/2部分，剩R01/R06/R07/R13四项MUST。产品2b479a8、固定v67及原观察不动，11月17日18:29:37固定截止，无调度。
 
