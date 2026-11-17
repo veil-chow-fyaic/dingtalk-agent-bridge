@@ -6,7 +6,7 @@
 
 本轮[新安装修复与故障恢复](145-delivery-and-recovery-closeout.md)包含准确测试层次及候选补丁。DWS原因与完整取消候选见[E145](146-dws-root-cause-and-integration.md)。现行动作见[TODO](../plans/completion/TODO.md)，最新部署见[E143](143-parallel-hardening.md)。最近原生UI为E146：私聊引用入站通过，E134两路组合可见层补齐；逐图客户端保存仍未成功。
 
-E149已公开[GitHub仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，采用MIT，四项MUST已有Issue/里程碑，私密漏洞报告已启用。两轮真实Actions中Ubuntu双Python通过，macOS各11项失败；第二轮栈已确认HTTPServer启动卡在getfqdn。正在隔离候选内修复并合入E144配置候选，尚未声明四环境CI通过或启用分支保护。运行目录的25模块、部署2b479a8及原固定观察保持；R01/R06/R07/R13未完成。 [首次使用](getting-started.md)和[任务路线图](ROADMAP.md)保持实际用户能力与未证范围分开。
+E149已公开[GitHub仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)并采用MIT；四项MUST已有Issue/里程碑，私密漏洞报告及main分支保护已启用。HTTP启动解析与新增路由图片配置修复在隔离发布候选中整合：修复节点四环境CI各525通过，测试契约拆分后的同wheel双安装各526通过，首次失败均保留。候选未替换运行目录：实际部署仍2b479a8，原固定观察及R01/R06/R07/R13未完成状态保持。 证据与准确测试层次见[公开上线与CI](149-github-public-launch-and-ci.md)，用户操作见[首次使用](getting-started.md)。
 
 ## 产品和原验收范围
 
@@ -40,7 +40,7 @@ E139用户追问支持程度并明确DWS优先，尚未批准原基线改级。�
 | 最近真实部署 | 产品 `2b479a8`，E143部署/短采集 | 25模块启动来源/配置一致；群Kimi/私聊Pi 0.84.2绑定不变，99任务/240 Agent outbox及session保持 |
 | 已部署、尚未完整验收的范围 | E133 composition；包含E127 `500191a` OpenClaw适配 | 组合两路真实发送/history/官方下载通过，E146客户端完整呈现/身份/AI标识已验，逐图保存未成功；OpenClaw代码随包存在，未配置绑定或调用真实provider |
 | 最近真实UI | E146，运行产品仍2b479a8 | 私聊原生引用UI/history/consumer通过且无任务副作用；两路既有组合完整文字/双图/身份/AI标识可见，逐图保存失败保留 |
-| 仓库工程E149 | 已公开MIT仓库、四项任务、私密漏洞报告；两轮实际托管CI保留 | macOS启动解析缺陷正在隔离修复，尚未四环境全过；运行部署2b479a8不变 |
+| 仓库工程E149 | 公开MIT、四任务、私密漏洞报告、受保护main；真实修复节点CI四环境各525通过 | 新测试契约同wheel双安装各526通过；旧失败保留，公开源码/安装候选不冒充部署2b479a8 |
 
 E123现场Pi实际Python533/同session542、JSON/TXT下载打开/SHA、取消95秒无late和9回复均有记录；第一任务是Python算数后write写JSON，不冒称同Python写文件。Kimi/Codex/Pi各自历史通过范围保留，当前Kimi403不能抹除旧成功，也不能以旧成功否定这次拒绝。见[运行器接入表](architecture/agent-integration-map.md)。
 

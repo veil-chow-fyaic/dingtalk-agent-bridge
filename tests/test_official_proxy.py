@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -122,14 +123,56 @@ class OfficialProxyTests(unittest.TestCase):
         (self.workspace/'release').touch();time.sleep(.25)
         self.assertFalse((self.workspace/'late-write').exists())
 
-    def test_office_timeout_cleans_descendants_and_never_retries(self):
+    def ready_timeout_proxy(self):
+        # The cleanup contract needs a real ready descendant before its real
+        # deadline starts. Only this fixture wraps the constructor; run_dws keeps
+        # its production monotonic clock, two-second timeout, close and reap.
+        proxy = Path(execute.__code__.co_filename).resolve()
+        bootstrap = self.root / 'proxy-after-ready.py'
+        bootstrap.write_text('import sys\nfrom pathlib import Path\n' +
+            'sys.path.insert(0,' + repr(str(proxy.parents[1])) + ')\n' +
+            'import json,time\nfrom dingtalk_bridge import dws_access\n' +
+            'from dingtalk_bridge.official_proxy import main\n' +
+            'class ReadyDWS(dws_access.SupervisedDWS):\n' +
+            ' def __init__(self,*args,**kwargs):\n' +
+            '  super().__init__(*args,**kwargs)\n' +
+            '  started=time.monotonic(); deadline=started+10\n' +
+            '  try:\n' +
+            '   while not (Path("called").exists() and Path("child.ready").exists()):\n' +
+            '    if self.process.poll() is not None:raise RuntimeError("fixture_guard_exited_before_ready")\n' +
+            '    if time.monotonic()>=deadline:raise RuntimeError("fixture_readiness_timeout")\n' +
+            '    time.sleep(.01)\n' +
+            '   Path("deadline-ready.json").write_text(json.dumps({"started":started,"ready":time.monotonic()}))\n' +
+            '  except BaseException:\n' +
+            '   self.close();raise\n' +
+            'dws_access.SupervisedDWS=ReadyDWS\nmain()\n')
+        entry = self.entry.read_text(); original = shlex.quote(str(proxy))
+        self.assertEqual(entry.count(original), 1)
+        self.entry.write_text(entry.replace(original, shlex.quote(str(bootstrap)), 1))
+
+    def test_office_deadline_suspends_without_assuming_descendant_readiness(self):
         self.descendant_program(timeout=2)
+        result = self.invoke('minutes', '+synthetic')
+        self.assertEqual(result.returncode, 75); self.assertIn(b'dws_timeout', result.stderr)
+        self.assertEqual(DWSAccess(self.root).status(), {'state': 'suspended', 'reason': 'dws_timeout'})
+        audit = self.root / 'local/runtime/dws-call-audit.ndjson'
+        before = audit.read_bytes()
+        result = self.invoke('minutes', '+synthetic')
+        self.assertEqual(result.returncode, 75); self.assertIn(b'dws_timeout', result.stderr)
+        self.assertEqual(audit.read_bytes(), before)
+
+    def test_office_timeout_cleans_descendants_and_never_retries(self):
+        self.descendant_program(timeout=2);self.ready_timeout_proxy()
         result=self.invoke('minutes','+synthetic')
         self.assertEqual(result.returncode,75);self.assertIn(b'dws_timeout',result.stderr)
-        self.assertTrue((self.workspace/'called').exists());self.assert_cleaned()
+        self.assertTrue((self.workspace/'called').exists());self.assertTrue((self.workspace/'child.ready').exists())
+        self.assertTrue((self.workspace/'deadline-ready.json').exists());self.assert_cleaned()
+        self.assertEqual(DWSAccess(self.root).status(), {'state': 'suspended', 'reason': 'dws_timeout'})
         pid=(self.workspace/'child.pid').read_bytes()
+        audit=self.root/'local/runtime/dws-call-audit.ndjson';before=audit.read_bytes()
         self.assertEqual(self.invoke('minutes','+synthetic').returncode,75)
         self.assertEqual((self.workspace/'child.pid').read_bytes(),pid)
+        self.assertEqual(audit.read_bytes(),before)
 
     def test_wrapper_sigkill_cleans_descendants_and_persists_interruption(self):
         self.descendant_program()

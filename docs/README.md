@@ -37,6 +37,7 @@
 
 | 主题 | 保留的记录 |
 |---|---|
+| 公开仓库与CI | [公开MIT、启动修复、安装验证与分支保护](149-github-public-launch-and-ci.md) |
 | 当前产品部署检查点 | [可靠性修复与部署](143-parallel-hardening.md) |
 | 最新原生UI与引用 | [UI恢复、私聊引用及组合保存边界](147-native-ui-recovery-and-dm-quote.md) |
 | 图文组合 | [组合API/部署及官方原件](135-composition-api-deployment.md) |
