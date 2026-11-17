@@ -532,3 +532,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 ## E143 — 三分支实修、统一验证及部署
 - [报告](../../docs/143-parallel-hardening.md)、[验证](../../evidence/2026-11-16/parallel-hardening-validation.json)、[部署](../../evidence/2026-11-16/parallel-hardening-deployment.json)：历史不完整健康可见、坏图片标记/单条缓存隔离、通用离线导出；主审补3.11循环链接及数据库路径拒绝。最终冻结源码/同wheel双安装504×3通过，早期并行/串行失败及CLI退出测试契约修正保留。
 - 已部署2b479a8/25模块，原99任务/240 outbox/session/绑定保持；固定cut/零积压、来源/CLI/短采集通过。旧loopback-http观察中断不计通过，新run固定北京时间2026-11-17 18:29:37截止；无聊天定时任务、业务消息/模型/UI新样本，七MUST保持未完整。
+
+## E144 — 新安装使用闭环、配置缺陷候选及真实错误恢复
+- [阶段报告](../../docs/145-delivery-and-recovery-closeout.md)、[脱敏证据](../../evidence/2026-11-17/delivery-and-recovery-closeout.json)：新环境安装当前wheel完成两路CLI/HTTP/独立consumer/原件与重启，复现select漏imageUploadBinary；最小候选、独立审查、双Python专项和候选wheel完整流程通过，尚未应用运行目录。
+- 原观察保存窗口1871采样/0不可达/15错误采样；31次history错误后两路均恢复，最长观测上界47.764秒，无维护/显式resume。零错误仍false；固定截止/事务水位/自然refresh另计。
+- R12/R14按各自原判据独立通过，原PRD/矩阵备份与判据SHA核对保持；UI51/11/2、剩余5 MUST，无新UI/模型/真实业务消息。当前部署2b479a8，原cut不变、无调度。

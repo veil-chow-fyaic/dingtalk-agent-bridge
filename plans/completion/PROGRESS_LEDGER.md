@@ -375,3 +375,8 @@ f322402经原manager维护流程部署，固定cut、六库保留、停机积压
 
 ## E143 — 2026-11-16：子Agent分别实现、主Agent统一落地
 用户明确要求sub agents，替代旧单Agent规则。三候选及主审边界修订完成，最终504×3；真实部署2b479a8、原账本/绑定保留、短采集及新候选包完成。旧观察保中断，新的有界证据采集与聊天调度分开；UI和自然refresh未证项不改级。
+
+## E144 — 新安装使用闭环、配置缺陷候选及真实错误恢复
+- [阶段报告](../../docs/145-delivery-and-recovery-closeout.md)、[脱敏证据](../../evidence/2026-11-17/delivery-and-recovery-closeout.json)：新环境安装当前wheel完成两路CLI/HTTP/独立consumer/原件与重启，复现select漏imageUploadBinary；最小候选、独立审查、双Python专项和候选wheel完整流程通过，尚未应用运行目录。
+- 原观察保存窗口1871采样/0不可达/15错误采样；31次history错误后两路均恢复，最长观测上界47.764秒，无维护/显式resume。零错误仍false；固定截止/事务水位/自然refresh另计。
+- R12/R14按各自原判据独立通过，原PRD/矩阵备份与判据SHA核对保持；UI51/11/2、剩余5 MUST，无新UI/模型/真实业务消息。当前部署2b479a8，原cut不变、无调度。

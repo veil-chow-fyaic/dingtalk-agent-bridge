@@ -140,3 +140,7 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 ## 可复用离线交付
 
 使用[scripts/export_release.py](../scripts/export_release.py)从指定Git提交和已测wheel生成包，步骤见[离线导出说明](144-offline-release-export.md)。先过manifest/暂存隐私门；导出不运行归档代码、不读账号数据、不部署，不把包校验当最终MUST签署。
+
+## 新增路由的当前已知缺陷
+
+E144确认当前产品2b479a8的`python -m dingtalk_bridge.configure select`生成新路由时遗漏同账号基准路由的`imageUploadBinary`；文本/文件配置仍有效，新路由原生图片会在上传前明确失败。当前两个已配置会话不受影响。修复候选及安装验证见[阶段报告](145-delivery-and-recovery-closeout.md)，尚未应用运行目录。接入新会话时先检查候选JSON是否明确包含所需helper路径；本工具只生成候选，不替你激活配置。`migrate`离线，`select`会通过官方DWS只读核对目标；不应把全部配置命令称为离线。

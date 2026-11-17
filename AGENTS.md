@@ -1,12 +1,12 @@
 # 钉钉 bridge 工作约定
 
-2026-11-16 E143：三个子Agent完成可靠性、消息消费和可复用交付候选，主Agent审查后统一部署产品2b479a8。25模块及实际配置启动来源、三服务/CLI/60秒实际采集通过，原99任务/240 Agent outbox/session/绑定保持。最终冻结源码及同wheel独立安装Python3.14/3.11各504方法通过，早先失败与测试契约修正保留。新run `parallel-hardening-24h-20261116` 固定北京时间2026-11-17 18:29:37截止，只有本地证据采集；聊天定时任务仍已删除。原loopback-http run主动中止、未满24h，不能合并计时或算通过。
+2026-11-17 E144：新安装流程发现configure select漏继承imageUploadBinary，已完成最小候选修复、独立审查、双Python专项及候选wheel两路CLI/HTTP/consumer/图片闭环；尚未应用运行目录。实际产品仍2b479a8。原24h观察截至10:05保存窗口1871采样/0不可达/15错误采样，31次history错误后两路均恢复，最长观测上界47.764秒；不是零错误、截止覆盖或自然refresh通过。R12/R14按各自原判据独立收口，R01/R04/R06/R07/R13仍未完整；51/11/2不变。固定截止11月17日18:29:37，不重置、不创建调度。
 
 ## 工作位置和读取顺序
 
 仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，复用 `codex/complete-bridge`。用户2026-11-16明确要求sub agents分别实现与推进，取代旧单Agent/不派生限制：主Agent统管集成、提交和一切现场业务/维护；子Agent仅在各自/tmp冻结源码候选中实现及离线验证，不改运行产品、采集器、配置或业务数据，不递归派生。不另开产品实现、不改参考仓库、不远程发布。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
-当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E143已部署2b479a8及验证短采集，当前25模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，7 MUST仍未完整。
+当前结论统一在[需求/交付/路线](docs/102-user-requirements-and-roadmap.md)，全部资料范围见[文档索引](docs/INDEX.md)。E143已部署2b479a8及验证短采集，当前25模块；E134的两路组合confirmed/history/四官方下载原件证据保留，无新增模型任务。最近真实UI仍E131，当前含OpenClaw适配代码，但没有OpenClaw绑定/真实模型/UI验收。不可拿后续文档HEAD冒充部署产品。51通过/11阻塞/2部分，5 MUST仍未完整。
 
 ## 产品与当前执行边界
 
@@ -56,3 +56,5 @@ veil是原生客户端真人，liev是显式profile绑定的DWS真人；UI发送
 E140的共用本机HTTP直连/拒绝重定向修复已于E142应用并部署为10758eb；25模块与477×3验证候选及同wheel一致。补丁只是历史交付材料，不再次应用。新观察不作为其他独立工作的前置，发生必要维护时如实记中断，不能保计时而搁置已完成修复。
 
 E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL不存在/严格0字节及遗留SHM；必须原owner锁/operator_suspended，非空WAL或任何journal仍拒绝，不能删旁文件绕过。不再把历史“需要新授权”字符串当作重复索取本会话已有许可的理由。工具不执行部署，现场停止/排空/cut/积压顺序仍按上文。
+
+E144候选只修改configure.py的图片helper继承及帮助，不影响当前两路配置；原固定cut自然收尾审计后再按维护规范集成，不再因非紧急配置助手修复中断长观察。资料/Git检出两项R12/R14按原判据独立通过，五MUST仍未完整。

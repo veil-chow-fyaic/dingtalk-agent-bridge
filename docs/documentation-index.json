@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E143",
+    "documentationEvidence": "E144",
     "latestUiEvidence": "E131",
     "deployedProduct": "2b479a8",
     "deploymentEvidence": "E143",
-    "candidateProduct": "E143",
+    "candidateProduct": "E144",
     "uiStateCounts": {
       "passed": 51,
       "blocked": 11,
@@ -18,9 +18,7 @@
       "R04",
       "R06",
       "R07",
-      "R12",
-      "R13",
-      "R14"
+      "R13"
     ],
     "openclawCandidateProduct": "500191a",
     "automationStatus": "DELETED",
@@ -621,7 +619,7 @@
     },
     "plans/completion/01-PRD.md": {
       "role": "baseline",
-      "preservedSha256": "cddf3f2b7d13b61678ef9f3105275dbb97f9e2cd8eddb3330ac2bdc2caf2c18d"
+      "preservedSha256": "4183329814db66608b1c44ebbe39368012a942e8f051ca575d591204c7655d1d"
     },
     "plans/completion/09-执行时序与里程碑.md": {
       "role": "current"
@@ -637,7 +635,7 @@
     },
     "plans/completion/ACCEPTANCE_MATRIX.md": {
       "role": "baseline",
-      "preservedSha256": "25b1d3ff74ba1129f56c87fb3a81b8637017d3ce0f3f88fa801bd237b83e41cf"
+      "preservedSha256": "0f4001aadf35f6cabab1d6f799de3d1f86c8c2265b8c16d444e9e81ec270771c"
     },
     "plans/completion/CRITICAL_PATH.md": {
       "role": "current"
@@ -706,6 +704,18 @@
     },
     "docs/144-offline-release-export.md": {
       "role": "current"
+    },
+    "plans/completion/01-PRD.before-E144.md": {
+      "role": "archive",
+      "preservedSha256": "cddf3f2b7d13b61678ef9f3105275dbb97f9e2cd8eddb3330ac2bdc2caf2c18d"
+    },
+    "plans/completion/ACCEPTANCE_MATRIX.before-E144.md": {
+      "role": "archive",
+      "preservedSha256": "25b1d3ff74ba1129f56c87fb3a81b8637017d3ce0f3f88fa801bd237b83e41cf"
+    },
+    "docs/145-delivery-and-recovery-closeout.md": {
+      "role": "historical",
+      "preservedSha256": "2f0d75ede7dba3d0f6cd0d65a33d039bbd872dfe3b03e2f040e5d4df338e2d98"
     }
   }
 }

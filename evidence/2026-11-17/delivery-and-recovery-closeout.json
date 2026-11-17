@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E144",
+  "date": "2026-11-17",
+  "deployedProduct": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "runningProductChanged": false,
+  "candidateApplied": false,
+  "originalInstalledWorkflow": {
+    "ok": true,
+    "sourceCommit": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+    "wheelSha256": "cc060702f29f78a6461c9d6aff8527856082a673de8a65871b0b0568fc289a22",
+    "python": "3.11.15",
+    "checks": [
+      "six_installed_help_entries_no_DWS_or_service",
+      "installed_product_import_not_source",
+      "offline_migrate_preserves_existing_config_no_DWS",
+      "reproduced_select_drops_configured_image_uploader",
+      "installed_CLI_reaches_real_HTTP_service_without_gateway",
+      "group-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "direct-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "same_key_isolated_per_route_exact_group_direct_targets",
+      "consumer_scope_reuse_refused",
+      "new_direct_route_image_send_refused_before_upstream_side_effect",
+      "no_runtime_config_jobs_or_gateway_required"
+    ],
+    "syntheticDWS": true,
+    "live18768Forbidden": true,
+    "realCredentialsOrAccountData": false,
+    "realUIOrDWSAcceptance": false,
+    "productDefect": "configure select drops imageUploadBinary for new route",
+    "serviceExit": 0
+  },
+  "candidateInstalledWorkflow": {
+    "ok": true,
+    "sourceCommit": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+    "wheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+    "python": "3.11.15",
+    "checks": [
+      "six_installed_help_entries_and_configure_help_no_DWS_or_service",
+      "candidate_wheel_site_packages_import_verified",
+      "offline_migrate_preserves_existing_config_no_DWS",
+      "selected_direct_route_preserves_configured_image_uploader",
+      "installed_CLI_reaches_real_HTTP_service_without_gateway",
+      "group-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "direct-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "same_key_isolated_per_route_exact_group_direct_targets",
+      "consumer_scope_reuse_refused",
+      "group_and_selected_direct_native_image_confirmed_under_same_explicit_profile_and_guard",
+      "no_runtime_config_jobs_or_gateway_required"
+    ],
+    "syntheticDWS": true,
+    "live18768Forbidden": true,
+    "realCredentialsOrAccountData": false,
+    "realUIOrDWSAcceptance": false,
+    "productDefectFixed": "configure select preserves configured imageUploadBinary for new route",
+    "candidateWheel": true,
+    "serviceExit": 0
+  },
+  "candidateReview": {
+    "ok": true,
+    "baseCommit": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+    "candidatePatchSha256": "6f237233a12677a5000f330b0a7de5427d86147f3abf681319338289d7070017",
+    "candidateWheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+    "changedProductModules": [
+      "dingtalk_bridge/configure.py"
+    ],
+    "moduleCount": 25,
+    "codeSha256": {
+      "dingtalk_bridge/rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+      "dingtalk_bridge/message_model.py": "906988f0d5d7d29204714b6757f6e0653b343553ed081e1f8bdabdc306676e7c",
+      "dingtalk_bridge/openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+      "dingtalk_bridge/configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+      "dingtalk_bridge/dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+      "dingtalk_bridge/runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+      "dingtalk_bridge/agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+      "dingtalk_bridge/discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+      "dingtalk_bridge/service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+      "dingtalk_bridge/agent_gateway.py": "a43c1f4c730196543eec25c6fed89beed3cf7807157af928ede0dc61f607d559",
+      "dingtalk_bridge/__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+      "dingtalk_bridge/core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+      "dingtalk_bridge/text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+      "dingtalk_bridge/stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+      "dingtalk_bridge/cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+      "dingtalk_bridge/consumer.py": "07bf97fd59a13ca8c6ec9a86e2a1953ec01e9880a02a0b3d0adeba4f8d95c254",
+      "dingtalk_bridge/routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+      "dingtalk_bridge/official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+      "dingtalk_bridge/composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+      "dingtalk_bridge/local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+      "dingtalk_bridge/provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+      "dingtalk_bridge/official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+      "dingtalk_bridge/doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+      "dingtalk_bridge/__main__.py": "f003b4d42231cf365ca91761a667ab47b491d14ae3f4c44b99fc0792ce9d36bd",
+      "dingtalk_bridge/consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6"
+    },
+    "wheelPayloadMatches": true,
+    "patchedSourceEqualsAgentCandidate": true,
+    "newTestMatches": true,
+    "runningProductUnchanged": true,
+    "deployed": false
+  },
+  "targetedTests": {
+    "sourcePython314": 2,
+    "sourcePython311": 2,
+    "installedCandidatePython311New": 2,
+    "installedCandidatePython311ExistingContinuation": 9,
+    "fullSuiteRerun": false
+  },
+  "observationSnapshot": {
+    "runId": "parallel-hardening-24h-20261116",
+    "fixedCutBeijing": "2026-11-17T18:29:37.189681+08:00",
+    "lastSavedSampleBeijing": "2026-11-17T10:05:49.895786+08:00",
+    "samplesRead": 1871,
+    "elapsedHoursAtStatus": 15.604,
+    "checksCounts": {
+      "poll_error_samples": 15
+    },
+    "maximumSampleGapSeconds": 30.227,
+    "dwsAccessStates": {
+      "ready": 1871
+    },
+    "explicitMaintenanceRecords": 0,
+    "naturalRefreshProven": false,
+    "observationComplete24h": false,
+    "stabilityPass": false
+  },
+  "recoverySummary": {
+    "scope": "Retrospective correlation of exactly the previously hashed saved prefixes; no new request or terminal review",
+    "prefixUnchanged": true,
+    "windowStartBeijing": "2026-11-16T18:29:37.189681+08:00",
+    "windowEndBeijing": "2026-11-17T10:05:49.895786+08:00",
+    "routeCount": 2,
+    "allAuditedHistoryResultsFromObservedTransportPid": true,
+    "auditFailureCount": 31,
+    "auditFailuresWithSubsequentGlobalSuccess": 31,
+    "auditFailuresWithBothRoutesLaterCompleteAndClear": 31,
+    "maxGlobalNextSuccessSeconds": 18.889,
+    "maxAllRouteRecoveryObservedUpperBoundSeconds": 47.764,
+    "routeErrorOccurrenceCount": 24,
+    "routeErrorOccurrencesClearedByNextSample": 24,
+    "routeErrorOccurrencesWithNewCompleteSync": 24,
+    "maxRouteErrorToClearObservedSeconds": 30.159,
+    "routeErrorEpisodeCount": 24,
+    "unresolvedEpisodesAtEnd": 0,
+    "maximumSampleGapSeconds": 30.227,
+    "maintenanceRecords": 0,
+    "explicitResumeEvents": 0,
+    "supervised90SecondDwsTimeoutEvents": 0,
+    "sampledSuspendedStates": 0,
+    "apiRequestTimeoutResultCount": 30,
+    "naturalRefreshProven": false,
+    "fixedCutCoverageProven": false,
+    "zeroRecordedErrors": false
+  },
+  "requirementCriterionSha256": {
+    "R01": "c18c66703fd0fc2b42c27f1f10c6c9725262b453bbc3d43b26610adfc9500e03",
+    "R02": "e0d2d8367a6c518f15058d19bb6d69cc84fff55253769d7d6a728d41ec5c5e00",
+    "R03": "c9ff3062662ce1206acbc22b4d3ab3b06c64ecaff18a4ed7958856d03b768a8b",
+    "R04": "c242d8245d5352aea88332e28da6213ab72af83e6f572e27db393cb0da9fe58d",
+    "R05": "8bd0f03da57efa6f9adf77cfeb8a7a7c83a57456e4370cdf78d0ad1488aa13dc",
+    "R06": "db99da9f1b86f5efe043b66140fb3083e0a5e8ac84abc010c897178a331766f4",
+    "R07": "0235793c97e0ea8679ac1816807f892c463d81693465e26a976a283290d47ea9",
+    "R08": "4d9fd845ee5b961d5c78cbe569bbff83cc89ca2198b94d0abc223b00192053d1",
+    "R09": "6e6a5228e76b077ac173f417643edef096db79fd933d155db8997b273328374a",
+    "R10": "afcc616748d7cecafcf2874e8da363e866caa7330d12595cdb25917330d82419",
+    "R11": "d43b140014ca352366fa69d25db526720ea5bf7abb05fa2764876e5ce542d6f9",
+    "R12": "eaa7f7e2d85db5d766d2296f9b8da022cec69eaa6e53bdb6df757116a482709e",
+    "R13": "8544351a84c1752658d2317d705ff92cd938ea66c81ce4295ac1384442df08fa",
+    "R14": "ade0a2f7ae8db08f439f9370919b9d819098d26b69e131a9c8c69a576b6d828f",
+    "R15": "fc1425ddbf09d27d84cad70f36b4539122d000d7dd58ee3d988d6eb69f7e9cba",
+    "R16": "0751f783eecb392c6f0cc15110afeb02b33cf16933818ef35710139f1f087d5f",
+    "R17": "2c4c73318e92eacd4e57a26839cc5bad24bb91cfe5dcac92be5917c5a45178ca"
+  },
+  "requirementChanges": {
+    "R12": "passed within original reusable-documentation criterion",
+    "R14": "passed within original local-Git/privacy/clean-install criterion"
+  },
+  "uiStatesChanged": false,
+  "fullProductAcceptance": false,
+  "limits": [
+    "No new native UI, real DWS, model or messages",
+    "Candidate is not deployed; current configured routes unaffected",
+    "Sampling upper bounds are not SLA, transaction-watermark coverage or refresh evidence",
+    "Prior failed synthetic setup attempts retained; final package test scope explicitly targeted"
+  ],
+  "deliveryValidation": {
+    "schemaVersion": 1,
+    "date": "2026-11-17",
+    "baseCommit": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+    "deployedProductUnchanged": "2b479a8",
+    "deployed": false,
+    "finding": "configure select omitted imageUploadBinary from a configured account, so newly selected group/direct routes could not send native images; help inaccurately described all actions as offline",
+    "before": {
+      "wheelSha256": "cc060702f29f78a6461c9d6aff8527856082a673de8a65871b0b0568fc289a22",
+      "sourceModules": 25,
+      "installedReproduction": {
+        "python": "3.11.15",
+        "methods": 2,
+        "errors": 2,
+        "failedDirections": [
+          "group",
+          "direct"
+        ],
+        "newRouteImageCliExit": 1,
+        "upstreamSendAttemptedForRejectedImage": false
+      }
+    },
+    "candidate": {
+      "wheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+      "patchSha256": "6f237233a12677a5000f330b0a7de5427d86147f3abf681319338289d7070017",
+      "codeSha256": {
+        "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+        "message_model.py": "906988f0d5d7d29204714b6757f6e0653b343553ed081e1f8bdabdc306676e7c",
+        "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+        "configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+        "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+        "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+        "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+        "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+        "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+        "agent_gateway.py": "a43c1f4c730196543eec25c6fed89beed3cf7807157af928ede0dc61f607d559",
+        "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+        "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+        "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+        "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+        "cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+        "consumer.py": "07bf97fd59a13ca8c6ec9a86e2a1953ec01e9880a02a0b3d0adeba4f8d95c254",
+        "routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+        "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+        "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+        "local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+        "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+        "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+        "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+        "__main__.py": "f003b4d42231cf365ca91761a667ab47b491d14ae3f4c44b99fc0792ce9d36bd",
+        "consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6"
+      },
+      "changedModules": {
+        "configure.py": {
+          "beforeSha256": "f4313f87c46c84a43b62d8e1b67ca2ffc5650ccbf0c17f77073c9904a516f62d",
+          "afterSha256": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81"
+        }
+      },
+      "wheelModulesMatch": true,
+      "installedModulesMatch": true
+    },
+    "validation": [
+      {
+        "scope": "new targeted methods on frozen candidate source",
+        "python": "3.14.6",
+        "testsRun": 2,
+        "ok": true
+      },
+      {
+        "scope": "new targeted methods on frozen candidate source",
+        "python": "3.11.15",
+        "testsRun": 2,
+        "ok": true
+      },
+      {
+        "scope": "same candidate wheel installed; new targeted methods",
+        "python": "3.11.15",
+        "testsRun": 2,
+        "ok": true
+      },
+      {
+        "scope": "same candidate wheel installed; existing continuation/configure regression",
+        "python": "3.11.15",
+        "testsRun": 9,
+        "ok": true
+      }
+    ],
+    "newInstallWorkflow": {
+      "ok": true,
+      "python": "3.11.15",
+      "candidateWheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+      "checks": [
+        "six_installed_help_entries_and_configure_help_no_DWS_or_service",
+        "candidate_wheel_site_packages_import_verified",
+        "offline_migrate_preserves_existing_config_no_DWS",
+        "selected_direct_route_preserves_configured_image_uploader",
+        "installed_CLI_reaches_real_HTTP_service_without_gateway",
+        "group-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+        "direct-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+        "same_key_isolated_per_route_exact_group_direct_targets",
+        "consumer_scope_reuse_refused",
+        "group_and_selected_direct_native_image_confirmed_under_same_explicit_profile_and_guard",
+        "no_runtime_config_jobs_or_gateway_required"
+      ],
+      "checkCount": 11,
+      "entryPoints": "six installed scripts plus configure module help",
+      "productLoadedFrom": "candidate venv site-packages",
+      "sourceTreeOnPythonPath": false,
+      "DWS": "synthetic executable with explicit profile assertion",
+      "HTTP": "actual installed transport on owned random loopback port",
+      "endpointMapping": "test harness maps clients fixed 18768 endpoint to owned port; does not add product port configurability",
+      "live18768AndExternalNetwork": "blocked by socket audit hook",
+      "groupAndNewDirectImage": "synthetic upload/send/status confirmed",
+      "consumerRestart": "persisted cursor and no duplicate intake on both routes",
+      "sameIdempotencyKeyAcrossRoutes": "two independent confirmed sends; per-route replay makes no additional send",
+      "credentialOrRealAccountRead": false,
+      "modelGatewayRequired": false,
+      "ownedTransportExitCode": 0
+    },
+    "priorAttemptsPreserved": [
+      {
+        "scope": "first workflow",
+        "result": "sandbox denied ps needed by owned child cleanup; no product fix claimed; repeated through explicit tool escalation"
+      },
+      {
+        "scope": "second workflow",
+        "result": "synthetic fixture omitted createTime; consumer correctly flagged invalid_timestamp; fixture corrected without relaxing assertions"
+      },
+      {
+        "scope": "initial candidate unit assertion",
+        "result": "test expected --image but native CLI uses --msg-type image and --media-id; corrected expectation, not product"
+      }
+    ],
+    "testScope": "No full 504-suite rerun or aggregate full-suite claim; workflow checks are not unittest methods",
+    "requirementsRecommendation": {
+      "R01": "Keep partial until configuration fix is integrated and delivered; existing runtime-neutral CLI/HTTP/multiroute/consumer operation is independently evidenced",
+      "R12": "Current delivered 2b479a8/4563adb materials can pass independently after current assessment/index references are synchronized; known functional gaps remain documented, not a reason to hold reusable docs",
+      "R14": "Current delivered 2b479a8/4563adb export, installed tests, phased Git/privacy/manifest and rollback procedure meet the standalone criterion; candidate is separately not deployed"
+    },
+    "fullProductAcceptance": false,
+    "evidenceSha256": {
+      "workflow.py": "abb5aee9ee1eab6a1239924255ee26c5f987e27479cae502dc3888d9f69ddcd9",
+      "workflow-candidate-wheel.py": "299990cf9a7870d6b6186dd878858d0dba07baaba8282cbbb0a7776068b48be4",
+      "commands.json": "7352f1e26f15d753f80d5003f63bde4a98329f8eb3db0b29d2bbe5b29342f93a",
+      "candidate-wheel-commands.json": "bf72e8b4fc13a1fed7f9c9a18ec9c8e09274124aed4bca8ee703fa164dedb860",
+      "workflow-result.json": "d7b2a948f046e39731bd7fde30f05bcf4690d8b1cfafb0c7de7c91b8139bd40b",
+      "candidate-wheel-workflow-result.json": "80730495d2dac9ec9b77d2c0c2db8cbfe342765da5094e585896706325c1c8b3",
+      "unmodified-installed-reproduction.log": "b8a3942c8710ad86e4ab1a821f5d8c9403cb28afc0a9fd622f8864a05f0c6e4c",
+      "candidate-py314.log": "675f34522656e40de23181bc907c61216375decb799e9177f98e392b7419a879",
+      "candidate-py311.log": "675f34522656e40de23181bc907c61216375decb799e9177f98e392b7419a879",
+      "installed-candidate-specific.log": "369a9735bfc954b0668baa2ce3ea147a5abeaee377b20fdea1091f319708b33a",
+      "installed-candidate-regression.log": "e507a6b83a993907d0444208ff41faa109987f5bf82438a53373da7544b29b44",
+      "candidate-build.log": "5583d3485ca88dc1aeee78ebbb3963ac4c32678eeb43d47680dfa5681c74b182",
+      "candidate-install.log": "a768a3a7902ddc8a984a8a8f1bcc8f81f06f8048d3e6c4b2f587b52eabe88f46"
+    }
+  },
+  "validationSourceFilesVerified": true
+}
