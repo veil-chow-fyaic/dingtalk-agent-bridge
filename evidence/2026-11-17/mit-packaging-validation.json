@@ -1,0 +1,126 @@
+{
+  "baseCommit": "b5288a27c24b6daba274f4728dc4bc5abede55b5",
+  "patchSha256": "f1e53eeb3fb173763154c7d667cb3a6e7c236ec8cc191d82569150bd0ef68c8f",
+  "paths": [
+    "pyproject.toml",
+    "scripts/export_release.py",
+    "scripts/verify_handoff.py",
+    "scripts/verify_ci_install.py",
+    "tests/test_release_export.py",
+    "tests/test_repository_gates.py"
+  ],
+  "fileSha256": {
+    "pyproject.toml": "ba6e83b832e31a99ebee8ea65ef03e66d7c6d49204107b55d21706187bc2ddb9",
+    "scripts/export_release.py": "a0924cdc5cbf285f13a2964110c6128f3295484b6544c8723bda9694fdb99617",
+    "scripts/verify_handoff.py": "29667a5b422f4517b1010b5e332ddea3614fce340f23df73aaa21c889061f443",
+    "scripts/verify_ci_install.py": "025ac808aab5717bc218214d576f1f76559727a1d2504513ea129a70344568d3",
+    "tests/test_release_export.py": "ee6bbc83055f0bfa88ad88c82ade15c490c4fe3d1399586d5de2300df749833b",
+    "tests/test_repository_gates.py": "6be4f1323cb9b67f2389d8d563c313c606d54dc9b696be793ef80dfd86a51f82"
+  },
+  "excludedRootLicenseSha256": "84abeb5c7df996cbdb539911871d2e9d3c9db5ba8ba41f6ac1a830ecaee03994",
+  "productAndThirdPartyFilesUnchanged": 26,
+  "runtimeModulesUnchanged": 25,
+  "unitRuns": [
+    {
+      "label": "py314-test_release_export",
+      "exitCode": 0,
+      "seconds": 2.632,
+      "logSha256": "0d3c9282595f6e52ca5fd860cbf827475a374243d1283a656984d42018ae8f3a",
+      "testsRun": 14
+    },
+    {
+      "label": "py314-test_repository_gates",
+      "exitCode": 0,
+      "seconds": 0.138,
+      "logSha256": "df367098ba6a88d778d92e4165b6508d0fe7c1ecd8e033e830abec32a1175656",
+      "testsRun": 11
+    },
+    {
+      "label": "py311-test_release_export",
+      "exitCode": 0,
+      "seconds": 2.273,
+      "logSha256": "6d8a4042b55014dfcfed0bbbbe9583f38a3ca047878b36f673194e3da99e4305",
+      "testsRun": 14
+    },
+    {
+      "label": "py311-test_repository_gates",
+      "exitCode": 0,
+      "seconds": 0.124,
+      "logSha256": "df367098ba6a88d778d92e4165b6508d0fe7c1ecd8e033e830abec32a1175656",
+      "testsRun": 11
+    }
+  ],
+  "actualBuildBackend": "setuptools 84.2.1; wheel 0.48.0; CPython 3.14.6; existing offline wheelhouse",
+  "declaredBuildMinimum": "setuptools>=77.0.3; declared from current PyPA guidance, not tested at exact minimum",
+  "artifactCompatibility": {
+    "legacySource": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+    "legacyWheelSha256": "cc060702f29f78a6461c9d6aff8527856082a673de8a65871b0b0568fc289a22",
+    "legacyExportPassed": true,
+    "legacyDeclaredValidationReusedNotRerun": [
+      {
+        "label": "source",
+        "testsRun": 504,
+        "exitCode": 0,
+        "ok": true
+      },
+      {
+        "label": "py314",
+        "testsRun": 504,
+        "exitCode": 0,
+        "ok": true
+      },
+      {
+        "label": "py311",
+        "testsRun": 504,
+        "exitCode": 0,
+        "ok": true
+      }
+    ],
+    "mitWheelSha256": "07e9b444ff98860f769ba7f024c59b975e614402ca0ae0c712abb3f63bf34813",
+    "mitWheelVerificationPassed": true,
+    "mitSourceOldWheelRejected": "Wheel license metadata differs from pyproject",
+    "rootLicenseSha256": "84abeb5c7df996cbdb539911871d2e9d3c9db5ba8ba41f6ac1a830ecaee03994",
+    "thirdPartyLicenseUnchanged": true
+  },
+  "mitInstall": {
+    "ok": true,
+    "checks": {
+      "version": true,
+      "requires_python": true,
+      "runtime_dependencies": true,
+      "entry_points": true,
+      "package_bytes": true,
+      "license_metadata": true,
+      "license_bytes": true
+    },
+    "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+  },
+  "legacyInstall": {
+    "ok": true,
+    "checks": {
+      "version": true,
+      "requires_python": true,
+      "runtime_dependencies": true,
+      "entry_points": true,
+      "package_bytes": true,
+      "license_metadata": true,
+      "license_bytes": true
+    },
+    "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+  },
+  "incrementalPatchApplyAndDiffCheck": true,
+  "scope": "MIT metadata/license payload validation only; no product/deployment change, no full suite, no real auth/DWS/provider/credential operation",
+  "primarySources": [
+    "https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html",
+    "https://packaging.python.org/en/latest/guides/writing-pyproject-toml/",
+    "https://packaging.python.org/en/latest/specifications/core-metadata/",
+    "https://peps.python.org/pep-0639/"
+  ],
+  "evidence": "E148",
+  "integrationTargetedTests": {
+    "python": "3.14.6",
+    "test_release_export": 14,
+    "test_repository_gates": 11,
+    "passed": true
+  }
+}

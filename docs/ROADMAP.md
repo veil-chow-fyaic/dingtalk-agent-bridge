@@ -85,6 +85,8 @@
 
 ## GitHub 跟踪与交付方式
 
+四项任务已登记到[原 MUST 交付验收里程碑](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/milestone/1)：[R01 配置集成](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/1)、[R06 媒体范围](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/2)、[R07 组合交付](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/3)、[R13 可靠性](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/4)。Issue记录执行进展，原验收判据与证据仍以本仓库文件为准。
+
 以以上四个 MUST 各维护一个任务；SHOULD 共用本路线图按实际需要启用，不按格式、方向或历史阶段拆出数十个重复 issue。每项只更新新证据、阻塞变化和下一动作。已有完成项引用原证据，不重写既有阶段历史。
 
 主维护者负责最终范围、仓库发布及现场。推送前核文档索引、相对链接、manifest、暂存隐私与 diff；原身份、会话、截图、日志、数据库、下载和凭据不进入 GitHub。用户授权更新本项目 GitHub 不等于向 DWS 上游自动发布 issue/PR；上游沟通材料先去重和脱敏，由主维护者按授权范围处理。全部约定 MUST 和[最终自检](../plans/completion/10-自检清单.md)满足后，才签最终交付。

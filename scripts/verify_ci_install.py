@@ -4,9 +4,35 @@ import hashlib
 import importlib.metadata
 import json
 from pathlib import Path
+import re
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
+
+def license_checks(root, distribution, project):
+    metadata = distribution.metadata
+    get_all = getattr(metadata, 'get_all', lambda key: [metadata[key]] if key in metadata else None)
+    dist = 'dingtalk_agent_bridge-' + project['version'] + '.dist-info/'
+    entries = {str(p) for p in (getattr(distribution, 'files', None) or [])
+               if str(p).startswith(dist + 'licenses/')}
+    expression, names = project.get('license'), project.get('license-files', [])
+    if expression is None and not names:
+        legacy = not (root / 'LICENSE').exists() and not get_all('License-Expression') and not get_all('License-File') and not entries
+        return {'license_metadata': legacy, 'license_bytes': legacy}
+    versions = get_all('Metadata-Version') or []
+    shape = expression == 'MIT' and names == ['LICENSE']
+    header = (shape and len(versions) == 1 and re.fullmatch(r'2\.\d+', versions[0]) is not None
+              and int(versions[0].split('.')[1]) >= 4
+              and get_all('License-Expression') == ['MIT'] and get_all('License-File') == ['LICENSE']
+              and not get_all('License'))
+    original = root / 'LICENSE'
+    target = Path(distribution.locate_file(dist + 'licenses/LICENSE'))
+    content = (shape and entries == {dist + 'licenses/LICENSE'}
+               and original.is_file() and not original.is_symlink()
+               and target.is_file() and not target.is_symlink()
+               and bool(original.read_bytes().strip()) and target.read_bytes() == original.read_bytes())
+    return {'license_metadata': header, 'license_bytes': content}
+
 
 def verify(root, distribution):
     project = tomllib.loads((root / 'pyproject.toml').read_text())['project']
@@ -24,6 +50,7 @@ def verify(root, distribution):
               'runtime_dependencies': (distribution.requires or []) == project['dependencies'],
               'entry_points': scripts == project['scripts'],
               'package_bytes': bool(expected) and actual == expected}
+    checks.update(license_checks(root, distribution, project))
     return {'ok': all(checks.values()), 'checks': checks,
             'scope': 'Installed metadata/package bytes only; no CLI/auth/DWS execution'}
 

@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### 项目许可与协作
+
+- 主代码采用 MIT；原第三方声明保留。GitHub仓库为 `veil-chow-fyaic/dingtalk-agent-bridge`，版本仍为开发阶段。
+
 ### 已验证、待部署
 
 - 配置助手 `select` 为同账号新增会话时继承已有图片上传 helper，避免新增路由原生图片在上传前失败；同步修正 `migrate` 离线、`select` 需只读 DWS 核对目标的帮助。候选已经源码与独立安装验证，当前运行产品尚未应用。[验证范围](docs/145-delivery-and-recovery-closeout.md)

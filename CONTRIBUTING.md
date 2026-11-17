@@ -10,7 +10,7 @@
 
 账号身份、凭据、会话原文、截图、数据库、下载件和完整运行日志只放被忽略的 `local/`。提交可公开的合成 fixture、脱敏结论和必要摘要；`.gitignore` 不能代替暂存隐私检查。不要运行他人遗留的 `local/` 一次性脚本或复用历史 PID。
 
-当前未选择新的项目许可证。第三方文件继续保留各自许可和来源；不要加入不明来源代码或自行为全仓库授予新许可。远端协作目标确定后再使用其实际 issue/PR 入口，本指南不预设虚构地址。
+主代码采用 [MIT](LICENSE)。第三方文件继续保留各自许可和[来源](THIRD_PARTY_NOTICES.md)；贡献前确认有权提供所提交的内容。缺陷和需求使用[仓库 Issues](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues)，代码修改通过 PR 审查。
 
 ## 本地开发与测试
 
@@ -33,7 +33,7 @@ python3 -m venv .venv
 .venv/bin/python scripts/run_tests_with_evidence.py
 ```
 
-入口保留合成管理器拒绝证据，报告写入 `local/test-evidence/`；0 个发现用例会失败。测试通过不能替代真实钉钉 UI、模型调用或长期观察；发布验证还须绑定冻结源码、同一 wheel 和实际解释器，见[离线导出说明](docs/144-offline-release-export.md)。
+入口保留合成管理器拒绝证据，报告写入 `local/test-evidence/`；0 个发现用例会失败。测试通过不能替代真实钉钉 UI、模型调用或长期观察；MIT构建使用 setuptools>=77.0.3；根LICENSE须随wheel分发并按字节核对。旧源码/旧wheel作为历史配对保留，新MIT源码不能套用旧无主许可证wheel。发布验证还须绑定冻结源码、同一 wheel 和实际解释器，见[离线导出说明](docs/144-offline-release-export.md)。
 
 文档改动通常只需相应离线检查。不要为修改文字启动服务、发送消息、运行认证诊断或重复已验收实验。
 

@@ -1,0 +1,37 @@
+{
+  "ref": "b5288a27c24b6daba274f4728dc4bc5abede55b5",
+  "objectCounts": {
+    "commit": 144,
+    "tree": 1127,
+    "blob": 2869
+  },
+  "uniqueHistoricalPaths": 803,
+  "confirmedSecretOrChatIdentityFindings": [],
+  "candidateHits": 10,
+  "candidateDisposition": "10 candidate hits / 4 distinct values; synthetic negative-test URL, cursor and profile literals, including historical copies",
+  "binaryReview": "13 fixture blobs; 6 images rendered and confirmed synthetic; ZIP/OOXML and PDF metadata/content patterns examined; audio/video provenance checked against committed fixture descriptions and fixed hashes, not listened/played",
+  "commitEmailDisposition": "One non-noreply metadata email; primary agent independently matched its hash to the author already-public repository commits; no history rewrite requested",
+  "primaryEmailEvidenceSha256": "3a99c02fde317be095e49337caad44a49cc7235c0c26a8a43e19c584a04e1dc8",
+  "thirdPartyFindings": [
+    {
+      "severity": "pre-publication notice gap",
+      "path": "docs/patches/E117-dws-cancellation.patch",
+      "line": 1,
+      "reason": "Fixed upstream Apache-2.0 project includes NOTICE, but frozen repository does not retain that notice alongside redistributed upstream-context patches/probe materials; replacement MIT must not cover upstream portions",
+      "upstreamNoticeGitBlob": "d6e564b6adda21dcbcaf5a022791fda014a86742",
+      "candidateProvided": {
+        "THIRD_PARTY_NOTICES.md": "13e67c52befbd54818dc8f2089077006c46d16a7e9f138d8a6ef11db028bfa0b",
+        "evidence/2026-11-13/dws-cancellation/NOTICE-DWS": "b7d8a7d7c3c61cb0d4d78fa422fb81028c76d0e7ff1a23b1be68f058a9920d80"
+      }
+    }
+  ],
+  "candidateLinksValid": true,
+  "limitations": [
+    "Pattern/context review does not prove absence of unknown secrets",
+    "Known-private-value scan performed by primary agent, not repeated because this review does not read local/credentials",
+    "Does not certify licensing of future compiled DWS or vendor binary distributions",
+    "No history rewrite, original repository edits, network writes, business/UI/auth operations or product tests"
+  ],
+  "evidence": "E148",
+  "thirdPartyNoticeIntegrated": true
+}

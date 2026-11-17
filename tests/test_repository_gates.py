@@ -1,6 +1,9 @@
 """Public repository boundary checks; synthetic files and Git indexes only."""
 import importlib.util
+import io
+from contextlib import redirect_stdout
 import json
+from email.message import Message
 from pathlib import Path
 import subprocess
 import sys
@@ -24,13 +27,33 @@ class RepositoryGateTests(unittest.TestCase):
             names = ['CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', '.github/PULL_REQUEST_TEMPLATE.md']
             for name in names:
                 path = root / name;path.parent.mkdir(parents=True, exist_ok=True);path.write_text('Synthetic public document\n')
+            (root / 'LICENSE').write_text('Synthetic license notice\n')
             workflow = root / '.github/workflows/ci.yml';workflow.parent.mkdir();workflow.write_text('name: synthetic\n')
             (root / 'local').mkdir();(root / 'local/private.md').write_text('not public')
             self.assertEqual(set(docs.documents(root)), set(names))
             with patch.object(handoff, 'ROOT', root), patch.object(handoff, 'MANIFEST', root / 'evidence/handoff-manifest.json'):
                 selected = {str(p.relative_to(root)) for p in handoff.files()}
-            self.assertTrue(set(names + ['.github/workflows/ci.yml']) <= selected)
+            self.assertTrue(set(names + ['.github/workflows/ci.yml', 'LICENSE']) <= selected)
             self.assertNotIn('local/private.md', selected)
+
+    def test_declared_license_is_required_without_breaking_legacy_manifest(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'evidence').mkdir()
+            for name in ['config.example.json','config.routes.example.json','config.agent.example.json']:(root/name).write_text('{}')
+            (root/'.gitignore').write_text('local/\n')
+            project=root/'pyproject.toml';project.write_text('[project]\nname="synthetic"\n')
+            with patch.object(handoff,'ROOT',root),patch.object(handoff,'MANIFEST',root/'evidence/handoff-manifest.json'),patch.object(sys,'argv',['verify_handoff.py','--write-manifest']):
+                with redirect_stdout(io.StringIO()),self.assertRaises(SystemExit) as status:handoff.main()
+                self.assertEqual(status.exception.code,0)
+                project.write_text('[project]\nlicense="MIT"\nlicense-files=["LICENSE"]\n')
+                captured=io.StringIO()
+                with redirect_stdout(captured),self.assertRaises(SystemExit) as status:handoff.main()
+                self.assertEqual(status.exception.code,1)
+                self.assertIn('Missing public file: LICENSE',json.loads(captured.getvalue())['errors'])
+                (root/'LICENSE').write_text('MIT synthetic notice\n')
+                with redirect_stdout(io.StringIO()),self.assertRaises(SystemExit) as status:handoff.main()
+                self.assertEqual(status.exception.code,0)
+                self.assertIn('LICENSE',json.loads((root/'evidence/handoff-manifest.json').read_text())['sha256'])
 
     def test_new_public_paths_scan_staged_private_keys_even_after_cleanup(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -81,6 +104,45 @@ class InstalledWheelGateTests(unittest.TestCase):
                 else:p.write_bytes(before)
         (self.package / '__init__.py').unlink()
         self.assertFalse(installed.verify(self.checkout, self.dist)['ok'])
+
+    def enable_mit(self):
+        f = self.checkout / 'pyproject.toml'
+        f.write_text(f.read_text().replace('[project.scripts]', 'license="MIT"\nlicense-files=["LICENSE"]\n[project.scripts]'))
+        (self.checkout / 'LICENSE').write_text('MIT License\nCopyright (c) 2026 Synthetic Test\n')
+        self.license_name = 'dingtalk_agent_bridge-0.1.0.dist-info/licenses/LICENSE'
+        self.license_path = self.root / 'site-packages' / self.license_name
+        self.license_path.parent.mkdir(parents=True)
+        self.license_path.write_bytes((self.checkout / 'LICENSE').read_bytes())
+        self.dist.locate_file = lambda name: self.root / 'site-packages' / name
+        self.dist.files = [self.license_name]
+        metadata = Message()
+        for key,value in [('Requires-Python','>=3.11'),('Metadata-Version','2.4'),('License-Expression','MIT'),('License-File','LICENSE')]:metadata[key]=value
+        self.dist.metadata = metadata
+
+    def test_installed_mit_license_headers_and_original_bytes_pass(self):
+        self.enable_mit();self.assertTrue(installed.verify(self.checkout, self.dist)['ok'])
+
+    def test_installed_mit_missing_changed_symlink_or_extra_license_fails(self):
+        self.enable_mit();original=self.license_path.read_bytes()
+        self.license_path.write_text('wrong notice')
+        self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_bytes'])
+        self.license_path.unlink()
+        self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_bytes'])
+        self.license_path.symlink_to(self.checkout / 'LICENSE')
+        self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_bytes'])
+        self.license_path.unlink();self.license_path.write_bytes(original)
+        self.dist.files.append(self.license_name.replace('LICENSE','EXTRA'))
+        self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_bytes'])
+
+    def test_installed_mit_duplicate_wrong_or_old_metadata_fails(self):
+        self.enable_mit()
+        for field,value in [('License-Expression','Apache-2.0'),('License-File','../wrong'),('Metadata-Version','2.3')]:
+            with self.subTest(field=field):
+                original=self.dist.metadata[field];self.dist.metadata.replace_header(field,value)
+                self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_metadata'])
+                self.dist.metadata.replace_header(field,original)
+        self.dist.metadata['License-File']='LICENSE'
+        self.assertFalse(installed.verify(self.checkout,self.dist)['checks']['license_metadata'])
 
     def test_entrypoint_dependency_and_version_mismatch_fail(self):
         for field,value,check in [('version','0.2.0','version'),('requires',['unexpected-runtime-dependency'],'runtime_dependencies'),('entry_points',[],'entry_points')]:

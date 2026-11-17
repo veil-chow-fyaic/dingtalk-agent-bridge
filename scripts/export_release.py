@@ -120,6 +120,25 @@ def wheel_files(wheel):
     return files
 
 
+def license_payload(project, source, metadata, dist):
+    """Support the historical no-license layout and the explicit MIT/PEP 639 layout."""
+    expression = project.get('license')
+    names = project.get('license-files', [])
+    if expression is None and not names:
+        require('LICENSE' not in source and not metadata.get_all('License-Expression')
+                and not metadata.get_all('License-File'), 'Unconfigured license metadata or payload')
+        return {}
+    require(expression == 'MIT' and names == ['LICENSE'], 'Unsupported release license configuration')
+    require('LICENSE' in source and bool(source['LICENSE'].strip()), 'Missing or empty source LICENSE')
+    versions = metadata.get_all('Metadata-Version') or []
+    require(len(versions) == 1 and re.fullmatch(r'2\.\d+', versions[0])
+            and int(versions[0].split('.')[1]) >= 4, 'PEP 639 requires Metadata-Version >= 2.4')
+    require(metadata.get_all('License-Expression') == ['MIT']
+            and metadata.get_all('License-File') == ['LICENSE']
+            and not metadata.get_all('License'), 'Wheel license metadata differs from pyproject')
+    return {dist + 'licenses/LICENSE': source['LICENSE']}
+
+
 def verify_wheel(wheel, filename, source):
     files = wheel_files(wheel)
     project = tomllib.loads(source['pyproject.toml'].decode())['project']
@@ -132,8 +151,12 @@ def verify_wheel(wheel, filename, source):
     require(bool(payload) and {n: b for n, b in files.items() if n.startswith(PACKAGE)} == payload,
             'Wheel package content differs from frozen source (modules or resources)')
     metadata_names = {dist + n for n in ('METADATA', 'WHEEL', 'entry_points.txt', 'top_level.txt', 'RECORD')}
-    require(set(files) == set(payload) | metadata_names, 'Unexpected or missing wheel files')
+    require(metadata_names <= set(files), 'Missing wheel metadata files')
     metadata = BytesParser().parsebytes(files[dist + 'METADATA'])
+    licenses = license_payload(project, source, metadata, dist)
+    require(set(files) == set(payload) | metadata_names | set(licenses), 'Unexpected or missing wheel files')
+    require(all(files[n] == expected for n, expected in licenses.items()),
+            'Wheel license content differs from frozen source')
     require(metadata.get_all('Name') == [project['name']] and metadata.get_all('Version') == [version]
             and metadata.get_all('Requires-Python') == [project['requires-python']],
             'Wheel name/version/Python constraint differs from pyproject')

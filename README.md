@@ -23,9 +23,11 @@ DWS 负责认证、通讯、历史、资源和办公能力；bridge 补充路由
 
 需要 Python 3.11+、POSIX 系统，以及你自己的已授权官方 DWS 账号。macOS arm64 已实机验证，其他系统未实机认证。运行包只依赖 Python 标准库；源码构建需要 setuptools。当前适配基线为 DWS v1.0.67。
 
-在已有的授权源码检出中安装并查看入口：
+克隆源码并查看入口：
 
 ```bash
+git clone https://github.com/veil-chow-fyaic/dingtalk-agent-bridge.git
+cd dingtalk-agent-bridge
 python3 -m venv .venv
 .venv/bin/python -m pip install .
 .venv/bin/dab --help
@@ -52,4 +54,4 @@ python3 -m venv .venv
 | 参与开发 | [贡献指南](CONTRIBUTING.md) · [变更记录](CHANGELOG.md) · [安全说明](SECURITY.md) |
 | 核对范围与证据 | [当前总览](docs/102-user-requirements-and-roadmap.md) · [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) · [全部文档](docs/README.md) |
 
-主代码尚未授予开源许可；第三方材料沿各自许可证保留。
+主代码采用 [MIT 许可证](LICENSE)。第三方材料保留各自的许可与[来源声明](THIRD_PARTY_NOTICES.md)。

@@ -7,7 +7,9 @@ project:
 git:
   target_branch: codex/complete-bridge
   remote_publish: user_requested_github_repository_update
-  destination: pending_user_repository_and_visibility_selection
+  destination: https://github.com/veil-chow-fyaic/dingtalk-agent-bridge
+  visibility: public_user_confirmed
+  license: MIT
 runtime:
   mode: 主Agent直接负责，子Agent隔离候选实现及离线验证
   checkpoint_minutes: 45

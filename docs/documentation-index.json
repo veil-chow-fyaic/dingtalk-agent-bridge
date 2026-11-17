@@ -43,6 +43,9 @@
     "SECURITY.md": {
       "role": "current"
     },
+    "THIRD_PARTY_NOTICES.md": {
+      "role": "current"
+    },
     "docs/01-research.md": {
       "role": "historical",
       "preservedSha256": "a6909a6c4fea6794990af0b986e70df97762652c4952bdb542825f231b753d23"

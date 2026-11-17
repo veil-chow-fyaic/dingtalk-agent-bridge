@@ -85,6 +85,54 @@ class ReleaseExportTests(unittest.TestCase):
         for line in (self.out/'SHA256SUMS.txt').read_text().splitlines():
             sha,name=line.split('  ',1);self.assertEqual(release.digest((self.out/name).read_bytes()),sha)
 
+    def enable_mit(self):
+        project = (self.repo / 'pyproject.toml').read_text().replace('[project.scripts]', 'license = "MIT"\nlicense-files = ["LICENSE"]\n[project.scripts]')
+        self.write('pyproject.toml', project)
+        self.write('LICENSE', 'MIT License\nCopyright (c) 2026 Synthetic Test\n')
+        self.wheel_data[self.dist + 'licenses/LICENSE'] = (self.repo / 'LICENSE').read_bytes()
+        self.wheel_data[self.dist + 'METADATA'] = self.wheel_data[self.dist + 'METADATA'].replace(b'\n\n', b'\nLicense-Expression: MIT\nLicense-File: LICENSE\n\n', 1)
+        self.pack_wheel();self.bind_validation();self.commit()
+
+    def test_mit_license_is_manifest_bound_and_preserved_in_export(self):
+        self.enable_mit();self.export()
+        source = release.source_files((self.out / 'source.tar.gz').read_bytes())
+        wheel = release.wheel_files((self.out / self.wheel.name).read_bytes())
+        self.assertEqual(wheel[self.dist + 'licenses/LICENSE'], source['LICENSE'])
+        self.assertEqual(wheel['dingtalk_bridge/licenses/example.txt'], self.source['licenses/example.txt'])
+
+    def test_mit_rejects_metadata_or_license_payload_tampering_with_valid_record(self):
+        self.enable_mit()
+        source = release.source_files(release.git(self.repo, 'archive', '--format=tar.gz', 'HEAD'))
+        baseline = self.wheel_data.copy()
+        cases = [
+            ('changed-license', lambda d: d.__setitem__(self.dist + 'licenses/LICENSE', b'changed MIT text')),
+            ('missing-license', lambda d: d.pop(self.dist + 'licenses/LICENSE')),
+            ('extra-license', lambda d: d.__setitem__(self.dist + 'licenses/NOTICE', b'extra')),
+            ('wrong-expression', lambda d: d.__setitem__(self.dist + 'METADATA', d[self.dist + 'METADATA'].replace(b'License-Expression: MIT', b'License-Expression: Apache-2.0'))),
+            ('duplicate-header', lambda d: d.__setitem__(self.dist + 'METADATA', d[self.dist + 'METADATA'].replace(b'License-File: LICENSE', b'License-File: LICENSE\nLicense-File: LICENSE'))),
+            ('unsafe-license-header', lambda d: d.__setitem__(self.dist + 'METADATA', d[self.dist + 'METADATA'].replace(b'License-File: LICENSE', b'License-File: ../../private'))),
+            ('old-metadata', lambda d: d.__setitem__(self.dist + 'METADATA', d[self.dist + 'METADATA'].replace(b'Metadata-Version: 2.4', b'Metadata-Version: 2.3'))),
+            ('deprecated-license-also-present', lambda d: d.__setitem__(self.dist + 'METADATA', d[self.dist + 'METADATA'].replace(b'License-Expression: MIT', b'License: MIT\nLicense-Expression: MIT'))),
+        ]
+        for name, mutate in cases:
+            with self.subTest(name=name):
+                self.wheel_data = baseline.copy();mutate(self.wheel_data);self.pack_wheel()
+                with self.assertRaises(release.ReleaseError):release.verify_wheel(self.wheel.read_bytes(), self.wheel.name, source)
+
+    def test_mit_and_legacy_layouts_cannot_be_mixed(self):
+        legacy_source = release.source_files(release.git(self.repo, 'archive', '--format=tar.gz', 'HEAD'))
+        legacy_wheel = self.wheel.read_bytes()
+        self.enable_mit();mit_source = release.source_files(release.git(self.repo, 'archive', '--format=tar.gz', 'HEAD'))
+        with self.assertRaises(release.ReleaseError):release.verify_wheel(legacy_wheel, self.wheel.name, mit_source)
+        with self.assertRaises(release.ReleaseError):release.verify_wheel(self.wheel.read_bytes(), self.wheel.name, legacy_source)
+        for name, value in [('missing', None), ('empty', b'')]:
+            with self.subTest(name=name):
+                modified = dict(mit_source)
+                if value is None:modified.pop('LICENSE')
+                else:modified['LICENSE'] = value
+                with self.assertRaises(release.ReleaseError):release.verify_wheel(self.wheel.read_bytes(), self.wheel.name, modified)
+        self.assertEqual(release.verify_wheel(legacy_wheel, self.wheel.name, legacy_source)['version'], '0.1.0')
+
     def test_modern_validation_schema_matches_modules(self):
         self.bind_validation(modern=True);self.commit();self.export()
 

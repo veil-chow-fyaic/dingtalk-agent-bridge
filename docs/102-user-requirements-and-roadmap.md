@@ -6,7 +6,7 @@
 
 本轮[新安装修复与故障恢复](145-delivery-and-recovery-closeout.md)包含准确测试层次及候选补丁。DWS原因与完整取消候选见[E145](146-dws-root-cause-and-integration.md)。现行动作见[TODO](../plans/completion/TODO.md)，最新部署见[E143](143-parallel-hardening.md)。最近原生UI为E146：私聊引用入站通过，E134两路组合可见层补齐；逐图客户端保存仍未成功。
 
-E147已整理[首次使用](getting-started.md)、[四项任务路线图](ROADMAP.md)、贡献/安全/变更入口及CI工程规范；验证与GitHub实际状态见[阶段记录](148-github-project-maintenance.md)。目标/可见性/许可待用户选择，未推送或声称托管CI通过。原产品、现场验收及观察不因此升级。
+E147已整理[首次使用](getting-started.md)、[四项任务路线图](ROADMAP.md)、贡献/安全/变更入口及CI工程规范；验证与GitHub实际状态见[阶段记录](148-github-project-maintenance.md)。用户已确认公开`veil-chow-fyaic/dingtalk-agent-bridge`及MIT；仓库/四任务已建，发布前核验进行中，尚未推送或声称托管CI通过。原产品、现场验收及观察不因此升级。
 
 ## 产品和原验收范围
 

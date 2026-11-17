@@ -12,6 +12,7 @@
 | [CONTRIBUTING.md](../CONTRIBUTING.md) | 现行说明 |
 | [README.md](../README.md) | 现行说明 |
 | [SECURITY.md](../SECURITY.md) | 现行说明 |
+| [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) | 现行说明 |
 | [docs/01-research.md](01-research.md) | 阶段历史 |
 | [docs/02-capability-matrix.md](02-capability-matrix.md) | 阶段历史 |
 | [docs/03-wecom-reference.md](03-wecom-reference.md) | 阶段历史 |
