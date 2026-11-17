@@ -1,0 +1,56 @@
+"""A newly selected route must keep its account's configured image uploader."""
+from copy import deepcopy
+from pathlib import Path
+import tempfile
+import unittest
+from dingtalk_bridge.configure import select
+from dingtalk_bridge.core import Bridge, BridgeError
+
+class ConfigureImageCapabilityTests(unittest.TestCase):
+    def test_selected_group_and_direct_keep_uploader_and_send_native_image(self):
+        for kind in ('group','direct'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);(root/'local/outbox').mkdir(parents=True)
+                # A signature-valid tiny PNG is sufficient for the transport gate.
+                image=root/'local/outbox/image.png';image.write_bytes(b'\x89PNG\r\n\x1a\nsynthetic')
+                original={'routes':[{'accountId':'synthetic','profile':'synthetic:person',
+                    'conversationId':'old','conversationType':'group','binary':'dws',
+                    'imageUploadBinary':'dws-image','selfSenderId':'self','historyTimezone':'Asia/Shanghai',
+                    'receiveMode':'stream_hint'}]}
+                before=deepcopy(original);calls=[]
+                class DWS:
+                    def __init__(self,root,config):self.config=config
+                    def call(self,args):
+                        calls.append(args)
+                        if '+conversation-info' in args:return {'result':{'conversationInfo':{'openConversationId':'new'}}}
+                        if '+messages-send' in args:return {'sendReceipt':{'openTaskId':'task'}}
+                        return {'result':{'sendStatus':'SUCCESS'},'messageRef':{'openConversationId':'new','openMessageId':'sent'}}
+                    def upload_image(self,path):
+                        if self.config.get('imageUploadBinary')!='dws-image':raise BridgeError('Uploader lost')
+                        calls.append(['upload',path]);return '$native'
+                candidate=select(original,'synthetic','new',kind,'peer' if kind=='direct' else None,dws_factory=DWS,root=root)
+                self.assertEqual(original,before);c=candidate['routes'][1]
+                self.assertEqual(c['imageUploadBinary'],'dws-image')
+                # Selection does not implicitly enable another shared stream listener.
+                self.assertNotIn('receiveMode',c)
+                c={**c,'group':c['conversationId']};bridge=Bridge(root,c,DWS(root,c))
+                try:self.assertEqual(bridge.send('image-on-selected-route',image='local/outbox/image.png')['state'],'confirmed')
+                finally:bridge.close()
+                self.assertEqual(len([a for a in calls if a[0]=='upload']),1)
+                sends=[a for a in calls if '+messages-send' in a];self.assertEqual(len(sends),1)
+                self.assertEqual(sends[0][sends[0].index('--msg-type')+1],'image')
+                self.assertEqual(sends[0][sends[0].index('--media-id')+1],'$native')
+                self.assertIn('--open-dingtalk-id' if kind=='direct' else '--group',sends[0])
+
+    def test_missing_uploader_is_not_invented_or_borrowed_from_another_account(self):
+        config={'routes':[{'accountId':a,'profile':a+':person','conversationId':a+'-old',
+            'conversationType':'group','binary':'dws',**({'imageUploadBinary':'other-helper'} if a=='other' else {})} for a in ['other','selected']]}
+        class DWS:
+            def __init__(self,root,c):self.config=c
+            def call(self,args):
+                if self.config['accountId']!='selected':raise AssertionError('Wrong account')
+                return {'result':{'conversationInfo':{'openConversationId':'new'}}}
+        result=select(config,'selected','new','group',dws_factory=DWS)
+        self.assertNotIn('imageUploadBinary',result['routes'][-1])
+
+if __name__=='__main__':unittest.main()

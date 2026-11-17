@@ -26,6 +26,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class ArtifactHTTPTests(unittest.TestCase):
     def test_expected_digest_http_cli_and_gateway_error_contract(self):
+        self.exercise_http_contract()
+
+    def test_http_contract_starts_when_hostname_lookup_is_unavailable(self):
+        self.exercise_http_contract(lookup_unavailable=True)
+
+    def exercise_http_contract(self, lookup_unavailable=False):
         with tempfile.TemporaryDirectory() as temp, tempfile.TemporaryFile() as child_log:
             root = Path(temp); (root / 'local/outbox').mkdir(parents=True)
             original = b'approved synthetic artifact'; digest = hashlib.sha256(original).hexdigest()
@@ -59,6 +65,11 @@ print(json.dumps(d))
             bootstrap = ("import faulthandler,runpy; "
                          "faulthandler.dump_traceback_later(4,repeat=False); "
                          "runpy.run_module('dingtalk_bridge',run_name='__main__',alter_sys=True)")
+            if lookup_unavailable:
+                bootstrap = ("import socket\n"
+                             "def unavailable(*args, **kwargs):\n"
+                             "    raise AssertionError('synthetic_hostname_lookup_forbidden')\n"
+                             "socket.getfqdn=socket.gethostbyaddr=unavailable\n" + bootstrap)
             child = subprocess.Popen([sys.executable, '-c', bootstrap, '--port', str(port)],
                 cwd=root, env={**os.environ, 'PYTHONPATH': str(ROOT)},
                 stdout=child_log, stderr=subprocess.STDOUT)
@@ -87,6 +98,11 @@ print(json.dumps(d))
                         except OSError as exc: last_probe = f'{type(exc).__name__}: {exc}'
                     time.sleep(.03)
                 else: self.fail(startup_failure())
+                with self.assertRaises(HTTPError) as unauthorized:
+                    opener.open(Request(base + '/v1/health'), timeout=5)
+                with unauthorized.exception as response:
+                    self.assertEqual(response.code, 401)
+                    self.assertEqual(json.load(response), {'error': 'unauthorized'})
                 payload = {'idempotency_key': 'original-key', 'file': 'local/outbox/result.txt', 'expected_sha256': digest}
                 with self.assertRaises(HTTPError) as caught: request('/v1/send', payload)
                 with caught.exception as response:

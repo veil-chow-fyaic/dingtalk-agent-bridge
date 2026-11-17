@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import secrets
 import signal
+from socketserver import TCPServer
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -13,6 +14,19 @@ from .core import BridgeError, ArtifactIntegrityError
 from .routing import Hub
 from .stream import StreamListener
 from .provenance import startup_evidence
+
+
+class LoopbackHTTPServer(ThreadingHTTPServer):
+    """Bind the literal local address without a reverse-DNS startup dependency."""
+
+    def server_bind(self):
+        if self.server_address[0] != '127.0.0.1':
+            raise ValueError('LoopbackHTTPServer requires literal 127.0.0.1')
+        # Keep TCPServer's platform-specific socket options and actual bound port.
+        # HTTPServer.server_bind adds only getfqdn(); this local-only service has
+        # no hostname to discover and must start even when that resolver blocks.
+        TCPServer.server_bind(self)
+        self.server_name, self.server_port = self.server_address[:2]
 
 
 def main():
@@ -136,7 +150,7 @@ def main():
         def do_POST(self):
             self.handle_request(True)
 
-    server = ThreadingHTTPServer(('127.0.0.1', a.port), Handler)
+    server = LoopbackHTTPServer(('127.0.0.1', a.port), Handler)
     server.daemon_threads = False
     worker = threading.Thread(target=poll, daemon=True)
     worker.start()

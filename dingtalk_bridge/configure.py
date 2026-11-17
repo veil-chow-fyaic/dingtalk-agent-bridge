@@ -1,4 +1,7 @@
-"""Prepare configuration offline; never starts monitoring or sends a message."""
+"""Prepare configuration: migrate offline; select verifies the target using DWS.
+
+Only writes a new candidate file; never starts monitoring or sends a message.
+"""
 import argparse
 import json
 import os
@@ -32,7 +35,7 @@ def select(config,account_id,conversation_id,kind,peer_id=None,*,dws_factory=DWS
     else:raise ValueError('Direct route needs an explicitly resolved peer openDingTalkId')
     info=dws_factory(root,base).call(['chat','+conversation-info',*args]).get('result',{}).get('conversationInfo',{})
     if info.get('openConversationId')!=conversation_id:raise BridgeError('Resolved conversation identity mismatch')
-    route={key:base[key] for key in ('accountId','profile','binary','selfSenderId','historyTimezone') if key in base}
+    route={key:base[key] for key in ('accountId','profile','binary','imageUploadBinary','selfSenderId','historyTimezone') if key in base}
     route.update(conversationId=conversation_id,conversationType=kind,name=info.get('name',''))
     if kind=='direct':route['peerOpenDingTalkId']=peer_id
     result={**result,'routes':[*result['routes'],route]}
