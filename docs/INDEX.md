@@ -77,6 +77,7 @@
 | [docs/148-github-project-maintenance.md](148-github-project-maintenance.md) | 阶段历史 |
 | [docs/149-github-public-launch-and-ci.md](149-github-public-launch-and-ci.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
+| [docs/150-native-voice-and-acceptance-scope.md](150-native-voice-and-acceptance-scope.md) | 阶段历史 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |
 | [docs/18-identity-and-conversation-boundaries.md](18-identity-and-conversation-boundaries.md) | 阶段历史 |
@@ -181,12 +182,15 @@
 | [plans/completion/00-README.md](../plans/completion/00-README.md) | 现行说明 |
 | [plans/completion/01-PRD.before-E144.md](../plans/completion/01-PRD.before-E144.md) | 冻结归档 |
 | [plans/completion/01-PRD.before-E146.md](../plans/completion/01-PRD.before-E146.md) | 冻结归档 |
+| [plans/completion/01-PRD.before-E150.md](../plans/completion/01-PRD.before-E150.md) | 冻结归档 |
 | [plans/completion/01-PRD.md](../plans/completion/01-PRD.md) | 验收基线 |
 | [plans/completion/09-执行时序与里程碑.md](../plans/completion/09-执行时序与里程碑.md) | 现行说明 |
+| [plans/completion/10-自检清单.before-E150.md](../plans/completion/10-自检清单.before-E150.md) | 冻结归档 |
 | [plans/completion/10-自检清单.md](../plans/completion/10-自检清单.md) | 验收基线 |
 | [plans/completion/99-执行偏差日志.md](../plans/completion/99-执行偏差日志.md) | 累计账本 |
 | [plans/completion/ACCEPTANCE_MATRIX.before-E144.md](../plans/completion/ACCEPTANCE_MATRIX.before-E144.md) | 冻结归档 |
 | [plans/completion/ACCEPTANCE_MATRIX.before-E146.md](../plans/completion/ACCEPTANCE_MATRIX.before-E146.md) | 冻结归档 |
+| [plans/completion/ACCEPTANCE_MATRIX.before-E150.md](../plans/completion/ACCEPTANCE_MATRIX.before-E150.md) | 冻结归档 |
 | [plans/completion/ACCEPTANCE_MATRIX.md](../plans/completion/ACCEPTANCE_MATRIX.md) | 验收基线 |
 | [plans/completion/CRITICAL_PATH.md](../plans/completion/CRITICAL_PATH.md) | 现行说明 |
 | [plans/completion/CURRENT_MISSION.md](../plans/completion/CURRENT_MISSION.md) | 现行说明 |

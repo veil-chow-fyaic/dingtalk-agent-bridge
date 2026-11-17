@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E150",
+  "date": "2026-11-17",
+  "scope": "Native voice capability investigation; no successful native voice message sent or received",
+  "client": {
+    "platform": "macOS",
+    "version": "9.0.5",
+    "build": "59563623"
+  },
+  "nativeUi": {
+    "authorizedGroupAndDirectInspected": true,
+    "composerAndMoreMenuInspected": true,
+    "recordVoiceControlObserved": false,
+    "messagesSent": 0,
+    "callsPlaced": 0,
+    "microphoneActions": 0,
+    "permissionsChanged": false,
+    "rawScreenshotFilesSaved": false,
+    "source": "Actual CUA AX and screenshots in this chat; private record contains excerpts, not full AX export",
+    "limits": "Does not prove every Mac version lacks native voice sending"
+  },
+  "existingAuthorizedLedgerCandidates": [
+    {
+      "conversationType": "group",
+      "voiceMarkerCandidates": 0
+    },
+    {
+      "conversationType": "direct",
+      "voiceMarkerCandidates": 0
+    }
+  ],
+  "officialDws": {
+    "version": "v1.0.67",
+    "commit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "sources": [
+      {
+        "path": "internal/helpers/chat.go",
+        "sha256": "22d0b5a643ced8a2ca56e51ecaa11cf31213dcf8265b5e449da04d9315ef83ff",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/helpers/chat.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/helpers/connect_chatrecord.go",
+        "sha256": "ca5a2705c1f101207700f1b7bbe154c671507986fdbe8b266ccde38feddb87e3",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/helpers/connect_chatrecord.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/helpers/connect_chatrecord_test.go",
+        "sha256": "8ebe2ce3eacd56774d04f337d44ee2fb9336a435e92d9a489fc50e3189aad359",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/helpers/connect_chatrecord_test.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/shortcut/chatmsg/chatmsg.go",
+        "sha256": "26f544e31a009d6840a12ba71e77f2052882dcd3e766b1a6ff77572a6b4177f2",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/shortcut/chatmsg/chatmsg.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/shortcut/chat/unified_send.go",
+        "sha256": "01859e34a48b8b5f5c4668e3f102666464671d27d1b666c5eba46487f7e83611",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/shortcut/chat/unified_send.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/app/api_command.go",
+        "sha256": "95588d0da3aa21780d11baecf88f39ecf6f42101f3a104df5f54fbcf2b8a0d2b",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/app/api_command.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "internal/app/mcp_published_command.go",
+        "sha256": "ea2dd563f018d00891a8c7b539a0a4b5853c0ec976d1d2642ecd11181541a273",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/internal/app/mcp_published_command.go",
+        "matchesPinnedArchive": true
+      },
+      {
+        "path": "skills/multi/dingtalk-chat/references/chat/message-media.md",
+        "sha256": "f63e29affce5fa9be29bef2cbbf07505d01cdc51a4305047006c7726affd6688",
+        "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/63a7c4906c7dee10750011ea309b9eb78abb7eb0/skills/multi/dingtalk-chat/references/chat/message-media.md",
+        "matchesPinnedArchive": true
+      }
+    ],
+    "inbound": "Official history preserves native voice marker and mediaId; existing message/resource download is available",
+    "outbound": "Both inspected ordinary-account send implementations map audio/video to file",
+    "rawOpenApi": "Requires own application client credentials; not available through the current ordinary-user encrypted token"
+  },
+  "marketDiscovery": {
+    "actualCalls": 2,
+    "searches": [
+      {
+        "keyword": "消息",
+        "results": 10,
+        "officialResults": 6,
+        "ordinaryAccountNativeVoiceEndpointEstablished": false,
+        "rawSha256": "2afcd878626977542e4889865fe64f88ce52e4eacaed85df876552ec6441acaf"
+      },
+      {
+        "keyword": "聊天",
+        "results": 7,
+        "officialResults": 4,
+        "ordinaryAccountNativeVoiceEndpointEstablished": false,
+        "rawSha256": "c94b26293cb9a2922f7eb213742a292922ad105dc4772d0c5185bf5d11a534ad"
+      }
+    ],
+    "invokedPublishedTools": 0,
+    "toolsListCalls": 0,
+    "reasonNoToolsList": "Neither bounded search returned a relevant ordinary-account chat/voice service; bot/app and unrelated services were not used",
+    "credentialRepair": false,
+    "guardReadyAfterEach": true,
+    "limits": "Marketplace only; not exhaustive account/internal service inventory"
+  },
+  "actualNativeVoiceClientAcceptance": false,
+  "unimplemented": [
+    "Native voice bar sending through the fixed ordinary-account DWS entry points"
+  ],
+  "unverified": [
+    "Real native voice receipt and its downloadable original/codec/playback",
+    "Real consumer delivery of native voice after deployment"
+  ],
+  "existingProvenAlternative": "WAV files in group/direct both directions with original download and player; not native voice bars",
+  "productFixScope": "Inbound parser candidate and existing original-byte download/consumer flow; separate frozen validation applies",
+  "fullProductAcceptance": false
+}

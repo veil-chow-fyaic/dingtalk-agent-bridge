@@ -1,70 +1,57 @@
 # 交付路线图
 
-本轮基于 2026-11-17 E146 状态：核心文字、常用文件、PNG/JPEG、WAV/MP4 文件以及群/私聊引用已有真实闭环；尚未达到全部 MUST 的最终交付标准。当前运行产品为 `2b479a8`，官方 DWS 固定 `v1.0.67`；待办只保留 **R01、R06、R07、R13 四项 MUST**。矩阵为 52 通过、10 阻塞、2 部分，这不是完成百分比。详细证据以[总览](102-user-requirements-and-roadmap.md)、[PRD](../plans/completion/01-PRD.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)为准。
+本轮以 2026-11-17 E150 的实现和证据复核为依据。核心文字、常用文件、PNG/JPEG、WAV/MP4 文件及群/私聊引用已有真实证据；原生语音入站代码已补齐并完成合成验证，真实语音收发仍未验。详细范围见[本次报告与能力表](150-native-voice-and-acceptance-scope.md)、[总览](102-user-requirements-and-roadmap.md)、[PRD](../plans/completion/01-PRD.md)及[逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。矩阵保留历史失败与未证格，不作为完成百分比。
 
-产品是普通账号的通用 IM 工具：CLI、HTTP、持久 consumer 可独立使用，gateway 和执行器可选，配置不绑定测试组织。优先使用 DWS 的身份、发送、历史与资源接口；bridge 只补实际需要的路由、幂等、原件、队列与恢复。不以四个执行器全部通过作为原 R09 的新门槛。
+E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。
 
-## 当前用户可用能力
+原MUST仍缺：R06；真实未验格保持，尚未完成全部验收。
 
-| 用户要做的事 | 已验证的结果 | 明确边界 |
-|---|---|---|
-| 收发文字、引用上下文 | 群/私聊双向，长文、中文、emoji、重复正文及引用关系；E146 私聊入站引用补齐 R04 | 不因本轮收口重复发送旧样本 |
-| 收发常用文件、让工具处理并回传 | TXT/CSV/PDF/DOCX/XLSX/ZIP 原件及客户端下载打开；多份附件可关联到一个任务，结果逐件交付 | 单个输出文件上限 20MiB；不承诺任意文件组合在一个气泡 |
-| 收发图片原件 | 独立原生 PNG/JPEG 气泡、查看器、下载打开及 SHA；图片可交给已验执行器处理 | 原生 image 主要限制为 PNG/JPEG ≤2MiB，较大图片用 file；动画/全部编码未认证 |
-| 收发音频和视频文件 | WAV/MP4 群/私聊双向原件、下载与播放器；MP4 在钉钉中已有视频卡片和播放证据 | 聊天语音条未验；约1秒 MP4 样本不代表长视频/所有编码。`file` 协议不等于用户不能看视频 |
-| 一条文字加多图 | 两路双PNG组合的单条发送、history 顺序、官方四原件和完整客户端呈现/发送者/AI 标识 | 当前客户端逐图保存仍失败；1–9图是代码契约，真实只验双PNG。不是任意多文件附件数组 |
+产品是普通账号的通用 IM 工具：CLI、HTTP、持久 consumer 独立，gateway 和执行器可选。优先使用 DWS，bridge 只补实际需要的路由、幂等、原件、队列与恢复。原 R09 至少一个执行器的要求已满足，不增加四 runtime 全过门槛。
 
-## MUST 1 · R01：集成新增路由的图片配置修复
+## R01：配置与目标环境交付
 
-**问题。** 新增同账号路由时，配置助手漏继承既有 `imageUploadBinary`，导致新路由的独立图片发送缺少 helper；现有两条运行路由不受影响。[E144](145-delivery-and-recovery-closeout.md) 已有最小候选、独立审查、双 Python 专项和安装 wheel 的 CLI/HTTP/consumer/图片流程证据。
+**已完成。** 源码中的配置助手 `select` 已修复同账号新增路由漏继承 `imageUploadBinary` 的问题；不会因此赋予另一账号的 profile 或权限。独立安装、CLI/HTTP/consumer 与图片契约已有验证。HTTP 服务启动也已移除对反向 DNS 查询的依赖，保留真实 loopback 绑定、端口和认证行为。[配置证据](145-delivery-and-recovery-closeout.md) · [实际 CI 根因](149-github-public-launch-and-ci.md)
 
-**实际下一步。** 配置修复已纳入 [E149](149-github-public-launch-and-ci.md) 隔离发布候选，与 HTTP 无 DNS 启动修复一起通过新 MIT wheel 双安装各526项。原观察在北京时间 2026-11-17 18:29:37 固定截止并审计后，由主维护者快进合入已审候选；按受管服务的停止/排空/备份、transport-only 固定 cut 覆盖、再次停传输审积压、恢复 gateway 的既有规范部署。保留原配置、绑定、账本和未知发送记录，不改官方 binary。
+**现场核验已完成。** E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。 版本与已测wheel/启动来源逐项核对，R01按原判据收口；后续文档HEAD另计。
 
-**关闭条件。** 新源码、已测 wheel 和实际启动来源一致；新路由继承同账号 helper、profile 与权限隔离不变；既有服务正常恢复，无积压误执行/未知重投；更新当前包、运行手册和清单。部署版本与后续文档 HEAD 分开记录。已完成的验证直接引用，不为数字重跑全套旧样本。
+## R06：原生语音双向与准确媒体能力
 
-**阻塞/依赖。** 当前只剩安全集成及目标环境核对，不等其他 MUST 或 Kimi 恢复；不得用部署后的账本补写旧观察截止。
+**已经可用的文件能力。** WAV/MP4 群/私聊双向原件、下载、播放已验，MP4 在钉钉中已有视频卡片。语音文件和聊天语音条不同；独立 `video` 协议标签未验，不等于视频卡片/播放不支持，也不构成另造通道的理由。[私聊音视频](34-audio-video-file-progress.md) · [群音视频](103-aic-group-media-and-result-contract.md)
 
-## MUST 2 · R06：以真实使用行为收口语音与视频范围
-
-**已有证据。** PNG/JPEG 原件与原生图片体验已验；WAV/MP4 文件四方向原件、下载、播放已验，MP4 客户端视频卡片已有证据。[音视频表现](34-audio-video-file-progress.md)与矩阵保留准确格式/时长边界。未完成的是旧基线中的原生语音条和独立 video 类型格，不是“音视频文件不支持”。
+**本次实现。** 官方 v1.0.67 已提供语音历史标记及 mediaId 下载。bridge 现已补语音归一化与既有原件到 consumer 的衔接，冻结源码和同 wheel 两个 Python 安装环境分别通过 533 项合成测试。原生语音的群/私聊真实入站仍未验；普通账号原生语音条出站尚未实现。
 
 **实际下一步。**
 
-- 在本任务内列清仍缺的用户动作：是否需要直接录制并发送聊天语音条、收到语音条后取得音频原件；现有视频卡片/播放/下载之外是否还有具体差异。不能仅为了底层 `video` 名称另造通道。
-- 保持原判据；若采用“音视频文件”作为最终范围，须由用户对已列明的行为差异明确确认，并保留范围变更记录及原未验格，不能由维护者默默改绿。
-- 若保留原生语音要求，只在普通账号可用的官方明确入口或授权会话的新真实事件出现后，提取来源类型、资源引用与时长等实际字段；先用既有 DWS 查询/下载，确有标准化缺口才补 bridge。没有已证入口就记录准确上游依赖，不猜参数、不改身份或认证。
+- 在已授权会话有一条新的真实原生语音后，记录来源身份/消息/资源关系，沿现有 DWS history 与资源下载取原件，再核 consumer、实际编码/时长及客户端播放。验证通道不要求调用模型。不能把合成 fixture 或 WAV 文件改记为语音条。
+- 出站需要明确的普通账号语音上传/发送契约。当前固定 DWS 的 `audio` 两条发送入口均转为 file；本轮两次有界官方市场搜索没有找到相关服务，未猜 ID 或调用未知工具。已检查的 Mac 9.0.5 输入框也未见录制语音入口，不能外推所有客户端都不支持。
+- 若在现有范围确实无入口，按用户要求保留实现/未实现清单并继续其他工作；不改为 bot、VoIP/听记，不索取新账号或应用凭据。是否完整满足 R06 仍按明确需求和真实证据判定，不以“记录了限制”代替成功。
 
-**关闭条件。** 按双方确认的范围逐方向核对内容、原件 SHA、用户呈现/播放、错误行为；保留原生语音与文件语义差异。仅范围讨论或源码存在不算验收通过。
+## R07：附件任务核心与组合体验分开核对
 
-**阻塞/上游依赖。** 当前普通用户发送合同仅列 `audio-as-file`、`video-as-file`；没有已确认的普通账号原生语音发送入口。需要官方给出普通账号的语音上传/发送/读取资源契约及支持客户端，或出现可只读核验的新真实事件。企业应用/bot、VoIP/会议听记不能替代普通账号聊天语音条。视频的协议标签本身不驱动新增实现。
+**原判据已有证据。** R07 要求“附件能进入 Agent、真实工具完成工作、文件回原会话”。[E095](100-aic-group-resume-and-files.md) 已在群完成两条附件关联一个任务、真实 Python 处理、同群两份文件交付及客户端下载打开/SHA；[E017](37-multiple-files-and-followup.md)、[E026](45-single-message-two-images.md) 补私聊多文件和单消息双图处理。无需用私聊证据替代群，也不因后续某次模型失败否定已验证的核心能力。
 
-## MUST 3 · R07：组合原件获取与实际附件任务交付
+**仍保留的独立缺口。**
 
-**已有证据。** [E026](45-single-message-two-images.md) 私聊一条双图真实工具处理及报告下载已过；[E131](132-group-multi-image-and-provider-denial.md) 群一条双图的原件、顺序、缓存/暂存完整，但当次 Kimi 403 无工具结果；[E134](135-composition-api-deployment.md) 两路单条组合、history 及四官方下载原件已过；[E146](147-native-ui-recovery-and-dm-quote.md) 两路完整图文/身份/AI 标识及私聊入站引用已补。
+- [E131](132-group-multi-image-and-provider-denial.md) 群双 PNG 当次 Kimi 403，未执行工具、未交付文件。该任务继续失败；不循环探测、重发或换 runtime 绕过。只有既有服务恢复的新证据且仍需该样本时，再验证新的明确任务。
+- [E134/E146](147-native-ui-recovery-and-dm-quote.md) 两路图文组合的 API、官方四原件、完整客户端呈现/发送者/AI 标识已验，客户端逐图保存仍失败或未证。旧失败点击路径不重跑；只在新明确入口出现后核既有消息。
+- 初始矩阵已有“单消息多附件”四方向，格子继续保留。原 R07 必要列未写任意附件必须合成一个气泡或每张内嵌图必须原生另存；这些组合边界与核心文件任务分别报告，不能自动追加为所有原有任务都要重做的门槛。
 
-**实际下一步。**
+**现成使用方式。** 多文件一起处理采用已验的多条附件关联；原件交付采用逐条原生 image/file。单条图文用于浏览并说明逐图保存限制。明确需要打包时可以交付一个 ZIP，但不能自动补发旧组合，也不能把替代形式记作单消息逐图保存通过。
 
-- 客户端保存：停止 E011/E146 已失败的点击、双击、右键和旧图片搜索。需要对既有 E134 消息有效的明确新“逐图保存原件”入口、客户端修复说明或官方支持方案；出现后只验既有消息，不重发补截图。
-- 普通多文件单消息：需要官方普通账号的一次发送附件集合契约，包含有序资源引用与逐项下载信息。当前重复 `--file`、逗号/JSON 参数和 Markdown 普通链接已证不满足，不能再次试同义参数。实际仅需“多个文件一起处理”时，现有多条附件关联同一任务及逐件结果可直接交付；它不冒称单气泡附件数组。
-- 群模型交付：保留 E131 失败，仅在既有 Kimi 服务权限恢复的新证据出现后，用新样本验证真实工具读取全部原件、产物和原会话下载打开；不重发失败任务、不循环探测、不换 runtime 绕过。该依赖只约束对应群执行器验收，CLI/HTTP/consumer 主线不等待模型。
+## R13：原观察、错误恢复与续期分项判定
 
-**关闭条件。** 现行组合格要求原消息内每张图能由客户端保存、打开并按顺序匹配源 SHA；入站组合必须完整进入 consumer，实际要求模型处理的样本还须真实工具及结果交付。若选择下述替代交付模式，仅将其按真实范围记录；关闭原严格格仍需满足原判据或显式范围变更。
+**已有证据。** 原要求为持久收发、去重/断线/未知状态、附件完整性/重启和可观察错误。E144 保存窗口中 31 次 history 错误后两路均自行恢复，最长观测上界 47.764 秒；这不是零错误或上游无丢失证明。[错误恢复记录](145-delivery-and-recovery-closeout.md)
 
-**阻塞/上游依赖。** Markdown 内嵌图的客户端可保存体验、普通账号原生多附件结构，以及群 Kimi 单独的服务访问。E011/E146 只证明所测客户端路径失败，不证明所有版本永远不支持；API 下载成功也不证明客户端下载成功。
+[E028](47-natural-auth-rollover.md) 已证明正常自动续期：官方在旧 access 到期前更新有效期，跨旧到期点后双路完整同步继续。过期或撤销 refresh 凭据后的恢复仍未证，系统凭据故障永久根因也未解决。不要把这些异常场景与正常自动续期混为一项“从未通过”。
 
-**现成可替代交付。** 用户需要原件时，使用已经验过的逐条原生 image/file；用户需要单条图文浏览时，使用 composition，并清楚说明客户端保存限制。需要打包时可显式选择一个 ZIP，利用已有文件通道下载解包；不能自动将已发送的组合补发为图片/ZIP，也不能把这些方案记成同消息逐图保存通过。无需公网图床、转发或改账号权限。
+原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。
 
-## MUST 4 · R13：按原观察关闭完整性、覆盖与自然续期
+**判定方式。** 审固定原 run 的实际时长、采样完整性、错误和恢复、固定 cut 账本覆盖与启动来源，结果写在 run 目录外。原 PRD 和初始自检没有“24h 零网络错误”条款；现有审计脚本的 `zero_recorded_errors`、`stability_pass` 按其严格定义原样保留，不能因原 R13 不含这一额外门槛便改成 true，也不能将 false 自动映射为全部 R13 未通过。正常续期证据、失效 refresh 未证和当前 run 的事实各自保留。
 
-**已有证据。** 重启幂等、未知投递不重放、断线恢复、附件损坏隔离、错误可见及启动来源已有实现和分层证据；E143 部署 `2b479a8` 后的新实际观察使用固定 run。E144 保存窗口含 31 次 history 错误、15 个错误采样，随后两路恢复；不是零错误。E145 取消候选已完成完整官方 CLI 构建与隔离跨层验证，但没有替换运行的 DWS，也未根治原 Keychain 问题。[可靠性记录](143-parallel-hardening.md) · [DWS 候选边界](146-dws-root-cause-and-integration.md)
-
-**实际下一步。** 固定北京时间 2026-11-17 18:29:37 到期后审 `parallel-hardening-24h-20261116` 原 run，结果写到 run 目录之外；分别判定 24h 采样完整性、记录错误、固定 cut 账本覆盖、启动来源一致、自然失效 refresh。只取已保存截止材料和实际事件，不重置 run、不用事后快照补造截止，不修改 token/时钟制造续期。
-
-**关闭条件。** 每个原判据给出证据和通过/失败/缺失，不用时间到或零新事件替代成功。旧错误和中断保留；缺少自然失效 refresh 时本子项继续未完成。发现真实实现缺口才修复并验证相应范围；若确需新的观察，作为有明确目的的新 run，不能覆盖旧失败，也不新建聊天心跳。最终交付要核当前安装包、现场来源、隐私、清单与回滚资料一致。
-
-**阻塞/依赖。** 固定截止的真实时间和自然续期事件；上游超时细分原因仍证据不足。Kimi 403、UI 或新增 runtime 不应阻塞该审计。没有完整证据时保留未完成，不发布“稳定 24h/自然续期通过”的结论。
+**本次审计已完成。** 原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。 按原R13核心判据有范围通过；后续只对新故障或明确实现缺口推进。
 
 ## SHOULD：独立演进，不增加核心交付门槛
+
 
 | 项目 | 已有基础 | 下一步与验收 | 启动条件/边界 |
 |---|---|---|---|
@@ -73,20 +60,8 @@
 | R17 流式卡片、审批、执行中追问 | 状态/取消/new 和任务审计已具备 | 由一个实际交互需求选择官方可用入口，核审批前无副作用、拒绝/取消/超时、重连不重复；先确定普通账号与 bot 的能力边界 | 不把完整管理平台列核心阻塞，不因有卡片 API 就替用户启用新身份 |
 | 执行器与多宿主 | Kimi/Codex/Pi 各自已验范围；OpenClaw 代码及合成契约已在包内 | 有专用现成配置后分别验 Pi 图片或 OpenClaw 真实工具/取消/文件 UI；确有多宿主需求才做租约 | 原 R09 已满足；不索取/复制其他 runtime 凭据，不以四 runtime 全过为前置。C05 不凭假设扩建 |
 
-## 本轮官方来源核对
+## GitHub 跟踪与交付
 
-2026-11-17 通过官方 GitHub 主源读取：main 仍为 [`4cc7767`](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/commit/4cc7767c70a874b189463ebfb07ad8a3c424389c)，稳定版仍 [`v1.0.68`](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68)，没有升级现场固定 v1.0.67。以下三个与本任务直接相关的文件和固定 v1.0.67 **逐字节一致**，本轮没有据旧探针重复执行业务：
+既有四个跟踪项保留在[原 MUST 交付验收里程碑](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/milestone/1)：[R01 配置集成](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/1)、[R06 媒体范围](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/2)、[R07 组合交付](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/3)、[R13 可靠性](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/4)。按本次原判据复核更新每项的核心结论与扩展缺口，不因 issue 标题或历史状态自行增加门槛，也不隐藏失败。
 
-- [普通身份能力](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/internal/shortcut/chat/identity_contract.go#L24)：音视频是 file 别名。
-- [发送实现](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/internal/shortcut/chat/unified_send.go#L706)：图文构造 markdown；独立 image 与单 file 是分支，不是同一条多附件数组。
-- [媒体说明](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/blob/4cc7767c70a874b189463ebfb07ad8a3c424389c/skills/multi/dingtalk-chat/references/chat/message-media.md#L7)：内嵌图文和 DWS 资源下载有明确入口，没有 Mac 客户端逐图保存承诺。
-
-上游 [#1565](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1565) 与 [#438](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/438) 仍开放，但其中旧版上传/下载缺口已有后续实现及本项目 E134 实证，不能照搬为当前阻塞。[#797](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/797) 报告富文本投影丢失，是相关上下文；它不证明 E146 客户端保存失败的根因。仅凭 issue 状态或推测不能认定有新可执行入口。
-
-## GitHub 跟踪与交付方式
-
-四项任务已登记到[原 MUST 交付验收里程碑](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/milestone/1)：[R01 配置集成](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/1)、[R06 媒体范围](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/2)、[R07 组合交付](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/3)、[R13 可靠性](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/4)。Issue记录执行进展，原验收判据与证据仍以本仓库文件为准。
-
-以以上四个 MUST 各维护一个任务；SHOULD 共用本路线图按实际需要启用，不按格式、方向或历史阶段拆出数十个重复 issue。每项只更新新证据、阻塞变化和下一动作。已有完成项引用原证据，不重写既有阶段历史。
-
-主维护者负责最终范围、仓库发布及现场。推送前核文档索引、相对链接、manifest、暂存隐私与 diff；原身份、会话、截图、日志、数据库、下载和凭据不进入 GitHub。用户授权更新本项目 GitHub 不等于向 DWS 上游自动发布 issue/PR；上游沟通材料先去重和脱敏，由主维护者按授权范围处理。全部约定 MUST 和[最终自检](../plans/completion/10-自检清单.md)满足后，才签最终交付。
+不按格式、方向或历史阶段拆出重复 issue。主维护者负责最终范围、发布及现场核对；原身份、聊天、截图、日志、数据库、下载和凭据不进 GitHub。更新本项目的授权不等于向上游发 issue/PR。全部约定 MUST 和[最终自检](../plans/completion/10-自检清单.md)满足后才签最终交付。

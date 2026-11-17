@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-实际产品2b479a8/E143；E134两路composition发送/history/官方原件已验，E146完整图文/身份/AI标识已验但逐图保存未成功。E146私聊原生引用UI/history/consumer通过。公共工具独立于组织、模型和runtime；现状见[总览](102-user-requirements-and-roadmap.md)。聊天调度已删除，业务服务独立；范围与禁止项见[AGENTS](../AGENTS.md)。
+实际产品0e151fb/E150；E134两路composition发送/history/官方原件已验，E146完整图文/身份/AI标识已验但逐图保存未成功。E146私聊原生引用UI/history/consumer通过。公共工具独立于组织、模型和runtime；现状见[总览](102-user-requirements-and-roadmap.md)。聊天调度已删除，业务服务独立；范围与禁止项见[AGENTS](../AGENTS.md)。
 
 ## 调用方式
 
@@ -68,7 +68,7 @@ python3 -m dingtalk_bridge.configure --config local/service-config.json --output
 python3 -m dingtalk_bridge.configure --config local/legacy-config.json --output local/candidate.json migrate
 ```
 
-输出必须不存在，避免覆盖；当前已部署产品2b479a8的select不会自动继承`receiveMode`或`imageUploadBinary`。E144候选已验证从所选account的首条基准route继承其已有`imageUploadBinary`，不从其他路由或账号借用，也不凭空补路径；`receiveMode`仍不继承。候选尚未部署，新路由启用前仍须显式核对这些选项，见[候选报告](145-delivery-and-recovery-closeout.md)。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
+输出必须不存在，避免覆盖；E150实际产品0e151fb的select已从所选account的首条基准route继承其已有`imageUploadBinary`，不从其他路由或账号借用，也不凭空补路径；`receiveMode`仍不继承。新路由启用前须显式核对候选选项，见[实现与部署](150-native-voice-and-acceptance-scope.md)。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
 
 多路由会话请求必须同时给account_id/conversation_id，单路兼容省略；错误/不完整选择返回400，不降级到默认群。GET选择放query，POST放JSON。discovery仅按账号选择；health/conversations是全局视图。列会话不暴露profile或OAuth，但事件/附件正文仍是私有聊天数据。
 
@@ -83,7 +83,7 @@ python3 -m dingtalk_bridge.consume --name MY-CONSUMER --account-id A --conversat
 
 Inbox先同事务写原事件与游标，再物化媒体。pending_media、media_failed、normalized、quarantined分别保留状态；正常运行时下一次可重试只读下载；E072凭据/超时等暂停生效后不再启动真实DWS，不以下载重试绕过暂停。`Inbox.ready()`只返回fromSelf=false、解析完整且附件路径/摘要仍有效的消息，不等于下游已执行成功。通用consumer不提供任务确认/租约或模型调度；独立可选gateway另有任务/会话/outbox，任意runtime也可自行实现消费策略。
 
-历史正文是平台投影；当前恢复实际图片mediaId、文件fileId、quotedMessage为有序parts，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
+历史正文是平台投影；当前恢复实际图片/语音mediaId、文件fileId、quotedMessage为有序parts；E150语音标记归一化为audio，复用原件物化，真实语音四方向仍未验，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
 
 普通水位前5分钟补读；首次及每30分钟追加最近24h深扫，`sync --deep`可显式触发。每次最多20页/1000条，部分读取不推进水位；E084已持久化原history_window和nextPageToken，超本轮容量在后续有界调用续读，重启保留游标。恢复要同一快照watermark≥固定cut且无待续窗口；首次无水位仅覆盖最近24h，平台不可见历史及超出补读窗口的迟到索引仍不保证。缓存每次尝试独立目录，部分失败不发布成功manifest；磁盘配额/保留期尚未实现，禁止自动清理仍被引用文件。
 

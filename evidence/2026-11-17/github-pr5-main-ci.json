@@ -1,0 +1,231 @@
+{
+  "repository": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge",
+  "pullRequest": {
+    "number": 5,
+    "url": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/5",
+    "state": "MERGED",
+    "mergedAt": "2026-11-17T08:44:44Z",
+    "head": "52505f48492b8dda7cecbd2d59b65beb81610c30",
+    "testedMerge": "7960988cc07943a336c5bb0cf325b03e27d34031",
+    "ciRun": 44047594273,
+    "jobs": [
+      {
+        "id": 133917059703,
+        "name": "macos-15 / Python 3.11",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 150.072,
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133917060047,
+        "name": "ubuntu-24.04 / Python 3.14",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 92.241,
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133917060140,
+        "name": "macos-15 / Python 3.14",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 161.801,
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133917060168,
+        "name": "ubuntu-24.04 / Python 3.11",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 84.109,
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      }
+    ]
+  },
+  "main": {
+    "commit": "5b4252079c22392f20fbfc5fe3ec97a093b1c443",
+    "tree": "cc069c33d99043edcdfd27146e1140fe8bfeb019",
+    "ciRun": 44049355822,
+    "ciUrl": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/runs/44049355822",
+    "jobs": [
+      {
+        "id": 133922970905,
+        "name": "ubuntu-24.04 / Python 3.14",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 108.432,
+        "checkedOutCommit": "5b4252079c22392f20fbfc5fe3ec97a093b1c443",
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133922971396,
+        "name": "ubuntu-24.04 / Python 3.11",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 84.737,
+        "checkedOutCommit": "5b4252079c22392f20fbfc5fe3ec97a093b1c443",
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133922971410,
+        "name": "macos-15 / Python 3.14",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 163.51,
+        "checkedOutCommit": "5b4252079c22392f20fbfc5fe3ec97a093b1c443",
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      },
+      {
+        "id": 133922971413,
+        "name": "macos-15 / Python 3.11",
+        "conclusion": "success",
+        "testsRun": 526,
+        "seconds": 154.394,
+        "checkedOutCommit": "5b4252079c22392f20fbfc5fe3ec97a093b1c443",
+        "installedChecks": {
+          "ok": true,
+          "checks": {
+            "version": true,
+            "requires_python": true,
+            "runtime_dependencies": true,
+            "entry_points": true,
+            "package_bytes": true,
+            "license_metadata": true,
+            "license_bytes": true
+          },
+          "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+        }
+      }
+    ]
+  },
+  "candidate": {
+    "original": "3df2e05436a23289e65fce40db861f3d81bd313f",
+    "public": "52505f48492b8dda7cecbd2d59b65beb81610c30",
+    "tree": "cc069c33d99043edcdfd27146e1140fe8bfeb019"
+  },
+  "deployedProduct": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "fullProductAcceptance": false,
+  "receiptRecordedAt": "2026-11-17T09:04:40.420594+00:00",
+  "workingBranch": "codex/complete-bridge",
+  "workingHead": "848a6cc56c516fd739cb6b59be868952ee204c14",
+  "branchProtection": {
+    "requiredChecks": [
+      "ubuntu-24.04 / Python 3.14",
+      "ubuntu-24.04 / Python 3.11",
+      "macos-15 / Python 3.14",
+      "macos-15 / Python 3.11"
+    ],
+    "strict": true,
+    "pullRequestRequired": true,
+    "requiredApprovingReviewCount": 0,
+    "enforceAdmins": true,
+    "allowForcePushes": false,
+    "allowDeletions": false,
+    "requiredConversationResolution": true,
+    "readBackVerified": true
+  },
+  "publication": {
+    "visibility": "public",
+    "license": "MIT",
+    "privateVulnerabilityReporting": true,
+    "stableReleaseDeclared": false,
+    "originalLocalHistoryRewritten": false
+  },
+  "exportVerification": {
+    "ok": true,
+    "publicSourceCommit": "52505f48492b8dda7cecbd2d59b65beb81610c30",
+    "tree": "cc069c33d99043edcdfd27146e1140fe8bfeb019",
+    "sourceFiles": 818,
+    "manifestEntries": 817,
+    "modules": 25,
+    "wheelSha256": "ea2d49f4ae33e97d043c9e3c51a211da3a261e233d166a0496ccb44667cc9cfc",
+    "testContractMatches": true,
+    "checksumsAndCompletionSealMatch": true,
+    "fullProductAcceptance": false
+  }
+}

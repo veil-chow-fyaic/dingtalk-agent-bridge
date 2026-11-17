@@ -24,4 +24,6 @@ E133新增独立composition候选及CLI/HTTP合成验证；用户授权的单次
 
 E134已部署2467fe2，群/私聊各一次文字＋双PNG组合confirmed；history和官方下载四原件字节/SHA一致。34只读检查/5篡改负例不等同客户端验收，矩阵保持51/11/2，99任务/240 Agent outbox/session保持。见[部署/通道报告](../docs/135-composition-api-deployment.md)及[脱敏证据](2026-11-16/composition-api-validation.json)。
 
-E146恢复原CUA截图路径并完成一次私聊原生引用UI/history/consumer，R04通过，当前52/10/2、剩R01/R06/R07/R13四MUST。E134两路组合完整图文/身份/AI标识补齐，但重复旧点击保存路径仍失败，未计客户端原件。见[报告](../docs/147-native-ui-recovery-and-dm-quote.md)和[脱敏证据](2026-11-17/native-ui-recovery-and-dm-quote.json)；旧段落保留各阶段范围。
+E146恢复原CUA截图路径并完成一次私聊原生引用UI/history/consumer，R04通过，当阶段52/10/2、剩R01/R06/R07/R13四MUST。E134两路组合完整图文/身份/AI标识补齐，但重复旧点击保存路径仍失败，未计客户端原件。见[报告](../docs/147-native-ui-recovery-and-dm-quote.md)和[脱敏证据](2026-11-17/native-ui-recovery-and-dm-quote.json)；旧段落保留各阶段范围。
+
+E150当前结果见[语音、原验收和实际交付](../docs/150-native-voice-and-acceptance-scope.md)；源码及同wheel双安装各533通过，真实语音未验、原生出站未实现，原观察错误不删。

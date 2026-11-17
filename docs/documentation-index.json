@@ -3,21 +3,18 @@
   "updated": "2026-11-17",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E149",
+    "documentationEvidence": "E150",
     "latestUiEvidence": "E146",
-    "deployedProduct": "2b479a8",
-    "deploymentEvidence": "E143",
-    "candidateProduct": "E149",
+    "deployedProduct": "0e151fb",
+    "deploymentEvidence": "E150",
+    "candidateProduct": "E150",
     "uiStateCounts": {
       "passed": 52,
       "blocked": 10,
       "partial": 2
     },
     "mustGaps": [
-      "R01",
-      "R06",
-      "R07",
-      "R13"
+      "R06"
     ],
     "openclawCandidateProduct": "500191a",
     "automationStatus": "DELETED",
@@ -694,14 +691,14 @@
     },
     "plans/completion/01-PRD.md": {
       "role": "baseline",
-      "preservedSha256": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea"
+      "preservedSha256": "685fcbb558cb7573c7523077851461f321a86bf240c14ca96a15db04c70d5383"
     },
     "plans/completion/09-执行时序与里程碑.md": {
       "role": "current"
     },
     "plans/completion/10-自检清单.md": {
       "role": "baseline",
-      "preservedSha256": "e6c21d58537efe20551328446d5864a121c5f0d32aee90bbec63f174eb80fd49"
+      "preservedSha256": "875eed8a0c71386148782479fcda4f668dd9790ff537c908e4da6b65eff2b15c"
     },
     "plans/completion/99-执行偏差日志.md": {
       "role": "ledger",
@@ -718,7 +715,7 @@
     },
     "plans/completion/ACCEPTANCE_MATRIX.md": {
       "role": "baseline",
-      "preservedSha256": "a03d3cb41174723bcca0b9dbf3d271dd42ae95f19fd8e4d3703cbaa4bdc9ccb3"
+      "preservedSha256": "484ec5ec4323ea24fb74d64cd70549a34ea674d285949fdea1c6672e58c1015c"
     },
     "plans/completion/CRITICAL_PATH.md": {
       "role": "current"
@@ -760,6 +757,22 @@
     "docs/149-github-public-launch-and-ci.md": {
       "role": "historical",
       "preservedSha256": "19a66fd115155f2e73e8f117e0be370ff219b7dc8af3cde3720ed1863ce34b7e"
+    },
+    "plans/completion/01-PRD.before-E150.md": {
+      "role": "archive",
+      "preservedSha256": "5c3b434893c225caab7f5d2b2998077ba4181d16f8a3cda3e60b06e0d267b4ea"
+    },
+    "plans/completion/ACCEPTANCE_MATRIX.before-E150.md": {
+      "role": "archive",
+      "preservedSha256": "a03d3cb41174723bcca0b9dbf3d271dd42ae95f19fd8e4d3703cbaa4bdc9ccb3"
+    },
+    "plans/completion/10-自检清单.before-E150.md": {
+      "role": "archive",
+      "preservedSha256": "e6c21d58537efe20551328446d5864a121c5f0d32aee90bbec63f174eb80fd49"
+    },
+    "docs/150-native-voice-and-acceptance-scope.md": {
+      "role": "historical",
+      "preservedSha256": "1b5fdcc67b4afe2769471080888f310b84b432a1df3093e9b5afaf7e6c55b410"
     }
   }
 }
