@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E149",
+  "baseTestSha256": "d47242fbf2a9ba128cd0de1aea583fa29b907e8ad93c210cbc2b6796faddcf99",
+  "patchSha256": "8b47704046eed7396587439c8cd20c4dd31efa82e921580cac36c4056030cd76",
+  "candidateTestSha256": "c7d9f33613aa546fe99cdf3f4e7aa52272f1df4a220f8c83bf0f6e2d95db1311",
+  "changedPaths": [
+    "tests/test_official_proxy.py"
+  ],
+  "newTestMethods": 1,
+  "productChanged": false,
+  "installedWheelSha256": "ea2d49f4ae33e97d043c9e3c51a211da3a261e233d166a0496ccb44667cc9cfc",
+  "runs": [
+    {
+      "python": "3.14.6",
+      "methods": 10,
+      "passed": true,
+      "scope": "Whole official-proxy module before final audit no-retry assertion was added"
+    },
+    {
+      "python": "3.11.15",
+      "methods": 10,
+      "passed": true,
+      "scope": "Whole official-proxy module before final audit no-retry assertion was added"
+    },
+    {
+      "python": "3.14.6",
+      "methods": 1,
+      "passed": true,
+      "scope": "Final modified cleanup method including stronger audit assertion"
+    },
+    {
+      "python": "3.11.15",
+      "methods": 1,
+      "passed": true,
+      "scope": "Final modified cleanup method including stronger audit assertion"
+    }
+  ],
+  "slowReadyTiming": {
+    "setupReadySeconds": 3.575513416028116,
+    "readyFileToProcessResultSeconds": 2.048819065093994,
+    "auditProcessElapsedMs": 5626,
+    "reason": "dws_timeout"
+  },
+  "logSha256": {
+    "py314-proxy.log": "cf9503ccbea5254e171a62b88f8df638c3fd8000d1b7d0a39b6bbbd4eed0165c",
+    "py311-proxy.log": "9107e6bc2b9dfc6e108942d67328890e5751e98f1968d1018e0807e7606e7b34",
+    "py314-final-cleanup.log": "52bc6e3eba332fcb9de42b1143a0369a270db4eaa5bebeede597331871f9c19e",
+    "py311-final-cleanup.log": "cd96af6142a9c9cd58b688cf96e937d5f9588acaeccd6c5730cfbc1c9bc9805e"
+  },
+  "rootCauseOfOriginalMissingMarker": "Unestablished; original full-suite failure and retained reproduction not replaced by later passes. This is test-contract separation, not a product fix.",
+  "patchApplyCheckPassed": true,
+  "faultChecks": [
+    {
+      "mode": "missing-cleanup",
+      "harnessPassed": true,
+      "underlyingTestPassed": false,
+      "expectedTestFailures": 1,
+      "childLeftAlive": false
+    },
+    {
+      "mode": "automatic-retry",
+      "harnessPassed": true,
+      "underlyingTestPassed": false,
+      "expectedTestFailures": 1,
+      "childLeftAlive": false
+    },
+    {
+      "mode": "slow-ready",
+      "harnessPassed": true,
+      "underlyingTestPassed": true,
+      "expectedTestFailures": 0,
+      "childLeftAlive": false
+    },
+    {
+      "mode": "never-ready",
+      "harnessPassed": true,
+      "underlyingTestPassed": false,
+      "expectedTestFailures": 1,
+      "childLeftAlive": false
+    }
+  ],
+  "boundary": "Synthetic test-contract changes only. Original 525-method Python 3.14 failure retained. Whole-suite validation after the final test change is separately recorded; no product or timeout-budget change."
+}

@@ -75,6 +75,7 @@
 | [docs/146-dws-root-cause-and-integration.md](146-dws-root-cause-and-integration.md) | 阶段历史 |
 | [docs/147-native-ui-recovery-and-dm-quote.md](147-native-ui-recovery-and-dm-quote.md) | 阶段历史 |
 | [docs/148-github-project-maintenance.md](148-github-project-maintenance.md) | 阶段历史 |
+| [docs/149-github-public-launch-and-ci.md](149-github-public-launch-and-ci.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E149",
+  "repository": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge",
+  "sourceCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+  "publicCommit": "366212deda4656deb509a8c2ae6c7dad1a807e6a",
+  "sourceTree": "913555a38af80175c60fd0c88b3757d13c93002f",
+  "run": {
+    "id": 44041215622,
+    "url": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/runs/44041215622",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 133895984074,
+      "name": "ubuntu-24.04 / Python 3.14",
+      "conclusion": "success",
+      "testsRun": 525,
+      "seconds": 91.31,
+      "installedChecks": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    },
+    {
+      "id": 133895984440,
+      "name": "macos-15 / Python 3.14",
+      "conclusion": "success",
+      "testsRun": 525,
+      "seconds": 151.854,
+      "installedChecks": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    },
+    {
+      "id": 133895984457,
+      "name": "ubuntu-24.04 / Python 3.11",
+      "conclusion": "success",
+      "testsRun": 525,
+      "seconds": 91.321,
+      "installedChecks": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    },
+    {
+      "id": 133895984633,
+      "name": "macos-15 / Python 3.11",
+      "conclusion": "success",
+      "testsRun": 525,
+      "seconds": 141.071,
+      "installedChecks": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    }
+  ],
+  "scope": "Four hosted source suites and independently built wheel metadata/package-byte checks. No actual DWS, model, credentials or DingTalk UI. Not the same wheel as the separate local installed full-suite validation."
+}

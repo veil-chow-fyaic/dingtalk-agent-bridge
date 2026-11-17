@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E149-combined-candidate-installed-validation",
+  "date": "2026-11-17",
+  "ok": false,
+  "baseCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+  "sourceSnapshotCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+  "sourceTree": "913555a38af80175c60fd0c88b3757d13c93002f",
+  "sourceArchiveSha256": "1883c1a424256483b7e0a4add53930f7fe03f5a56fa5aeae696feadf53dbbbac",
+  "codeSha256": {
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "__main__.py": "e518cfc9d6bf73ab8eecbf43a2ec095762d421a5b9556c40986bdca5d36d7c8d",
+    "agent_gateway.py": "a43c1f4c730196543eec25c6fed89beed3cf7807157af928ede0dc61f607d559",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+    "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+    "consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6",
+    "consumer.py": "07bf97fd59a13ca8c6ec9a86e2a1953ec01e9880a02a0b3d0adeba4f8d95c254",
+    "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+    "message_model.py": "906988f0d5d7d29204714b6757f6e0653b343553ed081e1f8bdabdc306676e7c",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd"
+  },
+  "candidateModules": 25,
+  "wheelSha256": "ea2d49f4ae33e97d043c9e3c51a211da3a261e233d166a0496ccb44667cc9cfc",
+  "wheelModulesMatch": true,
+  "licensesMatch": true,
+  "package": {
+    "name": "dingtalk-agent-bridge",
+    "version": "0.1.0",
+    "requiresPython": ">=3.11",
+    "entryPoints": {
+      "dab": "dingtalk_bridge.cli:main",
+      "dab-bridge": "dingtalk_bridge.__main__:main",
+      "dab-agent": "dingtalk_bridge.agent_gateway:main",
+      "dab-consume": "dingtalk_bridge.consume:main",
+      "dab-doctor": "dingtalk_bridge.doctor:main",
+      "dab-service": "dingtalk_bridge.service_manager:main"
+    },
+    "dependencies": [],
+    "license": "MIT",
+    "licenseFiles": [
+      "LICENSE"
+    ],
+    "fullPayloadMetadataAndRecordMatch": true
+  },
+  "build": {
+    "offline": true,
+    "setuptools": "84.2.1",
+    "wheel": "0.48.0",
+    "buildLogSha256": "49e23f3e0f113c31c60a14ffa30ffed96f750d67bbf54fcdbf6f64e7409f0072",
+    "system": "macOS 26.5.1 arm64",
+    "buildIsolation": false,
+    "dependenciesInstalledFromNetwork": false
+  },
+  "results": [
+    {
+      "label": "py314",
+      "python": "3.14.6",
+      "scope": "complete installed-package unittest suite, exact frozen source tests; not real DingTalk acceptance",
+      "testsRun": 525,
+      "exitCode": 1,
+      "ok": false,
+      "failures": 1,
+      "errors": 0,
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false,
+      "durationSeconds": 161.183,
+      "log": "py314-full.log",
+      "logSha256": "037d2ed348531e3b064bceb6fbd504c53f8c1e69e5251c4c3ef33462ae51cf84",
+      "summarySha256": "72478c3d8291998d630c5534f4a768e569a13f239c48162bbed459d062de2e9c",
+      "refusalsRetained": 11,
+      "validationErrors": [],
+      "retentionErrors": [],
+      "installedMetadataAndLicense": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    },
+    {
+      "label": "py311",
+      "python": "3.11.15",
+      "scope": "complete installed-package unittest suite, exact frozen source tests; not real DingTalk acceptance",
+      "testsRun": 525,
+      "exitCode": 0,
+      "ok": true,
+      "failures": 0,
+      "errors": 0,
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false,
+      "durationSeconds": 150.186,
+      "log": "py311-full.log",
+      "logSha256": "73cea7be1d9055cc313e9e10a971ac58ef401fcdce3383cad5d63d3bbca3753a",
+      "summarySha256": "cde16f5440233b1e5c6229239657288b812997a3a3937dc2712bb130f729fa3e",
+      "refusalsRetained": 11,
+      "validationErrors": [],
+      "retentionErrors": [],
+      "installedMetadataAndLicense": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    }
+  ],
+  "exportReady": false,
+  "scope": "Initial installed full suites; Python 3.14 has one retained failure and is not accepted as passing. Raw fixture/logs remain private. Later diagnosis is separately recorded."
+}

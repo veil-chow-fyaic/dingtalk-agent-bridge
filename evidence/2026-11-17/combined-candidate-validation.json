@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E149-combined-candidate-contract-installed-validation",
+  "date": "2026-11-17",
+  "ok": true,
+  "baseCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+  "sourceSnapshotCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+  "sourceTree": "913555a38af80175c60fd0c88b3757d13c93002f",
+  "sourceArchiveSha256": "1883c1a424256483b7e0a4add53930f7fe03f5a56fa5aeae696feadf53dbbbac",
+  "codeSha256": {
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "__main__.py": "e518cfc9d6bf73ab8eecbf43a2ec095762d421a5b9556c40986bdca5d36d7c8d",
+    "agent_gateway.py": "a43c1f4c730196543eec25c6fed89beed3cf7807157af928ede0dc61f607d559",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+    "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+    "consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6",
+    "consumer.py": "07bf97fd59a13ca8c6ec9a86e2a1953ec01e9880a02a0b3d0adeba4f8d95c254",
+    "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+    "message_model.py": "906988f0d5d7d29204714b6757f6e0653b343553ed081e1f8bdabdc306676e7c",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd"
+  },
+  "candidateModules": 25,
+  "wheelSha256": "ea2d49f4ae33e97d043c9e3c51a211da3a261e233d166a0496ccb44667cc9cfc",
+  "wheelModulesMatch": true,
+  "licensesMatch": true,
+  "package": {
+    "name": "dingtalk-agent-bridge",
+    "version": "0.1.0",
+    "requiresPython": ">=3.11",
+    "entryPoints": {
+      "dab": "dingtalk_bridge.cli:main",
+      "dab-bridge": "dingtalk_bridge.__main__:main",
+      "dab-agent": "dingtalk_bridge.agent_gateway:main",
+      "dab-consume": "dingtalk_bridge.consume:main",
+      "dab-doctor": "dingtalk_bridge.doctor:main",
+      "dab-service": "dingtalk_bridge.service_manager:main"
+    },
+    "dependencies": [],
+    "license": "MIT",
+    "licenseFiles": [
+      "LICENSE"
+    ],
+    "fullPayloadMetadataAndRecordMatch": true
+  },
+  "build": {
+    "offline": true,
+    "setuptools": "84.2.1",
+    "wheel": "0.48.0",
+    "buildLogSha256": "49e23f3e0f113c31c60a14ffa30ffed96f750d67bbf54fcdbf6f64e7409f0072",
+    "newWheelBuiltFor22fea99": true,
+    "reusedWheelForTestOnlyPatch": true
+  },
+  "testContract": {
+    "patchSha256": "8b47704046eed7396587439c8cd20c4dd31efa82e921580cac36c4056030cd76",
+    "productChanged": false,
+    "changedTestFiles": [
+      "tests/test_official_proxy.py"
+    ],
+    "sourceTestFileBeforeSha256": "d47242fbf2a9ba128cd0de1aea583fa29b907e8ad93c210cbc2b6796faddcf99",
+    "installedTestFileAfterSha256": "c7d9f33613aa546fe99cdf3f4e7aa52272f1df4a220f8c83bf0f6e2d95db1311",
+    "methodsAdded": 1,
+    "meaning": "Separate real unmodified2s deadline/persistent suspension/no retry from descendant cleanup after independently bounded fixture readiness. Product clock,2s timeout,close/reap are not relaxed.",
+    "systemReasonForOriginalMissingReadiness": "unknown; test fixture assumptions are corrected without asserting DNS,process or OS root cause"
+  },
+  "results": [
+    {
+      "label": "source",
+      "testsRun": 525,
+      "exitCode": 0,
+      "ok": true,
+      "scope": "Parent-verified actual hosted CI on original source22fea99/public366212d, before the new timeout test-contract patch; four environments each525, not526",
+      "sourceCommit": "22fea9955dba5eddac78cd4c1632e3849e33e952",
+      "publicCommitShort": "366212d",
+      "runId": 44041215622,
+      "runUrl": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/actions/runs/44041215622",
+      "testContractPatchApplied": false,
+      "evidenceOrigin": "Actual GitHub Actions job logs; exact original/public commit mapping. Full job summaries are in github-ci-fix-validation.json.",
+      "matrix": [
+        {
+          "runner": "ubuntu-24.04",
+          "python": "3.11",
+          "testsRun": 525,
+          "exitCode": 0,
+          "ok": true
+        },
+        {
+          "runner": "ubuntu-24.04",
+          "python": "3.14",
+          "testsRun": 525,
+          "exitCode": 0,
+          "ok": true
+        },
+        {
+          "runner": "macos-15",
+          "python": "3.11",
+          "testsRun": 525,
+          "exitCode": 0,
+          "ok": true
+        },
+        {
+          "runner": "macos-15",
+          "python": "3.14",
+          "testsRun": 525,
+          "exitCode": 0,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "label": "py314",
+      "python": "3.14.6",
+      "scope": "complete installed-package suite fromsource22fea99 plus precisely bound timeout-test-contract patch;526 methods",
+      "testsRun": 526,
+      "exitCode": 0,
+      "ok": true,
+      "failures": 0,
+      "errors": 0,
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false,
+      "durationSeconds": 161.144,
+      "logSha256": "e61a3b1f22b91916f41f09ae9d734bb2f24b8610b72a67786a4e3e82a0c373f3",
+      "summarySha256": "7bd19a3afb1f4ad5181e589897f1b006ea08ab81eea7e8a10033b162bd293acb",
+      "refusalsRetained": 11,
+      "validationErrors": [],
+      "retentionErrors": [],
+      "testContractPatchApplied": true,
+      "testContractPatchSha256": "8b47704046eed7396587439c8cd20c4dd31efa82e921580cac36c4056030cd76",
+      "installedMetadataAndLicense": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    },
+    {
+      "label": "py311",
+      "python": "3.11.15",
+      "scope": "complete installed-package suite fromsource22fea99 plus precisely bound timeout-test-contract patch;526 methods",
+      "testsRun": 526,
+      "exitCode": 0,
+      "ok": true,
+      "failures": 0,
+      "errors": 0,
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false,
+      "durationSeconds": 148.418,
+      "logSha256": "4532764209c344205fcf4a98d034e58988b55087cd7cc96ab507ee5d3e4c974a",
+      "summarySha256": "159959ca064640ae699a75a644fdaf0991d1afb32e8149c5036f0f2af3fe9917",
+      "refusalsRetained": 11,
+      "validationErrors": [],
+      "retentionErrors": [],
+      "testContractPatchApplied": true,
+      "testContractPatchSha256": "8b47704046eed7396587439c8cd20c4dd31efa82e921580cac36c4056030cd76",
+      "installedMetadataAndLicense": {
+        "ok": true,
+        "checks": {
+          "version": true,
+          "requires_python": true,
+          "runtime_dependencies": true,
+          "entry_points": true,
+          "package_bytes": true,
+          "license_metadata": true,
+          "license_bytes": true
+        },
+        "scope": "Installed metadata/package bytes only; no CLI/auth/DWS execution"
+      }
+    }
+  ],
+  "installedTestsSerial": true,
+  "installedPlatform": "macOS 26.5.1 arm64",
+  "priorAttemptsPreserved": {
+    "validation": "installed-validation.json",
+    "validationSha256": "a25a467e43397d9c6f74e95c96307b9c811715a105d02b1fb0a367a130993658",
+    "py314": {
+      "testsRun": 525,
+      "failures": 1,
+      "exitCode": 1,
+      "failureRecordSha256": "0886015d1c0d07c3427348bc676ab90bdd629c29af026b73ff1c3bddd77b5bbe",
+      "logSha256": "037d2ed348531e3b064bceb6fbd504c53f8c1e69e5251c4c3ef33462ae51cf84"
+    },
+    "py311": {
+      "testsRun": 525,
+      "failures": 0,
+      "exitCode": 0,
+      "logSha256": "73cea7be1d9055cc313e9e10a971ac58ef401fcdce3383cad5d63d3bbca3753a"
+    },
+    "originalDirectoriesAndLogsOverwritten": false
+  },
+  "deployed": false,
+  "deployedProductUnchanged": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "fullProductAcceptance": false,
+  "mustGaps": [
+    "R01",
+    "R06",
+    "R07",
+    "R13"
+  ],
+  "exportPreparation": "This record binds the tested module, wheel, license and test-contract digests. Export additionally verifies the selected committed source and manifest.",
+  "limits": [
+    "Source hosted525 and installed patched526 are different test contracts, not526x3.",
+    "Original525 installed failure remains recorded; passing corrected tests does not establish original system-level timing cause.",
+    "No real DWS/accounts/credentials/models/UI or existing service operation.",
+    "Test suites have no product source directory; all25 installed module bytes and metadata/licenses rechecked after runs.",
+    "No new wheel build or metadata/product change for the test-only patch.",
+    "Known-private-values, committed-source manifest and final export checks are separate integration gates."
+  ]
+}

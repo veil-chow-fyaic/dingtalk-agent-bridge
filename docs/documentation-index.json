@@ -7,7 +7,7 @@
     "latestUiEvidence": "E146",
     "deployedProduct": "2b479a8",
     "deploymentEvidence": "E143",
-    "candidateProduct": "E144",
+    "candidateProduct": "E149",
     "uiStateCounts": {
       "passed": 52,
       "blocked": 10,
@@ -756,6 +756,10 @@
     },
     "plans/completion/TODO.md": {
       "role": "current"
+    },
+    "docs/149-github-public-launch-and-ci.md": {
+      "role": "historical",
+      "preservedSha256": "19a66fd115155f2e73e8f117e0be370ff219b7dc8af3cde3720ed1863ce34b7e"
     }
   }
 }
