@@ -1,0 +1,82 @@
+--- a/go.mod
++++ b/go.mod
+@@ -3 +3 @@
+-go 1.18
++go 1.20
+--- a/keyring_darwin.go
++++ b/keyring_darwin.go
+@@ -17,0 +18 @@
++	"context"
+@@ -21 +21,0 @@
+-	"io"
+@@ -23,0 +24 @@
++	"time"
+@@ -37,0 +39,11 @@
++// Darwin-only context entrypoints. Existing APIs retain their existing signatures.
++// The command seam permits synthetic tests without invoking the system keychain.
++var keychainCommandContext = exec.CommandContext
++
++func GetContext(ctx context.Context, service, username string) (string, error) {
++	return (macOSXKeychain{}).GetContext(ctx, service, username)
++}
++func SetContext(ctx context.Context, service, username, password string) error {
++	return (macOSXKeychain{}).SetContext(ctx, service, username, password)
++}
++
+@@ -44 +56,5 @@
+-	out, err := exec.Command(
++	return k.GetContext(context.Background(), service, username)
++}
++
++func (k macOSXKeychain) GetContext(ctx context.Context, service, username string) (string, error) {
++	cmd := keychainCommandContext(ctx,
+@@ -48 +64,6 @@
+-		"-wa", username).CombinedOutput()
++		"-wa", username)
++	cmd.WaitDelay = time.Second
++	out, err := cmd.CombinedOutput()
++	if ctx.Err() != nil {
++		return "", ctx.Err()
++	}
+@@ -71,3 +92,7 @@
+-	// if the added secret has multiple lines or some non ascii,
+-	// osx will hex encode it on return. To avoid getting garbage, we
+-	// encode all passwords
++	return k.SetContext(context.Background(), service, username, password)
++}
++
++func (k macOSXKeychain) SetContext(ctx context.Context, service, username, password string) error {
++	if ctx.Err() != nil {
++		return ctx.Err()
++	}
+@@ -75,11 +99,0 @@
+-
+-	cmd := exec.Command(execPathKeychain, "-i")
+-	stdIn, err := cmd.StdinPipe()
+-	if err != nil {
+-		return err
+-	}
+-
+-	if err = cmd.Start(); err != nil {
+-		return err
+-	}
+-
+@@ -86,0 +101 @@
++	// Validate before spawning; never leave an interactive child on early return.
+@@ -90,3 +105,6 @@
+-
+-	if _, err := io.WriteString(stdIn, command); err != nil {
+-		return err
++	cmd := keychainCommandContext(ctx, execPathKeychain, "-i")
++	cmd.Stdin = strings.NewReader(command)
++	cmd.WaitDelay = time.Second
++	err := cmd.Run() // Run always waits/reaps after a successful Start.
++	if ctx.Err() != nil {
++		return ctx.Err()
+@@ -94,6 +111,0 @@
+-
+-	if err = stdIn.Close(); err != nil {
+-		return err
+-	}
+-
+-	err = cmd.Wait()

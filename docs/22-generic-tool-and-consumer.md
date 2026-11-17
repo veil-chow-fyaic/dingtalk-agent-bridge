@@ -68,7 +68,7 @@ python3 -m dingtalk_bridge.configure --config local/service-config.json --output
 python3 -m dingtalk_bridge.configure --config local/legacy-config.json --output local/candidate.json migrate
 ```
 
-输出必须不存在，避免覆盖；select不会自动继承`receiveMode`或`imageUploadBinary`，新路由启用前显式核对这些选项。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
+输出必须不存在，避免覆盖；当前已部署产品2b479a8的select不会自动继承`receiveMode`或`imageUploadBinary`。E144候选已验证从所选account的首条基准route继承其已有`imageUploadBinary`，不从其他路由或账号借用，也不凭空补路径；`receiveMode`仍不继承。候选尚未部署，新路由启用前仍须显式核对这些选项，见[候选报告](145-delivery-and-recovery-closeout.md)。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
 
 多路由会话请求必须同时给account_id/conversation_id，单路兼容省略；错误/不完整选择返回400，不降级到默认群。GET选择放query，POST放JSON。discovery仅按账号选择；health/conversations是全局视图。列会话不暴露profile或OAuth，但事件/附件正文仍是私有聊天数据。
 

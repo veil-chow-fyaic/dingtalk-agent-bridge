@@ -3,7 +3,7 @@
   "updated": "2026-11-17",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E144",
+    "documentationEvidence": "E145",
     "latestUiEvidence": "E131",
     "deployedProduct": "2b479a8",
     "deploymentEvidence": "E143",
@@ -716,6 +716,10 @@
     "docs/145-delivery-and-recovery-closeout.md": {
       "role": "historical",
       "preservedSha256": "2f0d75ede7dba3d0f6cd0d65a33d039bbd872dfe3b03e2f040e5d4df338e2d98"
+    },
+    "docs/146-dws-root-cause-and-integration.md": {
+      "role": "historical",
+      "preservedSha256": "6d12f948cf18f0131725178725cdedcfadd994ee6015f12794a2965e1ae24bcc"
     }
   }
 }

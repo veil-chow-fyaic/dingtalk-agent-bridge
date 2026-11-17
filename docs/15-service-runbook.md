@@ -79,7 +79,7 @@ send只有`state=confirmed`返回200，其他状态返回202，**202/CLI退出0�
 
 可选gateway保存任务、native session及outbox，执行器可替换。Kimi已有真实Read/Write/Bash，Codex和Pi也已完成实际Python/同会话/文件/取消UI；Pi图片能力未声明；执行器、提示词及官方工具上下文均不是OS沙箱。`runtime.timeoutSeconds`默认600，必须有限且大于0，启动前拒绝NaN/无穷/bool等。超时不自动重做；已产生的文件或外部效果可能存在，先核对。父进程丢失的独立守护会清理正常同组后代，不能保证守护自身被强杀、恶意脱组或外部效果回滚，见[父进程守护](63-runtime-parent-death-guard.md)及[真实超时](64-runtime-timeout-and-installed-wheel.md)。
 
-E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，已随E095部署加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。发生凭据存储/超时/进程中断时持久暂停后续受管DWS调用；不自动探测是否恢复。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；E084已持久化原窗口和nextPageToken，超本轮容量在后续有界调用接续，重启不丢游标。complete=false不算追平；长停机按watermark覆盖原窗口，恢复须达到固定cut且无待续窗口，无watermark首次仅24h，不能保证更早或平台不可见历史。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
+E068新增每路poll_error_detail（固定脱敏code/component/action/message）；credential_store_unavailable表示官方DWS读现有macOS登录密钥失败，不证明过期/锁定，不能据此直接reset。后续E072增工作区dws_access、E073办公入口共享暂停，已随E095部署加载现场，详见[诊断](85-credential-store-health-diagnostics.md)和[受管调用](88-dws-process-containment.md)。凭据存储失败、受管DWS进程超过90秒期限、进程中断/无主占位、清理不完整或准入状态损坏会持久暂停后续受管调用；不自动解除暂停或探测凭据恢复。API返回的`request_timeout`等普通业务错误不等于该进程超时：guard仍ready时，history按原轮询继续，后续成功会清除对应poll_error；这不允许自动重发未知投递。保留账本，先查本地诊断，再按明确批准的一次核验方案处理，不连跑只读请求或改组织扩大监听。默认首次/每30分钟深扫最近24h、普通水位前5分钟补读，每次最多20页/1000条；E084已持久化原窗口和nextPageToken，超本轮容量在后续有界调用接续，重启不丢游标。complete=false不算追平；长停机按watermark覆盖原窗口，恢复须达到固定cut且无待续窗口，无watermark首次仅24h，不能保证更早或平台不可见历史。Stream是提示而非独立完整消息源。升级DWS先隔离版本/摘要，再验证契约，不能先覆盖可用基线。
 
 ## 验证与共享边界
 

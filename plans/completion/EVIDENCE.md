@@ -537,3 +537,8 @@ E067补充：用户普通终端已运行，10:07官方auth仍fail；[结果](../
 - [阶段报告](../../docs/145-delivery-and-recovery-closeout.md)、[脱敏证据](../../evidence/2026-11-17/delivery-and-recovery-closeout.json)：新环境安装当前wheel完成两路CLI/HTTP/独立consumer/原件与重启，复现select漏imageUploadBinary；最小候选、独立审查、双Python专项和候选wheel完整流程通过，尚未应用运行目录。
 - 原观察保存窗口1871采样/0不可达/15错误采样；31次history错误后两路均恢复，最长观测上界47.764秒，无维护/显式resume。零错误仍false；固定截止/事务水位/自然refresh另计。
 - R12/R14按各自原判据独立通过，原PRD/矩阵备份与判据SHA核对保持；UI51/11/2、剩余5 MUST，无新UI/模型/真实业务消息。当前部署2b479a8，原cut不变、无调度。
+
+## E145 — DWS原因复核、完整取消集成与交付安装缺项完成
+- [报告](../../docs/146-dws-root-cause-and-integration.md)、[DWS候选验证](../../evidence/2026-11-17/dws-full-integration-validation.json)：三类故障分别定性；官方主源仍无适用根治确认。固定v67完整CLI构建、两原测试文件集合编译，17 DWS+5 keyring方法普通/race通过；独立审查及主审补丁重建过，未运行新CLI或真实Keychain。
+- [图片候选安装记录](../../evidence/2026-11-17/configure-image-install-validation.json)：同73f0 wheel独立Python3.14新增2+既有9通过；源码2/双安装各11明确为专项，现有验证解析器接受，维护材料准备完整，未部署。
+- 用户手动客户端正常；自动化新一次getApp仍-10005且无句柄，0原生输入/消息。现有25模块、固定DWS、服务、原24h观察不动；5 MUST及51/11/2不变，无调度/远程发布。

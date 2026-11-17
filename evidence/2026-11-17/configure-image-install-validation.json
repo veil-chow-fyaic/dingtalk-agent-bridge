@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E144-candidate-install-completion",
+  "date": "2026-11-17",
+  "ok": true,
+  "baseCommit": "4563adb7ee7f45bb556208e6e0950e801f27c8ca",
+  "sourceSnapshotCommit": "ff08390111e67c1cb4ca7a42104124a7679a9756",
+  "patchSha256": "6f237233a12677a5000f330b0a7de5427d86147f3abf681319338289d7070017",
+  "codeSha256": {
+    "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+    "message_model.py": "906988f0d5d7d29204714b6757f6e0653b343553ed081e1f8bdabdc306676e7c",
+    "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+    "configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+    "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+    "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+    "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+    "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+    "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+    "agent_gateway.py": "a43c1f4c730196543eec25c6fed89beed3cf7807157af928ede0dc61f607d559",
+    "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+    "core.py": "0d747e340521b75347ad05b1c32ca3ebdd19324edc4be025fc2fa98955fcae8d",
+    "text_limits.py": "5339ba2993ff931460d61e9929042329d6ddf50de0aa2568794a115af3a222bd",
+    "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+    "cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+    "consumer.py": "07bf97fd59a13ca8c6ec9a86e2a1953ec01e9880a02a0b3d0adeba4f8d95c254",
+    "routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+    "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+    "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+    "local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+    "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+    "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+    "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+    "__main__.py": "f003b4d42231cf365ca91761a667ab47b491d14ae3f4c44b99fc0792ce9d36bd",
+    "consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6"
+  },
+  "candidateModules": 25,
+  "wheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+  "previousWheelSha256": "cc060702f29f78a6461c9d6aff8527856082a673de8a65871b0b0568fc289a22",
+  "wheelModulesMatch": true,
+  "licensesMatch": true,
+  "package": {
+    "name": "dingtalk-agent-bridge",
+    "version": "0.1.0",
+    "requiresPython": ">=3.11",
+    "entryPoints": {
+      "dab": "dingtalk_bridge.cli:main",
+      "dab-bridge": "dingtalk_bridge.__main__:main",
+      "dab-agent": "dingtalk_bridge.agent_gateway:main",
+      "dab-consume": "dingtalk_bridge.consume:main",
+      "dab-doctor": "dingtalk_bridge.doctor:main",
+      "dab-service": "dingtalk_bridge.service_manager:main"
+    },
+    "dependencies": [],
+    "fullPayloadMetadataAndRecordMatch": true
+  },
+  "results": [
+    {
+      "label": "source",
+      "python": "3.14.6",
+      "scope": "selected unittest methods only; not the complete product suite",
+      "testsRun": 2,
+      "exitCode": 0,
+      "ok": true,
+      "subruns": [
+        {
+          "log": "evidence-logs/source-py314-new.log",
+          "sha256": "675f34522656e40de23181bc907c61216375decb799e9177f98e392b7419a879",
+          "testsRun": 2,
+          "exitCode": 0,
+          "ok": true
+        }
+      ],
+      "productImport": "frozen candidate source",
+      "selectedTests": [
+        "test_configure_image_capability.py"
+      ]
+    },
+    {
+      "label": "py314",
+      "python": "3.14.6",
+      "scope": "selected unittest methods only; not the complete product suite",
+      "testsRun": 11,
+      "exitCode": 0,
+      "ok": true,
+      "subruns": [
+        {
+          "log": "evidence-logs/installed-py314-new.log",
+          "sha256": "675f34522656e40de23181bc907c61216375decb799e9177f98e392b7419a879",
+          "testsRun": 2,
+          "exitCode": 0,
+          "ok": true
+        },
+        {
+          "log": "evidence-logs/installed-py314-existing.log",
+          "sha256": "a3c21bd5e38a9162a5b4496978653c2cd015fb49f2a3794a28a1fc9baa80d09d",
+          "testsRun": 9,
+          "exitCode": 0,
+          "ok": true
+        }
+      ],
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false
+    },
+    {
+      "label": "py311",
+      "python": "3.11.15",
+      "scope": "selected unittest methods only; not the complete product suite",
+      "testsRun": 11,
+      "exitCode": 0,
+      "ok": true,
+      "subruns": [
+        {
+          "log": "evidence-logs/installed-py311-new.log",
+          "sha256": "369a9735bfc954b0668baa2ce3ea147a5abeaee377b20fdea1091f319708b33a",
+          "testsRun": 2,
+          "exitCode": 0,
+          "ok": true
+        },
+        {
+          "log": "evidence-logs/installed-py311-existing.log",
+          "sha256": "e507a6b83a993907d0444208ff41faa109987f5bf82438a53373da7544b29b44",
+          "testsRun": 9,
+          "exitCode": 0,
+          "ok": true
+        }
+      ],
+      "modulesMatch": true,
+      "sourcePackageAbsent": true,
+      "productImport": "isolated venv site-packages",
+      "testDirectoryContainsProductSource": false
+    }
+  ],
+  "supplementalSourcePython311": {
+    "label": "source-py311",
+    "python": "3.11.15",
+    "scope": "selected unittest methods only; not the complete product suite",
+    "testsRun": 2,
+    "exitCode": 0,
+    "ok": true,
+    "subruns": [
+      {
+        "log": "evidence-logs/source-py311-new.log",
+        "sha256": "675f34522656e40de23181bc907c61216375decb799e9177f98e392b7419a879",
+        "testsRun": 2,
+        "exitCode": 0,
+        "ok": true
+      }
+    ],
+    "productImport": "frozen candidate source",
+    "selectedTests": [
+      "test_configure_image_capability.py"
+    ]
+  },
+  "selectedInstalledMethods": [
+    "test_configure_image_capability.py (2)",
+    "test_continuation.py (9)"
+  ],
+  "sourceAndInstalledTestFileSha256": {
+    "test_configure_image_capability.py": "8c24b9f1e49230c96e8b639b65ff2bb50994c91c9948f6f49c22e41a09b2a254",
+    "test_continuation.py": "024236409e33b7429834794084f0b77316218a4c1a88cab36900f66cd880ed21"
+  },
+  "newInstallWorkflow": {
+    "ok": true,
+    "python": "3.11.15",
+    "candidateWheelSha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+    "checks": [
+      "six_installed_help_entries_and_configure_help_no_DWS_or_service",
+      "candidate_wheel_site_packages_import_verified",
+      "offline_migrate_preserves_existing_config_no_DWS",
+      "selected_direct_route_preserves_configured_image_uploader",
+      "installed_CLI_reaches_real_HTTP_service_without_gateway",
+      "group-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "direct-room_CLI_send_replay_HTTP_events_consumer_originals_durable_restart",
+      "same_key_isolated_per_route_exact_group_direct_targets",
+      "consumer_scope_reuse_refused",
+      "group_and_selected_direct_native_image_confirmed_under_same_explicit_profile_and_guard",
+      "no_runtime_config_jobs_or_gateway_required"
+    ],
+    "checkCount": 11,
+    "entryPoints": "six installed scripts plus configure module help",
+    "productLoadedFrom": "candidate venv site-packages",
+    "sourceTreeOnPythonPath": false,
+    "DWS": "synthetic executable with explicit profile assertion",
+    "HTTP": "actual installed transport on owned random loopback port",
+    "endpointMapping": "test harness maps clients fixed 18768 endpoint to owned port; does not add product port configurability",
+    "live18768AndExternalNetwork": "blocked by socket audit hook",
+    "groupAndNewDirectImage": "synthetic upload/send/status confirmed",
+    "consumerRestart": "persisted cursor and no duplicate intake on both routes",
+    "sameIdempotencyKeyAcrossRoutes": "two independent confirmed sends; per-route replay makes no additional send",
+    "credentialOrRealAccountRead": false,
+    "modelGatewayRequired": false,
+    "ownedTransportExitCode": 0
+  },
+  "workflowEvidence": {
+    "sha256": "80730495d2dac9ec9b77d2c0c2db8cbfe342765da5094e585896706325c1c8b3",
+    "scope": "11 workflow checks, separate from unittest method counts; actual loopback HTTP and synthetic DWS, not real DingTalk acceptance"
+  },
+  "priorAttemptsPreserved": [
+    {
+      "scope": "first workflow",
+      "result": "sandbox denied ps needed by owned child cleanup; no product fix claimed; repeated through explicit tool escalation"
+    },
+    {
+      "scope": "second workflow",
+      "result": "synthetic fixture omitted createTime; consumer correctly flagged invalid_timestamp; fixture corrected without relaxing assertions"
+    },
+    {
+      "scope": "initial candidate unit assertion",
+      "result": "test expected --image but native CLI uses --msg-type image and --media-id; corrected expectation, not product"
+    }
+  ],
+  "historicalFullSuite": {
+    "evidence": "E143",
+    "testsPerEnvironment": 504,
+    "appliesToProduct": "2b479a8",
+    "appliesToThisCandidate": false
+  },
+  "scope": "Exact candidate product/wheel identity and selected tests. No 504/506 full-suite claim.",
+  "deployed": false,
+  "deployedProductUnchanged": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "fullProductAcceptance": false,
+  "limits": [
+    "No account data, credential operations, real DWS, UI or service maintenance in this validation.",
+    "Source files outside the two selected tests were not retested in this stage.",
+    "Export checks declarations and artifact bytes, not independent execution of tests.",
+    "Publish this record under evidence/ in the selected product commit and regenerate manifest before export; candidate is not currently committed as product.",
+    "Known-private-values privacy review remains the parent integration gate."
+  ]
+}

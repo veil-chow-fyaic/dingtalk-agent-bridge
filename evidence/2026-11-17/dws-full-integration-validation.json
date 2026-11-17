@@ -1,0 +1,374 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E145",
+  "date": "2026-11-17",
+  "deployedProduct": "2b479a891833c21c7e03c389f92a4a77ce3ee366",
+  "officialDwsUnchanged": "v1.0.67",
+  "d01SystemCauseFixed": false,
+  "d02FullSourceIntegrationCandidateValidated": true,
+  "d08ConnectionSubstageKnown": false,
+  "realKeychainAuthOrDwsCalls": 0,
+  "candidateDeployed": false,
+  "publicSourceReview": {
+    "reviewDate": "2026-11-17",
+    "source": "GitHub connector GET only",
+    "latestStable": {
+      "tag": "v1.0.68",
+      "publishedAt": "2026-11-11T08:50:17Z",
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68"
+    },
+    "currentMain": {
+      "sha": "4cc7767c70a874b189463ebfb07ad8a3c424389c",
+      "date": "2026-11-13T13:52:31Z",
+      "message": "chore: update beta formula for v1.0.69-beta.1 [skip ci]"
+    },
+    "darwinLastCommit": {
+      "sha": "822f83773e27706920999924951d8fca3841c51a",
+      "date": "2026-09-20T13:31:13Z"
+    },
+    "codex60687": {
+      "state": "open",
+      "updatedAt": "2026-11-11T13:07:48Z",
+      "comments": 1,
+      "url": "https://github.com/openai/codex/issues/60687"
+    },
+    "refresh1132": {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/1132#issuecomment-5762379764",
+      "summary": "Maintainer identifies a separate credential-slot refresh synchronization fix in v1.0.62; not evidence for this Mac unlock failure"
+    },
+    "refresh476": {
+      "url": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/issues/476#issuecomment-5762849801",
+      "summary": "Maintainer distinguishes complete OAuth automatic refresh from access-only credentials; local credential migration instructions not followed"
+    }
+  },
+  "integrationManifest": {
+    "schemaVersion": 1,
+    "date": "2026-11-17",
+    "dwsCommit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "keyringVersion": "v0.2.8",
+    "goActuallyUsed": "1.26.7 darwin/arm64",
+    "declaredMinimumForDependency": "1.20; not executed with Go 1.20",
+    "sourceArchive": {
+      "kind": "git archive pinned commit; working-tree image helper changes excluded",
+      "sha256": "5cd5d0654a2cf5d98ff3dbf8d682b6dd6a3bb6f5324913e53c7ba8e56d53cbba"
+    },
+    "publicModuleCache": {
+      "sourceFileCount": 6187,
+      "sourceAggregateSha256": "be82f6b644517bed21831af094a918a6c4a282cdd7c86fb45f3b243fb4c06eb9",
+      "outputFileCount": 6187,
+      "outputAggregateSha256": "be82f6b644517bed21831af094a918a6c4a282cdd7c86fb45f3b243fb4c06eb9",
+      "copiedSourceFilesByteIdentical": true,
+      "privateOutputAdditionalFiles": []
+    },
+    "currentPublicMainDarwinSourceSameAsV67": true,
+    "outputs": {
+      "upstream-v67.tar": "5cd5d0654a2cf5d98ff3dbf8d682b6dd6a3bb6f5324913e53c7ba8e56d53cbba",
+      "complete-dws-integration.patch": "7895eca60d5898e41d9bd354c99832190d803d774a618d9370605be2260e7b10",
+      "complete-keyring-integration.patch": "d21847ac62b2e49a8bcd614480d7b7dbb66039b27b7c9457d07d890e6abbac7b",
+      "dws-candidate-DO-NOT-RUN": "dcbdb487ef9f1fbb2da146373b4c3f4cd202bf6688da00f0aa066df3ccd56127",
+      "keychain-original-tests-DO-NOT-RUN": "92af22c3244e1b89cdb672a3a57de45774d68e16837fe71b261b17e030777324",
+      "keyring-original-tests-DO-NOT-RUN": "34b786189e9d2ac2b54e397cdaa25c74d7b5bd90291b8b40c1e4d49f68ce1588",
+      "build-results.json": "9e852c6e7d581d041a7076465821a91cefab8fa3bbb8b9ebfe1111e89781ac99",
+      "synthetic-results.json": "70a6508bea7df7b64809a8b2d98bbf5fbf7e007c8b1efd31b4aa3c1bbe7c7b95",
+      "public-review.json": "bf770e437c4ef4bed1db837d3400bcdc137799de70a97c4bc8d3a46fe5a4c796",
+      "public-main-keychain_darwin.go": "c0b2fe78c78467ebbd813fc7b450c470dc0c6802201ef334cfa2d57852f60ac2",
+      "harness/causes_integration_test.go": "abfe0162cc477c37d12c45b0dbf1756a2cee930a4035796bbecf597e7f214f53",
+      "harness/causes_synthetic_bridge.go": "9caac7b2727f639f86d40a239d6e8296e2f5a3cf00d6aa71467e5b1f217ecee0",
+      "harness/dws_candidate_test.go": "c1c2b6bf132bbf71530765ace77e3a7209a16bb601f616268dd36662567f8f71",
+      "harness/keyring_candidate_test.go": "4969b2e243394e10158bcbf8efb1a03b53726be05e927e30eae8dfa88928b9a8",
+      "REPORT.md": "533dc137d383b3e9df4252c9edacedd7fd8b3e06cfeb6f01db37607752299115",
+      "REPRODUCE.md": "28ae1701659fdb7539f1116dd36290d84df7c122e7bcd3a1ba7d1064c13a4635",
+      "reproduce.py": "bee430e639618b0dc74668f097dedab632be0904ab6f5f85aa2d0f6feb1db4ee"
+    },
+    "logs": {
+      "cli-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original-keychain-tests-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original-keyring-tests-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "dws-ordinary.jsonl": "a635e6a6c58c993e27a7d24633b71c210141af015e0a01bec7ab0721bdf0838d",
+      "dws-race.jsonl": "3b500cbc70628e6c7bfc79ded78f33747c2023a5496ce0a69e26015da80d524b",
+      "keyring-ordinary.jsonl": "712e7b94ee440079fdefd150e303d0c0556b0244a49bc477a7615bbe005e2110",
+      "keyring-race.jsonl": "bd7c3ed321188ecd2c5927438c5ccab1deefaeb1b59574a248a7b9d746777350",
+      "initial-signature-format-failure.log": "a79be11f0808262dfa9812b036d7cd6f3c7f405c213ea1d10348dfa8bcf92c07",
+      "initial-original-keychain-compile-failure.log": "5e45f22130c54c13dda5006648b5dc437fd73b9839eca1968dbb406748ec2fae"
+    },
+    "candidateDwsFiles": {
+      "go.mod": "1c50433d920616f23a3f1bd6850036ea4f5e126b0550fa06973499df52515019",
+      "internal/keychain/keychain_darwin.go": "4cc84415572b374cad5a6a5b22964ef8233b9cb4c06642250df2bcfa3eed4da8",
+      "internal/keychain/coverage_edges_test.go": "e9bdf60a8ad358ab32148dfc7ba9185410a7278ceafdcebde895f31c537358d5",
+      "internal/keychain/keychain_darwin_test.go": "28fa5c770d97112065327583dcfbc8ac0a05d76ffdc8f793cfab0b388cc2c12e",
+      "internal/keychain/remaining_coverage_test.go": "b9830167bec01d304e4093dc6a071b8dc88437b69065404e6e64d1c99ee96296"
+    },
+    "candidateDependencyFiles": {
+      "go.mod": "22a59dbcf0b76857289ec60b7ba54a6095ce3c75ba298aabef348cb89480a059",
+      "keyring_darwin.go": "0d6cbc209c88318390a4974b616c14ab565e24c8edf5efd4121c97fe04089320"
+    },
+    "harness": {
+      "source": "all keychain source and tests copied from candidate; original TestMain renamed originalTestMainNotExecuted; E117 fail-closed TestMain used",
+      "productionSourceByteIdentical": true,
+      "selection": "exact 17 DWS methods (5 original mock-only, 10 E117, 2 cross-layer), exact 5 E117 keyring methods; helper children selected in child process only",
+      "neverExecuted": [
+        "original upstream TestMain",
+        "real security command",
+        "new CLI binary",
+        "compiled original test binaries",
+        "auth/login/doctor",
+        "any live business request"
+      ]
+    },
+    "limits": [
+      "No upstream remote issue or PR published",
+      "No local product/binary/config/collector/DB changed",
+      "No real Keychain or refresh acceptance",
+      "No actual Go 1.20, Linux, or Windows runtime testing",
+      "No DEK encoding/storage/invalid-DEK policy/-U conflict/readback fallback changes",
+      "Cancellation cannot undo an already committed write or system authorization UI",
+      "Full upstream original tests compiled, not fully executed"
+    ]
+  },
+  "buildResults": [
+    {
+      "label": "gofmt",
+      "exitCode": 0,
+      "elapsedSeconds": 0.011
+    },
+    {
+      "label": "cli-build",
+      "exitCode": 0,
+      "elapsedSeconds": 0.348
+    },
+    {
+      "label": "original-keychain-tests-compile",
+      "exitCode": 0,
+      "elapsedSeconds": 0.113
+    },
+    {
+      "label": "original-keyring-tests-compile",
+      "exitCode": 0,
+      "elapsedSeconds": 0.322
+    }
+  ],
+  "syntheticResults": [
+    {
+      "label": "dws-ordinary",
+      "exitCode": 0,
+      "elapsedSeconds": 6.779,
+      "expectedMethods": [
+        "TestDefaultKeychainPathFromSecurityOutput",
+        "TestCheckDefaultKeychainAvailableReportsMissingPath",
+        "TestGetMissingAccountDoesNotReadMacOSDEK",
+        "TestGetWithMissingMacOSDEKDoesNotCreateDEK",
+        "TestCrossPlatformCoverageDarwinDEKKeyringEdges",
+        "TestReadSuccessNoWriteAndJoined",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestIntegratedDWSAndKeyringNormalReadAndCreate",
+        "TestIntegratedDWSAndKeyringCancelReadAndWrite"
+      ],
+      "passedMethods": [
+        "TestReadSuccessNoWriteAndJoined",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestIntegratedDWSAndKeyringNormalReadAndCreate",
+        "TestIntegratedDWSAndKeyringCancelReadAndWrite",
+        "TestCrossPlatformCoverageDarwinDEKKeyringEdges",
+        "TestDefaultKeychainPathFromSecurityOutput",
+        "TestCheckDefaultKeychainAvailableReportsMissingPath",
+        "TestGetMissingAccountDoesNotReadMacOSDEK",
+        "TestGetWithMissingMacOSDEKDoesNotCreateDEK"
+      ],
+      "ok": true
+    },
+    {
+      "label": "keyring-ordinary",
+      "exitCode": 0,
+      "elapsedSeconds": 1.055,
+      "expectedMethods": [
+        "TestReadEncodingAndFailureSemantics",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestSetValidatesSizeBeforeCreatingChild",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestCancelledSetDoesNotSpawn"
+      ],
+      "passedMethods": [
+        "TestReadEncodingAndFailureSemantics",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestSetValidatesSizeBeforeCreatingChild",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestCancelledSetDoesNotSpawn"
+      ],
+      "ok": true
+    },
+    {
+      "label": "dws-race",
+      "exitCode": 0,
+      "elapsedSeconds": 5.648,
+      "expectedMethods": [
+        "TestDefaultKeychainPathFromSecurityOutput",
+        "TestCheckDefaultKeychainAvailableReportsMissingPath",
+        "TestGetMissingAccountDoesNotReadMacOSDEK",
+        "TestGetWithMissingMacOSDEKDoesNotCreateDEK",
+        "TestCrossPlatformCoverageDarwinDEKKeyringEdges",
+        "TestReadSuccessNoWriteAndJoined",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestIntegratedDWSAndKeyringNormalReadAndCreate",
+        "TestIntegratedDWSAndKeyringCancelReadAndWrite"
+      ],
+      "passedMethods": [
+        "TestReadSuccessNoWriteAndJoined",
+        "TestNotFoundIsMissingButArbitraryFailureIsUnavailable",
+        "TestCreateOnNotFoundAndRejectUnavailable",
+        "TestTimeoutCancelsAndReapsPreflightReadAndWriteChild",
+        "TestOneDeadlineIncludesPreflightAndSubsequentRead",
+        "TestCancelledPreflightCannotFallThroughOnOrdinaryNilError",
+        "TestUncooperativeWorkerReportsPendingAndCannotWriteAfterLateRead",
+        "TestExpiredContextCannotAcceptAlreadyQueuedSuccess",
+        "TestPreflightCommandCancellationIsNotIgnored",
+        "TestPanicRemainsUnavailableAndJoined",
+        "TestIntegratedDWSAndKeyringNormalReadAndCreate",
+        "TestIntegratedDWSAndKeyringCancelReadAndWrite",
+        "TestCrossPlatformCoverageDarwinDEKKeyringEdges",
+        "TestDefaultKeychainPathFromSecurityOutput",
+        "TestCheckDefaultKeychainAvailableReportsMissingPath",
+        "TestGetMissingAccountDoesNotReadMacOSDEK",
+        "TestGetWithMissingMacOSDEKDoesNotCreateDEK"
+      ],
+      "ok": true
+    },
+    {
+      "label": "keyring-race",
+      "exitCode": 0,
+      "elapsedSeconds": 1.165,
+      "expectedMethods": [
+        "TestReadEncodingAndFailureSemantics",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestSetValidatesSizeBeforeCreatingChild",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestCancelledSetDoesNotSpawn"
+      ],
+      "passedMethods": [
+        "TestReadEncodingAndFailureSemantics",
+        "TestGetAndSetTimeoutReapActualOwnedChild",
+        "TestSetValidatesSizeBeforeCreatingChild",
+        "TestSetStdinCompletionAndEarlyExitAreJoined",
+        "TestCancelledSetDoesNotSpawn"
+      ],
+      "ok": true
+    }
+  ],
+  "independentReview": {
+    "reviewType": "read-only source/patch/log inspection; no tests executed",
+    "patches": {
+      "complete-dws-integration.patch": "7895eca60d5898e41d9bd354c99832190d803d774a618d9370605be2260e7b10",
+      "complete-keyring-integration.patch": "d21847ac62b2e49a8bcd614480d7b7dbb66039b27b7c9457d07d890e6abbac7b"
+    },
+    "candidateProductionFilesEqualE117PinnedBytes": true,
+    "causeProbeNonTestFilesEqualCompleteSource": [
+      "keychain_linux.go",
+      "keychain_darwin.go",
+      "file_dek.go",
+      "migration_unsupported.go",
+      "auth_entries_file.go",
+      "migration_darwin.go",
+      "keychain.go",
+      "keychain_windows.go",
+      "auth_entries_windows.go",
+      "migrate.go",
+      "diagnose_default.go"
+    ],
+    "loggedRuns": [
+      {
+        "label": "dws-ordinary",
+        "passedMethods": 17,
+        "reportedExitCode": 0
+      },
+      {
+        "label": "keyring-ordinary",
+        "passedMethods": 5,
+        "reportedExitCode": 0
+      },
+      {
+        "label": "dws-race",
+        "passedMethods": 17,
+        "reportedExitCode": 0
+      },
+      {
+        "label": "keyring-race",
+        "passedMethods": 5,
+        "reportedExitCode": 0
+      }
+    ],
+    "blockersFound": [],
+    "limitations": [
+      "Darwin arm64 / Go 1.26.7 build and synthetic execution only",
+      "Original full suites compiled, not executed",
+      "No real CLI invocation/auth/store/OS Keychain/other-platform runtime verification",
+      "Patch uses sibling ../keyring dependency: candidate integration, not published upstream dependency"
+    ]
+  },
+  "mainPatchReconstruction": {
+    "ok": true,
+    "reviewedOutputAndLogHashes": true,
+    "patches": {
+      "dws": {
+        "path": "E145-dws-integration.patch",
+        "originalSha256": "7895eca60d5898e41d9bd354c99832190d803d774a618d9370605be2260e7b10",
+        "publicPatchSha256": "c24bf2fda88e306343396de0a2dc8bd6bb1ed12f9667a7bfa849e9330188163c",
+        "appliedFilesMatch": true,
+        "requiredApplyFlag": "--unidiff-zero"
+      },
+      "keyring": {
+        "path": "E145-keyring-integration.patch",
+        "originalSha256": "d21847ac62b2e49a8bcd614480d7b7dbb66039b27b7c9457d07d890e6abbac7b",
+        "publicPatchSha256": "199cd601831526b74de60326fc5d610374b888a12b2ed8ff8ecc79130d0e399d",
+        "appliedFilesMatch": true,
+        "requiredApplyFlag": "--unidiff-zero"
+      }
+    },
+    "candidateSourceReconstructed": true,
+    "realKeychainOrDwsOrTestExecution": false,
+    "runningProductModified": false,
+    "representation": "Zero context avoids treating Go tab context as new-file whitespace; pinned inputs and reconstructed output SHA checked"
+  },
+  "publicPatchRepresentation": "Zero-context patches; apply with git apply --unidiff-zero only to pinned inputs. Independently reconstructed candidate files match original frozen hashes.",
+  "ui": {
+    "manualClientWorksUserReported": true,
+    "automationReadable": false,
+    "error": "failedToCreateImageDestination",
+    "code": -10005,
+    "nativeInputs": 0,
+    "newBusinessMessages": 0,
+    "usableAppHandle": false
+  },
+  "configureWheel": {
+    "sha256": "73f0d5c4f394b5e0ff394cc847dfe3baac24c69427a81d46da9bcf09e1464813",
+    "newInstalledPython314Methods": 11,
+    "selectedTestsOnly": true,
+    "deployed": false,
+    "validationRecord": "evidence/2026-11-17/configure-image-install-validation.json"
+  },
+  "acceptanceChanged": false,
+  "fullProductAcceptance": false,
+  "privateReproductionWrapper": "syntax checked only; not counted as an executed successful wrapper run"
+}

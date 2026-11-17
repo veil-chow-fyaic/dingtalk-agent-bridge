@@ -1,0 +1,261 @@
+--- a/go.mod
++++ b/go.mod
+@@ -75,0 +76,3 @@
++
++// Isolated candidate: pinned local dependency with Darwin cancellation.
++replace github.com/zalando/go-keyring => ../keyring
+--- a/internal/keychain/keychain_darwin.go
++++ b/internal/keychain/keychain_darwin.go
+@@ -44,0 +45,4 @@
++// Cleanup is separate from the request budget; never call a still-running worker clean.
++var keychainCleanupTimeout = time.Second
++var errDarwinCleanupPending = errors.New("keychain worker cleanup pending")
++
+@@ -66,2 +70,8 @@
+-var readDefaultKeychain = func() ([]byte, error) {
+-	return exec.Command("security", "default-keychain", "-d", "user").Output()
++var readDefaultKeychain = func(ctx context.Context) ([]byte, error) {
++	cmd := exec.CommandContext(ctx, "/usr/bin/security", "default-keychain", "-d", "user")
++	cmd.WaitDelay = keychainCleanupTimeout
++	out, err := cmd.Output()
++	if ctx.Err() != nil {
++		return nil, ctx.Err()
++	}
++	return out, err
+@@ -71,2 +81,2 @@
+-	keyringGet                       = keyring.Get
+-	keyringSet                       = keyring.Set
++	keyringGet                       = keyring.GetContext
++	keyringSet                       = keyring.SetContext
+@@ -78,3 +88,3 @@
+-	checkAvailable func() error
+-	get            func(service, account string) (string, error)
+-	set            func(service, account, value string) error
++	checkAvailable func(context.Context) error
++	get            func(context.Context, string, string) (string, error)
++	set            func(context.Context, string, string, string) error
+@@ -123,4 +133 @@
+-func waitDarwinKeychainWorker(timeout time.Duration, operation string, worker darwinKeychainWorker) ([]byte, error, <-chan struct{}) {
+-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+-	defer cancel()
+-
++func waitDarwinKeychainWorker(ctx context.Context, operation string, worker darwinKeychainWorker) ([]byte, error, <-chan struct{}) {
+@@ -129,0 +137,4 @@
++		// A late success must not beat an already expired operation deadline.
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		}
+@@ -132 +143,8 @@
+-		return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		timer := time.NewTimer(keychainCleanupTimeout)
++		defer timer.Stop()
++		select {
++		case <-worker.done:
++			return nil, NewUnavailableError(operation, ctx.Err()), worker.done
++		case <-timer.C:
++			return nil, NewUnavailableError(operation, errors.Join(ctx.Err(), errDarwinCleanupPending)), worker.done
++		}
+@@ -153,2 +171,5 @@
+-func checkDefaultKeychainAvailable() error {
+-	output, err := readDefaultKeychain()
++func checkDefaultKeychainAvailable(ctx context.Context) error {
++	output, err := readDefaultKeychain(ctx)
++	if ctx.Err() != nil {
++		return NewUnavailableError("read macOS default Keychain", ctx.Err())
++	}
+@@ -184 +205,3 @@
+-	output, err := readDefaultKeychain()
++	ctx, cancel := context.WithTimeout(context.Background(), keychainTimeout)
++	defer cancel()
++	output, err := readDefaultKeychain(ctx)
+@@ -245,2 +268,8 @@
+-func readStoredSystemDEK(service string, runtime darwinKeychainRuntime) ([]byte, error) {
+-	encodedKey, err := runtime.get(service, "dek")
++func readStoredSystemDEK(ctx context.Context, service string, runtime darwinKeychainRuntime) ([]byte, error) {
++	if ctx.Err() != nil {
++		return nil, NewUnavailableError("read DEK from macOS Keychain", ctx.Err())
++	}
++	encodedKey, err := runtime.get(ctx, service, "dek")
++	if ctx.Err() != nil {
++		return nil, NewUnavailableError("read DEK from macOS Keychain", ctx.Err())
++	}
+@@ -261,3 +290,2 @@
+-	if err := runtime.checkAvailable(); err != nil {
+-		return nil, err, finishedDarwinKeychainWorker()
+-	}
++	ctx, cancel := context.WithTimeout(context.Background(), runtime.timeout)
++	defer cancel()
+@@ -267 +295,7 @@
+-		return readStoredSystemDEK(service, runtime)
++		if err := runtime.checkAvailable(ctx); err != nil {
++			return nil, err
++		}
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		return readStoredSystemDEK(ctx, service, runtime)
+@@ -270 +304 @@
+-	return waitDarwinKeychainWorker(runtime.timeout, operation, worker)
++	return waitDarwinKeychainWorker(ctx, operation, worker)
+@@ -282,3 +316,2 @@
+-	if err := runtime.checkAvailable(); err != nil {
+-		return nil, err, finishedDarwinKeychainWorker()
+-	}
++	ctx, cancel := context.WithTimeout(context.Background(), runtime.timeout)
++	defer cancel()
+@@ -288 +321,7 @@
+-		key, err := readStoredSystemDEK(service, runtime)
++		if err := runtime.checkAvailable(ctx); err != nil {
++			return nil, err
++		}
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		key, err := readStoredSystemDEK(ctx, service, runtime)
+@@ -295,0 +335,3 @@
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
+@@ -302,2 +344,5 @@
+-		if setErr := runtime.set(service, "dek", base64.StdEncoding.EncodeToString(key)); setErr != nil {
+-			existing, getErr := readStoredSystemDEK(service, runtime)
++		if ctx.Err() != nil {
++			return nil, NewUnavailableError(operation, ctx.Err())
++		}
++		if setErr := runtime.set(ctx, service, "dek", base64.StdEncoding.EncodeToString(key)); setErr != nil {
++			existing, getErr := readStoredSystemDEK(ctx, service, runtime)
+@@ -309 +354 @@
+-		if existing, getErr := readStoredSystemDEK(service, runtime); getErr == nil {
++		if existing, getErr := readStoredSystemDEK(ctx, service, runtime); getErr == nil {
+@@ -315 +360 @@
+-	return waitDarwinKeychainWorker(runtime.timeout, operation, worker)
++	return waitDarwinKeychainWorker(ctx, operation, worker)
+--- a/internal/keychain/coverage_edges_test.go
++++ b/internal/keychain/coverage_edges_test.go
+@@ -6,0 +7 @@
++	"context"
+@@ -128 +129 @@
+-	_, _ = origReadDefault()
++	_, _ = origReadDefault(context.Background())
+@@ -151,2 +152,2 @@
+-	readDefaultKeychain = func() ([]byte, error) { return nil, errKeychainInjected }
+-	if err := checkDefaultKeychainAvailable(); err != nil {
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return nil, errKeychainInjected }
++	if err := checkDefaultKeychainAvailable(context.Background()); err != nil {
+@@ -159,2 +160,2 @@
+-	readDefaultKeychain = func() ([]byte, error) { return nil, nil }
+-	if err := checkDefaultKeychainAvailable(); err != nil {
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return nil, nil }
++	if err := checkDefaultKeychainAvailable(context.Background()); err != nil {
+@@ -167 +168 @@
+-	readDefaultKeychain = func() ([]byte, error) { return []byte(`"/keychain"`), nil }
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return []byte(`"/keychain"`), nil }
+@@ -169 +170 @@
+-	if !IsUnavailable(checkDefaultKeychainAvailable()) {
++	if !IsUnavailable(checkDefaultKeychainAvailable(context.Background())) {
+@@ -182 +183 @@
+-	if err := checkDefaultKeychainAvailable(); err != nil {
++	if err := checkDefaultKeychainAvailable(context.Background()); err != nil {
+@@ -210 +211 @@
+-	readDefaultKeychain = func() ([]byte, error) { return []byte(`"/keychain"`), nil }
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return []byte(`"/keychain"`), nil }
+@@ -215 +216 @@
+-	keyringGet = func(string, string) (string, error) { return encoded, nil }
++	keyringGet = func(context.Context, string, string) (string, error) { return encoded, nil }
+@@ -223 +224 @@
+-		keyringGet = func(string, string) (string, error) { return value, nil }
++		keyringGet = func(context.Context, string, string) (string, error) { return value, nil }
+@@ -228 +229 @@
+-	keyringGet = func(string, string) (string, error) { return "", keyring.ErrNotFound }
++	keyringGet = func(context.Context, string, string) (string, error) { return "", keyring.ErrNotFound }
+@@ -232 +233 @@
+-	keyringGet = func(string, string) (string, error) { return "", errKeychainInjected }
++	keyringGet = func(context.Context, string, string) (string, error) { return "", errKeychainInjected }
+@@ -241,2 +242,2 @@
+-	keyringGet = func(string, string) (string, error) { return "invalid", nil }
+-	keyringSet = func(_, _, value string) error { setValue = value; return nil }
++	keyringGet = func(context.Context, string, string) (string, error) { return "invalid", nil }
++	keyringSet = func(_ context.Context, _, _, value string) error { setValue = value; return nil }
+@@ -246 +247 @@
+-	keyringGet = func(string, string) (string, error) { return "", keyring.ErrNotFound }
++	keyringGet = func(context.Context, string, string) (string, error) { return "", keyring.ErrNotFound }
+@@ -253 +254 @@
+-	keyringGet = func(string, string) (string, error) {
++	keyringGet = func(context.Context, string, string) (string, error) {
+@@ -256 +257 @@
+-	keyringSet = func(string, string, string) error {
++	keyringSet = func(context.Context, string, string, string) error {
+@@ -270 +271 @@
+-	keyringGet = func(string, string) (string, error) {
++	keyringGet = func(context.Context, string, string) (string, error) {
+@@ -277 +278 @@
+-	keyringSet = func(string, string, string) error {
++	keyringSet = func(context.Context, string, string, string) error {
+@@ -288 +289 @@
+-	keyringGet = func(string, string) (string, error) { return "", keyring.ErrNotFound }
++	keyringGet = func(context.Context, string, string) (string, error) { return "", keyring.ErrNotFound }
+@@ -294 +295 @@
+-	keyringSet = func(string, string, string) error { return errKeychainInjected }
++	keyringSet = func(context.Context, string, string, string) error { return errKeychainInjected }
+@@ -302 +303 @@
+-	timeoutRuntime.get = func(string, string) (string, error) {
++	timeoutRuntime.get = func(context.Context, string, string) (string, error) {
+@@ -310 +311 @@
+-	timeoutRuntime.set = func(string, string, string) error { return nil }
++	timeoutRuntime.set = func(context.Context, string, string, string) error { return nil }
+@@ -324 +325 @@
+-	panicRuntime.get = func(string, string) (string, error) { panic("keyring panic") }
++	panicRuntime.get = func(context.Context, string, string) (string, error) { panic("keyring panic") }
+--- a/internal/keychain/keychain_darwin_test.go
++++ b/internal/keychain/keychain_darwin_test.go
+@@ -19,0 +20 @@
++	"context"
+@@ -40 +41 @@
+-	readDefaultKeychain = func() ([]byte, error) {
++	readDefaultKeychain = func(context.Context) ([]byte, error) {
+@@ -47 +48 @@
+-	err := checkDefaultKeychainAvailable()
++	err := checkDefaultKeychainAvailable(context.Background())
+@@ -67 +68 @@
+-	readDefaultKeychain = func() ([]byte, error) {
++	readDefaultKeychain = func(context.Context) ([]byte, error) {
+@@ -70 +71 @@
+-	keyringGet = func(service, account string) (string, error) {
++	keyringGet = func(_ context.Context, service, account string) (string, error) {
+@@ -74 +75 @@
+-	keyringSet = func(service, account, value string) error {
++	keyringSet = func(_ context.Context, service, account, value string) error {
+@@ -104 +105 @@
+-	readDefaultKeychain = func() ([]byte, error) {
++	readDefaultKeychain = func(context.Context) ([]byte, error) {
+@@ -107 +108 @@
+-	keyringGet = func(service, account string) (string, error) {
++	keyringGet = func(_ context.Context, service, account string) (string, error) {
+@@ -114 +115 @@
+-	keyringSet = func(service, account, value string) error {
++	keyringSet = func(_ context.Context, service, account, value string) error {
+@@ -239 +240 @@
+-	readDefaultKeychain = func() ([]byte, error) {
++	readDefaultKeychain = func(context.Context) ([]byte, error) {
+@@ -242 +243 @@
+-	keyringGet = func(service, account string) (string, error) {
++	keyringGet = func(_ context.Context, service, account string) (string, error) {
+@@ -252 +253 @@
+-	keyringSet = func(service, account, value string) error {
++	keyringSet = func(_ context.Context, service, account, value string) error {
+--- a/internal/keychain/remaining_coverage_test.go
++++ b/internal/keychain/remaining_coverage_test.go
+@@ -8,0 +9 @@
++	"context"
+@@ -73 +74 @@
+-	readDefaultKeychain = func() ([]byte, error) { return nil, nil }
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return nil, nil }
+@@ -75 +76 @@
+-	keyringGet = func(string, string) (string, error) { return "", fail }
++	keyringGet = func(context.Context, string, string) (string, error) { return "", fail }
+@@ -150 +151 @@
+-	readDefaultKeychain = func() ([]byte, error) { return nil, nil }
++	readDefaultKeychain = func(context.Context) ([]byte, error) { return nil, nil }
+@@ -156 +157 @@
+-	keyringGet = func(string, string) (string, error) { return encodedSystemKey, nil }
++	keyringGet = func(context.Context, string, string) (string, error) { return encodedSystemKey, nil }
