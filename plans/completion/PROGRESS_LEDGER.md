@@ -390,3 +390,8 @@ f322402经原manager维护流程部署，固定cut、六库保留、停机积压
 - [阶段报告](../../docs/147-native-ui-recovery-and-dm-quote.md)、[脱敏证据](../../evidence/2026-11-17/native-ui-recovery-and-dm-quote.json)：ImageIO截图临时目标ENOENT及目录缺失已核，仅mkdir0700后原CUA恢复；未改既有权限/重启，缺失机制未知，不称Keychain或永久根治。
 - 11:24:05一次原私聊原生引用，history新增一条且精确源关系、不递归旧双图；consumer normalized/attempts0/errorNone、quote.parts纯文本/issues空。99jobs/240Agentoutbox/tasksmeta、两路delivery及manager/25模块保持，未触发模型任务。
 - E134既有两路组合完整文字/双图顺序/发送者/AI标识可见；重复E011三点击保存仍失败后停止，不重发、不充当客户端下载。R04通过，52/10/2，四MUST R01/R06/R07/R13仍未完整；原产品/观察/cut不动。
+
+## E147 — 用户文档、GitHub工程规范及剩余任务整理
+- [阶段报告](../../docs/148-github-project-maintenance.md)、[核验](../../evidence/2026-11-17/github-project-maintenance.json)：用户入口/首次使用/贡献/安全/变更资料、四项路线图、CI/Issue/PR/依赖规范已整合；根Markdown及.github纳入完整清单，修复旧计数负例失效。INIT/MODE/PREFLIGHT同步用户最新授权，不再沿用单Agent/暂停/禁止本项目远程更新。
+- 工程候选源码Python3.14/3.11各512通过，wheel安装元数据/25模块/许可/六入口另验；21项文档help/解析检查，非真实业务。143提交/2835 blob扫描无已知私值/路径/凭据特征命中，不等于所有未知秘密排除。历史及原判据保持。
+- GitHub目标/可见性/主许可待答复，尚无推送或托管CI；四任务正文已备。产品2b479a8及采集器未改，固定cut不变，无服务/UI/DWS/模型/认证调用或聊天调度。52/10/2及四MUST未完整。

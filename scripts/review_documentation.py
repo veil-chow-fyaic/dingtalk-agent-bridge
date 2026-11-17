@@ -23,8 +23,8 @@ LABELS = {'current': '现行说明', 'reference': '固定来源/采用说明',
 
 
 def documents(root):
-    paths = [root / 'README.md', root / 'AGENTS.md']
-    for folder in ('docs', 'plans', 'evidence', 'integrations', 'fixtures', 'tests', 'api'):
+    paths = list(root.glob('*.md'))
+    for folder in ('docs', 'plans', 'evidence', 'integrations', 'fixtures', 'tests', 'api', '.github'):
         paths.extend((root / folder).rglob('*.md'))
     return sorted(str(p.relative_to(root)) for p in paths if p.is_file())
 

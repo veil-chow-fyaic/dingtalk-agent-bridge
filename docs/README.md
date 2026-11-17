@@ -1,23 +1,52 @@
 # 文档导航
 
-工作交接：[HANDOFF](../plans/completion/HANDOFF.md)。E135只读检查修正心跳PAUSED事实并指出R13独立采集缺口；未启动新业务实验。
+第一次使用从[上手指南](getting-started.md)开始。需要判断是否满足自己的场景，先读[能力、当前状态与剩余工作](102-user-requirements-and-roadmap.md)。产品与部署状态以该总览为准，历史报告保留其当时结论。
 
-当前结论只在[需求、交付现状与后续路线](102-user-requirements-and-roadmap.md)汇总；执行动作以[当前任务](../plans/completion/CURRENT_MISSION.md)、[TODO](../plans/completion/TODO.md)和[AGENTS](../AGENTS.md)为准。E132整理文档，E133新增独立IM组合发送，E134于2026-11-16部署2467fe2并补群/私聊真实API及原件证据；E146已补组合完整图文/身份/AI标识及私聊原生引用，逐图保存未成功；运行产品仍2b479a8/E143。
+## 使用与集成
 
-| 要解决的问题 | 阅读入口 |
+| 你要做什么 | 阅读入口 |
 |---|---|
-| 做什么、做到哪里、还差什么 | [当前总览](102-user-requirements-and-roadmap.md) |
-| 安装、运行和恢复 | [运行手册](15-service-runbook.md) · [通用接入经验](11-onboarding-lessons.md) |
-| 接口、配置和持久消费 | [CLI/HTTP/consumer](22-generic-tool-and-consumer.md) · [中立接入边界](21-existing-runtime-integration.md) · [OpenAPI](../api/openapi.json) |
-| 运行器实际支持到哪一步 | [接入表](architecture/agent-integration-map.md) · [中间件架构](architecture/dingtalk-agent-middleware.md) |
-| 最新真实UI及保留的失败 | [E130群引用双向](131-group-quote-ui.md) · [E131群双图与Kimi拒绝](132-group-multi-image-and-provider-denial.md) |
-| 最近部署 | [E134组合API与部署](135-composition-api-deployment.md)；Pi历史真实UI见[E123](124-pi-deployment-and-ui.md) |
-| 尚未完整验收范围 | [E127 OpenClaw薄适配](128-openclaw-adapter.md)（E134代码随包部署、未配置绑定/真实模型UI） · [E128父进程死亡/恢复](129-openclaw-gateway-lifecycle.md) · [E117官方取消候选](117-dws-cancellation-candidate.md) |
-| 故障已修什么、还缺什么 | [风险与关闭条件](114-dws-risks-and-resolution.md) · [E124观察收尾](125-observation-closeout-and-qwen-transactions.md) |
-| 官方/社区来源与采用情况 | [参考目录](references/README.md) · [采用账](references/adoption-plan.md) · [CEO深挖](references/ceo-deep-dive.md) |
-| 执行与验收 | [计划入口](../plans/completion/00-README.md) · [PRD](../plans/completion/01-PRD.md) · [矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [最终自检](../plans/completion/10-自检清单.md) |
-| 追溯全部文件 | [完整文档索引](INDEX.md) · [证据登记](../plans/completion/EVIDENCE.md) · [推进账本](../plans/completion/PROGRESS_LEDGER.md) · [偏差日志](../plans/completion/99-执行偏差日志.md) |
+| 安装并接通一个会话 | [上手指南](getting-started.md) · [身份、组织开通与接入经验](11-onboarding-lessons.md) |
+| 使用CLI、HTTP或独立consumer | [接口参考](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) · [路由模板](../config.routes.example.json) |
+| 接入已有运行器 | [实际支持与验证范围](architecture/agent-integration-map.md) · [运行器中立接入边界](21-existing-runtime-integration.md) · [配置模板](../config.agent.example.json) |
+| 处理图片 | [图片上传补充的构建与边界](../integrations/dws_image_upload/README.md) |
+| 安全运行 | [安全说明](../SECURITY.md) · [运行手册](15-service-runbook.md) |
+| 获取离线包 | [精确源码与已测wheel导出/安装](144-offline-release-export.md) |
 
-编号不等于证据ID，例如docs/132对应E131。阶段报告保留其当时版本、失败和下一步，并在页首标明历史范围；其中“当前、暂停、待许可、未接入”均按该报告时点解释，不能作为今天的操作指令。冻结归档和原证据不重写，新增说明不回填历史结果。
+## 维护与开发
 
-[文档索引数据](documentation-index.json)逐文件区分现行手册、阶段报告、验收基线、累计账本、冻结归档和合成素材；[只读文档检查](../scripts/review_documentation.py)核全覆盖、历史正文及入口状态。链接/JSON/SHA由[handoff检查](../scripts/verify_handoff.py)另外核对；文档检查通过不等于产品或现场验收通过。
+| 你要做什么 | 阅读入口 |
+|---|---|
+| 启停、恢复、迁移与回滚 | [运行手册](15-service-runbook.md) · [风险与关闭条件](114-dws-risks-and-resolution.md) |
+| 理解组件分工 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [官方/社区参考](references/README.md) · [采用清单](references/adoption-plan.md) |
+| 提交代码或文档 | [贡献指南](../CONTRIBUTING.md) · [变更记录](../CHANGELOG.md) · [仓库约定](../AGENTS.md) |
+| 继续当前工作 | [当前任务](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) · [TODO](../plans/completion/TODO.md) · [HANDOFF](../plans/completion/HANDOFF.md) |
+| 核验需求与完成条件 | [计划入口](../plans/completion/00-README.md) · [PRD](../plans/completion/01-PRD.md) · [验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [最终自检](../plans/completion/10-自检清单.md) |
+| 检查资料和提交 | [文档检查](../scripts/review_documentation.py) · [覆盖声明检查](../scripts/review_acceptance.py) · [handoff检查](../scripts/verify_handoff.py) · [测试入口](../scripts/run_tests_with_evidence.py) |
+
+部署 commit、已测 wheel、文档 HEAD 和候选补丁分别记录；后来的文档提交不证明服务已升级。检查脚本只证明其对应的资料/测试范围，不能代替真实消息、客户端下载或长期运行验收。
+
+## 历史与证据
+
+[完整索引](INDEX.md)收录全部资料；[索引数据](documentation-index.json)标明现行说明、固定参考、阶段历史、验收基线、累计账本与冻结归档。[证据登记](../plans/completion/EVIDENCE.md)、[推进账本](../plans/completion/PROGRESS_LEDGER.md)和[执行偏差日志](../plans/completion/99-执行偏差日志.md)用于逐项追溯。
+
+编号不等于证据ID，例如文档132对应证据E131。阶段报告页首有历史范围，其“当前、暂停、下一步”按当时解释；旧失败、原判据和归档不回写成后续成功。继续操作先回到当前任务和运行手册。
+
+<details>
+<summary>常用历史检查点与研究入口</summary>
+
+| 主题 | 保留的记录 |
+|---|---|
+| 当前产品部署检查点 | [可靠性修复与部署](143-parallel-hardening.md) |
+| 最新原生UI与引用 | [UI恢复、私聊引用及组合保存边界](147-native-ui-recovery-and-dm-quote.md) |
+| 图文组合 | [组合API/部署及官方原件](135-composition-api-deployment.md) |
+| 引用与模型失败 | [群引用双向](131-group-quote-ui.md) · [群双图与Kimi拒绝](132-group-multi-image-and-provider-denial.md) |
+| Pi实际任务 | [历史部署与UI](124-pi-deployment-and-ui.md) |
+| OpenClaw | [薄适配](128-openclaw-adapter.md) · [父进程死亡与恢复](129-openclaw-gateway-lifecycle.md) |
+| 官方取消候选 | [早期双层候选](117-dws-cancellation-candidate.md) · [完整集成及边界](146-dws-root-cause-and-integration.md) |
+| 观察记录 | [旧观察收尾](125-observation-closeout-and-qwen-transactions.md) |
+| 参考研究 | [CEO深挖](references/ceo-deep-dive.md) |
+
+</details>
+
+后续任务与逐项关闭条件见[交付路线图](ROADMAP.md)，原活动清单与验收判据保留，避免按历史阶段重复建任务。

@@ -3,7 +3,7 @@
   "updated": "2026-11-17",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E146",
+    "documentationEvidence": "E147",
     "latestUiEvidence": "E146",
     "deployedProduct": "2b479a8",
     "deploymentEvidence": "E143",
@@ -25,10 +25,22 @@
     "automationPurpose": "none_user_requested_direct_ownership"
   },
   "documents": {
+    ".github/PULL_REQUEST_TEMPLATE.md": {
+      "role": "current"
+    },
     "AGENTS.md": {
       "role": "current"
     },
+    "CHANGELOG.md": {
+      "role": "current"
+    },
+    "CONTRIBUTING.md": {
+      "role": "current"
+    },
     "README.md": {
+      "role": "current"
+    },
+    "SECURITY.md": {
       "role": "current"
     },
     "docs/01-research.md": {
@@ -269,6 +281,10 @@
     "docs/147-native-ui-recovery-and-dm-quote.md": {
       "role": "historical",
       "preservedSha256": "ba8495e103b189448049e00f69f989fc630c856e4ba1a2d47e029479b8757c0f"
+    },
+    "docs/148-github-project-maintenance.md": {
+      "role": "historical",
+      "preservedSha256": "ef52827c9d6885c18018acbcb3511a81551d654ad5e33d8d26f97f8d35aef803"
     },
     "docs/15-service-runbook.md": {
       "role": "current"
@@ -612,11 +628,17 @@
     "docs/README.md": {
       "role": "current"
     },
+    "docs/ROADMAP.md": {
+      "role": "current"
+    },
     "docs/architecture/agent-integration-map.md": {
       "role": "reference"
     },
     "docs/architecture/dingtalk-agent-middleware.md": {
       "role": "reference"
+    },
+    "docs/getting-started.md": {
+      "role": "current"
     },
     "docs/history/through-E035/README.md": {
       "role": "archive",

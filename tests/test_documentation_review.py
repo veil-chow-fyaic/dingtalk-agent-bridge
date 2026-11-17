@@ -1,6 +1,7 @@
 """Documentation integrity only: no product imports, DWS, provider, or UI."""
 from pathlib import Path
 import shutil
+import json
 import sys
 import tempfile
 import unittest
@@ -36,6 +37,18 @@ class DocumentationReviewTests(unittest.TestCase):
         (self.root / 'docs/new-unindexed.md').write_text('# Unregistered\n')
         self.reject('inventory')
 
+    def test_unindexed_root_and_github_documents_fail(self):
+        for name in ('CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md', '.github/NEW_POLICY.md'):
+            with self.subTest(name=name):
+                path = self.root / name
+                if path.exists():
+                    # An integrated delivery may already index these root documents.
+                    path = path.with_name('UNINDEXED_' + path.name)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('# Unregistered public policy\n')
+                self.reject('inventory')
+                path.unlink()
+
     def test_historical_result_rewrite_fails(self):
         self.append('docs/132-group-multi-image-and-provider-denial.md', '\nFalse claim: task succeeded.\n')
         self.reject('preserved_body')
@@ -56,7 +69,10 @@ class DocumentationReviewTests(unittest.TestCase):
 
     def test_wrong_current_counts_fail(self):
         path = self.root / 'docs/102-user-requirements-and-roadmap.md'
-        path.write_text(path.read_text().replace('51通过、11阻塞、2部分', '64通过、0阻塞、0部分'))
+        counts = json.loads((self.root / docs.INDEX).read_text())['state']['uiStateCounts']
+        current = f'{counts["passed"]}通过、{counts["blocked"]}阻塞、{counts["partial"]}部分'
+        self.assertIn(current, path.read_text())
+        path.write_text(path.read_text().replace(current, '64通过、0阻塞、0部分'))
         self.reject('overview_state')
 
 

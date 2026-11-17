@@ -1,0 +1,42 @@
+name: Bug report / 缺陷报告
+description: Report a reproducible problem with redacted or synthetic evidence.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please use synthetic examples. Do not paste tokens, passwords, account/conversation IDs, private messages, full configs, databases, logs, or screenshots containing them.
+        Report a security vulnerability privately using SECURITY.md; do not disclose it here.
+  - type: input
+    id: version
+    attributes:
+      label: Bridge commit/version and Python/OS
+      description: Include the installation method. Version strings only; do not run login/doctor to collect them.
+    validations:
+      required: true
+  - type: input
+    id: dws_version
+    attributes:
+      label: DWS version and entry point
+      description: Known fixed DWS version, plus CLI / HTTP / consumer / optional gateway. Do not attach account configuration.
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and expected behavior
+      description: Describe the smallest reproducible case using placeholders and synthetic content.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include a safe error category and timing. Distinguish unknown delivery from confirmed failure; do not resend to reproduce an unknown send.
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Public evidence
+      options:
+        - label: I removed credentials, identities, private messages and local runtime data.
+          required: true

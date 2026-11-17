@@ -1,0 +1,26 @@
+name: Feature request / 功能需求
+description: Describe the user outcome and the gap in the official DWS path.
+title: '[Feature] '
+body:
+  - type: markdown
+    attributes:
+      value: 'Keep examples synthetic and omit account or organization identifiers.'
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What should the user be able to do?
+      description: Describe a concrete IM workflow and why the current behavior is insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: official_path
+    attributes:
+      label: Existing DWS support or limitation
+      description: Link official documentation if available. Bridge additions should address a real gap.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Observable acceptance criteria
+      description: Separate API delivery, client presentation, original file saving, and optional agent execution where relevant.
+    validations:
+      required: true

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E147",
+  "date": "2026-11-17",
+  "baseCommit": "776428b59cede930c97de0b124b82addf80bdf6b",
+  "scope": "Repository documentation and engineering; no new live acceptance or hosted CI claim",
+  "runtimeProduct": "2b479a8",
+  "runtimeSourceModulesUnchanged": 25,
+  "collectorUnchanged": true,
+  "engineeringPatchSha256": "c1de499b987420294877789b0944522b5f4bae48c825b09caf7249554b6e6088",
+  "engineeringFileSha256": {
+    "scripts/review_documentation.py": "732416fec9c398f6c886cba55835881a7244b573fd43acba21c436dc1599cc13",
+    "scripts/verify_handoff.py": "6eba85408d186831b80f4d2cbc96923c8eb3783f8e87380859b26825fc5a1113",
+    "tests/test_documentation_review.py": "52ff542ea0c888805e19fb8efb75090455dea2fc3ffa464f68c21c2b0873f128",
+    ".github/ISSUE_TEMPLATE/bug_report.yml": "2ae761e284c9753636873bcef348cbfcbf25797f7ad040dab9b50c623f353a18",
+    ".github/ISSUE_TEMPLATE/config.yml": "1f103c6a9dd07cd13a9a6f17ace6b813f47747eb9cb7e00488cb2073caaf91bb",
+    ".github/ISSUE_TEMPLATE/feature_request.yml": "6247d67c27057c2d4846a8d9f663bdd54489412d9c575ab4cf6fc768595b179b",
+    ".github/PULL_REQUEST_TEMPLATE.md": "94e0bcbffc140caba211650472eedac890ca3e365d3fdda1203552a0f78378c1",
+    ".github/dependabot.yml": "f825889f3b7a9982d023d8c3ec8ad525e2d142ae16a4f2e33f6bcce06c928090",
+    ".github/workflows/ci.yml": "895c323593e49a3e4025829910926e220ec5a169dd501a69a89b15e8fdb53197",
+    "scripts/verify_ci_install.py": "72175f0a282a19089f869f33cc44463bd92786dc3679a5fc525db063466000f4",
+    "tests/test_repository_gates.py": "d71afbb28e13167b683862b0d3060c078fbbab2bad0eadb3ab301dfb4632ab35"
+  },
+  "sourceTests": [
+    {
+      "label": "py314",
+      "exitCode": 0,
+      "elapsedSeconds": 164.333,
+      "testsRun": 512,
+      "ok": true,
+      "logSha256": "c896008ab3908417a7fbd733c48318813a9e73475882170e89abc49cf8704be0"
+    },
+    {
+      "label": "py311",
+      "exitCode": 0,
+      "elapsedSeconds": 149.054,
+      "testsRun": 512,
+      "ok": true,
+      "logSha256": "8aef6119d0b25859cc1bf5dcc007731db480239ca3a05527dd6cf550af8c240b"
+    }
+  ],
+  "sourcePlatforms": {
+    "localActual": "macOS 26.5.1 arm64; CPython 3.14.6 and 3.11.15",
+    "hostedConfigured": "ubuntu-24.04 and macos-15; CPython 3.11 and 3.14",
+    "hostedRuns": 0,
+    "linuxLocalRuns": 0,
+    "linuxReason": "No cached official Python Docker image; no software image downloaded"
+  },
+  "installationScope": "wheel metadata, 6 entrypoints, 25 module bytes and license bytes; no installed full-suite claim",
+  "candidateInstalledWheelSha256": "7f5ceca77a447d8d2b1b79b2f649a58c3e1c989eb18238c4ea9d18789621fbea",
+  "documentationCommandCases": 21,
+  "documentationCommandScope": "6 help plus argument parsing; no real business execution",
+  "preservedPriorNavigationTargets": 40,
+  "gitHistoryReview": {
+    "commits": 143,
+    "reachableBlobCount": 2835,
+    "reachableBlobBytes": 41568987,
+    "findings": 0,
+    "scope": "private paths, known local identifiers/http token, private key and credential-like markers; not proof of absence of all unknown secrets"
+  },
+  "upstream": {
+    "checkedAt": "2026-11-17T05:23:57.853Z",
+    "mainSha": "4cc7767c70a874b189463ebfb07ad8a3c424389c",
+    "mainCommitDate": "2026-11-13T13:52:31Z",
+    "mainUrl": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/commit/4cc7767c70a874b189463ebfb07ad8a3c424389c",
+    "stableRelease": "v1.0.68",
+    "stablePublishedAt": "2026-11-11T08:50:17Z",
+    "stableUrl": "https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli/releases/tag/v1.0.68",
+    "mainSameAsPreviouslyReviewed": true
+  },
+  "actionPins": [
+    {
+      "repo": "actions/checkout",
+      "version": "v7.0.1",
+      "sha": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "runtime": "node24",
+      "release": "https://github.com/actions/checkout/releases/tag/v7.0.1",
+      "ref": "https://api.github.com/repos/actions/checkout/git/ref/tags/v7.0.1"
+    },
+    {
+      "repo": "actions/setup-python",
+      "version": "v7.1.0",
+      "sha": "6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+      "runtime": "node24",
+      "release": "https://github.com/actions/setup-python/releases/tag/v7.1.0",
+      "ref": "https://api.github.com/repos/actions/setup-python/git/ref/tags/v7.1.0"
+    }
+  ],
+  "hostedRuns": 0,
+  "githubWrites": 0,
+  "githubPending": "No configured remote or same-name repository found; destination, visibility and license question pending",
+  "mustGaps": [
+    "R01",
+    "R06",
+    "R07",
+    "R13"
+  ],
+  "uiStateCounts": {
+    "passed": 52,
+    "blocked": 10,
+    "partial": 2
+  },
+  "realBusinessOrUiOrCredentialCalls": 0,
+  "automationCreated": false,
+  "integratedChecks": {
+    "allExitZero": true,
+    "documentationCount": 191,
+    "manifestPayloadFiles": 802,
+    "targetedTestsRun": 15,
+    "targetedTestGroups": {
+      "documentation": 8,
+      "repositoryAndInstallationGates": 7
+    },
+    "acceptanceValid": true,
+    "mustGapsUnchanged": true,
+    "incrementalDiffWhitespace": true
+  }
+}

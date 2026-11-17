@@ -6,8 +6,12 @@
 
 | 文档 | 范围 |
 |---|---|
+| [.github/PULL_REQUEST_TEMPLATE.md](../.github/PULL_REQUEST_TEMPLATE.md) | 现行说明 |
 | [AGENTS.md](../AGENTS.md) | 现行说明 |
+| [CHANGELOG.md](../CHANGELOG.md) | 现行说明 |
+| [CONTRIBUTING.md](../CONTRIBUTING.md) | 现行说明 |
 | [README.md](../README.md) | 现行说明 |
+| [SECURITY.md](../SECURITY.md) | 现行说明 |
 | [docs/01-research.md](01-research.md) | 阶段历史 |
 | [docs/02-capability-matrix.md](02-capability-matrix.md) | 阶段历史 |
 | [docs/03-wecom-reference.md](03-wecom-reference.md) | 阶段历史 |
@@ -69,6 +73,7 @@
 | [docs/145-delivery-and-recovery-closeout.md](145-delivery-and-recovery-closeout.md) | 阶段历史 |
 | [docs/146-dws-root-cause-and-integration.md](146-dws-root-cause-and-integration.md) | 阶段历史 |
 | [docs/147-native-ui-recovery-and-dm-quote.md](147-native-ui-recovery-and-dm-quote.md) | 阶段历史 |
+| [docs/148-github-project-maintenance.md](148-github-project-maintenance.md) | 阶段历史 |
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |
@@ -156,8 +161,10 @@
 | [docs/99-dws-base-failure-diagnosis.md](99-dws-base-failure-diagnosis.md) | 阶段历史 |
 | [docs/INDEX.md](INDEX.md) | 现行说明 |
 | [docs/README.md](README.md) | 现行说明 |
+| [docs/ROADMAP.md](ROADMAP.md) | 现行说明 |
 | [docs/architecture/agent-integration-map.md](architecture/agent-integration-map.md) | 固定来源/采用说明 |
 | [docs/architecture/dingtalk-agent-middleware.md](architecture/dingtalk-agent-middleware.md) | 固定来源/采用说明 |
+| [docs/getting-started.md](getting-started.md) | 现行说明 |
 | [docs/history/through-E035/README.md](history/through-E035/README.md) | 冻结归档 |
 | [docs/history/through-E049/README.md](history/through-E049/README.md) | 冻结归档 |
 | [docs/history/through-E076/README.md](history/through-E076/README.md) | 冻结归档 |
