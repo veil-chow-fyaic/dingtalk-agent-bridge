@@ -17,7 +17,7 @@ E150当前产品0e151fb、固定DWS v1.0.67。原 `parallel-hardening-24h-202611
 | D07 Kimi OAuth端点连接超时 | E112两任务在auth.kimi.com连接失败，DWS仍能收任务/回失败通知。现有系统代理与gateway环境不同；独立Python可达不能证明Kimi网络栈可达 | 两空闲gateway继承本机已有代理后，新两路真实工具/文件/UI成功，原两失败保持 | E115/E116已完成runtime.environment持久配置及无代理manager重启、真实工具env_ready=true/两路下载UI。有效样本不等于唯一根因，更不是DWS auth修复 |
 | D08 DWS conversation-info request_timeout | E112启动首读约3.87s失败，只有reason/traceback，未保存结构化错误信封；网络/上游deadline/其他原因尚不能分清 | 新的无凭据网络证据后，同目标受管业务读约1.14s成功，再进行有界恢复；原失败保留 | E115已实现安全category/reason/exit/耗时/阶段，合成错误和写日志失败已验；E116真实58个正常result已落日志。原E112缺失信封不可补造，后续真实失败再归因，不反复重启 |
 | D10 Kimi Code服务访问403 | E131 Kimi2.1.1 stderr为provider.auth_error 403，明确订阅无Kimi Code访问权限；stdout只有版本事件。DWS同期ready/同步完成，两条反馈confirmed | 群双PNG原件已物化，任务failed/runtime_terminal_missing，无工具/结果文件/重做；32只读审计及5负例保留失败 | 需既有Kimi服务访问恢复的新证据；不登录修复/复制token/换runtime绕过，不重发E131。E133最小请求仍同类403，无周限额/重置时间；只影响对应模型任务，不阻塞IM通道工作。不是DWS凭据故障，也不是已证网络超时根因 |
-| D09 UI failedToCreateImageDestination | E146系统ImageIO日志为截图临时目标ENOENT，实查目标目录缺失；目录为何消失未知，不能归因Keychain | 仅创建缺失目录且mode0700；未改既有权限或重启。11:08:55原getApp成功，后续AX/点击/滚动/截图成功；E133/E134/E141/E145旧失败保留 | 本次原生入口已恢复，不称永久根治；组合完整图文/身份可见与逐图保存分开，保存重复E011三点击失败后停止；不把UI问题与DWS凭据问题混同 |
+| D09 UI failedToCreateImageDestination | E146系统ImageIO日志为截图临时目标ENOENT，实查目标目录缺失；目录为何消失未知，不能归因Keychain | 仅创建缺失目录且mode0700；未改既有权限或重启。11:08:55原getApp成功，后续AX/点击/滚动/截图成功；E133/E134/E141/E145旧失败保留 | 本次原生入口已恢复，不称永久根治；E146 气泡内点击保存失败已记录，E151 经会话文件查看器逐图保存成功；不把UI问题与DWS凭据问题混同 |
 
 E118 Codex取消迟到写入是保留的历史失败，不能归因DWS/auth；E119原生SIGINT修复及E120真实延迟验收已完成，见[修复](120-codex-native-interrupt.md)与[UI](121-codex-deployment-and-ui.md)。随后原私聊经new归档/显式绑定迁至Pi，不能继续执行旧“回滚Kimi/等待修复”指令。CLI组cleanup_complete仍不保证任意恶意脱组工具已停。
 
