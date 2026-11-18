@@ -3,7 +3,7 @@
   "updated": "2026-11-18",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E151",
+    "documentationEvidence": "E152",
     "latestUiEvidence": "E151",
     "deployedProduct": "0e151fb",
     "deploymentEvidence": "E150",
@@ -784,6 +784,9 @@
     "plans/completion/ACCEPTANCE_MATRIX.before-E151.md": {
       "role": "archive",
       "preservedSha256": "484ec5ec4323ea24fb74d64cd70549a34ea674d285949fdea1c6672e58c1015c"
+    },
+    "docs/152-community-agent-adapters.md": {
+      "role": "reference"
     }
   }
 }

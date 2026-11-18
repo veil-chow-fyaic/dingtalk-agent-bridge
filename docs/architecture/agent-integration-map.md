@@ -9,6 +9,8 @@ E132（2026-11-16）按本项目实现及已有证据更新。协议研究、适
 | Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | 已部署原私聊；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
 | OpenClaw | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
 
+OpenClaw 原生通道插件、Hermes 与 DeepSeek Harness 的 ACP 执行器是拟新增的接法。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
+
 ## 共同契约与各自终态
 
 本项目统一能力、session兼容性、任务输入、终态、取消和产物，原生协议留在[agent_runtime.py](../../dingtalk_bridge/agent_runtime.py)与[openclaw_runtime.py](../../dingtalk_bridge/openclaw_runtime.py)。收到响应、退出0、模型自述完成均不能单独判成功。

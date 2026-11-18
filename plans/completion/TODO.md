@@ -2,6 +2,9 @@
 
 唯一活动清单；标准在[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)，现状在[总览](../../docs/102-user-requirements-and-roadmap.md)，全部既有工作在[EVIDENCE](EVIDENCE.md)/[账本](PROGRESS_LEDGER.md)。
 
+- [x] E152 核对原始需求与三类宿主的普通账号社区项目、官方协议、媒体与可靠性边界。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
+- [ ] 先交付 OpenClaw 原生通道，授权群与私聊各验两轮、真实文件处理、同会话回传、取消与恢复。
+- [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。
 - [x] 通用CLI/HTTP/consumer、双路文字/常用文件/PNG/JPEG/WAV/MP4、引用、持久任务/session/outbox与原件同会话交付。
 - [x] E150三处产品修复：无DNS启动、新路由图片helper继承、原生语音标记与原件消费；533项源码及双Python安装各通过，独立审查完成。
 - [x] 原parallel-hardening固定24h run自然收尾审计，失败/错误原样保留，不重置。原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。
@@ -9,7 +12,7 @@
 - [x] R01按已验新配置/安装/部署证据收口；R07按E095群真实工具/原件回传和E017/E026私聊证据收口，原判据不变。
 - [x] R13按原持久收发/重复/断线/未知/附件/重启/可观察错误判据及实际24h审计判断；正常access续期E028已证，invalid refresh恢复未证、零错误false分别保留。
 - [x] E151 真实原生语音群/私聊入站。两条音频已下载、完整解码、进入独立 consumer 并在客户端播放。
-- [ ] R06 原生语音出站。固定 DWS 新建音频走 file，两次同会话转发均缺音频资源和播放控件。替代为 WAV 文件；独立 video 协议格继续未验，MP4 卡片和播放已验。
+- [ ] R06 原生语音出站（按用户意见暂缓）。固定 DWS 新建音频走 file，两次同会话转发均缺音频资源和播放控件。替代为 WAV 文件；独立 video 协议格继续未验，MP4 卡片和播放已验。
 - [x] E151 组合图片逐图保存。群/私聊两条既有双 PNG 消息共四张，客户端保存、磁盘打开与原顺序 SHA-256 全部通过。
 - [ ] 任意普通多文件同一气泡尚未实现。
 - [ ] 全部MUST及最终自检签署，当前fullProductAcceptance=false，剩R06。

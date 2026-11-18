@@ -79,6 +79,7 @@
 | [docs/15-service-runbook.md](15-service-runbook.md) | 现行说明 |
 | [docs/150-native-voice-and-acceptance-scope.md](150-native-voice-and-acceptance-scope.md) | 阶段历史 |
 | [docs/151-native-voice-and-image-saving.md](151-native-voice-and-image-saving.md) | 固定来源/采用说明 |
+| [docs/152-community-agent-adapters.md](152-community-agent-adapters.md) | 固定来源/采用说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |
 | [docs/18-identity-and-conversation-boundaries.md](18-identity-and-conversation-boundaries.md) | 阶段历史 |
