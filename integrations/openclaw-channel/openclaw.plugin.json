@@ -1,0 +1,110 @@
+{
+  "id": "dingtalk-bridge",
+  "name": "DingTalk Bridge",
+  "description": "DingTalk ordinary-account channel using a local bridge.",
+  "categories": [
+    "channels"
+  ],
+  "channels": [
+    "dingtalk-bridge"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "channelConfigs": {
+    "dingtalk-bridge": {
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "python": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bridgeRoot": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pollIntervalMs": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 60000
+          },
+          "bridgePort": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "accounts": {
+            "type": "object",
+            "propertyNames": {
+              "pattern": "^[a-z0-9][a-z0-9_-]*$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bridgeAccountId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "routes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "conversationId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "conversationType": {
+                        "enum": [
+                          "direct",
+                          "group"
+                        ]
+                      },
+                      "allowSenders": {
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "initialCursor": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "conversationId",
+                      "conversationType",
+                      "allowSenders",
+                      "initialCursor"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "bridgeAccountId",
+                "routes"
+              ]
+            }
+          }
+        },
+        "required": []
+      }
+    }
+  }
+}

@@ -3,11 +3,11 @@
   "updated": "2026-11-18",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E152",
+    "documentationEvidence": "E153",
     "latestUiEvidence": "E151",
     "deployedProduct": "0e151fb",
     "deploymentEvidence": "E150",
-    "candidateProduct": "E150",
+    "candidateProduct": "E153",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -786,6 +786,12 @@
       "preservedSha256": "484ec5ec4323ea24fb74d64cd70549a34ea674d285949fdea1c6672e58c1015c"
     },
     "docs/152-community-agent-adapters.md": {
+      "role": "reference"
+    },
+    "docs/153-channel-presentation-and-openclaw.md": {
+      "role": "reference"
+    },
+    "integrations/openclaw-channel/README.md": {
       "role": "reference"
     }
   }

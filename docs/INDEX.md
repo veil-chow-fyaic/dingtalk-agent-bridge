@@ -80,6 +80,7 @@
 | [docs/150-native-voice-and-acceptance-scope.md](150-native-voice-and-acceptance-scope.md) | 阶段历史 |
 | [docs/151-native-voice-and-image-saving.md](151-native-voice-and-image-saving.md) | 固定来源/采用说明 |
 | [docs/152-community-agent-adapters.md](152-community-agent-adapters.md) | 固定来源/采用说明 |
+| [docs/153-channel-presentation-and-openclaw.md](153-channel-presentation-and-openclaw.md) | 固定来源/采用说明 |
 | [docs/16-implementation-acceptance.md](16-implementation-acceptance.md) | 阶段历史 |
 | [docs/17-requirements-progress-review.md](17-requirements-progress-review.md) | 现行说明 |
 | [docs/18-identity-and-conversation-boundaries.md](18-identity-and-conversation-boundaries.md) | 阶段历史 |
@@ -181,6 +182,7 @@
 | [fixtures/README.md](../fixtures/README.md) | 合成素材说明 |
 | [integrations/dws-contract/README.md](../integrations/dws-contract/README.md) | 固定来源/采用说明 |
 | [integrations/dws_image_upload/README.md](../integrations/dws_image_upload/README.md) | 固定来源/采用说明 |
+| [integrations/openclaw-channel/README.md](../integrations/openclaw-channel/README.md) | 固定来源/采用说明 |
 | [plans/completion/00-README.md](../plans/completion/00-README.md) | 现行说明 |
 | [plans/completion/01-PRD.before-E144.md](../plans/completion/01-PRD.before-E144.md) | 冻结归档 |
 | [plans/completion/01-PRD.before-E146.md](../plans/completion/01-PRD.before-E146.md) | 冻结归档 |

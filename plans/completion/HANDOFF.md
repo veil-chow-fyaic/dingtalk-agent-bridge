@@ -1,5 +1,7 @@
 # 当前接手事实
 
+E153 按用户要求使用新分支 `codex/native-agent-channel`。仓库中的候选包含产品消息呈现与原生 OpenClaw 通道，当前现场版本仍为 `0e151fb`，两条原路由继续原绑定。[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)
+
 2026-11-18，E152。用户已将普通账号原生语音出站暂缓，当前主线是普通账号 IM 与外部 Agent 的对接。社区项目和官方契约已核对。首个交付目标为已有 OpenClaw 用户接入群和私聊，后续分别验证 Hermes、DeepSeek Harness。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
 
 ## 版本与证据
@@ -20,6 +22,6 @@ E151 用原 E134 两条图文消息完成了会话文件查看器逐图保存、
 
 ## 操作边界
 
-复用原checkout/分支，主Agent统管现场/提交/GitHub，子Agent隔离/tmp；不复制账号数据、不建新产品。仅AIC和原私聊；Kimi两次403无恢复证据不探测/重发/换runtime。未知投递只原key对账。DWS固定v1.0.67，两并发/90+15秒，凭据故障持久暂停。禁止真实auth/login/doctor、Keychain读锁解锁、token复制/reset、权限改变/重启Mac或绕系统限制。共享Setsid bus不杀，无开机自启。
+核心 IM 仍在原 checkout，E153 开发在同项目独立工作树，主Agent统管现场/提交/GitHub，子Agent隔离/tmp；不复制账号数据、不建新产品。仅AIC和原私聊；Kimi两次403无恢复证据不探测/重发/换runtime。未知投递只原key对账。DWS固定v1.0.67，两并发/90+15秒，凭据故障持久暂停。禁止真实auth/login/doctor、Keychain读锁解锁、token复制/reset、权限改变/重启Mac或绕系统限制。共享Setsid bus不杀，无开机自启。
 
 必要维护按AGENTS原顺序，保留新DB行不能用旧备份覆盖。聊天自动化已删除，不重建。所有原始身份/聊天/截图/日志/DB/下载只留local；索引、manifest、暂存隐私和diff门通过后小步提交。

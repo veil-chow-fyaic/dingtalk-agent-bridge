@@ -1,0 +1,346 @@
+"""Route-bound stdio endpoint for a native OpenClaw channel, using bridge HTTP and Inbox."""
+import argparse
+import base64
+import binascii
+from contextlib import ExitStack
+import hashlib
+import json
+import os
+import re
+from pathlib import Path
+import sys
+import tempfile
+from urllib.error import HTTPError
+from urllib.parse import quote, urlencode
+from urllib.request import Request
+
+from .consumer import Inbox, acquire_consumer_lock, execution_scope
+from .local_http import urlopen
+from .routing import route_configs
+
+MAX_FILE = 20 * 1024 * 1024
+MAX_FRAME = ((MAX_FILE + 2) // 3) * 4 + 65536
+
+
+class ChannelError(ValueError):
+    """Only these fixed codes are returned to the host."""
+
+
+def route_api(root, route, port):
+    if not 1 <= port <= 65535:
+        raise ChannelError('invalid_bridge_port')
+    scope = {'account_id': route['accountId'], 'conversation_id': route['group']}
+
+    def call(path, payload=None):
+        token = (root / 'local/runtime/http-token').read_text().strip()
+        data = None
+        if payload is None:
+            path += ('&' if '?' in path else '?') + urlencode(scope)
+        else:
+            data = json.dumps({**payload, **scope}).encode()
+        request = Request(f'http://127.0.0.1:{port}{path}', data=data, headers={
+            'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'})
+        with urlopen(request, timeout=120) as response:
+            return json.load(response)
+    return call
+
+
+def stage_original(root, filename, data, digest):
+    directory = root / 'local/outbox/host-channel' / digest
+    if directory.resolve() != directory:
+        raise ChannelError('invalid_staging_directory')
+    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+    destination = directory / filename
+    # Publish complete bytes without replacing a file being read by another route.
+    if not destination.exists():
+        with tempfile.NamedTemporaryFile(dir=directory) as tmp:
+            tmp.write(data)
+            tmp.flush()
+            try:
+                os.link(tmp.name, destination)
+            except FileExistsError:
+                pass
+    if (destination.is_symlink() or not destination.is_file()
+            or destination.stat().st_size != len(data)
+            or hashlib.sha256(destination.read_bytes()).hexdigest() != digest):
+        raise ChannelError('staged_media_integrity')
+    return str(destination.relative_to(root))
+
+
+class HostChannel:
+    def __init__(self, root, route, state_name, initial_cursor, api):
+        if route.get('executionOwner') != 'openclaw' or not route.get('selfSenderId'):
+            raise ChannelError('route_not_configured_for_host')
+        if type(initial_cursor) is not int or initial_cursor < 0:
+            raise ChannelError('invalid_initial_cursor')
+        self.root = Path(root).resolve()
+        self.route = route
+        self.api = api
+        self.control_turn = None
+        self.control_cursor = 0
+        _, key = execution_scope(route)
+        # This path is also held for the full lifetime of a pre-plugin gateway.
+        # Sharing only its lock preserves its existing inbox, tasks and session.
+        with ExitStack() as stack:
+            stack.enter_context(acquire_consumer_lock(self.root, 'agent-' + key))
+            self.inbox = Inbox(self.root, route, 'openclaw-' + key, state_name)
+            stack.callback(self.inbox.close)
+            self.db = self.inbox.db
+            self.db.executescript('''
+                CREATE TABLE IF NOT EXISTS host_dispatch (
+                    message_id TEXT PRIMARY KEY, status TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_sends (
+                    key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL);
+            ''')
+            with self.db:
+                self.db.execute('INSERT OR IGNORE INTO meta VALUES ("cursor", ?)',
+                                (str(initial_cursor),))
+                self.db.execute("UPDATE host_dispatch SET status='unknown' WHERE status='claimed'")
+            self.resources = stack.pop_all()
+
+    def close(self):
+        self.resources.close()
+
+    def claim_ready(self):
+        rows = self.db.execute('''
+            SELECT seq, model FROM inbox WHERE state='normalized'
+              AND json_extract(model,'$.fromSelf')=0
+              AND json_array_length(model,'$.issues')=0
+              AND NOT EXISTS (SELECT 1 FROM host_dispatch d WHERE d.message_id=inbox.message_id)
+              ORDER BY seq''')
+        try:
+            ready = next(self.inbox.iter_ready(rows), None)
+        finally:
+            rows.close()
+        if ready is None:
+            return None
+        return self.claim(ready['message'])
+
+    def claim(self, message):
+        # Stdio delivery and arbitrary host/tool execution cannot share a transaction.
+        # A process death after this commit therefore needs review, never a second turn.
+        with self.db:
+            self.db.execute("INSERT INTO host_dispatch VALUES (?, 'claimed')", (message['id'],))
+        return message
+
+    def receive(self):
+        query = urlencode({'after': self.inbox.cursor, 'limit': 200})
+        batch = self.api('/v1/events?' + query)
+        if (batch.get('account_id'), batch.get('conversation_id')) != (
+                self.route['accountId'], self.route['group']):
+            raise ChannelError('transport_route_mismatch')
+        if len(batch['events']) > 200:
+            raise ChannelError('oversized_transport_batch')
+        if any(event.get('conversation_type') != self.route.get('conversationType', 'group')
+               for event in batch['events']):
+            raise ChannelError('transport_conversation_type_mismatch')
+        return self.inbox.ingest(batch)
+
+    def poll(self):
+        message = self.claim_ready()
+        if message is None:
+            self.receive()
+            self.inbox.hydrate(lambda mid: self.api('/v1/attachments', {'message_id': mid}))
+            message = self.claim_ready()
+        return {'message': message}
+
+    def poll_cancel(self, active_id):
+        """During a turn, keep other work durable and search only for a later text stop."""
+        active = self.db.execute("""
+            SELECT i.seq, json_extract(i.model,'$.senderId') AS sender
+            FROM inbox i JOIN host_dispatch d USING(message_id)
+            WHERE i.message_id=? AND d.status='claimed'""", (active_id,)).fetchone()
+        if active is None:
+            # Its terminal acknowledgment might have reached stdio before this poll.
+            return {'message': None}
+        if self.control_turn != active_id:
+            self.control_turn, self.control_cursor = active_id, active['seq']
+        if self.control_cursor >= self.inbox.cursor:
+            self.receive()
+        page = self.db.execute("""
+            SELECT i.seq, i.model, d.status FROM inbox i
+            LEFT JOIN host_dispatch d USING(message_id)
+            WHERE i.seq>? ORDER BY i.seq LIMIT 200""", (self.control_cursor,)).fetchall()
+        for row in page:
+            self.control_cursor = row['seq']
+            if row['status'] is not None:
+                continue
+            msg = json.loads(row['model'])
+            if (not msg or msg['senderId'] != active['sender'] or msg['fromSelf'] is not False
+                    or msg['issues'] or msg.get('quote') or len(msg['parts']) != 1
+                    or msg['parts'][0]['type'] != 'text'):
+                continue
+            raw = msg['parts'][0]['text']
+            direct = msg['conversationType'] == 'direct'
+            if not direct and not raw.startswith('/agent'):
+                continue
+            text = raw.strip()
+            if (direct and text == '/stop') or re.fullmatch(r'/agent\s+(?:cancel|/stop)', text):
+                return {'message': self.claim(msg)}
+        # Immediately examine the next page when there is local or upstream backlog.
+        # Each call fetches at most one transport page and reads at most 200 inbox rows.
+        return {'message': None, 'hasMore': len(page) == 200}
+
+    def ack(self, mid, status):
+        if not isinstance(mid, str) or status not in ('done', 'ignored', 'unknown'):
+            raise ChannelError('invalid_ack')
+        with self.db:
+            row = self.db.execute('SELECT status FROM host_dispatch WHERE message_id=?', (mid,)).fetchone()
+            if row is None or row[0] not in ('claimed', status):
+                raise ChannelError('dispatch_state_conflict')
+            self.db.execute('UPDATE host_dispatch SET status=? WHERE message_id=?', (status, mid))
+        return {'status': status}
+
+    def submission(self, request):
+        if ('media' in request) == ('text' in request):
+            raise ChannelError('choose_text_or_media')
+        if 'text' in request:
+            text = request['text']
+            if not isinstance(text, str) or not text:
+                raise ChannelError('invalid_text')
+            body = {'text': text}
+            if 'replyTo' in request:
+                body['reply_to'] = request['replyTo']
+            return body, None
+        media = request['media']
+        if not isinstance(media, dict) or media.get('kind') not in ('file', 'image'):
+            raise ChannelError('invalid_media')
+        filename = media.get('filename')
+        if (not isinstance(filename, str) or not filename.strip() or filename in ('.', '..')
+                or '/' in filename or '\\' in filename or any(ord(c) < 32 for c in filename)
+                or len(filename.encode()) > 255):
+            raise ChannelError('invalid_filename')
+        encoded = media.get('base64')
+        if not isinstance(encoded, str) or len(encoded) > ((MAX_FILE + 2) // 3) * 4:
+            raise ChannelError('invalid_media_size')
+        try:
+            content = base64.b64decode(encoded, validate=True)
+        except (ValueError, binascii.Error):
+            raise ChannelError('invalid_base64') from None
+        if len(content) > MAX_FILE:
+            raise ChannelError('invalid_media_size')
+        digest = hashlib.sha256(content).hexdigest()
+        if 'sha256' in media and media['sha256'] != digest:
+            raise ChannelError('media_digest_mismatch')
+        return {'kind': media['kind'], 'filename': filename, 'expected_sha256': digest}, content
+
+    def stage(self, body, content):
+        if content is None:
+            return body
+        kind, filename, digest = body['kind'], body['filename'], body['expected_sha256']
+        if (kind == 'image' and (not self.route.get('imageUploadBinary') or len(content) > 2 * 1024 * 1024
+                                or Path(filename).suffix.lower() not in ('.png', '.jpg', '.jpeg'))):
+            kind = 'file'
+        return {kind: stage_original(self.root, filename, content, digest), 'expected_sha256': digest}
+
+    def receipt(self, key, result):
+        if (not isinstance(result, dict) or result.get('key') != key or not result.get('state')
+                or result['state'] == 'confirmed' and not result.get('message_id')):
+            raise ChannelError('invalid_transport_receipt')
+        return {name: result.get(name) for name in ('key', 'state', 'task_id', 'message_id')}
+
+    def status(self, key, reconcile=False):
+        if not self.db.execute('SELECT 1 FROM host_sends WHERE key=?', (key,)).fetchone():
+            raise ChannelError('unknown_host_key')
+        try:
+            result = self.api('/v1/deliveries/' + quote(key, safe=''))
+        except HTTPError as exc:
+            with exc:
+                if exc.code != 404:
+                    raise
+            # A local reservation can precede the transport ledger after interruption.
+            return {'key': key, 'state': 'outcome_unknown', 'message_id': None, 'task_id': None}
+        receipt = self.receipt(key, result)
+        if (reconcile and receipt['task_id']
+                and receipt['state'] not in ('confirmed', 'rejected', 'failed')):
+            return self.receipt(key, self.api('/v1/reconcile', {'idempotency_key': key}))
+        return receipt
+
+    def send(self, key, request):
+        intent, content = self.submission(request)
+        fingerprint = hashlib.sha256(json.dumps(intent, sort_keys=True).encode()).hexdigest()
+        old = self.db.execute('SELECT fingerprint FROM host_sends WHERE key=?', (key,)).fetchone()
+        if old is not None:
+            if old[0] != fingerprint:
+                raise ChannelError('idempotency_conflict')
+            return self.status(key, reconcile=True)
+        payload = self.stage(intent, content)
+        # The process owns the route lock, so only this reservation can send this key.
+        with self.db:
+            self.db.execute('INSERT INTO host_sends VALUES (?,?)', (key, fingerprint))
+        result = self.api('/v1/send', {'idempotency_key': key, **payload})
+        return self.receipt(key, result)
+
+    def handle(self, request):
+        for field, target in (('accountId', 'accountId'), ('account_id', 'accountId'),
+                              ('conversationId', 'group'), ('conversation_id', 'group')):
+            if field in request and request[field] != self.route[target]:
+                raise ChannelError('request_route_mismatch')
+        op = request.get('op')
+        if op == 'poll':
+            return self.poll()
+        if op == 'pollCancel':
+            active_id = request.get('activeMessageId')
+            if not isinstance(active_id, str) or not active_id:
+                raise ChannelError('invalid_active_message')
+            return self.poll_cancel(active_id)
+        if op == 'ack':
+            return self.ack(request.get('messageId'), request.get('status'))
+        if op == 'summary':
+            return {'cursor': self.inbox.cursor, 'dispatch': dict(self.db.execute(
+                'SELECT status,count(*) FROM host_dispatch GROUP BY status'))}
+        if op in ('send', 'status', 'reconcile'):
+            key = request.get('key')
+            if not isinstance(key, str) or not 1 <= len(key) <= 128:
+                raise ChannelError('invalid_key')
+            return self.send(key, request) if op == 'send' else self.status(key, reconcile=op == 'reconcile')
+        raise ChannelError('unknown_operation')
+
+
+def serve(channel, stdin, stdout):
+    while raw := stdin.readline(MAX_FRAME + 1):
+        call_id = None
+        try:
+            if len(raw) > MAX_FRAME:
+                # Oversized frame may contain more data; do not parse its remainder as new calls.
+                raise SystemExit('oversized_host_frame')
+            request = json.loads(raw)
+            if not isinstance(request, dict) or not isinstance(request.get('id'), (str, int)):
+                raise ChannelError('invalid_request')
+            call_id = request['id']
+            result = {'ok': True, 'result': channel.handle(request)}
+        except ChannelError as exc:
+            result = {'ok': False, 'error': str(exc)}
+        except HTTPError as exc:
+            with exc:
+                result = {'ok': False, 'error': f'transport_http_{exc.code}'}
+        except (ValueError, KeyError, TypeError, OSError) as exc:
+            result = {'ok': False, 'error': type(exc).__name__}
+        print(json.dumps({'id': call_id, **result}, ensure_ascii=False), file=stdout, flush=True)
+
+
+def main():
+    os.umask(0o077)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--account-id', required=True)
+    parser.add_argument('--conversation-id', required=True)
+    parser.add_argument('--initial-cursor', required=True, type=int)
+    parser.add_argument('--config', default='local/service-config.json')
+    parser.add_argument('--port', default=18768, type=int)
+    args = parser.parse_args()
+    root = Path.cwd().resolve()
+    routes = route_configs(json.loads((root / args.config).read_text()))
+    for route, state_name in routes:
+        if (route['accountId'], route['group']) == (args.account_id, args.conversation_id):
+            channel = HostChannel(root, route, state_name, args.initial_cursor,
+                                  route_api(root, route, args.port))
+            try:
+                serve(channel, sys.stdin.buffer, sys.stdout)
+            finally:
+                channel.close()
+            return
+    parser.error('account/conversation route is not configured')
+
+
+if __name__ == '__main__':
+    main()

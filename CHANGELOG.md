@@ -1,5 +1,10 @@
 # 变更记录
 
+## 下一阶段开发分支
+
+- 内置 gateway 的产品模式直接交付宿主正文和产物，原接单提示和短任务号可通过诊断模式开启。
+- 新增普通账号 OpenClaw 原生通道，复用既有事件、原件和投递账本。[分支验证范围](docs/153-channel-presentation-and-openclaw.md)
+
 记录影响使用者的变化。源码中的包版本当前为 `0.1.0`，不表示已发布正式版本、存在远端 release 或通过全部验收。精确部署与证据见[当前总览](docs/102-user-requirements-and-roadmap.md)，完整历史见[证据账本](plans/completion/EVIDENCE.md)。
 
 ## Unreleased

@@ -41,6 +41,8 @@ jobs:
           python scripts/review_documentation.py
           python scripts/verify_handoff.py
           python scripts/verify_privacy.py
+      - name: Test native OpenClaw channel behavior
+        run: node --test integrations/openclaw-channel/test/*.test.mjs
       - name: Run synthetic tests
         run: python scripts/run_tests_with_evidence.py
       - name: Build and install the wheel without runtime dependencies

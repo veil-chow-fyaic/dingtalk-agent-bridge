@@ -5,7 +5,8 @@ project:
   source_path: /Users/veil/Projects/dingtalk-agent-bridge
   plan_path: /Users/veil/Projects/dingtalk-agent-bridge/plans/completion
 git:
-  target_branch: codex/complete-bridge
+  target_branch: codex/native-agent-channel
+  core_branch: codex/complete-bridge
   remote_publish: user_requested_github_repository_update
   destination: https://github.com/veil-chow-fyaic/dingtalk-agent-bridge
   visibility: public_user_confirmed

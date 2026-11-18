@@ -24,17 +24,35 @@ class HydrationPending(Exception):
     """A caller-owned download is in flight; keep the current durable state."""
 
 
+def execution_scope(route):
+    """Keep the gateway's existing scope and on-disk lock name across host choices."""
+    scope = json.dumps([route['accountId'], route['profile'], route['group'],
+                        route.get('conversationType', 'group')])
+    return scope, hashlib.sha256(scope.encode()).hexdigest()[:24]
+
+
+def acquire_consumer_lock(root, name):
+    if not name or not all(c.isalnum() or c in '_-' for c in name):
+        raise ValueError('invalid_consumer_name')
+    directory = Path(root) / 'local/consumers' / name
+    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+    lock = (directory / 'process.lock').open('a')
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        lock.close()
+        raise ValueError('consumer_already_owned') from None
+    return lock
+
+
 class Inbox:
     def __init__(self,root,config,name='shadow',state_name=None):
-        if not name or not all(c.isalnum() or c in '_-' for c in name):raise ValueError('invalid_consumer_name')
         self.root=Path(root).resolve();self.config=config
         self.cache_root=self.root/'local/runtime'
         if state_name:self.cache_root=self.cache_root/'routes'/state_name
         self.cache_root=self.cache_root/'downloads'
-        directory=self.root/'local/consumers'/name;directory.mkdir(parents=True,exist_ok=True,mode=0o700)
-        self.lock=(directory/'process.lock').open('a')
-        try:fcntl.flock(self.lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        except OSError:self.lock.close();raise ValueError('consumer_already_owned')
+        self.lock=acquire_consumer_lock(self.root,name)
+        directory=Path(self.lock.name).parent
         self.db=sqlite3.connect(directory/'inbox.sqlite3')
         self.db.row_factory=sqlite3.Row
         self.db.executescript('''
@@ -97,8 +115,12 @@ class Inbox:
                 (json.dumps(model,ensure_ascii=False),state,error,row['seq']))
         return {'completed':completed,'failed':failed}
     def ready(self):
-        result=[]
-        for row in self.db.execute('SELECT seq,model FROM inbox WHERE state="normalized" ORDER BY seq'):
+        rows=self.db.execute('SELECT seq,model FROM inbox WHERE state="normalized" ORDER BY seq')
+        return list(self.iter_ready(rows))
+
+    def iter_ready(self, rows):
+        """Revalidate originals before yielding any selected normalized inbox row."""
+        for row in rows:
             model=json.loads(row['model'])
             if model['fromSelf'] is False and not model['issues']:
                 valid=True;error='cache_changed'
@@ -111,10 +133,9 @@ class Inbox:
                         # A missing/unreadable original belongs to this message;
                         # keep later input available without downloading here.
                         valid=False;error='cache_unavailable';break
-                if valid:result.append({'seq':row['seq'],'message':model})
+                if valid:yield {'seq':row['seq'],'message':model}
                 else:
                     with self.db:self.db.execute('UPDATE inbox SET state="media_failed",error=? WHERE seq=?',(error,row['seq']))
-        return result
     def summary(self):
         ready_count=len(self.ready())
         states={r[0]:r[1] for r in self.db.execute('SELECT state,count(*) FROM inbox GROUP BY state')}

@@ -9,7 +9,7 @@ E132（2026-11-16）按本项目实现及已有证据更新。协议研究、适
 | Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | 已部署原私聊；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
 | OpenClaw | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
 
-OpenClaw 原生通道插件、Hermes 与 DeepSeek Harness 的 ACP 执行器是拟新增的接法。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
+OpenClaw 原生通道插件已在 E153 分支实现，它接入已有 OpenClaw Gateway。Hermes 与 DeepSeek Harness 的 ACP 执行器仍待接入。[原生通道与验证范围](../153-channel-presentation-and-openclaw.md)。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
 
 ## 共同契约与各自终态
 

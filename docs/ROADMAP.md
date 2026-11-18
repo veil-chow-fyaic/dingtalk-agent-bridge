@@ -1,5 +1,7 @@
 # 交付路线图
 
+**E153，当前开发分支**。先校正 gateway 的默认消息内容，再用同一套收发和投递账本接入已有 OpenClaw 宿主。阶段验收、现场边界和后续条件见[消息呈现与 OpenClaw 通道](153-channel-presentation-and-openclaw.md)。
+
 **当前优先级（E152）**。先做 OpenClaw 原生通道，再让 bridge 通过 ACP 调用 Hermes 和 DeepSeek Harness。已有 Hermes Gateway 可进一步通过平台插件接入。程序以普通账号主动发语音条暂缓，恢复条件继续记在 R06。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
 
 2026-11-18，E151 已完成群聊和私聊原生语音入站及客户端逐图保存。固定 DWS 转发没有保留音频，普通账号原生出站仍受限。[现场结果](151-native-voice-and-image-saving.md) · [能力总览](102-user-requirements-and-roadmap.md) · [原判据](../plans/completion/01-PRD.md) · [逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)

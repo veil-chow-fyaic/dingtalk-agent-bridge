@@ -12,6 +12,8 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 
 14 项 MUST 已通过 13 项，R06 媒体验收为部分通过。[原判据与四方向矩阵](plans/completion/ACCEPTANCE_MATRIX.md)
 
+开发分支 `codex/native-agent-channel` 提供可选的 OpenClaw 普通账号通道，并将内置 gateway 的聊天正文默认交由宿主决定。[安装与配置](integrations/openclaw-channel/README.md) · [消息模式与验证范围](docs/153-channel-presentation-and-openclaw.md)
+
 ## 可以做什么
 
 | 能力 | 已验证范围与限制 |

@@ -11,16 +11,15 @@ def utf16_units(text):
     return len(text.encode('utf-16-le')) // 2
 
 
-def reply_chunks(text):
-    """Yield character offsets and lossless chunks including the reply prefix.
+def reply_chunks(text, prefix=''):
+    """Yield character offsets and lossless chunks, budgeting any diagnostic prefix.
 
     Prefer complete lines. Split an overlong line on Unicode code-point
     boundaries. Existing persisted outbox entries are never changed.
     """
-    if not text:
-        yield 0, AGENT_PREFIX + '任务已完成。'
-        return
-    budget = PERSONAL_TEXT_UNITS - utf16_units(AGENT_PREFIX)
+    budget = PERSONAL_TEXT_UNITS - utf16_units(prefix)
+    if budget < 2:
+        raise ValueError('Reply prefix leaves insufficient space for Unicode text')
     start = 0
     while start < len(text):
         end, used, newline = start, 0, None
@@ -34,5 +33,5 @@ def reply_chunks(text):
                 newline = end
         if end < len(text) and newline is not None:
             end = newline
-        yield start, AGENT_PREFIX + text[start:end]
+        yield start, prefix + text[start:end]
         start = end

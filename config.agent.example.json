@@ -5,6 +5,7 @@
   "allowedSenderIds": ["<verified sender ID>"],
   "allowSelfCommands": false,
   "officialDwsTools": false,
+  "chatPresentation": "product",
   "prefix": "/agent",
   "runtime": {
     "kind": "kimi",

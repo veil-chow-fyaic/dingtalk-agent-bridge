@@ -9,7 +9,7 @@ from dingtalk_bridge.message_model import normalize
 from test_routing_consumer import CFG,event
 from dingtalk_bridge.text_limits import reply_chunks,utf16_units,AGENT_PREFIX
 
-SETTINGS={'allowedSenderIds':['self','other'],'allowSelfCommands':True,'prefix':'/agent','runtime':{'kind':'kimi','binary':'kimi'}}
+SETTINGS={'chatPresentation':'diagnostic','allowedSenderIds':['self','other'],'allowSelfCommands':True,'prefix':'/agent','runtime':{'kind':'kimi','binary':'kimi'}}
 
 
 class FakeAPI:
@@ -155,19 +155,19 @@ class AgentGatewayTests(unittest.TestCase):
         notices=[s for s in self.api.sends.values() if '部分回复未送达' in s.get('text','')]
         self.assertEqual(len(notices),1);self.assertEqual(len(calls),1)
         self.assertEqual(self.g.summary()['delivery']['rejected'],1)
-        self.assertIn('已拒绝 1',status_text(self.g.summary()))
-        self.assertIn('结果未确认 0',status_text(self.g.summary()))
+        self.assertIn('已拒绝 1',status_text(self.g.summary(), diagnostic=True))
+        self.assertIn('结果未确认 0',status_text(self.g.summary(), diagnostic=True))
 
     def test_unicode_reply_chunks_preserve_content_and_include_prefix_in_limit(self):
         for text in ('x'*5112, 'x'*5111+'🙂', '🙂'*3000, '中文🙂🚀\r\n'*1000, 'x'*12000):
             with self.subTest(length=len(text)):
-                chunks=list(reply_chunks(text))
+                chunks=list(reply_chunks(text, AGENT_PREFIX))
                 self.assertEqual(''.join(c[len(AGENT_PREFIX):] for _,c in chunks),text)
                 offset=0
                 for index,chunk in chunks:
                     self.assertEqual(index,offset);offset+=len(chunk)-len(AGENT_PREFIX)
                     self.assertLessEqual(utf16_units(chunk),5120)
-        self.assertEqual(list(reply_chunks('')),[(0,'[Agent] 任务已完成。')])
+        self.assertEqual(list(reply_chunks('')),[])
         self.assertTrue(list(reply_chunks('行🙂\n'*2000))[0][1].endswith('\n'))
 
     def test_long_runtime_response_delivers_unicode_safe_chunks_without_reexecution(self):
@@ -267,7 +267,7 @@ class AgentGatewayTests(unittest.TestCase):
         reply=next(v['text'] for v in self.api.sends.values() if '任务状态' in v['text'])
         self.assertIn('排队 1',reply)
         text=status_text({'jobs':{'blocked':1,'failed':2,'interrupted':3,'waiting_media':4},
-                          'delivery':{'upload_unknown':1,'outcome_unknown':2,'submitted':3}})
+                          'delivery':{'upload_unknown':1,'outcome_unknown':2,'submitted':3}}, diagnostic=True)
         self.assertIn('等待附件 4',text);self.assertIn('历史记录 6',text);self.assertIn('结果未确认 6',text)
 
     def test_exports_directory_symlink_escape_rejected(self):

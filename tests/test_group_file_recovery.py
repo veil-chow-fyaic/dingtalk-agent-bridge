@@ -18,7 +18,7 @@ from dingtalk_bridge.agent_gateway import Gateway
 CFG = {'accountId': 'synthetic', 'profile': 'synthetic:user', 'group': 'synthetic-group',
        'name': 'synthetic', 'selfSenderId': 'synthetic-agent', 'binary': 'never-execute',
        'conversationType': 'group'}
-SETTINGS = {'allowedSenderIds': ['synthetic-user'], 'prefix': '/agent',
+SETTINGS = {'chatPresentation': 'diagnostic', 'allowedSenderIds': ['synthetic-user'], 'prefix': '/agent',
             'runtime': {'kind': 'kimi', 'binary': 'synthetic-runtime'}}
 CONTENT = b'item,value\nalpha,3\nbeta,4\n'
 

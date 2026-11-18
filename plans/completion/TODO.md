@@ -3,7 +3,8 @@
 唯一活动清单；标准在[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)，现状在[总览](../../docs/102-user-requirements-and-roadmap.md)，全部既有工作在[EVIDENCE](EVIDENCE.md)/[账本](PROGRESS_LEDGER.md)。
 
 - [x] E152 核对原始需求与三类宿主的普通账号社区项目、官方协议、媒体与可靠性边界。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
-- [ ] 先交付 OpenClaw 原生通道，授权群与私聊各验两轮、真实文件处理、同会话回传、取消与恢复。
+- [x] E153 新分支实现产品/诊断呈现和 OpenClaw 原生通道。[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)
+- [ ] OpenClaw 真实模型与授权钉钉客户端的双路两轮文件任务、取消和恢复验收。原绑定与未知交付须按既有流程核对。
 - [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。
 - [x] 通用CLI/HTTP/consumer、双路文字/常用文件/PNG/JPEG/WAV/MP4、引用、持久任务/session/outbox与原件同会话交付。
 - [x] E150三处产品修复：无DNS启动、新路由图片helper继承、原生语音标记与原件消费；533项源码及双Python安装各通过，独立审查完成。

@@ -1,5 +1,7 @@
 # 用户需求、交付现状与后续路线
 
+**E153 开发分支** 已实现产品消息模式和 OpenClaw 原生通道候选。既有现场部署 E150 仍采用当时的消息格式，最新钉钉客户端实测为 E151。[消息呈现与 OpenClaw 通道](153-channel-presentation-and-openclaw.md)
+
 **当前主线（E152）** 是让使用 OpenClaw、Hermes 和 DeepSeek Harness 的人能从普通钉钉群和私聊交付任务、取回原件。先采用宿主公开插件接口和 ACP，复用 bridge 的收发和对账。程序主动发原生语音条按用户意见暂缓。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
 
 更新于 2026-11-18。**核心 IM 可用，14 项 MUST 中 13 项通过，R06 部分通过。** E151 在 E150 部署的 `0e151fb` 上核实了群与私聊原生语音入站、两路转发的限制和四张组合图片的客户端下载。[现场结果与使用方法](151-native-voice-and-image-saving.md)

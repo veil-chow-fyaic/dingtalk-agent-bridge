@@ -13,3 +13,7 @@ Office descendants with DisableFlagParsing are navigation/error stubs; their cou
 First bad fixture results and the eight old-argv failures remain under local/official-argument-contract-20261112. Passing this parser contract does not prove authentication, RPC success or UI delivery.
 
 Current operation and deployment status are maintained in the [runbook](../../docs/15-service-runbook.md) and [project overview](../../docs/102-user-requirements-and-roadmap.md). This fixed parser fixture is not a live authentication or UI test; do not repeat real credential diagnostics to validate it.
+
+## Literal text on personal-account sends
+
+Copy `literal_text/literal_text_test.go` to `internal/shortcut/chat/` in a clean archive of the pinned v1.0.67 source. Run `go test ./internal/shortcut/chat -run '^TestBridgeLiteralText$' -count=1 -v` with the offline Go settings above. This fixture uses the upstream in-memory fake caller and synthetic IDs for group and direct sends and quoted replies. It checks each resulting RPC content string, including the shortcut’s trimming of outer whitespace, an internal newline and a literal Markdown image marker referencing a nonexistent file. It exercises the bridge's actual `+messages-send --text` and `+messages-reply --content` shortcuts.
