@@ -9,6 +9,7 @@
 | 安装并接通一个会话 | [上手指南](getting-started.md) · [身份、组织开通与接入经验](11-onboarding-lessons.md) |
 | 使用CLI、HTTP或独立consumer | [接口参考](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) · [路由模板](../config.routes.example.json) |
 | 接入已有运行器 | [实际支持与验证范围](architecture/agent-integration-map.md) · [运行器中立接入边界](21-existing-runtime-integration.md) · [配置模板](../config.agent.example.json) |
+| 收取语音或保存组合原图 | [实测与客户端操作](151-native-voice-and-image-saving.md) |
 | 处理图片 | [图片上传补充的构建与边界](../integrations/dws_image_upload/README.md) |
 | 安全运行 | [安全说明](../SECURITY.md) · [运行手册](15-service-runbook.md) |
 | 获取离线包 | [精确源码与已测wheel导出/安装](144-offline-release-export.md) |
@@ -38,8 +39,8 @@
 | 主题 | 保留的记录 |
 |---|---|
 | 公开仓库与CI | [公开MIT、启动修复、安装验证与分支保护](149-github-public-launch-and-ci.md) |
-| 当前产品部署检查点 | [可靠性修复与部署](143-parallel-hardening.md) |
-| 最新原生UI与引用 | [UI恢复、私聊引用及组合保存边界](147-native-ui-recovery-and-dm-quote.md) |
+| 部署检查点 | [E150 实际部署](150-native-voice-and-acceptance-scope.md) · [E143 可靠性修复](143-parallel-hardening.md) |
+| 私聊原生引用及早期组合操作 | [UI恢复、私聊引用及组合保存边界](147-native-ui-recovery-and-dm-quote.md) |
 | 图文组合 | [组合API/部署及官方原件](135-composition-api-deployment.md) |
 | 引用与模型失败 | [群引用双向](131-group-quote-ui.md) · [群双图与Kimi拒绝](132-group-multi-image-and-provider-denial.md) |
 | Pi实际任务 | [历史部署与UI](124-pi-deployment-and-ui.md) |
@@ -52,4 +53,4 @@
 
 后续任务与逐项关闭条件见[交付路线图](ROADMAP.md)，原活动清单与验收判据保留，避免按历史阶段重复建任务。
 
-E150当前结果见[语音、原验收和实际交付](150-native-voice-and-acceptance-scope.md)；源码及同wheel双安装各533通过，真实语音未验、原生出站未实现，原观察错误不删。
+[E150 部署与测试](150-native-voice-and-acceptance-scope.md)记录 533 项源码及同 wheel 双安装验证。[E151 媒体实测](151-native-voice-and-image-saving.md)记录真实语音入站、出站转发结果和四张原图的客户端保存方法。

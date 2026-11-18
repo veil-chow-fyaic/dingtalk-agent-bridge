@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-实际产品0e151fb/E150；E134两路composition发送/history/官方原件已验，E146完整图文/身份/AI标识已验但逐图保存未成功。E146私聊原生引用UI/history/consumer通过。公共工具独立于组织、模型和runtime；现状见[总览](102-user-requirements-and-roadmap.md)。聊天调度已删除，业务服务独立；范围与禁止项见[AGENTS](../AGENTS.md)。
+运行产品为 E150 的 `0e151fb`。E151 在两路完成原生语音入站及组合图片客户端保存。CLI、HTTP 与持久 consumer 独立于组织、模型和 runtime。[能力总览](102-user-requirements-and-roadmap.md) · [媒体实测](151-native-voice-and-image-saving.md)
 
 ## 调用方式
 
@@ -53,7 +53,7 @@ images为1–9个有序条目，每项只允许path和sha256；text可省略。�
 
 一次调用先核全部原件，原子发布内容寻址暂存，再持久化一个投递键，调用固定官方`+messages-send --markdown`。官方内部完成本地图上传及一条图文消息发送；bridge不按图片循环发消息。顺序、正文、各原件摘要/名称进入指纹，同key不同内容拒绝；已入账同key即使生产者文件删除仍返回原回执。中断、上传/发送结果不明统一保持原key的outcome_unknown，不自动重传/改key/降级成多条独立图片；有task_id才继续原task对账。
 
-这是官方Markdown图文入口，不能外推为独立原生image卡片或普通文件附件数组。E134群/私聊各一条文字＋两张新PNG confirmed；history保留文字和图序，四张官方下载原件与源/暂存字节及SHA一致。E146客户端完整文字/双图顺序、发送者/AI标识已验；逐图保存重复E011三点击仍失败后停止，客户端原件尚未验；1–9图及JPEG的全范围仍按E133合成验证计。E011旧内联图原件获取失败保留，不能用本次成功改写。gateway仍逐件交付，自身媒体过滤后可保持pending_media，不触发runtime；离线物化另计。[实现验证](134-outbound-composition.md) · [真实API验证](135-composition-api-deployment.md)
+E134 群聊、私聊各一条双 PNG 图文经官方 Markdown 入口发出，history 保留正文和图序；E146 核了完整呈现、发送者及 AI 标识。E151 两路各有一条既有文字＋双 PNG 消息。从会话「文件」进入「图片及视频」，选中缩略图，在查看器中下载并保存，四张均从磁盘打开，按原发送顺序核对 SHA-256 一致。1–9 图及 JPEG 的全范围为 E133 合成验证。任意普通文件数组单气泡尚未实现；gateway 继续逐件交付。[实现](134-outbound-composition.md) · [官方原件](135-composition-api-deployment.md) · [客户端操作](151-native-voice-and-image-saving.md)
 
 ## 配置、发现与状态隔离
 
@@ -83,12 +83,12 @@ python3 -m dingtalk_bridge.consume --name MY-CONSUMER --account-id A --conversat
 
 Inbox先同事务写原事件与游标，再物化媒体。pending_media、media_failed、normalized、quarantined分别保留状态；正常运行时下一次可重试只读下载；E072凭据/超时等暂停生效后不再启动真实DWS，不以下载重试绕过暂停。`Inbox.ready()`只返回fromSelf=false、解析完整且附件路径/摘要仍有效的消息，不等于下游已执行成功。通用consumer不提供任务确认/租约或模型调度；独立可选gateway另有任务/会话/outbox，任意runtime也可自行实现消费策略。
 
-历史正文是平台投影；当前恢复实际图片/语音mediaId、文件fileId、quotedMessage为有序parts；E150语音标记归一化为audio，复用原件物化，真实语音四方向仍未验，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
+历史正文是平台投影；当前恢复实际图片/语音mediaId、文件fileId、quotedMessage为有序parts；E150语音标记归一化为audio，复用原件物化，E151 群聊与私聊真实语音均入站可消费并可播放，普通账号原生语音出站仍受限，引用资源不重复放顶层。quote保留id/conversationId/senderId/senderName，缺senderId保持null，显示名不是授权依据；旧入账不重写。未知格式、位置不明或跨会话引用保留问题/隔离，不能宣称任意富文本无损。naive时间按historyTimezone（默认Asia/Shanghai）解析，并标记timeZoneAssumed。
 
 普通水位前5分钟补读；首次及每30分钟追加最近24h深扫，`sync --deep`可显式触发。每次最多20页/1000条，部分读取不推进水位；E084已持久化原history_window和nextPageToken，超本轮容量在后续有界调用续读，重启保留游标。恢复要同一快照watermark≥固定cut且无待续窗口；首次无水位仅覆盖最近24h，平台不可见历史及超出补读窗口的迟到索引仍不保证。缓存每次尝试独立目录，部分失败不发布成功manifest；磁盘配额/保留期尚未实现，禁止自动清理仍被引用文件。
 
 ## 证据与限制
 
-有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，OpenClaw仅候选合成验证。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，不能推广成所有方向、语音条、任意单消息多文件或外部群通过。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
+有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，OpenClaw仅候选合成验证。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，各类语音方向和组合能力按矩阵逐格判断，任意单消息多文件及外部群未验。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
 
 产品与合成fixture可分享；身份/令牌、聊天、UI及原始运行证据留本机`local/`。复核已完成实验只读，不再次发送。历史失败、未知和平台阻塞保持原状态，24h按真实时长单独判定。

@@ -87,7 +87,7 @@ cp -n config.routes.example.json local/service-config.json
 
 完成后可扩展文件、引用和图文组合，完整用法见[接口参考](22-generic-tool-and-consumer.md)。文件必须在服务工作目录允许的 `fixtures/` 或 `local/outbox/` 内；上限、原件摘要与实际客户端保存应分别核对。
 
-WAV 音频文件和 MP4 视频文件已有群/私聊双向原件与播放证据。原生聊天语音条另计：当前入站解析只有代码和合成验证，尚未完成真实语音收取；固定 DWS 的 `audio` 发送仍是文件，不能生成语音条。需要多个文件一起处理时，可使用已有附件关联与逐件输出流程；单条图文组合可供浏览，但客户端逐图保存仍有缺口。[完整范围](150-native-voice-and-acceptance-scope.md)
+WAV 音频文件和 MP4 视频文件已有群聊、私聊双向原件与播放证据。原生语音可在两路接收、播放并交给独立 consumer。bridge 主动发音频请使用 WAV 附件。固定 DWS 的原生语音转发在两路都只留下占位文字。要保存组合图片，可从会话「文件」进入「图片及视频」，选中缩略图，在查看器中下载并保存。两条既有双 PNG 消息的四张原图已逐张核对。[媒体实测与操作路径](151-native-voice-and-image-saving.md)
 
 ## 6. 用独立 consumer 持续接收
 

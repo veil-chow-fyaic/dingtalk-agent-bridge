@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "evidence": "E151",
+  "date": "2026-11-18",
+  "dws": "v1.0.67",
+  "deployedProduct": "0e151fb",
+  "client": "DingTalk macOS 9.0.5",
+  "voice": {
+    "group": {
+      "inbound": {
+        "historyNativeAudioRefCount": 1,
+        "originalBytes": 11674,
+        "codec": "opus",
+        "container": "ogg",
+        "channels": 1,
+        "durationSeconds": 4.32,
+        "fullDecode": true,
+        "standaloneConsumerReady": true,
+        "nativeClientPlaybackStarted": true,
+        "nativeClientDurationLabelSeconds": 4
+      },
+      "outboundForward": {
+        "requestedInSameConversation": true,
+        "sourceAndDestinationIdentityValidated": true,
+        "officialForwardWrites": 1,
+        "successReceiptBoundToFreshSelfHistoryId": true,
+        "returnedHistoryAudioResources": 0,
+        "receivedBubble": "literal [语音]",
+        "nativePlaybackControl": false,
+        "playableNativeVoice": false
+      }
+    },
+    "direct": {
+      "inbound": {
+        "historyNativeAudioRefCount": 1,
+        "originalBytes": 9932,
+        "codec": "opus",
+        "container": "ogg",
+        "channels": 1,
+        "durationSeconds": 3.68,
+        "fullDecode": true,
+        "standaloneConsumerReady": true,
+        "nativeClientPlaybackStarted": true,
+        "nativeClientDurationLabelSeconds": 3
+      },
+      "outboundForward": {
+        "requestedInSameConversation": true,
+        "sourceAndDestinationIdentityValidated": true,
+        "officialForwardWrites": 1,
+        "successReceiptBoundToFreshSelfHistoryId": true,
+        "returnedHistoryAudioResources": 0,
+        "receivedBubble": "literal [语音]",
+        "nativePlaybackControl": false,
+        "playableNativeVoice": false
+      }
+    }
+  },
+  "images": {
+    "group": {
+      "orderedPngCount": 2,
+      "newChatSends": 0,
+      "sourceEvidence": "E134",
+      "clientSurface": "Conversation files > Images and videos > Image viewer > Download",
+      "savedFileOpenedInFinderQuickLook": [
+        true,
+        true
+      ],
+      "originalSha256InMessageOrder": [
+        "547e5f250249bbd433400c000ea506f32a9ef6cb2a704cefb3ce8dad08e8fc80",
+        "6238267d80903ec8392216d75df5b17e83d6fa9615a73ef82b4325b0879b61be"
+      ]
+    },
+    "direct": {
+      "orderedPngCount": 2,
+      "newChatSends": 0,
+      "sourceEvidence": "E134",
+      "clientSurface": "Conversation files > Images and videos > Image viewer > Download",
+      "savedFileOpenedInFinderQuickLook": [
+        true,
+        true
+      ],
+      "originalSha256InMessageOrder": [
+        "88e8a3221bd3437bad04548691b1271d87f8de20ab419b9a2b956718a74d626a",
+        "37a8449b89e52e6010671823a4902dd256a31c601978d9930aff226f0b79335e"
+      ]
+    }
+  },
+  "fullProductAcceptance": false,
+  "imageByteChecks": {
+    "routesChecked": 2,
+    "orderedImagesPerRoute": 2,
+    "distinctSavedFiles": 4,
+    "allOriginalBytesMatch": true
+  },
+  "scope": {
+    "originalVoiceFromDiskOutbound": "No confirmed ordinary-user creation endpoint in pinned DWS. Audio send uses file semantics.",
+    "fallback": "Verified WAV file or mobile hold-to-talk.",
+    "clientImageInlineGesture": "Gallery verified. Prior bubble gesture failures retained.",
+    "acceptedRoutes": 2,
+    "uiEvidence": "Operator observations in native CUA; four independent saved PNG files, original recordings and raw receipts kept private."
+  },
+  "forwardPreflight": {
+    "initialUnconfirmedCliExit": 3,
+    "classification": "confirmation_required before write",
+    "sameUuidUsedForConfirmedInvocation": true
+  }
+}

@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E150",
-    "latestUiEvidence": "E146",
+    "documentationEvidence": "E151",
+    "latestUiEvidence": "E151",
     "deployedProduct": "0e151fb",
     "deploymentEvidence": "E150",
     "candidateProduct": "E150",
     "uiStateCounts": {
-      "passed": 52,
-      "blocked": 10,
-      "partial": 2
+      "passed": 54,
+      "blocked": 6,
+      "partial": 4
     },
     "mustGaps": [
       "R06"
@@ -691,7 +691,7 @@
     },
     "plans/completion/01-PRD.md": {
       "role": "baseline",
-      "preservedSha256": "685fcbb558cb7573c7523077851461f321a86bf240c14ca96a15db04c70d5383"
+      "preservedSha256": "b0d6bb4c8c2b63c5a3cde31f31fa60a599e97af7454c91274373b5b2029e5ac4"
     },
     "plans/completion/09-执行时序与里程碑.md": {
       "role": "current"
@@ -715,7 +715,7 @@
     },
     "plans/completion/ACCEPTANCE_MATRIX.md": {
       "role": "baseline",
-      "preservedSha256": "484ec5ec4323ea24fb74d64cd70549a34ea674d285949fdea1c6672e58c1015c"
+      "preservedSha256": "0abc09e0ffbff875da3ac436ca7da05dbea143b54f5c9fb6442ce9862c7a3535"
     },
     "plans/completion/CRITICAL_PATH.md": {
       "role": "current"
@@ -773,6 +773,17 @@
     "docs/150-native-voice-and-acceptance-scope.md": {
       "role": "historical",
       "preservedSha256": "1b5fdcc67b4afe2769471080888f310b84b432a1df3093e9b5afaf7e6c55b410"
+    },
+    "docs/151-native-voice-and-image-saving.md": {
+      "role": "reference"
+    },
+    "plans/completion/01-PRD.before-E151.md": {
+      "role": "archive",
+      "preservedSha256": "685fcbb558cb7573c7523077851461f321a86bf240c14ca96a15db04c70d5383"
+    },
+    "plans/completion/ACCEPTANCE_MATRIX.before-E151.md": {
+      "role": "archive",
+      "preservedSha256": "484ec5ec4323ea24fb74d64cd70549a34ea674d285949fdea1c6672e58c1015c"
     }
   }
 }

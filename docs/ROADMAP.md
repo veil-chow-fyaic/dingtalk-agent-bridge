@@ -1,6 +1,6 @@
 # 交付路线图
 
-本轮以 2026-11-17 E150 的实现和证据复核为依据。核心文字、常用文件、PNG/JPEG、WAV/MP4 文件及群/私聊引用已有真实证据；原生语音入站代码已补齐并完成合成验证，真实语音收发仍未验。详细范围见[本次报告与能力表](150-native-voice-and-acceptance-scope.md)、[总览](102-user-requirements-and-roadmap.md)、[PRD](../plans/completion/01-PRD.md)及[逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。矩阵保留历史失败与未证格，不作为完成百分比。
+2026-11-18，E151 已完成群聊和私聊原生语音入站及客户端逐图保存。固定 DWS 转发没有保留音频，普通账号原生出站仍受限。[现场结果](151-native-voice-and-image-saving.md) · [能力总览](102-user-requirements-and-roadmap.md) · [原判据](../plans/completion/01-PRD.md) · [逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)
 
 E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。
 
@@ -18,25 +18,21 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 
 **已经可用的文件能力。** WAV/MP4 群/私聊双向原件、下载、播放已验，MP4 在钉钉中已有视频卡片。语音文件和聊天语音条不同；独立 `video` 协议标签未验，不等于视频卡片/播放不支持，也不构成另造通道的理由。[私聊音视频](34-audio-video-file-progress.md) · [群音视频](103-aic-group-media-and-result-contract.md)
 
-**本次实现。** 官方 v1.0.67 已提供语音历史标记及 mediaId 下载。bridge 现已补语音归一化与既有原件到 consumer 的衔接，冻结源码和同 wheel 两个 Python 安装环境分别通过 533 项合成测试。原生语音的群/私聊真实入站仍未验；普通账号原生语音条出站尚未实现。
+**入站已验。** 群聊 4.32 秒（11,674 字节）、私聊 3.68 秒（9,932 字节），两条 Ogg/Opus 单声道原件均完整解码、进入独立 consumer 的 ready 队列，并在钉钉客户端播放。[E151 实测](151-native-voice-and-image-saving.md)
 
-**实际下一步。**
-
-- 在已授权会话有一条新的真实原生语音后，记录来源身份/消息/资源关系，沿现有 DWS history 与资源下载取原件，再核 consumer、实际编码/时长及客户端播放。验证通道不要求调用模型。不能把合成 fixture 或 WAV 文件改记为语音条。
-- 出站需要明确的普通账号语音上传/发送契约。当前固定 DWS 的 `audio` 两条发送入口均转为 file；本轮两次有界官方市场搜索没有找到相关服务，未猜 ID 或调用未知工具。已检查的 Mac 9.0.5 输入框也未见录制语音入口，不能外推所有客户端都不支持。
-- 若在现有范围确实无入口，按用户要求保留实现/未实现清单并继续其他工作；不改为 bot、VoIP/听记，不索取新账号或应用凭据。是否完整满足 R06 仍按明确需求和真实证据判定，不以“记录了限制”代替成功。
+**出站仍受限。** 固定 DWS v1.0.67 的 `audio` 按文件发送。两路各转发原语音一次，都只得到文字 `[语音]`，资源数为 0，客户端没有播放控件。尚无可用的普通账号原生语音创建入口；发音频可用已验的 WAV 文件。后续如官方提供普通账号原生语音上传及发送契约，再用同一身份核对接收方可播放的语音气泡、原件和历史资源。
 
 ## R07：附件任务核心与组合体验分开核对
 
 **原判据已有证据。** R07 要求“附件能进入 Agent、真实工具完成工作、文件回原会话”。[E095](100-aic-group-resume-and-files.md) 已在群完成两条附件关联一个任务、真实 Python 处理、同群两份文件交付及客户端下载打开/SHA；[E017](37-multiple-files-and-followup.md)、[E026](45-single-message-two-images.md) 补私聊多文件和单消息双图处理。无需用私聊证据替代群，也不因后续某次模型失败否定已验证的核心能力。
 
-**仍保留的独立缺口。**
+**组合消息的实测范围**
 
 - [E131](132-group-multi-image-and-provider-denial.md) 群双 PNG 当次 Kimi 403，未执行工具、未交付文件。该任务继续失败；不循环探测、重发或换 runtime 绕过。只有既有服务恢复的新证据且仍需该样本时，再验证新的明确任务。
-- [E134/E146](147-native-ui-recovery-and-dm-quote.md) 两路图文组合的 API、官方四原件、完整客户端呈现/发送者/AI 标识已验，客户端逐图保存仍失败或未证。旧失败点击路径不重跑；只在新明确入口出现后核既有消息。
+- E134/E146 核对了双路图文的官方原件、客户端呈现和发送身份。E151 改从会话「文件」的「图片及视频」逐张打开查看器并保存，四张磁盘原件均与原发送顺序和 SHA-256 匹配。[现场记录](151-native-voice-and-image-saving.md)
 - 初始矩阵已有“单消息多附件”四方向，格子继续保留。原 R07 必要列未写任意附件必须合成一个气泡或每张内嵌图必须原生另存；这些组合边界与核心文件任务分别报告，不能自动追加为所有原有任务都要重做的门槛。
 
-**现成使用方式。** 多文件一起处理采用已验的多条附件关联；原件交付采用逐条原生 image/file。单条图文用于浏览并说明逐图保存限制。明确需要打包时可以交付一个 ZIP，但不能自动补发旧组合，也不能把替代形式记作单消息逐图保存通过。
+**现成使用方式。** 多文件一起处理采用已验的多条附件关联；原件交付采用逐条原生 image/file。双 PNG 图文可逐图保存。需要一次取得多个普通文件时可交付一个 ZIP；任意普通多附件单气泡仍未实现。
 
 ## R13：原观察、错误恢复与续期分项判定
 
@@ -62,6 +58,6 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 
 ## GitHub 跟踪与交付
 
-既有四个跟踪项保留在[原 MUST 交付验收里程碑](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/milestone/1)：[R01 配置集成](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/1)、[R06 媒体范围](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/2)、[R07 组合交付](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/3)、[R13 可靠性](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/4)。按本次原判据复核更新每项的核心结论与扩展缺口，不因 issue 标题或历史状态自行增加门槛，也不隐藏失败。
+既有四个跟踪项保留在[原 MUST 交付验收里程碑](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/milestone/1)：[R01 配置集成](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/1)、[R06 媒体范围](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/2)、[R07 组合图片与多文件](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/3)、[R13 可靠性](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/4)。按本次原判据复核更新每项的核心结论与扩展缺口，不因 issue 标题或历史状态自行增加门槛，也不隐藏失败。
 
 不按格式、方向或历史阶段拆出重复 issue。主维护者负责最终范围、发布及现场核对；原身份、聊天、截图、日志、数据库、下载和凭据不进 GitHub。更新本项目的授权不等于向上游发 issue/PR。全部约定 MUST 和[最终自检](../plans/completion/10-自检清单.md)满足后才签最终交付。
