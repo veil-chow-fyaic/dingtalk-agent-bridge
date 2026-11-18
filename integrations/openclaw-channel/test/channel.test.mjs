@@ -46,6 +46,7 @@ function setup({messages = {}, dispatch, confirmed = true, stopAfter = Object.va
         if(acks.length===stopAfter) controller.abort();
         return {};
       }
+      if(op==="plan") return {};
       if(op!=="send") throw new Error("unexpected sidecar op");
       sends.push([route.conversationId,fields]);
       return confirmed?{state:"confirmed",message_id:"physical-"+sends.length}:{state:"outcome_unknown"};

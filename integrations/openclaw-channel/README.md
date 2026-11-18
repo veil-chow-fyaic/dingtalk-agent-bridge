@@ -56,4 +56,13 @@ For a group, add a route with `conversationType: "group"` and its permitted send
 - Use `/agent cancel` to signal cancellation of the current turn started by the same sender. A canceled turn cannot start a later send. A send or tool action that already began can still take effect.
 - A restart retains consumed-message and send keys. Interrupted or ambiguous dispatches remain visible to the operator through the sidecar ledger. The plugin does not automatically execute an uncertain turn again. Proactive sends require an active configured target and a durable ID supplied by OpenClaw for that individual intent. In 2026.11.3 a queued batch with several independent payloads may lack such an ID and will be rejected. Individual messages can also be sent through the bridge CLI with an explicit key.
 
+## Send proactively from the host
+
+```sh
+openclaw message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "The report is ready" --json
+openclaw message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "Attached report" --media /absolute/path/to/report.pdf --json
+```
+
+The CLI delegates to the running Gateway. Its durable queue assigns each send an intent ID. A new command with the same text delivers a new message. On recovery the channel looks up the persisted parts of the original intent and reconciles their existing bridge keys. The host receives a successful receipt only after all physical message IDs are confirmed. An incomplete plan or ambiguous part stays unresolved. Calls that bypass the host queue or supply multiple independent payloads without an individual durable ID are refused before transport.
+
 Hosted SDK loading and local tests use synthetic identities. See the project's [adapter evidence and delivery status](../../docs/architecture/agent-integration-map.md) for live verification.

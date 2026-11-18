@@ -30,4 +30,6 @@
 
 - 用 OpenClaw 2026.11.3（`41f2b981`）实际安装、启用并加载插件。首轮宿主集成发现带附件的可见回复经 `block` 交付，遗漏该回调时两条任务只生成本地文件。修复后支持宿主的完成内容及媒体回调，工具、推理和诊断事件不转成聊天正文。
 - 用真实 OpenClaw Gateway、bridge HTTP、独立 Python 侧车和 SQLite，配合本机合成模型服务及 DWS 替身跑了群聊、私聊各两轮。各自读取所引原件、用真实 read/write 工具生成并回传独立文件、在第二轮延续自己的上下文，共六次模拟发送。待四个任务完成入账后重启，无重复执行或重复投递，取消运行中的额外任务后无迟到发送。[可复现的宿主测试](../scripts/probe_openclaw_native_channel.py)
+- 从真实 `openclaw message send` 入口连续发两条相同正文，两次各自得到一个确认 ID。再向指定群发送说明及附件，核对原文件名和字节。三次命令共四个不同的物理投递键。宿主回执与原键在两个 bridge 路由的确认账本一致。无稳定意图 ID 的主动请求可以改走带显式业务键的 bridge CLI。[主动收发用法](../integrations/openclaw-channel/README.md)
+- 整合候选的本机回归通过 563 项 Python 测试及 12 项 Node 测试。解析器、Gateway、侧车和真正钉钉端的验证范围逐项记录。[结构化结果](../evidence/2026-11-18/host-presentation-and-channel.json)
 - 新接法仍缺真实模型结合钉钉客户端的现场验收。Hermes 和 DeepSeek Harness 继续按已选 ACP 路线推进。原 R06 语音出站按用户意见暂缓。[后续选择](152-community-agent-adapters.md)

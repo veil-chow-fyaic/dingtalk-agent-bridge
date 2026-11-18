@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import sqlite3
 from pathlib import Path
 import sys
 import tempfile
@@ -91,6 +92,12 @@ class HostChannel:
                     message_id TEXT PRIMARY KEY, status TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_sends (
                     key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_plans (
+                    intent TEXT PRIMARY KEY, part_count INTEGER NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_plan_keys (
+                    intent TEXT NOT NULL, part_index INTEGER NOT NULL, position INTEGER NOT NULL,
+                    key TEXT PRIMARY KEY, kind TEXT NOT NULL, fingerprint TEXT NOT NULL,
+                    UNIQUE(intent, part_index, position));
             ''')
             with self.db:
                 self.db.execute('INSERT OR IGNORE INTO meta VALUES ("cursor", ?)',
@@ -239,8 +246,74 @@ class HostChannel:
             raise ChannelError('invalid_transport_receipt')
         return {name: result.get(name) for name in ('key', 'state', 'task_id', 'message_id')}
 
+    def plan(self, intent, part, count, keys):
+        if (type(part) is not int or type(count) is not int or not 0 <= part < count <= 2**53 - 1
+                or not isinstance(keys, list) or not keys):
+            raise ChannelError('invalid_delivery_plan')
+        entries = []
+        for entry in keys:
+            if not isinstance(entry, dict):
+                raise ChannelError('invalid_delivery_plan')
+            key, kind, fingerprint = (entry.get(field) for field in ('key', 'kind', 'fingerprint'))
+            if (not isinstance(key, str) or not 1 <= len(key) <= 128 or kind not in ('text', 'media')
+                    or not isinstance(fingerprint, str) or not re.fullmatch('[0-9a-f]{64}', fingerprint)):
+                raise ChannelError('invalid_delivery_plan')
+            entries.append((key, kind, fingerprint))
+        with self.db:
+            self.db.execute('INSERT OR IGNORE INTO host_plans VALUES (?, ?)', (intent, count))
+            stored_count = self.db.execute('SELECT part_count FROM host_plans WHERE intent=?', (intent,)).fetchone()[0]
+            if count != stored_count:
+                raise ChannelError('delivery_plan_conflict')
+            registered = self.db.execute("""
+                SELECT key,kind,fingerprint FROM host_plan_keys
+                WHERE intent=? AND part_index=? ORDER BY position""", (intent, part)).fetchall()
+            if registered:
+                if entries != [tuple(row) for row in registered]:
+                    raise ChannelError('delivery_plan_conflict')
+            else:
+                # A legacy send has no evidence linking it to this host queue/part.
+                # A physical key can belong to only one intent, position, and payload.
+                try:
+                    for position, (key, kind, fingerprint) in enumerate(entries):
+                        if self.db.execute('SELECT 1 FROM host_sends WHERE key=?', (key,)).fetchone():
+                            raise ChannelError('delivery_plan_conflict')
+                        self.db.execute('INSERT INTO host_plan_keys VALUES (?,?,?,?,?,?)',
+                                        (intent, part, position, key, kind, fingerprint))
+                except sqlite3.IntegrityError:
+                    raise ChannelError('delivery_plan_conflict') from None
+        return {'registered': True}
+
+    def lookup_plan(self, intent):
+        count = self.db.execute('SELECT part_count FROM host_plans WHERE intent=?', (intent,)).fetchone()
+        parts = {}
+        for row in self.db.execute("""
+            SELECT part_index,key,kind,fingerprint FROM host_plan_keys
+            WHERE intent=? ORDER BY part_index,position""", (intent,)):
+            parts.setdefault(row['part_index'], []).append(
+                {field: row[field] for field in ('key', 'kind', 'fingerprint')})
+        return {'partCount': count[0] if count else None, 'parts': [
+            {'partIndex': index, 'keys': keys} for index, keys in parts.items()]}
+
+    def verify_planned_send(self, key, intent, content):
+        row = self.db.execute('SELECT kind, fingerprint FROM host_plan_keys WHERE key=?', (key,)).fetchone()
+        if row is None:
+            return
+        if content is None:
+            kind, fields = 'text', ['text', intent['text']]
+            if 'reply_to' in intent:
+                raise ChannelError('delivery_plan_conflict')
+        else:
+            kind, fields = 'media', [intent['kind'], intent['filename'], intent['expected_sha256']]
+        # The host hashes UTF-8 JSON.stringify of this ordered string tuple.
+        compact = json.dumps(fields, ensure_ascii=False, separators=(',', ':')).encode()
+        if (kind, hashlib.sha256(compact).hexdigest()) != tuple(row):
+            raise ChannelError('delivery_plan_conflict')
+
     def status(self, key, reconcile=False):
         if not self.db.execute('SELECT 1 FROM host_sends WHERE key=?', (key,)).fetchone():
+            if self.db.execute('SELECT 1 FROM host_plan_keys WHERE key=?', (key,)).fetchone():
+                # The host knows this required component; it has no physical receipt yet.
+                return {'key': key, 'state': 'outcome_unknown', 'message_id': None, 'task_id': None}
             raise ChannelError('unknown_host_key')
         try:
             result = self.api('/v1/deliveries/' + quote(key, safe=''))
@@ -258,6 +331,7 @@ class HostChannel:
 
     def send(self, key, request):
         intent, content = self.submission(request)
+        self.verify_planned_send(key, intent, content)
         fingerprint = hashlib.sha256(json.dumps(intent, sort_keys=True).encode()).hexdigest()
         old = self.db.execute('SELECT fingerprint FROM host_sends WHERE key=?', (key,)).fetchone()
         if old is not None:
@@ -277,6 +351,13 @@ class HostChannel:
             if field in request and request[field] != self.route[target]:
                 raise ChannelError('request_route_mismatch')
         op = request.get('op')
+        if op in ('plan', 'lookupPlan'):
+            intent = request.get('intent')
+            if not isinstance(intent, str) or not 1 <= len(intent) <= 128:
+                raise ChannelError('invalid_delivery_intent')
+            if op == 'lookupPlan':
+                return self.lookup_plan(intent)
+            return self.plan(intent, request.get('partIndex'), request.get('partCount'), request.get('keys'))
         if op == 'poll':
             return self.poll()
         if op == 'pollCancel':

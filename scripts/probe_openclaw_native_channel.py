@@ -474,6 +474,69 @@ with ExitStack() as stack:
         any(m.get("file") == k + ".txt" and m["route"] == r for m in sent())
         for r, k in [("fixture-group", "G1"), ("fixture-dm", "D1")]
     )
+
+    def active_cli(target, text, file=None):
+        command = [
+            node,
+            str(host / "openclaw.mjs"),
+            "message",
+            "send",
+            "--channel",
+            "dingtalk-bridge",
+            "--target",
+            target,
+            "--message",
+            text,
+            "--json",
+        ]
+        if file is not None:
+            command.extend(["--media", str(file)])
+        result = subprocess.run(
+            command,
+            cwd=root / "workspace",
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=90,
+            check=True,
+        )
+        row = json.loads(result.stdout)
+        assert row["handledBy"] == "core" and row["payload"]["via"] == "gateway"
+        assert row["messageId"]
+        return row["messageId"]
+
+    one = active_cli("fixture-dm", "active CLI text")
+    two = active_cli("fixture-dm", "active CLI text")
+    assert one != two
+    original = root / "workspace" / "outgoing.txt"
+    original.write_text("hello original\n")
+    caption_id = active_cli("fixture-group", "caption", original)
+    active_sends = sent()[first:]
+    assert len(active_sends) == 4
+    assert [r.get("text") for r in active_sends[:3]] == [
+        "active CLI text",
+        "active CLI text",
+        "caption",
+    ]
+    assert [r["route"] for r in active_sends] == [
+        "fixture-dm",
+        "fixture-dm",
+        "fixture-group",
+        "fixture-group",
+    ]
+    assert len({r["key"] for r in active_sends}) == len(active_sends)
+    assert (
+        active_sends[-1]["file"] == original.name
+        and active_sends[-1]["content"] == original.read_text()
+    )
+    physical_ids = {}
+    for database in (service / "local/runtime/routes").glob("*/bridge.sqlite3"):
+        with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+            physical_ids.update(
+                db.execute("SELECT key, message_id FROM deliveries WHERE state='confirmed'")
+            )
+    active_ids = [physical_ids[row["key"]] for row in active_sends]
+    assert active_ids[:3] == [one, two, caption_id] and len(set(active_ids)) == 4
     print(
         json.dumps(
             {
@@ -482,7 +545,10 @@ with ExitStack() as stack:
                 "tools": ["read", "write"],
                 "firstTurnArtifacts": 2,
                 "secondTurns": 2,
-                "totalPhysicalSends": first,
+                "reactivePhysicalSends": first,
+                "proactiveCliInvocations": 3,
+                "proactivePhysicalSends": len(active_sends),
+                "totalPhysicalSends": len(sent()),
                 "restartDuplicates": 0,
                 "cancelLatePhysicalSends": 0,
                 "provider": "synthetic loopback",

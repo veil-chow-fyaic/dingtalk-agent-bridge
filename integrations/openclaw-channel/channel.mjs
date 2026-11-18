@@ -111,13 +111,12 @@ function* textChunks(text) {
   }
 }
 
-async function deliver({sdk, client, text, urls, seed, signal, mediaAccess, forceDocument = false}) {
-  let result;
+async function* deliveryComponents({sdk, text, urls, seed, signal, mediaAccess, forceDocument = false}) {
   if (typeof text === "string" && text.length) {
     if (!text.isWellFormed()) throw new Error("DingTalk text must be valid Unicode");
     for (const chunk of textChunks(text)) {
       const partKey = chunk.start === 0 ? key(...seed,"text") : key(...seed,"text",chunk.start);
-      result = await confirmed(client, {key:partKey, text:chunk.text}, signal);
+      yield {key:partKey, text:chunk.text};
     }
   }
   for (const [i,url] of urls.entries()) {
@@ -129,9 +128,16 @@ async function deliver({sdk, client, text, urls, seed, signal, mediaAccess, forc
     signal?.throwIfAborted();
     const filename = basename(loaded.fileName || path);
     const image = !forceDocument && ["image/jpeg","image/png"].includes(loaded.contentType);
-    result = await confirmed(client, {key:key(...seed,"media",i), media:{
+    yield {key:key(...seed,"media",i), media:{
       filename, kind:image ? "image" : "file", base64:loaded.buffer.toString("base64"), sha256:digest(loaded.buffer),
-    }}, signal);
+    }};
+  }
+}
+
+async function deliver(params) {
+  let result;
+  for await (const component of deliveryComponents(params)) {
+    result = await confirmed(params.client, component, params.signal);
   }
   if (!result) throw new Error("DingTalk delivery has no text or supported media");
   return result;
@@ -250,6 +256,11 @@ async function runRoute({sdk,runtime,cfg,account,route,client,signal,log}) {
   }
 }
 
+function makeReceipt(parts) {
+  const platformMessageIds = parts.map(part => part.platformMessageId);
+  return {primaryPlatformMessageId:platformMessageIds[0], platformMessageIds, parts, sentAt:Date.now()};
+}
+
 export function createChannel(sdk, createClient = openSidecar) {
   const live = new Map();
   const liveKey = (accountId,conversationId) => JSON.stringify([accountId,conversationId]);
@@ -257,17 +268,68 @@ export function createChannel(sdk, createClient = openSidecar) {
     const account = resolveAccount(params.cfg,params.accountId);
     const client = live.get(liveKey(account.accountId,params.to));
     if (!account.enabled || !client) throw new Error("DingTalk target is not an active, configured route");
-    // A host retry must name the same intent. A content hash would collapse two intentional equal sends.
-    const intent = params.deliveryQueueId || params.preparedMessageId;
-    if (!intent) throw new Error("DingTalk proactive delivery requires a durable host delivery ID");
+    if (!params.deliveryQueueId) throw new Error("DingTalk proactive delivery requires a durable host delivery ID");
+    const partIndex = params.deliveryPartIndex ?? 0;
+    const partCount = params.deliveryPartCount ?? 1;
+    const intent = key("queue",account.bridgeAccountId,params.to,params.deliveryQueueId);
     const roots = params.mediaAccess?.localRoots ?? params.mediaLocalRoots;
     const mediaAccess = Array.isArray(roots) && roots.length
       ? {mediaAccess:params.mediaAccess,mediaLocalRoots:params.mediaLocalRoots,mediaReadFile:params.mediaReadFile}
       : {mediaLocalRoots:sdk.replyMediaRoots()};
-    return deliver({sdk,client,text:params.text,urls:params.mediaUrl ? [params.mediaUrl] : [],signal:params.signal,
-      seed:["outbound",account.bridgeAccountId,params.to,intent,params.deliveryPartIndex ?? 0],
-      mediaAccess,
-      forceDocument:params.forceDocument});
+
+    // Preflight this host part (at most one file) before admitting any physical send.
+    const components = [];
+    for await (const component of deliveryComponents({sdk,text:params.text,urls:params.mediaUrl ? [params.mediaUrl] : [],
+      seed:["outbound",account.bridgeAccountId,params.to,params.deliveryQueueId,partIndex],
+      signal:params.signal,mediaAccess,forceDocument:params.forceDocument})) {
+      components.push(component);
+    }
+    if (!components.length) throw new Error("Empty DingTalk delivery part");
+    const keys = components.map(component => {
+      const media = component.media;
+      const proof = media ? [media.kind,media.filename,media.sha256] : ["text",component.text];
+      return {key:component.key,kind:media ? "media" : "text",fingerprint:digest(JSON.stringify(proof))};
+    });
+    params.signal?.throwIfAborted();
+    await client.request("plan",{intent,partIndex,partCount,keys});
+    const parts = [];
+    for (const [i,component] of components.entries()) {
+      await params.onPlatformSendDispatch?.();
+      params.assertDirectAdapterHandoff?.();
+      const {messageId} = await confirmed(client,component,params.signal);
+      parts.push({platformMessageId:messageId,kind:keys[i].kind,index:i});
+    }
+    const receipt = makeReceipt(parts);
+    return {channel:ID,messageId:receipt.primaryPlatformMessageId,receipt};
+  };
+
+  const reconcile = async (ctx) => {
+    const account = resolveAccount(ctx.cfg,ctx.accountId);
+    const client = live.get(liveKey(account.accountId,ctx.to));
+    if (!account.enabled || !client || !ctx.queueId || ctx.payloads.length !== 1) {
+      return {status:"unresolved",retryable:true};
+    }
+    try {
+      const intent = key("queue",account.bridgeAccountId,ctx.to,ctx.queueId);
+      const plan = await client.request("lookupPlan",{intent});
+      if (!Array.isArray(plan.parts) || plan.parts.length !== plan.partCount || !plan.partCount) {
+        return {status:"unresolved",retryable:true};
+      }
+      const entries = plan.parts.toSorted((a,b)=>a.partIndex-b.partIndex);
+      const parts = [];
+      for (const [index,entry] of entries.entries()) {
+        if (entry.partIndex !== index || !entry.keys?.length) return {status:"unresolved",retryable:true};
+        for (const component of entry.keys) {
+          const row = await client.request("reconcile",{key:component.key});
+          if (row.key !== component.key || row.state !== "confirmed" || !row.message_id) {
+            return {status:"unresolved",retryable:true};
+          }
+          parts.push({platformMessageId:String(row.message_id),kind:component.kind,index:parts.length});
+        }
+      }
+      const receipt = makeReceipt(parts);
+      return {status:"sent",messageId:receipt.primaryPlatformMessageId,receipt};
+    } catch { return {status:"unresolved",retryable:true}; }
   };
   return {
     id:ID, meta:{id:ID,label:"DingTalk Bridge",selectionLabel:"DingTalk (ordinary account)",
@@ -276,7 +338,25 @@ export function createChannel(sdk, createClient = openSidecar) {
     config:{listAccountIds:cfg=>Object.keys(section(cfg).accounts ?? {}),resolveAccount,
       isEnabled:a=>a.enabled,isConfigured:a=>a.configured},
     reload:{configPrefixes:["channels."+ID]},
-    outbound:{deliveryMode:"direct",sendText:outbound,sendMedia:outbound},
+    // CLI and host tools route through the live Gateway owner of the sidecar.
+    // Stable conversation IDs are user-configured. The route allowlist is still checked at send.
+    messaging:{targetResolver:{looksLikeId: value => typeof value === "string" && /^\S+$/.test(value),
+      hint:"configured DingTalk conversation ID"}},
+    outbound:{deliveryMode:"gateway",sendText:outbound,sendMedia:outbound,
+      resolveTarget:({cfg,to,accountId}) => {
+        const account = cfg && resolveAccount(cfg,accountId);
+        return account?.enabled && account.routes.some(route=>route.conversationId===to)
+          ? {ok:true,to} : {ok:false,error:new Error("DingTalk target is not a configured conversation ID")};
+      }},
+    message:{
+      send:{text:outbound,media:outbound},
+      durableFinal:{
+        capabilities:{text:true,media:true,reconcileUnknownSend:true},
+        automaticUnknownSendReconciliation:true,
+        reconcileUnknownSendKinds:{text:true,media:true},
+        reconcileUnknownSend:reconcile,
+      },
+    },
     gateway:{startAccount:async({cfg,account,abortSignal,channelRuntime:runtime,log})=>{
       if (!runtime || !account.enabled) throw new Error("DingTalk bridge channel runtime unavailable");
       const controller = new AbortController();
