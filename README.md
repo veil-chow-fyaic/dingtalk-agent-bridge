@@ -59,7 +59,7 @@ python3 -m venv .venv
 |---|---|
 | 第一次运行 | [上手指南](docs/getting-started.md) · [身份与开通经验](docs/11-onboarding-lessons.md) |
 | 集成自己的程序 | [CLI / HTTP / consumer](docs/22-generic-tool-and-consumer.md) · [OpenAPI](api/openapi.json) · [路由模板](config.routes.example.json) |
-| 接入执行器 | [运行器支持表](docs/architecture/agent-integration-map.md) · [执行器模板](config.agent.example.json) |
+| 接入执行器 | [运行器支持表](docs/architecture/agent-integration-map.md) · [OpenClaw、Hermes 与 DeepSeek Harness 接入调研](docs/152-community-agent-adapters.md) · [执行器模板](config.agent.example.json) |
 | 运维与排错 | [运行手册](docs/15-service-runbook.md) · [风险与恢复条件](docs/114-dws-risks-and-resolution.md) |
 | 参与开发 | [贡献指南](CONTRIBUTING.md) · [变更记录](CHANGELOG.md) · [安全说明](SECURITY.md) |
 | 核对范围与证据 | [当前总览](docs/102-user-requirements-and-roadmap.md) · [验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md) · [全部文档](docs/README.md) |
