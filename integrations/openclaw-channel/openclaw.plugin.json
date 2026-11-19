@@ -49,6 +49,11 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "consumerInstance": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,31}$",
+                  "maxLength": 32
+                },
                 "bridgeAccountId": {
                   "type": "string",
                   "minLength": 1

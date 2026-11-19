@@ -1,3 +1,4 @@
+import { routing } from "./routing-fixture.mjs";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createHash } from "node:crypto";
@@ -33,7 +34,7 @@ test("the host reconciles an entire durable intent using only its original bridg
     loadMedia:async()=>({buffer:Buffer.from("original"),fileName:"report.txt",contentType:"text/plain"})},()=>client);
   const account=plugin.config.resolveAccount(cfg,"a");
   const controller=new AbortController();
-  const running=plugin.gateway.startAccount({cfg,account,abortSignal:controller.signal,channelRuntime:{}});
+  const running=plugin.gateway.startAccount({cfg,account,abortSignal:controller.signal,channelRuntime:{routing}});
   const base={cfg,accountId:"a",to:"D",deliveryQueueId:"first",deliveryPartCount:2};
   const ctx={...base,queueId:base.deliveryQueueId,payloads:[{}]};
   const {reconcileUnknownSend:reconcile} = plugin.message.durableFinal;

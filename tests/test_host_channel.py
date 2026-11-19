@@ -176,6 +176,42 @@ class HostChannelTests(unittest.TestCase):
         finally:
             legacy.close()
 
+    def test_named_instance_starts_at_reviewed_cut_and_preserves_other_inboxes(self):
+        self.api.events = [event(1), event(2), event(3)]
+        self.assertEqual(self.channel.poll()['message']['id'], 'm1')
+        self.channel.ack('m1', 'unknown')
+        with self.assertRaisesRegex(ValueError, 'consumer_already_owned'):
+            HostChannel(self.root, self.route, None, 3, self.api, consumer_instance='pilot')
+        self.channel.close()
+        _, key = execution_scope(self.route)
+        retired = self.root / 'local/consumers' / ('openclaw-' + key)
+        frozen = {p.name: p.read_bytes() for p in retired.iterdir() if p.name != 'process.lock'}
+        self.api.events.extend([event(4), event(5)])
+        pilot = HostChannel(self.root, self.route, None, 3, self.api, consumer_instance='pilot')
+        try:
+            self.assertEqual(pilot.poll()['message']['id'], 'm4')
+            pilot.ack('m4', 'done')
+            for candidate in (None, 'second'):
+                with self.assertRaisesRegex(ValueError, 'consumer_already_owned'):
+                    HostChannel(self.root, self.route, None, 0, self.api, consumer_instance=candidate)
+            with self.assertRaisesRegex(ValueError, 'consumer_already_owned'):
+                Gateway(self.root, CFG, None, SETTINGS, self.api)
+        finally:
+            pilot.close()
+        resumed = HostChannel(self.root, self.route, None, 0, self.api, consumer_instance='pilot')
+        try:
+            self.assertEqual(resumed.poll()['message']['id'], 'm5')
+            resumed.ack('m5','done')
+            self.assertIsNone(resumed.poll()['message'])
+        finally:
+            resumed.close()
+        self.assertEqual(frozen,{p.name:p.read_bytes() for p in retired.iterdir() if p.name!='process.lock'})
+
+    def test_invalid_named_instance_rejected_before_locks_or_directory_creation(self):
+        for invalid in ('', '../pilot', 'p/x', '-p', 'p_' , 'p\n', 'P', 'a' * 33, 42):
+            with self.subTest(invalid=invalid), self.assertRaisesRegex(ChannelError, 'invalid_consumer_instance'):
+                HostChannel(self.root, self.route, None, 0, self.api, consumer_instance=invalid)
+
     def test_output_is_literal_and_retries_query_original_key(self):
         key = 'answer/1'
         text = '  [Agent] explicitly chosen\nline\n'

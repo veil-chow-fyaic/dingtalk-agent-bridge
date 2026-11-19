@@ -21,7 +21,12 @@ import uuid
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("openclaw_source", type=Path, help="Built, fixed OpenClaw checkout")
+parser.add_argument(
+    "--overlap-file-turns", action="store_true",
+    help="Submit both first-turn file jobs together to exercise same-directory concurrent host writes",
+)
 args = parser.parse_args()
+overlap_file_turns = args.overlap_file_turns
 product = Path(__file__).resolve().parents[1]
 plugin = product / "integrations/openclaw-channel"
 # On macOS the kernel resolves the on-disk casing, which is also used by the host loader.
@@ -39,11 +44,17 @@ host = Path(
         text=True,
     )
 )
-expected = json.loads((product / "docs/references/openclaw-local-host-contract.json").read_text())[
-    "commit"
-]
-if json.loads((host / "dist/build-info.json").read_text())["commit"] != expected:
-    raise SystemExit("Unexpected OpenClaw build commit")
+version = json.loads((host / "package.json").read_text())["version"]
+july_host = version == "2026.7.1-2"
+commits = {
+    "2026.7.1-2": "0790d9f593ad30c940ed93b5872a8cf6d6f3cf8c",
+    "2026.11.3": json.loads(
+        (product / "docs/references/openclaw-local-host-contract.json").read_text()
+    )["commit"],
+}
+build = json.loads((host / "dist/build-info.json").read_text())
+if version not in commits or build["commit"] != commits[version] or build["version"] != version:
+    raise SystemExit("Unexpected OpenClaw build version or commit")
 root = Path(tempfile.mkdtemp(prefix="dab-native-e2e-")).resolve()
 print(root, flush=True)
 for d in ("service/local", "workspace", "state", "home", "tmp", "cache", "channel"):
@@ -72,6 +83,7 @@ guard = guard.replace(
     "const root=path.dirname(fileURLToPath(import.meta.url));",
     "const root=" + json.dumps(str(root)) + ";\nconst source=" + json.dumps(str(host)) + ";",
 )
+guard = guard.replace("const user=os.homedir();", "const user=" + json.dumps(str(Path.home())) + ";")
 (root / "guard.mjs").write_text(guard)
 profile = "dab-host-" + uuid.uuid4().hex[:24]
 assert not (Path.home() / (".openclaw-" + profile)).exists()
@@ -150,6 +162,9 @@ class Provider(BaseHTTPRequestHandler):
         stop = "stop"
         try:
             assert key, "missing turn marker"
+            assert any(
+                "ORG-SHARED-HANDBOOK" in payload_text(m) for m in msgs if m["role"] == "system"
+            ), "organization workspace instructions missing"
             route = "fixture-group" if key.startswith("G") else "fixture-dm"
             if key == "CANCELPROBE":
                 (root / "cancel-entered").touch()
@@ -184,6 +199,8 @@ class Provider(BaseHTTPRequestHandler):
                     )
                     assert matches, "missing readable attachment in host turn context"
                     path = next(p for p in matches if "openclaw-staged-" in p)
+                    staged = (root / "workspace" / path).resolve(strict=True)
+                    assert staged.is_relative_to(root / "workspace" / "media" / "inbound"), staged
                     assert "read" in tools, tools
                     name, params = "read", {"path": path}
                 elif len(responses) == 1:
@@ -199,6 +216,9 @@ class Provider(BaseHTTPRequestHandler):
                         },
                     )
                 else:
+                    assert "Successfully wrote" in payload_text(responses[-1]) or (
+                        root / "workspace" / (key + ".txt")
+                    ).is_file(), payload_text(responses[-1])
                     assert (
                         root / "workspace" / (key + ".txt")
                     ).read_text() == "processed " + route + "\n"
@@ -324,6 +344,7 @@ with ExitStack() as stack:
             "controlUi": {"enabled": False},
         },
         "update": {"checkOnStart": False, "auto": {"enabled": False}},
+        "logging": {"file": str(root / "host.log")},
         "browser": {"enabled": False},
         "cron": {"enabled": False},
         "discovery": {"mdns": {"mode": "off"}},
@@ -340,7 +361,11 @@ with ExitStack() as stack:
                 "bridgePort": port,
                 "pollIntervalMs": 500,
                 "accounts": {
-                    "personal": {"bridgeAccountId": "fixture-account", "routes": account_routes}
+                    "personal": {
+                        "bridgeAccountId": "fixture-account",
+                        "consumerInstance": "org-pilot-01",
+                        "routes": account_routes,
+                    }
                 },
             }
         },
@@ -382,6 +407,39 @@ with ExitStack() as stack:
         },
         "tools": {"allow": ["read", "write"], "codeMode": False, "swarm": False},
     }
+    # Both host versions resolve an explicit, non-default organization agent.
+    (root / "workspace" / "AGENTS.md").write_text(
+        "Organization fixture handbook. Scope marker ORG-SHARED-HANDBOOK.\n"
+    )
+    (root / "default-workspace").mkdir()
+    cfg["agents"]["defaults"]["workspace"] = str(root / "default-workspace")
+    cfg["meta"]["lastTouchedVersion"] = version
+    cfg["bindings"] = [{
+        "type": "route",
+        "agentId": "org-team",
+        "match": {"channel": "dingtalk-bridge", "accountId": "personal"},
+        "session": {"dmScope": "per-account-channel-peer"},
+    }]
+    if july_host:
+        defaults = cfg["agents"]["defaults"]
+        for field in ("cwd", "modelPolicy", "skills", "systemAgent"):
+            defaults.pop(field)
+        defaults["models"] = {model: {}}
+        cfg["agents"]["list"] = [
+            {"id": "main", "default": True},
+            {"id": "org-team", "workspace": str(root / "workspace")},
+        ]
+        del cfg["agents"]["entries"]
+        del cfg["models"]["catalogRefresh"]
+        del cfg["models"]["providers"]["bridge-fixture"]["request"]
+        cfg["tools"] = {"allow": ["read", "write"]}
+    else:
+        cfg["agents"]["ownership"] = "explicit"
+        cfg["agents"]["entries"]["org-team"] = {"workspace": str(root / "workspace")}
+    tool_policy = {"allow": ["read", "write", "edit"], "fs": {"workspaceOnly": True}}
+    cfg["tools"].update(tool_policy)
+    organization = cfg["agents"]["list"][1] if july_host else cfg["agents"]["entries"]["org-team"]
+    organization["tools"] = tool_policy
     cfg_path = root / "state/openclaw.json"
     cfg_path.write_text(json.dumps(cfg))
     env = {
@@ -390,6 +448,7 @@ with ExitStack() as stack:
         "SHELL": "/bin/sh",
         "TMPDIR": str(root / "tmp"),
         "XDG_CACHE_HOME": str(root / "cache"),
+        "HOME": str(root / "home"),
         "OPENCLAW_HOME": str(root / "home"),
         "OPENCLAW_STATE_DIR": str(root / "state"),
         "OPENCLAW_CONFIG_PATH": str(cfg_path),
@@ -411,6 +470,11 @@ with ExitStack() as stack:
     args = [node, str(host / "openclaw.mjs"), "gateway", "run", "--port", str(gw_port)]
     gateway = start(stack, args, root / "workspace", env, "gateway")
     wait(lambda: (service / "local/runtime/http-token").is_file(), 15, [bridge])
+    def delivered_first(route, key):
+        rows = sent()
+        return (any(m.get("text") == "result " + key and m["route"] == route for m in rows)
+                and any(m.get("content") == f"processed {route}\n" and m["route"] == route for m in rows))
+
     for r, key in [("fixture-group", "G1"), ("fixture-dm", "D1")]:
         # Quoted fixture mimics a previously posted attachment; skip unsolicited execution of bare group files.
         ref = {"resourceIdType": "fileId", "resourceId": "asset-" + r}
@@ -430,18 +494,16 @@ with ExitStack() as stack:
             ),
         )
 
-    def delivered_first():
-        return all(
-            any(m.get("text") == "result " + k and m["route"] == r for m in sent())
-            and any(m.get("content") == "processed " + r + "\n" and m["route"] == r for m in sent())
-            for r, k in [("fixture-group", "G1"), ("fixture-dm", "D1")]
-        )
-
-    wait(delivered_first, 100, [bridge, gateway])
+        if not overlap_file_turns:
+            wait(lambda: delivered_first(r, key), 100, [bridge, gateway])
+    if overlap_file_turns:
+        wait(lambda: delivered_first("fixture-group", "G1") and delivered_first("fixture-dm", "D1"),
+             100, [bridge, gateway])
     for r, key in [("fixture-group", "G2"), ("fixture-dm", "D2")]:
         publish(r, message(r, "second", ("/agent " if key == "G2" else "") + "mark-" + key))
     wait(
-        lambda: all(any(m.get("text") == "second " + k for m in sent()) for k in ("G2", "D2")),
+        lambda: all(any(m.get("text") == "second " + k and m["route"] == route for m in sent())
+                    for route, k in (("fixture-group", "G2"), ("fixture-dm", "D2"))),
         70,
         [bridge, gateway],
     )
@@ -475,7 +537,48 @@ with ExitStack() as stack:
         for r, k in [("fixture-group", "G1"), ("fixture-dm", "D1")]
     )
 
-    def active_cli(target, text, file=None):
+    stores = list((service / "local/consumers").glob("openclaw-*-org-pilot-01/inbox.sqlite3"))
+    assert len(stores) == 2
+    # 2026.7 stores JSONL files. 2026.11 uses a per-agent SQLite transcript with optional zstd events.
+    org = root / "state/agents/org-team"
+    if july_host:
+        sessions = json.loads((org / "sessions/sessions.json").read_text())
+        transcript = {
+            key: (org / "sessions" / (entry["sessionId"] + ".jsonl")).read_text()
+            for key, entry in sessions.items() if ":dingtalk-bridge:" in key
+        }
+    else:
+        transcript = {}
+        path = org / "agent/openclaw-agent.sqlite"
+        with sqlite3.connect(path.as_uri() + "?mode=ro", uri=True) as db:
+            for key, session_id in db.execute("SELECT session_key, current_session_id FROM session_nodes"):
+                if ":dingtalk-bridge:" not in key:
+                    continue
+                messages = []
+                for raw, compressed in db.execute(
+                    "SELECT event_json, event_zstd FROM transcript_events "
+                    "WHERE session_id=? AND message_role='user' ORDER BY seq", (session_id,)
+                ):
+                    if raw is None:
+                        decoder = (
+                            "const bytes = require('node:fs').readFileSync(0);"
+                            "process.stdout.write(require('node:zlib').zstdDecompressSync(bytes));"
+                        )
+                        raw = subprocess.check_output(
+                            [node, "-e", decoder], input=compressed, cwd=root, env=env
+                        ).decode()
+                    messages.append(raw)
+                transcript[key] = "\n".join(messages)
+    assert len(transcript) == 2, "expected a separate group and direct conversation"
+    for kind, prefix, other in (("group", "G", "D"), ("direct", "D", "G")):
+        matches = [
+            events for key, events in transcript.items()
+            if key.startswith("agent:org-team:") and f":{kind}:" in key
+        ]
+        assert len(matches) == 1 and all("mark-" + prefix + n in matches[0] for n in ("1", "2")), kind
+        assert "mark-" + other + "1" not in matches[0], "cross-route transcript"
+
+    def active_cli(target, text, file=None, expected_error=None):
         command = [
             node,
             str(host / "openclaw.mjs"),
@@ -498,55 +601,85 @@ with ExitStack() as stack:
             text=True,
             capture_output=True,
             timeout=90,
-            check=True,
+            check=False,
         )
+        if expected_error:
+            assert result.returncode != 0, result.stdout
+            assert expected_error in result.stderr + result.stdout, result.stderr
+            return None
+        result.check_returncode()
         row = json.loads(result.stdout)
         assert row["handledBy"] == "core" and row["payload"]["via"] == "gateway"
         assert row["messageId"]
         return row["messageId"]
 
-    one = active_cli("fixture-dm", "active CLI text")
-    two = active_cli("fixture-dm", "active CLI text")
-    assert one != two
-    original = root / "workspace" / "outgoing.txt"
-    original.write_text("hello original\n")
-    caption_id = active_cli("fixture-group", "caption", original)
-    active_sends = sent()[first:]
-    assert len(active_sends) == 4
-    assert [r.get("text") for r in active_sends[:3]] == [
-        "active CLI text",
-        "active CLI text",
-        "caption",
-    ]
-    assert [r["route"] for r in active_sends] == [
-        "fixture-dm",
-        "fixture-dm",
-        "fixture-group",
-        "fixture-group",
-    ]
-    assert len({r["key"] for r in active_sends}) == len(active_sends)
-    assert (
-        active_sends[-1]["file"] == original.name
-        and active_sends[-1]["content"] == original.read_text()
-    )
-    physical_ids = {}
-    for database in (service / "local/runtime/routes").glob("*/bridge.sqlite3"):
-        with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
-            physical_ids.update(
-                db.execute("SELECT key, message_id FROM deliveries WHERE state='confirmed'")
-            )
-    active_ids = [physical_ids[row["key"]] for row in active_sends]
-    assert active_ids[:3] == [one, two, caption_id] and len(set(active_ids)) == 4
+    if july_host:
+        existing = sent()
+        active_cli("fixture-dm", "active CLI text", expected_error="requires a durable host delivery ID")
+        original = root / "workspace" / "refused.txt"
+        original.write_text("synthetic file\n")
+        active_cli("fixture-group", "active CLI caption", original, expected_error="requires a durable host delivery ID")
+        assert sent() == existing, "old host invoked transport without a durable delivery ID"
+        active_sends = []
+    else:
+        one = active_cli("fixture-dm", "active CLI text")
+        two = active_cli("fixture-dm", "active CLI text")
+        assert one != two
+        # A standalone CLI send has no current org-team turn. Its local-file grant
+        # must not expand to that non-default agent's private workspace.
+        before_denied = sent()
+        private = root / "workspace" / "agent-only.txt"
+        private.write_text("fixture agent-only material\n")
+        active_cli("fixture-group", "must not send", private, expected_error="not under an allowed directory")
+        assert sent() == before_denied
+        # This distinct CLI-owned fixture originates directly in the SDK media store.
+        original = root / "state" / "media" / "outgoing.txt"
+        original.write_text("hello original\n")
+        caption_id = active_cli("fixture-group", "caption", original)
+        active_sends = sent()[first:]
+        assert len(active_sends) == 4
+        assert [r.get("text") for r in active_sends[:3]] == [
+            "active CLI text",
+            "active CLI text",
+            "caption",
+        ]
+        assert [r["route"] for r in active_sends] == [
+            "fixture-dm",
+            "fixture-dm",
+            "fixture-group",
+            "fixture-group",
+        ]
+        assert len({r["key"] for r in active_sends}) == len(active_sends)
+        assert (
+            active_sends[-1]["file"] == original.name
+            and active_sends[-1]["content"] == original.read_text()
+        )
+        physical_ids = {}
+        for database in (service / "local/runtime/routes").glob("*/bridge.sqlite3"):
+            with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+                physical_ids.update(
+                    db.execute("SELECT key, message_id FROM deliveries WHERE state='confirmed'")
+                )
+        active_ids = [physical_ids[row["key"]] for row in active_sends]
+        assert active_ids[:3] == [one, two, caption_id] and len(set(active_ids)) == 4
     print(
         json.dumps(
             {
-                "hostVersion": json.loads((host / "package.json").read_text())["version"],
+                "hostVersion": version,
+                "hostCommit": build["commit"],
                 "routes": 2,
                 "tools": ["read", "write"],
                 "firstTurnArtifacts": 2,
                 "secondTurns": 2,
                 "reactivePhysicalSends": first,
-                "proactiveCliInvocations": 3,
+                "proactiveCliInvocations": 2 if july_host else 4,
+                "proactiveRejectedOutOfScope": 0 if july_host else 1,
+                "proactiveRejectedNoDurableId": 2 if july_host else 0,
+                "organizationWorkspaceVerified": True,
+                "workspaceOnlyGlobalAndAgent": True,
+                "initialFileJobsSubmittedTogether": overlap_file_turns,
+                "inboundOriginalsStagedInWorkspace": 2,
+                "separateSessionTranscripts": 2,
                 "proactivePhysicalSends": len(active_sends),
                 "totalPhysicalSends": len(sent()),
                 "restartDuplicates": 0,

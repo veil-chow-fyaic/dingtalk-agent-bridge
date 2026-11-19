@@ -13,11 +13,11 @@ Use a checkout containing this plugin and the matching Python sidecar. Install t
 ```sh
 python3 -m venv /absolute/path/to/bridge-venv
 /absolute/path/to/bridge-venv/bin/python -m pip install /absolute/path/to/dingtalk-agent-bridge
-openclaw plugins install /absolute/path/to/dingtalk-agent-bridge/integrations/openclaw-channel --accept-capabilities
-openclaw plugins enable dingtalk-bridge
+openclaw --profile PROFILE plugins install /absolute/path/to/dingtalk-agent-bridge/integrations/openclaw-channel --accept-capabilities
+openclaw --profile PROFILE plugins enable dingtalk-bridge
 ```
 
-For an unattended install on OpenClaw 2026.11.3, review the local source and its declared capabilities before using these acceptance flags. When the host uses a plugin allowlist, include `dingtalk-bridge` in it. The tested SDK and CLI version is 2026.11.3. This source checkout does not require an npm registry publication.
+For an unattended install on OpenClaw 2026.11.3, review the local source and its declared capabilities before using these acceptance flags. When the host uses a plugin allowlist, include `dingtalk-bridge` in it. The July 2026.7.1-2 CLI uses the same local-source install command without the November-only `--accept-capabilities` option. Follow the prompts provided by that version. Replace `PROFILE` with the intended host profile. This source checkout does not require an npm registry publication.
 
 ## Select the routes
 
@@ -54,6 +54,23 @@ Replace the example cursor `12345` with the actual reviewed sequence for that ro
 
 For a group, add a route with `conversationType: "group"` and its permitted senders. The sidecar uses the bridge service configuration, its existing HTTP credential, and literal loopback. `bridgePort` defaults to 18768. `pollIntervalMs` defaults to 2000. Old built-in gateway routes retain their existing execution owner.
 
+For a handover to a different durable host, set `accounts.<alias>.consumerInstance` to a stable name such as `org-pilot`. Each name has its own persisted inbox and initial handover cursor. The default name preserves the original consumer. All names for the same physical route share one execution lock. Changing the name requires a new cursor review.
+
+### Use an existing organization workspace
+
+Append a route binding to the host's existing bindings. Replace the example agent ID and account alias with the intended pair.
+
+```json
+{
+  "type": "route",
+  "agentId": "org-team",
+  "match": { "channel": "dingtalk-bridge", "accountId": "personal" },
+  "session": { "dmScope": "per-account-channel-peer" }
+}
+```
+
+The selected agent provides its instructions, model, tools and workspace. Group and direct chats have separate transcripts and reply addresses. Everyone admitted to that organization agent can potentially access its workspace files. Select authorized senders accordingly. Keep each DingTalk conversation in its own session. The adapter checks the resolved key before taking ownership. An account binding works without deriving a peer identifier. The real-SDK routing checks are available in `test-contracts/shared-host.test.mjs` when OpenClaw is installed as a peer.
+
 ## Use the channel
 
 - Private chat accepts an allowlisted sender’s text and original files directly. Group chat dispatches messages beginning with `/agent`. Plain group messages stay in the bridge inbox.
@@ -66,10 +83,12 @@ For a group, add a route with `conversationType: "group"` and its permitted send
 ## Send proactively from the host
 
 ```sh
-openclaw message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "The report is ready" --json
-openclaw message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "Attached report" --media /absolute/path/to/report.pdf --json
+openclaw --profile PROFILE message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "The report is ready" --json
+openclaw --profile PROFILE message send --channel dingtalk-bridge --account personal --target YOUR_CONVERSATION_ID --message "Attached report" --media /absolute/path/to/report.pdf --json
 ```
 
-The CLI delegates to the running Gateway. Its durable queue assigns each send an intent ID. A new command with the same text delivers a new message. On recovery the channel looks up the persisted parts of the original intent and reconciles their existing bridge keys. The host receives a successful receipt only after all physical message IDs are confirmed. An incomplete plan or ambiguous part stays unresolved. Calls that bypass the host queue or supply multiple independent payloads without an individual durable ID are refused before transport.
+These proactive CLI examples require a host that supplies a durable delivery ID. OpenClaw 2026.7.1-2 omits the ID for both text and media, so those commands stop before transport. Reactive replies to an incoming task work on that version. For a standalone proactive delivery, use the bridge CLI with an explicit stable key.
+
+On the tested November host, the CLI delegates to the running Gateway. Its durable queue assigns each send an intent ID. A new command with the same text delivers a new message. On recovery the channel looks up the persisted parts of the original intent and reconciles their existing bridge keys. The host receives a successful receipt only after all physical message IDs are confirmed. An incomplete plan or ambiguous part stays unresolved. Calls that bypass the host queue or supply multiple independent payloads without an individual durable ID are refused before transport.
 
 SDK/lifecycle tests retain their synthetic scope. E155 adds accepted real group/direct file samples; it does not resolve the old E154 unknown send. Never retry an unknown intent under a new key. See [E155](../../docs/155-openclaw-two-route-file-acceptance.md) and [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) for the precise acceptance and publication boundaries.

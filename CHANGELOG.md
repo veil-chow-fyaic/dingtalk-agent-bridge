@@ -1,5 +1,11 @@
 # 变更记录
 
+## OpenClaw channel 0.2.0
+
+- Reuse an existing organization agent while preserving one session and reply destination per DingTalk conversation.
+- Receive original files with OpenClaw 2026.7.1-2 and 2026.11.3. The July SDK supports reactive replies and declines proactive sends without a durable host intent.
+- Start a named consumer at its reviewed handover cursor while keeping the physical route under one execution lock.
+
 ## 2026-11-19 · 阶段收尾
 
 按普通账号 IM、程序消费和可选 OpenClaw 重整 README、入门及运行手册。已有其他消息渠道的宿主可从[组织工作区试点](docs/resident-openclaw-pilot.md)核对版本、绑定、文件交付与回退。

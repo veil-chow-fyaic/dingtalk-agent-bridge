@@ -70,11 +70,15 @@ def stage_original(root, filename, data, digest):
 
 
 class HostChannel:
-    def __init__(self, root, route, state_name, initial_cursor, api):
+    def __init__(self, root, route, state_name, initial_cursor, api, *, consumer_instance=None):
         if route.get('executionOwner') != 'openclaw' or not route.get('selfSenderId'):
             raise ChannelError('route_not_configured_for_host')
         if type(initial_cursor) is not int or initial_cursor < 0:
             raise ChannelError('invalid_initial_cursor')
+        if consumer_instance is not None and (
+                not isinstance(consumer_instance, str)
+                or not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,31}', consumer_instance)):
+            raise ChannelError('invalid_consumer_instance')
         self.root = Path(root).resolve()
         self.route = route
         self.api = api
@@ -86,7 +90,10 @@ class HostChannel:
         # Sharing only its lock preserves its existing inbox, tasks and session.
         with ExitStack() as stack:
             stack.enter_context(acquire_consumer_lock(self.root, 'agent-' + key))
-            self.inbox = Inbox(self.root, route, 'openclaw-' + key, state_name)
+            name = 'openclaw-' + key
+            if consumer_instance is not None:
+                name += '-' + consumer_instance
+            self.inbox = Inbox(self.root, route, name, state_name)
             stack.callback(self.inbox.close)
             self.db = self.inbox.db
             self.db.executescript('''
@@ -488,6 +495,7 @@ def main():
     parser.add_argument('--account-id', required=True)
     parser.add_argument('--conversation-id', required=True)
     parser.add_argument('--initial-cursor', required=True, type=int)
+    parser.add_argument('--consumer-instance')
     parser.add_argument('--config', default='local/service-config.json')
     parser.add_argument('--port', default=18768, type=int)
     args = parser.parse_args()
@@ -496,7 +504,7 @@ def main():
     for route, state_name in routes:
         if (route['accountId'], route['group']) == (args.account_id, args.conversation_id):
             channel = HostChannel(root, route, state_name, args.initial_cursor,
-                                  route_api(root, route, args.port))
+                                  route_api(root, route, args.port), consumer_instance=args.consumer_instance)
             try:
                 serve(channel, sys.stdin.buffer, sys.stdout)
             finally:

@@ -1,3 +1,4 @@
+import { routing } from "./routing-fixture.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createChannel, ID } from "../channel.mjs";
@@ -28,7 +29,7 @@ test("missing proactive media authority falls back to the host's outbound store,
   }));
   const account = plugin.config.resolveAccount(cfg,"a");
   const controller = new AbortController();
-  const running = plugin.gateway.startAccount({cfg,account,channelRuntime:{},abortSignal:controller.signal});
+  const running = plugin.gateway.startAccount({cfg,account,channelRuntime:{routing},abortSignal:controller.signal});
   try {
     await assert.rejects(plugin.outbound.sendMedia({cfg,accountId:"a",to:"D",deliveryQueueId:"intent",
       mediaUrl:workspace+"/private.txt",mediaReadFile:()=>assert.fail("unbounded reader must never run")}),/permitted media/);
