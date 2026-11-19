@@ -1,14 +1,8 @@
 # 用户需求、交付现状与后续路线
 
-E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 [E155证据](155-openclaw-two-route-file-acceptance.md)。
+**普通账号 IM 和可选的 OpenClaw 原生通道已交付。** 群聊和私聊各有真实模型读写原件、正文回到原会话、钉钉收件端按原名保存并逐字节核对的证据。正式模式由宿主提供回复正文。首次接入见[入门指南](getting-started.md)，现场服务版本见[部署记录](156-native-channel-deployment.md)。
 
-E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
-
-E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](156-native-channel-deployment.md)。
-
-**当前主线（E152）** 是让使用 OpenClaw、Hermes 和 DeepSeek Harness 的人能从普通钉钉群和私聊交付任务、取回原件。先采用宿主公开插件接口和 ACP，复用 bridge 的收发和对账。程序主动发原生语音条按用户意见暂缓。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
-
-更新于 2026-11-19。**核心 IM 可用，14 项 MUST 中 13 项通过，R06 部分通过。** E151 在 E150 部署的 `0e151fb` 上核实了群与私聊原生语音入站、两路转发的限制和四张组合图片的客户端下载。[现场结果与使用方法](151-native-voice-and-image-saving.md)
+E157 阶段收尾以 E155 双路接收端证据、E156 部署为准。当前产品为 `d444ccf`。原 14 项 MUST 中 13 项通过，R06 部分通过。下一阶段在已有 OpenClaw 中复用有组织资料的 agent，验证钉钉与其他渠道的会话隔离及实际工作流。[同宿主试点](resident-openclaw-pilot.md)
 
 ## 产品初衷
 

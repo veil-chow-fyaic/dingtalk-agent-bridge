@@ -6,12 +6,14 @@ An OpenClaw channel for existing DingTalk groups and private conversations. Your
 
 ## Install
 
+See the [existing-host pilot](../../docs/resident-openclaw-pilot.md) when the profile already serves another channel. Use the intended profile explicitly for installation and enablement. Review the current SDK, active bindings, and execution owner first.
+
 Use a checkout containing this plugin and the matching Python sidecar. Install the Python package in a dedicated environment, then configure and install the channel in the OpenClaw instance that should own the conversations.
 
 ```sh
 python3 -m venv /absolute/path/to/bridge-venv
 /absolute/path/to/bridge-venv/bin/python -m pip install /absolute/path/to/dingtalk-agent-bridge
-openclaw plugins install /absolute/path/to/dingtalk-agent-bridge/integrations/openclaw-channel --force --accept-capabilities
+openclaw plugins install /absolute/path/to/dingtalk-agent-bridge/integrations/openclaw-channel --accept-capabilities
 openclaw plugins enable dingtalk-bridge
 ```
 
@@ -38,7 +40,7 @@ In the OpenClaw configuration, the account alias (`personal` below) is local to 
               "conversationId": "YOUR_DIRECT_CONVERSATION_ID",
               "conversationType": "direct",
               "allowSenders": ["AUTHORIZED_DINGTALK_SENDER_ID"],
-              "initialCursor": 0
+              "initialCursor": 12345
             }
           ]
         }
@@ -47,6 +49,8 @@ In the OpenClaw configuration, the account alias (`personal` below) is local to 
   }
 }
 ```
+
+Replace the example cursor `12345` with the actual reviewed sequence for that route. A previously used consumer resumes its persisted cursor.
 
 For a group, add a route with `conversationType: "group"` and its permitted senders. The sidecar uses the bridge service configuration, its existing HTTP credential, and literal loopback. `bridgePort` defaults to 18768. `pollIntervalMs` defaults to 2000. Old built-in gateway routes retain their existing execution owner.
 

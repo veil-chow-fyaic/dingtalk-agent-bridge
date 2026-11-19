@@ -5,6 +5,16 @@
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
 
+## 已有 OpenClaw 的常驻钉钉试点
+
+E155 已验证原生通道在群聊、私聊经真实模型读取原件、写出结果、回复原会话，收件客户端保存的文件名和字节均通过。E156 部署了核心 `d444ccf` 的 26 个模块；这次部署恢复的是 transport、群 Kimi gateway 和私聊 Pi gateway，临时 OpenClaw 已退出。下列步骤用于把一个既有 OpenClaw 接进实际运行的钉钉路由。与微信共享宿主的常驻运行、真实多轮、取消及重启仍待取证。[双路文件验收](155-openclaw-two-route-file-acceptance.md) · [部署收据](156-native-channel-deployment.md)
+
+1. **选定路由。** 原维护现场只使用原授权测试群和私聊，优先一次接管其中一路。在本机核对 profile、钉钉稳定会话/发送者 ID、当前 owner、运行的进程、游标、活动任务、两层发送账本。保留原配置、会话绑定和可回退的版本。固定 DWS 为 v1.0.67。既有一笔群正文保持 `outcome_unknown`、无任务或消息 ID，所属旧输入已经执行，附件未提交。核对原键和隔离收据，意外出现的其它未决项须另审。[原未知记录](154-openclaw-real-files-and-client-receipts.md)
+2. **在宿主上限定钉钉的权限。** 核已安装版本与目标插件兼容性、启用的插件 ID、运行进程和自身配置健康状态。只增量配置 `dingtalk-bridge` 的账号和路由，精确列出 `allowSenders`。把已授权的钉钉账号显式绑定到已有组织 agent。同一 agent 共享工作区中的组织规则和资料，每个钉钉群、私聊及微信渠道分别保存会话并保持各自的回传目标。在启用前核实钉钉发送人可使用该工作区和工具；使用合成资料和会话标记验证路由，不打开组织原件。核绑定时使用钉钉测试数据。微信侧仅核进程/连接健康等无内容状态，不读取或收发微信消息，不复制账号配置和凭据。若变更需要整体重启已有宿主，先确认维护窗口和恢复路径。[插件配置](../integrations/openclaw-channel/README.md)
+3. **交执行权。** 在发布前维护流程中先停止共用这套 transport 的各 gateway、封住新 DWS 调用并排空、停止 transport、持锁备份。由 transport-only 追到事先固定的时间点，在同一路 SQLite 快照核实 watermark 覆盖且无待续 history_window，再封停审积压。冻结交接位置，逐条核对旧 owner 已处置的输入、待交给新 owner 的输入及未确认原键。首次建立宿主 inbox 时设置实测的序号 `initialCursor`；已有 inbox 总是用其持久游标，先核对其与交接位置的差额，禁止直接改值或按当前最大序号跳过业务。为目标路由配置 `executionOwner: "openclaw"`，由原 manager 按审定范围恢复 transport 和其余 owner，再启用对应的钉钉通道。共享进程锁应只允许该路一个执行 owner。[发布审查与原件备份](141-deployment-review-and-direct-ownership.md)
+4. **验常驻行为。** 用无敏感内容的新钉钉任务验证同一发送人的两轮续接和不同会话隔离，检查回复正文、回到的会话、稳定 key 和确认 ID。用可安全中止的新任务核授权发起人取消后不再交付迟到结果。按既定维护窗口验证断开和恢复后，已开始但结局未知的输入不会再执行，等待中的新任务仍能继续；记录可观测到的中断范围、唯一 owner 与微信通道无内容健康状态。E155 的文件回执可直接引用。现场产物和原文仅留本机，公开记录使用范围、时间、摘要和结果。
+5. **退出或回切。** 关闭目标钉钉路由的接单入口和侧车，核对持锁归属，按同一封停、固定截止点、备份与积压审查顺序盘点试点期间的全部输入/输出。已处理项、未完成项、被动消息逐项归属落证；未知按原键对账，已执行的输入保留防重。复核原 gateway 将从经审计的位置接续，恢复原执行绑定，确认 transport、目标 gateway 和其他宿主通道的归属与健康。任一游标差额无法解释时保持目标路由执行暂停，保留原库和旁文件，不用旧备份覆盖新消息。E156 的私有隔离收据仅对应当时那一笔旧业务。[E156 回切记录](156-native-channel-deployment.md)
+
 ## 安装与工作目录
 
 需要Python≥3.11及POSIX；运行包仅使用标准库，构建需要setuptools。macOS arm64已有实际验证，Linux未实机认证。DWS及可选图片上传补充分别配置，不捆绑账号数据或二进制。新使用者在自己的项目检出中执行：
@@ -23,11 +33,11 @@ python3 -m venv .venv
 
 ## 聊天正文与调试
 
-E153 分支的通用 CLI / HTTP 发送调用方提供的正文，内置 gateway 默认 `chatPresentation: "product"`，交付宿主正文和文件，只在失败或用户显式请求状态、取消、新会话时给必要反馈。需要历史接单回执、短任务号和前缀时，在指定 gateway 配置中设置 `chatPresentation: "diagnostic"`。已有投递沿原 payload 和 key 对账。原生 OpenClaw 通道采用宿主的回复策略。[消息呈现与 OpenClaw 通道](153-channel-presentation-and-openclaw.md)
+通用 CLI / HTTP 发送调用方提供的正文，内置 gateway 默认 `chatPresentation: "product"`，交付宿主正文和文件，只在失败或用户显式请求状态、取消、新会话时给必要反馈。需要历史接单回执、短任务号和前缀时，在指定 gateway 配置中设置 `chatPresentation: "diagnostic"`。已有投递沿原 payload 和 key 对账。原生 OpenClaw 通道采用宿主的回复策略。[消息呈现与 OpenClaw 通道](153-channel-presentation-and-openclaw.md)
 
 ## 当前本机部署与管理
 
-本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。
+本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。钉钉客户端保留普通账号发送者及平台的“通过AI发送”标识。默认产品回复给出宿主正文和文件；`[Agent]`是内置 gateway 诊断模式的文字前缀。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。
 
 统一管理器拥有传输及两个gateway；以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
 
@@ -36,7 +46,7 @@ python3 -m dingtalk_bridge.service_manager status
 python3 -m dingtalk_bridge.dws_access status
 ```
 
-E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。正常受管维护使用`dab-service --agent-config PATH start`等参数并保留原配置与账本；重载前确认无运行/排队任务和未决投递，仅代码受影响的gateway维护应保留transport。凭据故障触发持久暂停后不得自动解除或反复认证；`resume --confirm-retry`只解除本地防护，不修复钥匙串。两个旧一次核验key均已消费，绝不作为维护探针重复执行。
+E095已按用户新授权恢复普通业务，不再等待E074/E090旧许可。正常受管维护使用`dab-service --agent-config PATH start`等参数并保留原配置与账本；重载前审查活动或排队任务及每笔未决投递。E156 对 E154 唯一旧群未知保留了独立收据；普通发布审查对其他未决继续按原规则处理。只维护 gateway 代码时保留 transport。凭据故障触发持久暂停后不得自动解除或反复认证；`resume --confirm-retry`只解除本地防护，不修复钥匙串。两个旧一次核验key均已消费，绝不作为维护探针重复执行。
 
 启动时先传输、后显式选入的gateway，停止顺序相反。只需通用IM工具时可不选gateway；不会自动承接模型任务。管理器按实际进程归属发SIGTERM，不接管已有端口或强杀共享DWS bus。状态在`local/runtime/managed-processes.json`，日志为`managed-transport.log`和`managed-agent-N.log`。旧`service_ctl.py`/`agent_ctl.py`及历史PID文件不管理当前进程，不能混用。管理器参数及当时实验见[历史管理器验收](40-service-manager-and-restart-ui.md)，不能直接照抄历史恢复动作。
 
@@ -62,7 +72,7 @@ python3 -m dingtalk_bridge.cli conversations
 | GET /v1/discovery | account_id、cursor、limit；只发现会话，不激活路由 |
 | GET /v1/events | after、limit（1–200）、wait_seconds（0–30）；返回events/next_cursor |
 | POST /v1/sync | 可选deep=true；有界补读，complete=false不推进水位 |
-| POST /v1/send | idempotency_key＋text/file/image/composition四选一；纯文本可加reply_to；composition已部署，客户端验收未完整 |
+| POST /v1/send | idempotency_key＋text/file/image/composition四选一；纯文本可加reply_to；双 PNG 图文已在两路逐图保存并核对原件 |
 | GET /v1/deliveries/{key} | 已持久化状态；未找到404，不发送 |
 | POST /v1/reconcile | idempotency_key；可选本机rejection_evidence，见下文 |
 | POST /v1/attachments | message_id、可选repair=true；仅选定路由已观察消息 |
@@ -106,7 +116,7 @@ python3 scripts/verify_handoff.py
 
 本次按原manager归属停止gateway/transport，保留六库；通用部署计划器因WAL/SHM旁文件拒绝，原记录保留。随后在全部数据拥有者停止且持有manager、DWS和每路bridge/consumer锁时，以SQLite只读事务及backup单独审查；未删除旁文件、checkpoint源库或修改计划器判据。transport-only补到固定cut后再停传输，同一SQLite快照核watermark及无history_window、任务/session/原key和零候选积压，最后恢复两gateway。详见[部署证据](135-composition-api-deployment.md)，这些是一次性现场结果，不能直接重放local脚本。
 
-两条自身组合消息不会生成模型任务，gateway inbox的pending_media符合自身消息过滤；通过API下载及离线materialize不改变该inbox状态。API原件校验不等同客户端保存。UI恢复后只核E134既有消息，不重复发送来补截图。回滚仍须保留新增两条confirmed投递及消息，不能用部署前六库覆盖。
+两条自身组合消息不会生成模型任务，gateway inbox的pending_media符合自身消息过滤；通过API下载及离线materialize不改变该inbox状态。API原件校验不等同客户端保存。E151 已用这两条原消息在客户端逐图保存、打开并核对了四张原图。回滚仍须保留新增两条confirmed投递及消息，不能用部署前六库覆盖。
 
 ## runtime网络配置
 
@@ -119,9 +129,9 @@ python3 scripts/verify_handoff.py
 
 通用Agent模板的runtime指定kind、binary、有限timeoutSeconds及可选model/environment。kind实现包括kimi、codex、pi、openclaw；已实现、已部署和真实验收的范围分开见[接入表](architecture/agent-integration-map.md)。Kimi的历史真工具成功不能解除E131订阅访问403，恢复需要既有服务访问的新证据，不能自动登录、改凭据或切换runtime重试。
 
-Pi使用固定0.84.2的JSON print模式、完整UUID和独立session目录，关闭扩展/skills/prompt templates/themes自动发现；终态要求agent_settled、最后assistant stopReason=stop和exit0。Pi与OpenClaw均未声明image_files，不能靠模型配置声称支持图片。
+Pi使用固定0.84.2的JSON print模式、完整UUID和独立session目录，关闭扩展/skills/prompt templates/themes自动发现；终态要求agent_settled、最后assistant stopReason=stop和exit0。Pi 与内置 OpenClaw CLI 适配均未声明 image_files，不能靠模型配置声称支持图片。
 
-OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/UI验收；固定官方41f2b981/2026.11.3，走agent --local及stdin，非Gateway远端turn或ACP。配置还要求runtime.model和runtime.openclaw的configPath（绝对路径）、configSha256（64位小写SHA），绑定agent main；JSON在任务workspace外且每次校验摘要。专用JSON只接受[实现中明确的结构](../dingtalk_bridge/openclaw_runtime.py)：三处workspace占位、单个明确provider/model、禁插件/任意层include/宿主env覆盖，不合并系统默认配置。既有合成样例只是测试数据，不是可用provider凭据。
+内置 OpenClaw CLI 适配随 E134 部署，其模型与结果契约仅有合成验证。该适配固定官方41f2b981/2026.11.3，走agent --local及stdin，非Gateway远端turn或ACP。配置还要求runtime.model和runtime.openclaw的configPath（绝对路径）、configSha256（64位小写SHA），绑定agent main；JSON在任务workspace外且每次校验摘要。专用JSON只接受[实现中明确的结构](../dingtalk_bridge/openclaw_runtime.py)：三处workspace占位、单个明确provider/model、禁插件/任意层include/宿主env覆盖，不合并系统默认配置。既有合成样例只是测试数据，不是可用provider凭据。
 
 宿主使用独立OPENCLAW_HOME/state/cache/profile和最小环境，不改系统HOME；同名系统HOME profile存在时拒绝。这不是OS沙箱，不能保证任意生产binary不读环境外文件。真实模型/UI需要专用现成授权配置；不复制其他runtime的token。启用或更换运行器须遵守下面的new/绑定门槛。E134仅部署产品代码，保留原Kimi/Pi绑定，没有模型请求。
 
@@ -145,7 +155,7 @@ OpenClaw适配代码已随E134部署，尚未配置绑定或进行真实模型/U
 
 使用[scripts/export_release.py](../scripts/export_release.py)从指定Git提交和已测wheel生成包，步骤见[离线导出说明](144-offline-release-export.md)。先过manifest/暂存隐私门；导出不运行归档代码、不读账号数据、不部署，不把包校验当最终MUST签署。
 
-## 新增路由的当前已知缺陷
+## 新增路由的图片配置
 
 E150已部署配置助手修复：`select`新增会话时继承同账号基准路由的`imageUploadBinary`；跨账号不继承。仍应检查候选JSON中的helper路径，配置助手只生成候选而不激活监听。`migrate`离线，`select`通过受管DWS只读核对目标。
 

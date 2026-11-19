@@ -68,7 +68,7 @@ python3 -m dingtalk_bridge.configure --config local/service-config.json --output
 python3 -m dingtalk_bridge.configure --config local/legacy-config.json --output local/candidate.json migrate
 ```
 
-输出必须不存在，避免覆盖；E150实际产品0e151fb的select已从所选account的首条基准route继承其已有`imageUploadBinary`，不从其他路由或账号借用，也不凭空补路径；`receiveMode`仍不继承。新路由启用前须显式核对候选选项，见[实现与部署](150-native-voice-and-acceptance-scope.md)。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
+输出必须不存在，避免覆盖；自 E150 起，select 从所选account的首条基准route继承其已有`imageUploadBinary`，不从其他路由或账号借用，也不凭空补路径；`receiveMode`仍不继承。新路由启用前须显式核对候选选项，见[实现与部署](150-native-voice-and-acceptance-scope.md)。它不能给未知accountId自动授权。旧单路迁移为`stateStorage=legacy`，保留原数据库/附件/fingerprint，不移动或复制账号数据；不能删除legacy标记造成同一路由读到新空账本。新路由使用`local/runtime/routes/<认证上下文与会话摘要>/`，键和游标彼此隔离。迁移历史见[续作说明](23-continuation-and-migration.md)。
 
 多路由会话请求必须同时给account_id/conversation_id，单路兼容省略；错误/不完整选择返回400，不降级到默认群。GET选择放query，POST放JSON。discovery仅按账号选择；health/conversations是全局视图。列会话不暴露profile或OAuth，但事件/附件正文仍是私有聊天数据。
 
@@ -89,6 +89,8 @@ Inbox先同事务写原事件与游标，再物化媒体。pending_media、media
 
 ## 证据与限制
 
-有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，OpenClaw仅候选合成验证。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，各类语音方向和组合能力按矩阵逐格判断，任意单消息多文件及外部群未验。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
+有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，内置 OpenClaw CLI 执行器的验证仍限合成样本。原生 OpenClaw 通道已有群聊、私聊真实模型文件任务和客户端逐件下载证据。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，各类语音方向和组合能力按矩阵逐格判断，任意单消息多文件及外部群未验。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
+
+[原生通道双路验收](155-openclaw-two-route-file-acceptance.md) · [部署与现用 owner](156-native-channel-deployment.md)
 
 产品与合成fixture可分享；身份/令牌、聊天、UI及原始运行证据留本机`local/`。复核已完成实验只读，不再次发送。历史失败、未知和平台阻塞保持原状态，24h按真实时长单独判定。
