@@ -1,0 +1,47 @@
+{
+  "evidenceId": "E162",
+  "date": "2026-11-19",
+  "scope": "One real group task and the original requester’s stop in the existing organization pilot",
+  "source": {
+    "loadedPluginRelease": "0.2.2",
+    "channelCommit": "12a17b481dd7698824d1460bbb692da5206fe784",
+    "model": "zai/glm-5.3-flash",
+    "input": "synthetic read-only files",
+    "transport": "existing managed DWS"
+  },
+  "operator": {
+    "sentAfterUnlock": true,
+    "originalInputAbsentBeforeSubmission": true,
+    "stopCommand": "/agent cancel",
+    "stopAfterFirstObservedRead": true,
+    "sameSenderAndConversation": true
+  },
+  "model": {
+    "toolCalls": 10,
+    "successfulFileReads": 10,
+    "stopReason": "aborted",
+    "finalTextSegments": 0
+  },
+  "host": {
+    "inputState": "canceled",
+    "controlState": "done",
+    "cancelLinksForInput": 1,
+    "verifiedOnNewReadOnlyConnection": true,
+    "sendAttempts": 0,
+    "ioFailures": 0,
+    "hostShutdown": false,
+    "errorMatchedTaskAbortSignal": true
+  },
+  "observedAfterStop": {
+    "newConfirmedSends": 0,
+    "newOutboundGroupEventsAtCheck": 0,
+    "visibleRepliesAtCheck": 0
+  },
+  "priorPrivateChatCase": {
+    "evidence": "E160",
+    "status": "unknown",
+    "linked": false,
+    "strictExecutorHandback": "still blocked by this historical input"
+  },
+  "servicesRestartedDuringThisTest": false
+}

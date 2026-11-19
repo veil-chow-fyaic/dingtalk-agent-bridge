@@ -8,6 +8,7 @@
 - [ ] E154 旧群原键只在出现可核对的新回执时复核。E156 已把这一个键单独隔离。正文request_failed/outcome_unknown，无openTaskId/messageId且历史未命中，附件未提交；不换键重发。
 - [x] E155原生通道双路真实模型/运输及客户端文件验收；新群商品筛色任务独立于旧43未知。
 - [x] E159 已有组织 OpenClaw 接管原授权钉钉双路，验证文件任务、独立两轮、无桥接前缀和仅断开钉钉通道后的恢复。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json)
+- [x] E162 群聊真实取消已验证模型中止、零次发送尝试和唯一持久关联。 [现场收据](../../evidence/2026-11-19/openclaw-resident-live-group-cancel.json)
 - [x] E161 核验运行中插件版本、同一消费者和两条原宿主会话。 [现场记录](../../docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)
 - [x] E160 真实 `/stop` 中止模型，未观察到最终正文或迟到投递。再次接管保留双路会话，后续独立查询正常。
 - [ ] 处置原现场未关联的已中止入站。保留原输入为 `unknown`、当前严格回切拒绝。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
