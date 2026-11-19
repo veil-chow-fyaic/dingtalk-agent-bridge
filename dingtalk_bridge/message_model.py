@@ -160,34 +160,111 @@ def file_request(model,command):
     return model['conversationType']=='group' and command is not None and (command=='--files' or command.startswith('--files '))
 
 
-def select_file_sources(model,command,previous):
-    """Bind explicit names once; no implicit latest-file or cross-sender lookup."""
+def select_file_sources(model,command,previous,*,allow_images=False):
+    """Bind explicit selectors to the command's preceding route history (newest first)."""
     try:
-        raw=command[len('--files'):].lstrip()
-        names,end=json.JSONDecoder().raw_decode(raw)
-        task=raw[end:].strip()
-        if (not isinstance(names,list) or not 1<=len(names)<=8 or
-            any(not isinstance(n,str) or not n or len(n)>255 or any(c in n for c in '/\\\x00\r\n') for n in names) or
-            len(set(names))!=len(names) or not task or task in {'status','状态','cancel','取消','new','新会话'} or
-            model['issues'] or model.get('quote') or list(media_parts(model))):
+        option = '--attachments' if allow_images else '--files'
+        raw = command[len(option):].lstrip()
+        requested, end = json.JSONDecoder().raw_decode(raw)
+        task = raw[end:].strip()
+        if (not isinstance(requested, list) or not 1 <= len(requested) <= 8 or not task
+                or task in {'status','状态','cancel','取消','new','新会话'}
+                or model['issues'] or model.get('quote') or list(media_parts(model))):
             raise ValueError('file_selection_invalid')
-        requested_at=datetime.fromisoformat(model['receivedAt'])
-    except (ValueError,TypeError) as exc:
+        selectors = []
+        for value in requested:
+            if (isinstance(value, str) and value and len(value) <= 255
+                    and not any(c in value for c in '/\\\x00\r\n')):
+                selectors.append(('file', value))
+            elif (allow_images and isinstance(value, dict) and set(value) == {'image'}
+                  and type(value['image']) is int and value['image'] > 0):
+                selectors.append(('image', value['image']))
+            else:
+                raise ValueError('file_selection_invalid')
+        if len(set(selectors)) != len(selectors):
+            raise ValueError('file_selection_invalid')
+        requested_at = datetime.fromisoformat(model['receivedAt'])
+    except (ValueError, TypeError) as exc:
         raise ValueError('file_selection_invalid') from exc
-    sources=[]
-    for name in names:
-        matches=[]
-        for candidate in previous:
-            if (candidate is None or candidate['issues'] or candidate['senderId']!=model['senderId'] or
-                candidate['fromSelf'] is not model['fromSelf'] or
-                candidate['accountId']!=model['accountId'] or candidate['conversationId']!=model['conversationId']):continue
-            try:age=(requested_at-datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
-            except (TypeError,ValueError):continue
-            if not 0<=age<=1800:continue
-            # Only the actual sender's top-level files, never quoted resources.
-            for part in candidate['parts']:
-                if part['type']=='file' and part.get('name')==name:
-                    matches.append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
-        if len(matches)!=1:raise ValueError('file_selection_missing_or_ambiguous')
-        sources.append(matches[0])
-    return task,sources
+
+    files = {}
+    images = []
+    image_order_known = True
+    for candidate in previous:
+        if candidate is None:
+            # A malformed projection can hide images. Never silently renumber an older photo.
+            image_order_known = False
+            continue
+        if (candidate['senderId'] != model['senderId'] or candidate['fromSelf'] is not model['fromSelf']
+                or candidate['accountId'] != model['accountId'] or candidate['conversationId'] != model['conversationId']):
+            continue
+        try:
+            age = (requested_at - datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
+        except (TypeError, ValueError):
+            image_order_known = False
+            continue
+        if not 0 <= age <= 1800:
+            continue
+        if candidate['issues']:
+            image_order_known = False
+            continue
+        # Only top-level originals count. Within an image strip, the rightmost
+        # (last) positioned image is the most recent. Quoted photos never count.
+        for idx in range(len(candidate['parts']) - 1, -1, -1):
+            part = candidate['parts'][idx]
+            if part['type'] == 'file':
+                name = part.get('name')
+                files.setdefault(name, []).append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
+            elif part['type'] == 'image' and image_order_known:
+                images.append({'messageId':candidate['id'],'resource':part['resource'],'imagePartIndex':idx})
+    sources = []
+    for kind, value in selectors:
+        if kind == 'image':
+            if value > len(images):
+                raise ValueError('file_selection_missing_or_ambiguous')
+            sources.append(images[value - 1])
+        else:
+            matches = files.get(value, [])
+            if len(matches) != 1:
+                raise ValueError('file_selection_missing_or_ambiguous')
+            sources.append(matches[0])
+    return task, sources
+
+
+def recent_original(model, previous, kind):
+    """Resolve an unqualified smart-group reference only when it has one safe meaning."""
+    if kind not in ('image', 'file', 'attachment') or model['conversationType'] != 'group':
+        raise ValueError('recent_original_ambiguous')
+    allowed_types = {'image', 'file'} if kind == 'attachment' else {kind}
+    requested_at = datetime.fromisoformat(model['receivedAt'])
+    matches = []
+    for index, candidate in enumerate(previous):
+        if candidate is None:
+            raise ValueError('recent_original_ambiguous')
+        try:
+            age = (requested_at - datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
+        except (TypeError, ValueError):
+            raise ValueError('recent_original_ambiguous') from None
+        if age > 120:
+            continue
+        # A very busy conversation, late history or an incomplete projection cannot
+        # establish which original the sender meant. Require the explicit selector.
+        if index >= 8 or age < 0 or candidate['issues'] or candidate['conversationId'] != model['conversationId'] \
+                or candidate['accountId'] != model['accountId']:
+            raise ValueError('recent_original_ambiguous')
+        if candidate.get('quote') and any(part['type'] in allowed_types for part in media_parts(candidate['quote'])):
+            raise ValueError('recent_original_ambiguous')
+        for n, part in enumerate(candidate['parts']):
+            if part['type'] not in allowed_types:
+                continue
+            if candidate['fromSelf'] is not False or candidate['senderId'] != model['senderId']:
+                raise ValueError('recent_original_ambiguous')
+            source = {'messageId':candidate['id'], 'resource':part['resource']}
+            if part['type'] == 'image':
+                source['imagePartIndex'] = n
+            else:
+                source['name'] = part['name']
+            matches.append((candidate, source))
+    if len(matches) != 1:
+        raise ValueError('recent_original_ambiguous')
+    return matches[0]

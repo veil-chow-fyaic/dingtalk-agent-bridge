@@ -33,7 +33,20 @@ parser.add_argument(
     "--native-memory", action="store_true",
     help="With --workspace-context, locate the dated note using builtin keyword memory_search and memory_get",
 )
+parser.add_argument(
+    "--github-pr", action="store_true",
+    help="With --workspace-context, query an operator-synced public PR fixture via the native channel tool",
+)
+parser.add_argument("--group-participation", action="store_true",
+                    help="Exercise no-tool smart-group decisions and a normal reply on a real gateway")
 args = parser.parse_args()
+if args.github_pr and not args.workspace_context:
+    parser.error("--github-pr requires --workspace-context")
+github_pr = args.github_pr
+
+group_probe = args.group_participation
+if group_probe and (args.workspace_context or args.overlap_file_turns):
+    parser.error("--group-participation is a separate probe")
 native_memory = args.native_memory
 if native_memory and not args.workspace_context:
     parser.error("--native-memory requires --workspace-context")
@@ -175,6 +188,11 @@ if native_memory:
     context_cases["MEMORY"] = ("fixture-dm", "Which Acorn Fjord waiver code applies to amber freight?", context_values["memory"])
 
 
+if github_pr:
+    merge_sha = uuid.uuid4().hex + uuid.uuid4().hex[:8]
+    context_cases["PULL"] = ("fixture-group", "Look up the merge commit of sample/shop#7.", merge_sha)
+
+
 def native_recall_answer(replies, tools):
     assert {"memory_search", "memory_get"} <= tools, "native memory tools missing"
     def call(name, arguments):
@@ -203,6 +221,16 @@ def context_answer(key, messages, tools):
                      if m["role"] == "user" and "mark-" + key in payload_text(m))
     system = "\n".join(str(m["content"]) for m in messages if m["role"] == "system")
     replies = [m for m in messages[user_index + 1:] if m["role"] == "tool"]
+    if key == "PULL":
+        name = "dingtalk_github_pull_request"
+        assert name in tools, "DingTalk GitHub tool not available to originating group"
+        if not replies:
+            return {"tool_calls": [{"index": 0, "id": "lookup_pr", "type": "function",
+                                    "function": {"name": name, "arguments": json.dumps({"repository": "sample/shop", "number": 7})}}]}
+        assert len(replies) == 1
+        result = json.loads(replies[0]["content"])
+        assert result["source"] == "operator-synced GitHub REST response" and result["merged"]
+        return {"content": result["mergeCommit"]}
     if key == "MEMORY" and native_memory:
         assert context_values["memory"] not in system
         assert "memory/" not in payload_text(messages[user_index])
@@ -246,17 +274,28 @@ class Provider(BaseHTTPRequestHandler):
             requests.append(data)
             (root / "provider.json").write_text(json.dumps(requests, indent=2, ensure_ascii=False))
         key = next(
-            (s for s in (*context_cases, "G1", "D1", "G2", "D2", "CANCELPROBE") if "mark-" + s in user), None
+            (s for s in (*context_cases, "GPWORK", "GPQUIET", "G1", "D1", "G2", "D2", "CANCELPROBE") if "mark-" + s in user), None
         )
         delta = {"role": "assistant"}
         stop = "stop"
         try:
             assert key, "missing turn marker"
-            assert any(
-                "ORG-SHARED-HANDBOOK" in payload_text(m) for m in msgs if m["role"] == "system"
-            ), "organization workspace instructions missing"
+            decision = any("Decide whether the organization's assistant should reply" in payload_text(m)
+                           for m in msgs if m["role"] == "system")
+            if not decision:
+                assert any("ORG-SHARED-HANDBOOK" in payload_text(m) for m in msgs if m["role"] == "system"), (
+                    "organization workspace instructions missing")
             route = "fixture-group" if key.startswith("G") else "fixture-dm"
-            if key in context_cases:
+            if decision:
+                assert group_probe and not data.get("tools"), "classifier must be tool-free"
+                assert any("packing desk" in payload_text(m) for m in msgs if m["role"] == "system")
+                if key == "GPWORK":
+                    assert "mark-GPQUIET" in user, "group context omitted preceding message"
+                delta["content"] = "REPLY" if key == "GPWORK" else "NO_REPLY"
+            elif key == "GPWORK":
+                assert data.get("tools"), "accepted work should have the normal agent tool policy"
+                delta["content"] = "packing is ready"
+            elif key in context_cases:
                 result = context_answer(key, msgs, {t["function"]["name"] for t in data.get("tools", [])})
                 delta.update(result)
                 if "tool_calls" in result:
@@ -535,6 +574,20 @@ with ExitStack() as stack:
     cfg["tools"].update(tool_policy)
     organization = cfg["agents"]["list"][1] if july_host else cfg["agents"]["entries"]["org-team"]
     organization["tools"] = tool_policy
+    if github_pr:
+        snapshots = root / "source-records"
+        snapshots.mkdir()
+        stamp = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+        sample = {"number": 7, "state": "closed", "merged": True, "merged_at": stamp,
+                  "merge_commit_sha": merge_sha, "base": {"repo": {"private": False, "full_name": "sample/shop"}},
+                  "html_url": "https://github.com/sample/shop/pull/7"}
+        subprocess.run([node, str(product / "scripts/import_openclaw_github_pr.mjs"), str(snapshots), stamp],
+                       input=json.dumps(sample), text=True, check=True, stdout=subprocess.DEVNULL)
+        cfg["channels"]["dingtalk-bridge"]["accounts"]["personal"]["githubPullRequests"] = {
+            "source": "snapshot", "repositories": ["sample/shop"], "snapshotDirectory": str(snapshots)}
+        tool_policy["allow"].append("dingtalk_github_pull_request")
+        if not july_host:
+            cfg["tools"]["toolSearch"] = False
     if context_only:
         workspace = root / "workspace"
         (workspace / "IDENTITY.md").write_text("# Identity\nDispatch call sign: " + context_values["identity"] + "\n")
@@ -567,6 +620,8 @@ with ExitStack() as stack:
             "Substitute the requested carton number for {carton}.\n"
         )
         organization["skills"] = [context_skill]
+    if group_probe:
+        account_routes[0].update(groupReplyMode="agent-decides", groupReplyPrompt="Help at the packing desk.")
     cfg_path = root / "state/openclaw.json"
     cfg_path.write_text(json.dumps(cfg))
     env = {
@@ -597,6 +652,16 @@ with ExitStack() as stack:
     args = [node, str(host / "openclaw.mjs"), "gateway", "run", "--port", str(gw_port)]
     gateway = start(stack, args, root / "workspace", env, "gateway")
     wait(lambda: (service / "local/runtime/http-token").is_file(), 15, [bridge])
+    if group_probe:
+        route = "fixture-group"
+        for key, question in [("GPQUIET", "Human chat"), ("GPWORK", "Can you help?")]:
+            publish(route, message(route, key, question + " mark-" + key))
+            wait(lambda: dispatch_status(route + "-" + key) == "done", 90, [bridge, gateway])
+        assert [(m["route"],m.get("text")) for m in sent()] == [(route,"packing is ready")]
+        assert len(requests) == 3, "two classifier decisions and one normal agent turn expected"
+        print(json.dumps({"hostVersion":version,"zeroToolGroupDecisions":2,"contextFromEarlierMessage":True,
+                          "normalAgentTurns":1,"originalGroupDeliveries":1,"backend":"synthetic DWS and provider"}))
+        sys.exit(0)
     if context_only:
         for key, (route, question, answer) in context_cases.items():
             text = ("/agent " if route == "fixture-group" else "") + question + " mark-" + key
@@ -607,7 +672,7 @@ with ExitStack() as stack:
         print(json.dumps({"hostVersion": version, "hostCommit": build["commit"],
                           "identityFromSystemContext": True, "memoryViaWorkspaceRead": not native_memory,
                           "nativeMemorySearchExercised": native_memory,
-                          "nativeMemoryGetExercised": native_memory,
+                          "nativeMemoryGetExercised": native_memory, "githubSnapshotExercised": github_pr,
                           "memorySearchMode": "keyword-only" if native_memory else None,
                           "skillLocatedInHostCatalog": True,
                           "skillReadAndRuleApplied": True, "physicalReplies": len(expected),

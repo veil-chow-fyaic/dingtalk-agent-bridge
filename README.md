@@ -60,9 +60,11 @@ python3 -m venv .venv
 
 已有 OpenClaw 的用户可以把钉钉群聊和私聊绑到自己的组织 Agent。Agent 共用其工作区和工具，每条会话保留独立的上下文和回复目的地。每条钉钉路由由一个执行器接单，发送人白名单决定谁能使用该工作区。 [插件配置](integrations/openclaw-channel/README.md)
 
-普通群消息只接收，`/agent` 才交办任务；私聊按白名单接收。群附件可按[插件说明](integrations/openclaw-channel/README.md#use-the-channel)用精确文件名关联。更多运行器的实现与实测范围见[接入表](docs/architecture/agent-integration-map.md)。
+私聊直接交办。每个群可以独立设置为命令触发（默认）、真正被 @ 时回复、每条参与，或由 Agent 按群提示词判断。比如设置“遇到问题或附件处理请求就参与，单纯收悉时保持安静”。同一会话连续发来的文字、图片和文件会按序入账。要一次处理分开发送的原件，可以发送 `/agent --attachments [{"image":1},"库存清单.tsv"] 核对图片和清单`。 [群策略与附件用法](integrations/openclaw-channel/README.md#use-the-channel) · [其他宿主](docs/architecture/agent-integration-map.md)
 
-常驻宿主已实测群聊、私聊文件交办及独立追问。完整切回原执行器后，再次接入同一组织 Agent，两路都保留原会话。用户发 `/stop` 能中止正在执行的任务；现场一笔已中止的输入缺少取消关联，仍会阻止严格回切。后续独立查询正常。 [常驻验收与当前限制](docs/resident-openclaw-pilot.md#再次接管与运行中取消)
+常驻宿主已实测群聊、私聊文件交办及独立追问。完整切回原执行器后，再次接入同一组织 Agent，两路都保留原会话。用户发 `/stop` 能中止正在执行的任务；现场旧版的一笔中止记录已按原发送者的停止指令隔离，随后完成真实回切与再接管。后续独立查询正常。 [常驻验收与当前限制](docs/resident-openclaw-pilot.md#再次接管与运行中取消)
+
+群聊可以按提示词决定何时参与。现有组织 OpenClaw 已在真实钉钉群查询 GitHub PR，在群聊与私聊分别处理了连续发来的图片和清单。 [如何交办与已验范围](docs/agent-im-workflows.md#连发消息原件与智能群)
 
 ## 运行与排错
 

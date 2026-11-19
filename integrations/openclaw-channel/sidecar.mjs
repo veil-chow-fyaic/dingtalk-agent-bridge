@@ -6,6 +6,9 @@ export function openSidecar(account, route) {
     "--conversation-id", route.conversationId, "--initial-cursor", String(route.initialCursor),
     "--port", String(account.bridgePort)];
   if (account.consumerInstance !== undefined) args.push("--consumer-instance",account.consumerInstance);
+  if (route.groupReplyMode === "mention") {
+    for (const sender of route.allowSenders) args.push("--mention-sender",sender);
+  }
   const child = spawn(account.python, args, {
     cwd: account.bridgeRoot, stdio: ["pipe", "pipe", "ignore"], shell: false,
     env: { PATH: process.env.PATH, LANG: "en_US.UTF-8", PYTHONIOENCODING: "utf-8",
