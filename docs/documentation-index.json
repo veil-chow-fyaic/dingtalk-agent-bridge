@@ -3,7 +3,7 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E156",
+    "documentationEvidence": "E157",
     "latestUiEvidence": "E155",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
@@ -25,7 +25,8 @@
     "sourceCommit": "92b4f4bb04beb8e4791006a659c08aba58d7bfaf",
     "publicMergeCommit": "d59e7e40997498f6aacc9bded22a1f588c9de0ac",
     "sourceTree": "19fad29acc98af10807b774a24825116cefb0f54",
-    "openclawResident": false
+    "openclawResident": false,
+    "dingtalkResidentChannelEnabledAtE156": false
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {
@@ -810,6 +811,9 @@
     "docs/156-native-channel-deployment.md": {
       "role": "historical",
       "preservedSha256": "3b05c11cd487faf41fc0ab5344ea0c8d4ee53772bf4b267303214d13d6f79d7e"
+    },
+    "docs/resident-openclaw-pilot.md": {
+      "role": "current"
     }
   }
 }

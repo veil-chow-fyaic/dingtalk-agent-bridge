@@ -1,9 +1,7 @@
 # 当前任务
 
-E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](../../docs/156-native-channel-deployment.md)。
+让使用普通账号的钉钉群聊和私聊接入使用者自己的 Agent 宿主。核心 IM 提供文字、文件、持久消费与按原键对账。OpenClaw 原生通道已在两路完成真实模型文件交办和客户端接收。E156 部署 `d444ccf` 的 26 个模块，运行归属为 transport、原群 Kimi gateway 和原私聊 Pi gateway。 [E155 文件验收](../../docs/155-openclaw-two-route-file-acceptance.md) · [E156 部署](../../docs/156-native-channel-deployment.md)
 
-当前主线是让已有 Agent 宿主复用普通账号群聊和私聊的双向文字、文件与会话能力。E152 已完成原始需求和社区项目核对，首选交付 OpenClaw 原生通道，再用 ACP 对接 Hermes 和 DeepSeek Harness。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
+下一项是已有 OpenClaw 与微信通道共存时的钉钉常驻试点。仅用原授权钉钉测试路由及无敏感内容验证唯一 owner、真实两轮、取消、断开恢复和可回切性。现有微信只做无内容健康核对。E154 旧群发送保留原键和已执行入站的防重记录；新的独立任务可以正常处理。 [试点步骤](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点) · [关键路径](CRITICAL_PATH.md)
 
-用户已授权实现、现场测试、文档和 GitHub 仓库维护。已完成的语音入站、图片保存及两次转发负例见[E151](../../docs/151-native-voice-and-image-saving.md)。程序主动创建聊天语音条仍缺官方普通账号入口；WAV 原件可收发、下载和播放。语音出站已暂缓，不影响适配器开发。
-
-继续工作只依据[关键路径](CRITICAL_PATH.md)的新入口或实际缺口，准确版本/错误/能力在[总览](../../docs/102-user-requirements-and-roadmap.md)。主Agent统管现场和GitHub，子Agent只在隔离/tmp实现及离线审查；无聊天心跳。原范围和禁令见[AGENTS](../../AGENTS.md)。
+Hermes 与 DeepSeek Harness 的 ACP 接入后续分别验证。R06 普通账号原生语音条出站按用户意见暂缓，日常音频交付可用 WAV 原件。 [任务池](TODO.md) · [验收范围](../../docs/102-user-requirements-and-roadmap.md) · [现场约定](../../AGENTS.md)

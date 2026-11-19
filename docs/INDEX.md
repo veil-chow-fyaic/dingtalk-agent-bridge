@@ -181,6 +181,7 @@
 | [docs/references/adoption-plan.md](references/adoption-plan.md) | 固定来源/采用说明 |
 | [docs/references/artifact-digest-adoption.md](references/artifact-digest-adoption.md) | 阶段历史 |
 | [docs/references/ceo-deep-dive.md](references/ceo-deep-dive.md) | 固定来源/采用说明 |
+| [docs/resident-openclaw-pilot.md](resident-openclaw-pilot.md) | 现行说明 |
 | [evidence/README.md](../evidence/README.md) | 现行说明 |
 | [fixtures/README.md](../fixtures/README.md) | 合成素材说明 |
 | [integrations/dws-contract/README.md](../integrations/dws-contract/README.md) | 固定来源/采用说明 |

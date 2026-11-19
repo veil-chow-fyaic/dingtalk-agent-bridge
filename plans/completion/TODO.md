@@ -5,9 +5,10 @@
 - [x] E152 核对原始需求与三类宿主的普通账号社区项目、官方协议、媒体与可靠性边界。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
 - [x] E153 新分支实现产品/诊断呈现和 OpenClaw 原生通道。[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)
 - [x] E154原生OpenClaw私聊14B真实read/write、正文及客户端唯一9字节文件通过；4B错误和14B重名失败保留。
-- [ ] E154旧群原键未知投递核对（新任务不关闭）：正文request_failed/outcome_unknown，无openTaskId/messageId且历史未命中，附件未提交；不换键重发。
+- [ ] E154 旧群原键只在出现可核对的新回执时复核。E156 已把这一个键单独隔离。正文request_failed/outcome_unknown，无openTaskId/messageId且历史未命中，附件未提交；不换键重发。
 - [x] E155原生通道双路真实模型/运输及客户端文件验收；新群商品筛色任务独立于旧43未知。
-- [ ] 真实两轮续接、取消和恢复按各自证据验收；E153合成结果不替代现场。
+- [ ] 已有 OpenClaw 常驻试点。核对微信通道无内容健康状态、组织 agent 的共享工作区权限与独立钉钉会话，只向原授权钉钉路由交执行权。
+- [ ] 真实两轮、取消、断开恢复和原 owner 回切分别落证；重点核对已开始的输入不会重跑、等待中的新任务可继续。 [试点操作](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点)
 - [x] [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)四项CI通过并合并；[E156部署收据](../../docs/156-native-channel-deployment.md)核对26模块、原三服务及短观察。OpenClaw未常驻执行，全部产品仍未完成。
 - [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。
 - [x] 通用CLI/HTTP/consumer、双路文字/常用文件/PNG/JPEG/WAV/MP4、引用、持久任务/session/outbox与原件同会话交付。

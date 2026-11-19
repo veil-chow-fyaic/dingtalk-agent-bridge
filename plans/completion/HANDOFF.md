@@ -1,22 +1,16 @@
 # 当前接手事实
 
-E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 [E155收据](../../evidence/2026-11-19/openclaw-two-route-file-acceptance.json)。
+**现场部署和执行归属。** E156 核对 `d444ccf` 的 26 个产品模块及启动来源。transport、群 Kimi gateway、私聊 Pi gateway 已恢复；101 个既有任务、245 条 Agent 发件记录和原会话绑定均已核对。临时 OpenClaw 已退出。 [部署及短观察](../../docs/156-native-channel-deployment.md)
 
-E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
+**已验范围。** 原生 OpenClaw 用真实模型在群聊和私聊读取原件、写出结果，钉钉收件方核对了正文、文件名和原件摘要。E154 一笔旧群正文没有官方任务 ID 或消息 ID，附件未提交。其输入已执行，固定截止点下按原键隔离；新群任务的成功回执单独保留。 [E155 双路收件](../../docs/155-openclaw-two-route-file-acceptance.md) · [E154 原记录](../../docs/154-openclaw-real-files-and-client-receipts.md)
 
-E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](../../docs/156-native-channel-deployment.md)。
+**下一阶段。** 在已有微信通道的 OpenClaw 上试点常驻钉钉，只用原授权钉钉范围。先核单一 owner、旧未知和游标，验证两轮会话、取消、恢复和回切。微信只读无内容健康状态。实测原件、账号信息和日志留本机。 [试点操作](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点) · [当前任务池](TODO.md)
 
-首次私聊4B把预期20写成10，客户端下载也确认是10；下一次14B算对20，但与旧输出重名，客户端保存时加了 `(1)`，精确文件名未通过。最终私聊改用未占用的新名称通过，前两次记录仍保留。 [脱敏结果](../../evidence/2026-11-19/openclaw-real-files-and-client-receipts.json)。
+## 较早版本与证据
 
-2026-11-18，E152。用户已将普通账号原生语音出站暂缓，当前主线是普通账号 IM 与外部 Agent 的对接。社区项目和官方契约已核对。首个交付目标为已有 OpenClaw 用户接入群和私聊，后续分别验证 Hermes、DeepSeek Harness。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
-
-## 版本与证据
-
-- E150历史运输部署检查点：`0e151fb78a61e44cf2d593c58ac559bd9d598f9c` / E150，25模块。当前文档HEAD可能更后，不能冒充部署。
-- E150历史已测MIT wheel（不代表E156的26模块安装包）：`865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed`；[验证](../../evidence/2026-11-17/native-voice-inbound-validation.json)为源码/Python3.14安装/Python3.11安装各533通过；[首轮失败](../../evidence/2026-11-17/native-voice-inbound-initial.json)保留。
-- 本次私有实现/测试/入口调查在`local/native-voice-20261117/`；维护/六库备份/新固定cut/积压/启动来源在`local/native-voice-deployment-20261117/`。该次E150维护核对99任务/240 Agent outbox/session与群Kimi/私聊Pi绑定；E154临时canary阶段已结束；E156实际执行归属和短观察见上方部署记录。
-- 原run `parallel-hardening-24h-20261116`固定北京时间2026-11-17 18:29:37.189681结束并已审；审计在`local/observation-reviews/parallel-hardening-20261117/`，原run不修改/重审/补造。原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。
-- GitHub公开MIT、受保护main。原本地提交与邮箱规范化公开提交保留等树映射，GitHub合并HEAD/CI测试HEAD另记；最新推送回执在`local/github-publication-20261117/`。不重写原历史、不关闭邮箱隐私、不强推、不跳过检查。
+- E150 是核心 `0e151fb` 的 25 模块部署，当时保留了 99 个任务及 240 条 Agent 发件记录。历史安装、首轮测试失败及复核计数均见原记录。[E150 验收](../../docs/150-native-voice-and-acceptance-scope.md)
+- E150 的固定 24 小时观察有 2,877 个样本、29 条路由错误记录。各项已观测错误均有后续同路完整同步；截止覆盖、启动来源检查通过，严格零错误未通过。E156 的 60 秒观察另计。[DWS 风险与恢复证据](../../docs/114-dws-risks-and-resolution.md)
+- GitHub 仓库采用 MIT，受保护 main 的合并记录与现场安装版本分别核对。[E156 部署记录](../../docs/156-native-channel-deployment.md)
 
 ## 能力与下一步
 

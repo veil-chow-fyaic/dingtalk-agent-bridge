@@ -1,14 +1,10 @@
 # 钉钉 bridge 工作约定
 
-E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](docs/156-native-channel-deployment.md)。
-
-2026-11-18，E153。用户已要求下一阶段在新分支 `codex/native-agent-channel` 开发，核心 IM 工作树保留。部署与开发分支的区别见[阶段记录](docs/153-channel-presentation-and-openclaw.md)。
-
-E152。主线是普通账号群/私聊 IM 及可选 Agent 适配器。按用户意见暂缓真人账号主动发原生语音条。E152阶段登记部署为 E150 的 `0e151fb`，媒体实测至 E151；当前部署见上方E156记录。宿主接口、社区先例与建议的首项交付见[适配器选型](docs/152-community-agent-adapters.md)。
+E157 完成核心 IM 与原生 OpenClaw 文件通道的阶段收尾。实际部署以[E156](docs/156-native-channel-deployment.md)为准。下一阶段在已有组织工作区开展双渠道试点，范围见[试点指南](docs/resident-openclaw-pilot.md)。
 
 ## 工作位置和读取顺序
 
-仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，核心交付保留 `codex/complete-bridge`，下一阶段使用 `codex/native-agent-channel`。用户2026-11-16明确要求sub agents分别实现与推进，取代旧单Agent/不派生限制：主Agent统管集成、提交和一切现场业务/维护；子Agent仅在各自/tmp冻结源码候选中实现及离线验证，不改运行产品、采集器、配置或业务数据，不递归派生。不另开产品实现、不改参考仓库。用户2026-11-17已明确要求整理文档并更新GitHub，取代旧不远程发布限制；主Agent负责同步，目标/可见性/主代码许可依用户选择，首次推送额外核历史私密材料。未授权向上游项目发issue/PR。用户已确认公开仓库`veil-chow-fyaic/dingtalk-agent-bridge`及MIT。GitHub GH007拒绝原提交邮箱；本地原分支/证据SHA保留，发布使用只改作者/提交者邮箱的等树隔离副本及映射，不关闭邮箱隐私保护或强推重写现有远端。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
+仅在 `/Users/veil/Projects/dingtalk-agent-bridge` 修改，核心交付保留 `codex/complete-bridge`，新阶段使用从公开 main 派生的专用分支，保留已合并的 `codex/native-agent-channel` 历史。用户2026-11-16明确要求sub agents分别实现与推进，取代旧单Agent/不派生限制：主Agent统管集成、提交和一切现场业务/维护；子Agent仅在各自/tmp冻结源码候选中实现及离线验证，不改运行产品、采集器、配置或业务数据，不递归派生。不另开产品实现、不改参考仓库。用户2026-11-17已明确要求整理文档并更新GitHub，取代旧不远程发布限制；主Agent负责同步，目标/可见性/主代码许可依用户选择，首次推送额外核历史私密材料。未授权向上游项目发issue/PR。用户已确认公开仓库`veil-chow-fyaic/dingtalk-agent-bridge`及MIT。GitHub GH007拒绝原提交邮箱；本地原分支/证据SHA保留，发布使用只改作者/提交者邮箱的等树隔离副本及映射，不关闭邮箱隐私保护或强推重写现有远端。聊天目录只是入口。先读本文件与 plans/completion 的 INIT、CURRENT_MISSION、MODE、PREFLIGHT、CRITICAL_PATH、TODO、EVIDENCE、PROGRESS_LEDGER、99-执行偏差日志，沿用同一[PRD](plans/completion/01-PRD.md)、[矩阵](plans/completion/ACCEPTANCE_MATRIX.md)和[最终自检](plans/completion/10-自检清单.md)。历史“下一步”不是当前指令。
 
 当前能力见[需求与交付总览](docs/102-user-requirements-and-roadmap.md)，媒体操作见[E151 实测](docs/151-native-voice-and-image-saving.md)，全部资料见[索引](docs/INDEX.md)。现场部署、文档 HEAD 与 GitHub HEAD 分别计证。
 

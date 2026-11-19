@@ -1,6 +1,6 @@
 # 通用工具边界与运行器接入
 
-原生OpenClaw Gateway通道已有[E155双路真实文件验收](155-openclaw-two-route-file-acceptance.md)，E154旧未知记录保持。下述内置CLI适配是另一条路径，合并与部署见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。
+已有 OpenClaw 的用户可以安装原生通道插件，由自己的宿主负责模型、工具和会话。群聊和私聊均已通过真实文件交办。E156 部署后原现场仍由群 Kimi 和私聊 Pi 执行。 [插件配置](../integrations/openclaw-channel/README.md) · [E155 验收](155-openclaw-two-route-file-acceptance.md) · [E156 部署](156-native-channel-deployment.md)
 
 E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。E133新增、E134部署CLI/HTTP的composition，接收字面文字和逐张绑定SHA的有序图片；不改gateway的现有逐件交付，见[接口说明](22-generic-tool-and-consumer.md)。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
 
@@ -11,9 +11,10 @@ E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可�
 | 传输 | 显式账号/会话路由，history与持久水位，消息/原件，发送账本与原key对账 | [CLI/HTTP手册](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) |
 | 通用consumer | 事件/游标同事务落盘，物化有序parts/quote/附件，self过滤，异常隔离 | [持久消费说明](22-generic-tool-and-consumer.md) |
 | 可选gateway | 白名单/群命令触发、任务和原生session、取消/new、结果校验与outbox | [运行手册](15-service-runbook.md) |
+| 原生 OpenClaw 通道 | 已有宿主接管指定的钉钉路由，按原账号回传正文及本地结果文件 | [常驻试点与回切](15-service-runbook.md#已有-openclaw-的常驻钉钉试点) |
 | runtime adapter | 本地工具、原生终态/session/中断，按实际能力交付 | [四类运行器状态](architecture/agent-integration-map.md) |
 
-原R09至少一个本地执行器已满足。Kimi/Codex/Pi各自真实验收范围保留，当前Kimi受E131订阅访问403限制；OpenClaw薄适配代码随E134部署，仍仅合成模型验证，未配置绑定或真实UI验收。不得用通道健康、CLI启动或旧测试数量代替具体任务成功。精确当前结论见[总览](102-user-requirements-and-roadmap.md)。
+原 R09 至少一个本地执行器已满足。内置 OpenClaw CLI 薄适配走本项目 gateway，其模型契约有合成验证。原生 OpenClaw 通道由宿主驱动，实测范围见 E155。Kimi 已记录的 403 仅限对应模型任务。 [执行器边界](architecture/agent-integration-map.md) · [能力总览](102-user-requirements-and-roadmap.md)
 
 ## 消费和身份边界
 

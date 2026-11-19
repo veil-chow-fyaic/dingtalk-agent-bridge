@@ -1,5 +1,7 @@
 # 首次使用
 
+已有 OpenClaw 的用户可先完成下述传输配置，再按[原生插件指南](../integrations/openclaw-channel/README.md)接入。已有微信或其他渠道的宿主先核对[组织工作区试点步骤](resident-openclaw-pilot.md)。
+
 这条路径先运行独立 IM 通道：安装 → 配置一个已授权会话 → 启动传输 → 确认收发 → 持久消费。无需先选择模型或启动 gateway。完整参数见[接口参考](22-generic-tool-and-consumer.md)，维护、恢复与回滚见[运行手册](15-service-runbook.md)。
 
 以下命令从一个尚未运行服务的独立源码检出执行。已有部署修改配置或版本时，应按运行手册维护，不直接覆盖当前配置。

@@ -1,57 +1,69 @@
 # 文档导航
 
-第一次使用从[上手指南](getting-started.md)开始。需要判断是否满足自己的场景，先读[能力、当前状态与剩余工作](102-user-requirements-and-roadmap.md)。产品与部署状态以该总览为准，历史报告保留其当时结论。
+已有微信或其他通道的 OpenClaw 可从[同宿主试点指南](resident-openclaw-pilot.md)开始。
 
-## 使用与集成
+按要完成的工作选择入口。第一次使用先运行独立 IM 通道，再按需接入 Agent。当前支持范围统一见[能力总览](102-user-requirements-and-roadmap.md)；[完整索引](INDEX.md)保留全部实现、验收和历史材料。
 
-| 你要做什么 | 阅读入口 |
+## 安装与日常使用
+
+| 你要做什么 | 从这里开始 |
 |---|---|
-| 安装并接通一个会话 | [上手指南](getting-started.md) · [身份、组织开通与接入经验](11-onboarding-lessons.md) |
-| 使用CLI、HTTP或独立consumer | [接口参考](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) · [路由模板](../config.routes.example.json) |
-| 接入OpenClaw原生通道 | [安装](../integrations/openclaw-channel/README.md) · [E155双路文件](155-openclaw-two-route-file-acceptance.md) · [E154保留失败](154-openclaw-real-files-and-client-receipts.md) · [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) |
-| 接入已有运行器 | [实际支持与验证范围](architecture/agent-integration-map.md) · [运行器中立接入边界](21-existing-runtime-integration.md) · [配置模板](../config.agent.example.json) |
-| 收取语音或保存组合原图 | [实测与客户端操作](151-native-voice-and-image-saving.md) |
-| 处理图片 | [图片上传补充的构建与边界](../integrations/dws_image_upload/README.md) |
-| 安全运行 | [安全说明](../SECURITY.md) · [运行手册](15-service-runbook.md) |
-| 获取离线包 | [精确源码与已测wheel导出/安装](144-offline-release-export.md) |
+| 安装、配置一个会话并完成收发 | [首次使用](getting-started.md) · [身份与组织开通经验](11-onboarding-lessons.md) |
+| 通过命令行或 HTTP 收发 | [CLI / HTTP / consumer](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) |
+| 配置多个账号、群聊或私聊 | [路由模板](../config.routes.example.json) · [配置与迁移](23-continuation-and-migration.md) |
+| 持续接收事件和文件原件 | [持久消费边界](22-generic-tool-and-consumer.md#持久消费边界) |
+| 接收语音、播放音视频或保存组合图片 | [媒体实测与客户端操作](151-native-voice-and-image-saving.md) · [当前媒体能力](102-user-requirements-and-roadmap.md#实际能力) |
+| 配置原生 PNG/JPEG 发送 | [图片上传补充工具](../integrations/dws_image_upload/README.md) |
+| 使用离线安装包 | [源码与已测 wheel 的导出、校验和安装](144-offline-release-export.md) |
 
-## 维护与开发
+CLI、HTTP 和 consumer 可独立使用。DWS 身份、会话与资源权限需要操作者自行核实；模板中的会话不是默认组织。未知投递只按原 key 查询和对账，不换键或改用客户端补发。
 
-| 你要做什么 | 阅读入口 |
+## 接入 Agent
+
+| 场景 | 文档与验证范围 |
 |---|---|
-| 启停、恢复、迁移与回滚 | [运行手册](15-service-runbook.md) · [风险与关闭条件](114-dws-risks-and-resolution.md) |
-| 理解组件分工 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [官方/社区参考](references/README.md) · [采用清单](references/adoption-plan.md) |
+| 已有 OpenClaw Gateway，希望从钉钉交办任务 | [原生通道安装与使用](../integrations/openclaw-channel/README.md) · [双路真实文件验收](155-openclaw-two-route-file-acceptance.md) |
+| 使用可选 gateway 调用现有运行器 | [运行器接入表](architecture/agent-integration-map.md) · [接入边界](21-existing-runtime-integration.md) · [执行器配置模板](../config.agent.example.json) |
+| 了解 OpenClaw、Hermes、DeepSeek Harness 的接入方式 | [宿主接口与社区方案调查](152-community-agent-adapters.md) |
+| 理解通道、宿主和执行器如何分工 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [官方与社区参考](references/README.md) |
+
+原生 OpenClaw 通道已有群聊、私聊的真实模型文件任务和客户端接收样本；这与内置 OpenClaw CLI 适配的验证范围分别记录。下一阶段验证共享已有组织 Agent 工作区，不转发跨渠道消息；该能力、真实多轮续接及生命周期仍按各自验收记录判断。启用任何执行器前，明确发送人白名单和每条路由的执行归属。
+
+## 运行、恢复与排错
+
+| 问题 | 阅读入口 |
+|---|---|
+| 启停服务、升级、迁移或回滚 | [运行手册](15-service-runbook.md) |
+| 凭据故障、进程暂停、超时或未知投递 | [风险与恢复条件](114-dws-risks-and-resolution.md) · [受管调用边界](88-dws-process-containment.md) |
+| 核对部署版本、服务归属和短观察 | [最近部署记录](156-native-channel-deployment.md) |
+| 了解正常自动续期与未验证异常 | [正常续期实测](47-natural-auth-rollover.md) · [当前可靠性范围](ROADMAP.md#r13原观察错误恢复与续期分项判定) |
+| 处理安全问题或提交私密漏洞报告 | [安全说明](../SECURITY.md) |
+
+普通 history 业务错误与凭据/受管进程持久暂停的处理不同。部署版本、文档 HEAD、已测包和宿主状态分别记录；一个服务可达或一次测试通过不能代替真实接收确认。
+
+## 开发与维护
+
+| 工作 | 阅读入口 |
+|---|---|
 | 提交代码或文档 | [贡献指南](../CONTRIBUTING.md) · [变更记录](../CHANGELOG.md) · [仓库约定](../AGENTS.md) |
-| 继续当前工作 | [当前任务](../plans/completion/CURRENT_MISSION.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) · [TODO](../plans/completion/TODO.md) · [HANDOFF](../plans/completion/HANDOFF.md) |
-| 核验需求与完成条件 | [计划入口](../plans/completion/00-README.md) · [PRD](../plans/completion/01-PRD.md) · [验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [最终自检](../plans/completion/10-自检清单.md) |
-| 检查资料和提交 | [文档检查](../scripts/review_documentation.py) · [覆盖声明检查](../scripts/review_acceptance.py) · [handoff检查](../scripts/verify_handoff.py) · [测试入口](../scripts/run_tests_with_evidence.py) |
+| 查看下一阶段工作 | [路线图](ROADMAP.md) · [当前任务](../plans/completion/CURRENT_MISSION.md) · [活动清单](../plans/completion/TODO.md) |
+| 接手维护 | [HANDOFF](../plans/completion/HANDOFF.md) · [关键路径](../plans/completion/CRITICAL_PATH.md) |
+| 理解实现采用了哪些参考 | [参考目录](references/README.md) · [采用清单](references/adoption-plan.md) |
+| 检查文档、验收声明与提交范围 | [文档检查](../scripts/review_documentation.py) · [验收检查](../scripts/review_acceptance.py) · [清单检查](../scripts/verify_handoff.py) · [测试入口](../scripts/run_tests_with_evidence.py) |
 
-部署 commit、已测 wheel、文档 HEAD 和候选补丁分别记录；后来的文档提交不证明服务已升级。检查脚本只证明其对应的资料/测试范围，不能代替真实消息、客户端下载或长期运行验收。
+贡献者在自己的检出中工作；仓库约定中原维护工作区的绝对路径与现场身份只适用于原维护现场。不要复制账号数据、聊天、截图、数据库或下载材料到提交中。
 
-## 历史与证据
+## 验收与历史证据
 
-[完整索引](INDEX.md)收录全部资料；[索引数据](documentation-index.json)标明现行说明、固定参考、阶段历史、验收基线、累计账本与冻结归档。[证据登记](../plans/completion/EVIDENCE.md)、[推进账本](../plans/completion/PROGRESS_LEDGER.md)和[执行偏差日志](../plans/completion/99-执行偏差日志.md)用于逐项追溯。
+[原始 PRD](../plans/completion/01-PRD.md)、[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)与[最终自检](../plans/completion/10-自检清单.md)保存原判据。项目尚未通过全部媒体验收；已验证能力和剩余范围以[总览](102-user-requirements-and-roadmap.md)为准。
 
-编号不等于证据ID，例如文档132对应证据E131。阶段报告页首有历史范围，其“当前、暂停、下一步”按当时解释；旧失败、原判据和归档不回写成后续成功。继续操作先回到当前任务和运行手册。
-
-<details>
-<summary>常用历史检查点与研究入口</summary>
-
-| 主题 | 保留的记录 |
+| 要核对的事实 | 记录 |
 |---|---|
-| 公开仓库与CI | [公开MIT、启动修复、安装验证与分支保护](149-github-public-launch-and-ci.md) |
-| 部署检查点 | [E150 实际部署](150-native-voice-and-acceptance-scope.md) · [E143 可靠性修复](143-parallel-hardening.md) |
-| 私聊原生引用及早期组合操作 | [UI恢复、私聊引用及组合保存边界](147-native-ui-recovery-and-dm-quote.md) |
-| 图文组合 | [组合API/部署及官方原件](135-composition-api-deployment.md) |
-| 引用与模型失败 | [群引用双向](131-group-quote-ui.md) · [群双图与Kimi拒绝](132-group-multi-image-and-provider-denial.md) |
-| Pi实际任务 | [历史部署与UI](124-pi-deployment-and-ui.md) |
-| OpenClaw | [薄适配](128-openclaw-adapter.md) · [父进程死亡与恢复](129-openclaw-gateway-lifecycle.md) |
-| 官方取消候选 | [早期双层候选](117-dws-cancellation-candidate.md) · [完整集成及边界](146-dws-root-cause-and-integration.md) |
-| 观察记录 | [旧观察收尾](125-observation-closeout-and-qwen-transactions.md) |
-| 参考研究 | [CEO深挖](references/ceo-deep-dive.md) |
+| 原生 OpenClaw 双路文件、真实模型与客户端接收 | [成功样本](155-openclaw-two-route-file-acceptance.md) · [保留的错误、重名与未知投递](154-openclaw-real-files-and-client-receipts.md) |
+| 原生语音入站、转发限制和四张原图保存 | [真实客户端媒体验证](151-native-voice-and-image-saving.md) |
+| 最近合并、实际部署、26模块与服务归属 | [部署收据与范围](156-native-channel-deployment.md) |
+| 历史安装验证、24小时运行错误与恢复 | [部署与观察审计](150-native-voice-and-acceptance-scope.md) · [早期观察收尾](125-observation-closeout-and-qwen-transactions.md) |
+| 托管 CI、启动故障与修复 | [公开仓库、平台检查与根因记录](149-github-public-launch-and-ci.md) |
+| 更早的实现和实验 | [完整索引](INDEX.md) · [证据登记](../plans/completion/EVIDENCE.md) · [推进账本](../plans/completion/PROGRESS_LEDGER.md) · [执行偏差](../plans/completion/99-执行偏差日志.md) |
 
-</details>
-
-后续任务与逐项关闭条件见[交付路线图](ROADMAP.md)，原活动清单与验收判据保留，避免按历史阶段重复建任务。
-
-[E150 部署与测试](150-native-voice-and-acceptance-scope.md)记录 533 项源码及同 wheel 双安装验证。[E151 媒体实测](151-native-voice-and-image-saving.md)记录真实语音入站、出站转发结果和四张原图的客户端保存方法。
+[索引数据](documentation-index.json)区分现行说明、阶段历史、验收基线与累计账本。历史页中的“当前、下一步、暂停”只描述当时情况，不是今天的操作指令。后续成功不改写旧失败或未知投递，合成测试不替代真实模型、客户端下载或长期运行证据。
