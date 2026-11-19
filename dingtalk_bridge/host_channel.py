@@ -22,7 +22,7 @@ from urllib.request import Request
 from .consumer import Inbox, acquire_consumer_lock, execution_scope
 from .group_participation import GroupMentions, recent_group_context
 from .local_http import urlopen
-from .message_model import file_request, materialize, media_parts, normalize, select_file_sources
+from .message_model import file_request, materialize, media_parts, normalize, recent_original, select_file_sources
 from .routing import route_configs
 
 MAX_FILE = 20 * 1024 * 1024
@@ -405,7 +405,7 @@ class HostChannel:
                 previous.append(None)  # Image positions before this row cannot be resolved safely.
         return previous
 
-    def select_files(self, mid):
+    def select_files(self, mid, recent_kind=None):
         if self.file_selection is not None:
             old_mid, task, originals = self.file_selection
             if old_mid != mid:
@@ -422,15 +422,25 @@ class HostChannel:
         direct = model['conversationType'] == 'direct'
         command = addressed[1] if addressed else text if direct else None
         mixed = command is not None and (command == '--attachments' or command.startswith('--attachments '))
-        if model['fromSelf'] is not False or not (mixed or file_request(model, command)):
+        if (model['fromSelf'] is not False or
+                not (recent_kind is not None or mixed or file_request(model, command))):
             return {'error': 'file_selection_invalid'}
         previous = self.previous_file_candidates(row)
         try:
-            task, sources = select_file_sources(model, command, previous, allow_images=mixed)
+            if recent_kind is not None:
+                if model.get('quote') or len(model['parts']) != 1 or model['parts'][0]['type'] != 'text':
+                    raise ValueError('recent_original_ambiguous')
+                original = recent_original(model, previous, recent_kind)
+                # Implicit references cannot reach back before this consumer's admission window.
+                if not self.db.execute('SELECT 1 FROM inbox WHERE message_id=?', (original[0]['id'],)).fetchone():
+                    raise ValueError('recent_original_ambiguous')
+                task, originals = command or text, [original]
+            else:
+                task, sources = select_file_sources(model, command, previous, allow_images=mixed)
+                by_id = {candidate['id']: candidate for candidate in previous if candidate is not None}
+                originals = [(by_id[src['messageId']], src) for src in sources]
         except ValueError as exc:
             return {'error': str(exc)}
-        by_id = {candidate['id']: candidate for candidate in previous if candidate is not None}
-        originals = [(by_id[src['messageId']], src) for src in sources]
         # This owner serializes turns. A lost claim is quarantined on restart.
         # Retain the selected identities while originals are downloaded one at a time.
         self.file_selection = (mid, task, originals)
@@ -698,7 +708,7 @@ class HostChannel:
             if not isinstance(mid, str) or not mid:
                 raise ChannelError('invalid_file_selection_message')
             if op == 'selectFiles':
-                return self.select_files(mid)
+                return self.select_files(mid, request.get('recentKind'))
             return self.selected_file(mid, request.get('index'), request.get('background') is True)
         if op == 'groupContext':
             return {'recent': recent_group_context(self.db, request.get('messageId'), request.get('allowSenders'))}

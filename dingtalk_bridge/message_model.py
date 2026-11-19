@@ -229,3 +229,42 @@ def select_file_sources(model,command,previous,*,allow_images=False):
                 raise ValueError('file_selection_missing_or_ambiguous')
             sources.append(matches[0])
     return task, sources
+
+
+def recent_original(model, previous, kind):
+    """Resolve an unqualified smart-group reference only when it has one safe meaning."""
+    if kind not in ('image', 'file', 'attachment') or model['conversationType'] != 'group':
+        raise ValueError('recent_original_ambiguous')
+    allowed_types = {'image', 'file'} if kind == 'attachment' else {kind}
+    requested_at = datetime.fromisoformat(model['receivedAt'])
+    matches = []
+    for index, candidate in enumerate(previous):
+        if candidate is None:
+            raise ValueError('recent_original_ambiguous')
+        try:
+            age = (requested_at - datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
+        except (TypeError, ValueError):
+            raise ValueError('recent_original_ambiguous') from None
+        if age > 120:
+            continue
+        # A very busy conversation, late history or an incomplete projection cannot
+        # establish which original the sender meant. Require the explicit selector.
+        if index >= 8 or age < 0 or candidate['issues'] or candidate['conversationId'] != model['conversationId'] \
+                or candidate['accountId'] != model['accountId']:
+            raise ValueError('recent_original_ambiguous')
+        if candidate.get('quote') and any(part['type'] in allowed_types for part in media_parts(candidate['quote'])):
+            raise ValueError('recent_original_ambiguous')
+        for n, part in enumerate(candidate['parts']):
+            if part['type'] not in allowed_types:
+                continue
+            if candidate['fromSelf'] is not False or candidate['senderId'] != model['senderId']:
+                raise ValueError('recent_original_ambiguous')
+            source = {'messageId':candidate['id'], 'resource':part['resource']}
+            if part['type'] == 'image':
+                source['imagePartIndex'] = n
+            else:
+                source['name'] = part['name']
+            matches.append((candidate, source))
+    if len(matches) != 1:
+        raise ValueError('recent_original_ambiguous')
+    return matches[0]

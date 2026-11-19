@@ -436,3 +436,51 @@ test("silence, empty output and a delivery error have separate terminal outcomes
   assert.equal((await run("empty")).status,"unknown");
   assert.equal((await run("failed")).status,"unknown");
 });
+
+test("a smart group follow-up binds the verified original and keeps workspace paths in host metadata", async()=>{
+  const dir=await mkdtemp(join(tmpdir(),"oc-bridge-ref-")), path=join(dir,"shared.png");
+  await writeFile(path,bytes);
+  const image={type:"image",name:"shared.png",path,sizeBytes:bytes.length,sha256:sha};
+  const question="读刚才那张图上的订单号";
+  const publicLine="订单号 0319\nhttps://example.test/home/docs";
+  const query=message("G","follow",question);
+  const photo=message("G","photo","",{parts:[{type:"image",name:"only.png"}],mediaPreparing:true});
+  const state=setup({messages:{G:[photo,query]},groupPolicy:{groupReplyMode:"agent-decides"},
+    decide:async({current})=>current.attachments.length ? "NO_REPLY" : "REPLY",select:(op, fields)=>{
+    if (op==="selectFiles") {
+      assert.deepEqual(fields,{messageId:"follow",recentKind:"image"});
+      return {task:question,count:1};
+    }
+    assert.equal(fields.index,0);
+    return {part:image};
+  },dispatch:async({ctx,dispatcherOptions})=>{
+    assert.equal(ctx.Body,question);
+    assert.equal(ctx.RawBody,question);
+    assert.equal(ctx.BodyForAgent,question);
+    assert.match(ctx.GroupSystemPrompt,/workspace-staged path/);
+    assert.doesNotMatch(ctx.GroupSystemPrompt,/shared\.png|\/host\//);
+    assert.deepEqual(ctx.MediaPaths,["/host/shared.png"]);
+    await dispatcherOptions.deliver({text:publicLine+"\n文件 "+ctx.MediaPath+"\nmedia://inbound/photo\nfile%3A%2F%2F%2Fprivate%2Ftmp%2Fhidden.png"},{kind:"final"});
+    return {queuedFinal:true};
+  }});
+  await state.run();
+  assert.equal(state.acks.find(a=>a.messageId==="photo").silentReason,"agent_decision");
+  assert.equal(state.contexts.length,1);
+  assert.equal(state.sends.length,1);
+  assert.equal(state.sends[0][1].text,publicLine+"\n（已隐藏本机文件路径）\n（已隐藏本机文件路径）\n（已隐藏本机文件路径）");
+});
+
+test("ambiguous smart-group media references ask for a quote without running a task", async()=>{
+  const state=setup({groupPolicy:{groupReplyMode:"agent-decides"},decide:async()=>"REPLY",messages:{G:[
+    message("G","single","读刚才那张图上的订单号"),
+    message("G","both","对比刚才那张图和刚才那份文件"),
+  ]},select:(op,fields)=>{
+    assert.equal(op,"selectFiles");
+    assert.deepEqual(fields,{messageId:"single",recentKind:"image"});
+    return {error:"recent_original_ambiguous"};
+  }});
+  await state.run();
+  assert.equal(state.contexts.length,0);
+  assert.equal(state.staged.length,0);
+  assert.deepEqual(state.sends.map(([,req])=>/引用.*--attachments/u.test(req.text)),[true,true]);
+});

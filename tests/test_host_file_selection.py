@@ -169,3 +169,51 @@ class GroupFileSelectionTests(unittest.TestCase):
                 select_file_sources(request,'--attachments '+argument+' 核对',[origin],allow_images=True)
         with self.assertRaisesRegex(ValueError,'file_selection_missing_or_ambiguous'):
             select_file_sources(request,'--attachments [{"image":1}] 核对',[origin],allow_images=True)
+
+
+    def test_natural_followup_uses_original_observed_by_this_consumer(self):
+        image = event(1, '[图片消息](mediaId=photo)', refs=[ref('mediaId','photo')])['raw']
+        self.channel = HostChannel(self.root, self.route, self.state, 0, self.api)
+        self.addCleanup(self.channel.close)
+        question = '读刚才那张图上的订单号'
+        self.dws.messages = [image, event(2,question)['raw']]
+        self.transport.sync()
+        # A participation decision can leave a silent upload in the durable inbox.
+        first = self.channel.handle({'op':'poll','ordered':True})['message']
+        self.assertEqual(first['id'],'m1')
+        self.channel.ack('m1','ignored')
+        self.assertEqual(self.channel.poll()['message']['id'],'m2')
+        selection = self.channel.handle({'op':'selectFiles','messageId':'m2','recentKind':'image'})
+        self.assertEqual(selection,{'count':1,'task':question})
+        part = self.channel.handle({'op':'selectedFile','messageId':'m2','index':0})['part']
+        self.assertEqual(part['type'],'image')
+        blob = '原件:m1'.encode()
+        self.assertEqual(Path(part['path']).read_bytes(),blob)
+        self.assertEqual(part['sha256'],hashlib.sha256(blob).hexdigest())
+        self.assertEqual(self.dws.downloaded,['m1'])
+
+    def test_natural_followup_does_not_reach_pre_admission_history(self):
+        msg = self.admit([file(1)], event(2,'读刚才那份文件')['raw'])
+        self.assertEqual(self.channel.handle({'op':'selectFiles', **msg, 'recentKind':'file'}),
+                         {'error':'recent_original_ambiguous'})
+        self.assertFalse(self.dws.downloaded)
+
+    def test_natural_followup_refuses_competing_originals_and_uncertain_history(self):
+        from dingtalk_bridge.message_model import normalize, recent_original
+        question = normalize(event(10,'读刚才那张图'), CFG)
+        image = normalize(event(1,'[图片消息](mediaId=img)',refs=[ref('mediaId','img')]), CFG)
+        multi = normalize(event(2,'[图片消息](mediaId=a)[图片消息](mediaId=b)',
+                                refs=[ref('mediaId','a'),ref('mediaId','b')]), CFG)
+        quoted = normalize(event(3,'引用',quote=event(1,'[图片消息](mediaId=img)',refs=[ref('mediaId','img')])['raw']), CFG)
+        text = normalize(event(4,'讨论'), CFG)
+        stranger = {**image,'senderId':'another-sender'}
+        with self.subTest('unique'):
+            self.assertEqual(recent_original(question,[text,image],'image')[1]['imagePartIndex'],0)
+        for history in ([multi], [stranger,image], [stranger], [{**image,'fromSelf':True}],
+                        [None,image], [quoted,image], [text]*8+[image],
+                        [{**image,'conversationId':'other'}], [{**image,'accountId':'wrong'}],
+                        [{**image,'issues':['unpositioned_resources']}],
+                        [{**image,'receivedAt':'2026-11-11T11:57:59+08:00'}],
+                        [{**image,'receivedAt':'2026-11-11T12:00:01+08:00'}]):
+            with self.subTest(history=history), self.assertRaisesRegex(ValueError,'recent_original_ambiguous'):
+                recent_original(question,history,'image')

@@ -169,10 +169,41 @@ function* textChunks(text) {
   }
 }
 
-async function* deliveryComponents({sdk, text, urls, seed, signal, mediaAccess, forceDocument = false}) {
+// This is host guidance only. OpenClaw supplies authorized per-turn paths after
+// staging. Never interpolate transport paths, filenames or sender text here.
+const mediaToolGuidance = "For filesystem or media tools use the authorized, workspace-staged path in this turn's attachment note (the path before the vertical bar). A media://inbound identifier is not a local file path. Use embedded document text when available. If no authorized source is readable, tell the sender. Refer to attachments by filename in chat; never print filesystem paths or media identifiers.";
+
+function recentMediaKind(text) {
+  // Keep implicit inference narrow. Other wording can use a native quote or an
+  // explicit selector. The sidecar independently checks identity, time and uniqueness.
+  const prefix = "(?:(?:刚才|刚刚|我刚|上面|前面|之前|上一条|前一条)(?:我|发|传|过|来|的|那|这|一|个|份|张|条|了){0,10}|那张|那份|上一张|上一份)";
+  const image = new RegExp(prefix+"(?:图片?|照片|截图)").test(text) ||
+    /(?:\b(?:last|previous) (?:photo|image|screenshot)\b|\b(?:photo|image|screenshot) I just sent\b)/iu.test(text);
+  const file = new RegExp(prefix+"(?:文件|文档|表格)").test(text) ||
+    /(?:\b(?:last|previous) (?:file|document)\b|\b(?:file|document) I just sent\b)/iu.test(text);
+  if (image && file) return "multiple";
+  if (image || file) return image ? "image" : "file";
+  return new RegExp(prefix+"附件").test(text) || /\blast attachment\b/iu.test(text) ? "attachment" : null;
+}
+
+const privateLineNotice = "（已隐藏本机文件路径）";
+function visibleText(text, privatePaths) {
+  // A filename can contain spaces, Markdown, or punctuation. Removing an entire
+  // affected line prevents a partial home or temporary directory leaking in a caption.
+  return text.split(/(?<=\n)/u).map(line=>{
+    let decoded=line;
+    try { decoded=decodeURIComponent(line); } catch { /* ordinary text may contain a literal % */ }
+    const pathText=decoded.replaceAll("\\/", "/");
+    const internal = /(?:file:\/\/|media:\/\/inbound\/|\/openclaw-staged-[a-z0-9-]+\/|(?<![a-z0-9_./%-])\/(?:Users|home|private|tmp|var\/folders)\/|[a-z]:\\(?:Users|Temp)\\)/iu;
+    if (!internal.test(pathText) && !privatePaths.some(path=>path && pathText.includes(path))) return line;
+    return privateLineNotice + (line.endsWith("\r\n") ? "\r\n" : line.endsWith("\n") ? "\n" : "");
+  }).join("");
+}
+
+async function* deliveryComponents({sdk, text, urls, seed, signal, mediaAccess, privatePaths = [], forceDocument = false}) {
   if (typeof text === "string" && text.length) {
     if (!text.isWellFormed()) throw new Error("DingTalk text must be valid Unicode");
-    for (const chunk of textChunks(text)) {
+    for (const chunk of textChunks(visibleText(text,privatePaths))) {
       const partKey = chunk.start === 0 ? key(...seed,"text") : key(...seed,"text",chunk.start);
       yield {key:partKey, text:chunk.text};
     }
@@ -273,17 +304,28 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     return;
   }
   let selectedMedia;
-  if (input.selectFiles) {
+  const recent = route.groupReplyMode === "agent-decides" && !input.selectFiles &&
+    !input.quote && !input.attachments.length ? recentMediaKind(input.body) : null;
+  const clarify = '请引用你想处理的那一条原消息，或使用 /agent --attachments [{"image":1},"文件名"] 加上要求。';
+  if (recent === "multiple") {
+    await selectionNotice(clarify);
+    return;
+  }
+  if (input.selectFiles || recent) {
     const unavailable = '指定文件的原件暂时无法核验，任务尚未执行。';
     let selection;
     try {
-      selection = await client.request("selectFiles", {messageId:message.id});
+      selection = await client.request("selectFiles", {messageId:message.id, ...(recent ? {recentKind:recent} : {})});
     } catch {
       signal.throwIfAborted();
       await selectionNotice(unavailable);
       return;
     }
     if (selection.error) {
+      if (recent) {
+        await selectionNotice('没能唯一确认你指的是哪份原件。' + clarify);
+        return;
+      }
       const reason = selection.error === "file_selection_missing_or_ambiguous"
         ? '在你此前 30 分钟、此会话最近 50 条消息中，找不到唯一匹配的原件。'
         : '文件选择格式有误。';
@@ -341,6 +383,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     // project these aliases themselves. Both representations share only the
     // verified host-staged originals, in the same order (including quotes).
     ...(media.length ? {
+      GroupSystemPrompt:mediaToolGuidance,
       MediaPath:media[0].path, MediaPaths:media.map(item=>item.path),
       MediaType:media[0].contentType || "application/octet-stream",
       MediaTypes:media.map(item=>item.contentType || "application/octet-stream"),
@@ -374,6 +417,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
         const urls = payload.mediaUrls?.length ? payload.mediaUrls : payload.mediaUrl ? [payload.mediaUrl] : [];
         if (!payload.text && !urls.length) return {visibleReplySent:false};
         const receipt = await deliver({sdk,client,text:payload.text,urls,signal,
+          privatePaths:[account.bridgeRoot, ...input.attachments.map(part=>part.path), ...media.map(item=>item.path)],
           seed:[account.bridgeAccountId,route.conversationId,message.id,payloadIndex++],
           // OpenClaw validates source access for this turn and stages local outputs
           // in its outbound store. No agent-wide workspace grant is required here.
