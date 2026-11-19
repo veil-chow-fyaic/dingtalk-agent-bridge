@@ -1,6 +1,8 @@
 # 运行、接入与恢复
 
-E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。目前可直接在已接入的群和私聊用组织工作区处理文件。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。原群和私聊均已实测文件处理。E163 又验证了组织知识、历史记忆、按技能判断和 TSV 交付。宿主恢复后，两条排队请求各自执行一次。公开 PR 查询受宿主抓取限制。[用户场景实测](agent-im-workflows.md)
+
+实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
 
 独立核心部署见[E156记录](156-native-channel-deployment.md)，当前执行归属见[E160 再次接管](resident-openclaw-pilot.md#再次接管与运行中取消)。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
 
@@ -41,7 +43,7 @@ python3 -m venv .venv
 
 原维护现场固定使用 DWS v1.0.67 和显式账号 profile。客户端显示普通账号发送者及平台的“通过AI发送”标识；内置 gateway 的诊断模式可另加 `[Agent]` 前缀。E159 试点期间，常驻 OpenClaw 接收白名单用户的私聊任务，群任务需要 `/agent` 前缀。自身回复不触发任务。实测仅限既有授权的测试群和私聊。
 
-bridge 管理器维护独立 transport，OpenClaw 宿主管理其钉钉侧车。E160 再次接入后，原两路的实际执行方为组织 OpenClaw；接续前核实路由锁、进程和具名消费者。以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
+bridge 管理器维护独立 transport，OpenClaw 宿主管理其钉钉侧车。E160 再次接入时两路由组织 OpenClaw 执行；E163 记录了宿主停机及 transport 继续入账。接续前核实路由锁、进程和具名消费者。以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status

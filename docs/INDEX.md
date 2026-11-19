@@ -171,6 +171,7 @@
 | [docs/INDEX.md](INDEX.md) | 现行说明 |
 | [docs/README.md](README.md) | 现行说明 |
 | [docs/ROADMAP.md](ROADMAP.md) | 现行说明 |
+| [docs/agent-im-workflows.md](agent-im-workflows.md) | 现行说明 |
 | [docs/architecture/agent-integration-map.md](architecture/agent-integration-map.md) | 固定来源/采用说明 |
 | [docs/architecture/dingtalk-agent-middleware.md](architecture/dingtalk-agent-middleware.md) | 固定来源/采用说明 |
 | [docs/getting-started.md](getting-started.md) | 现行说明 |

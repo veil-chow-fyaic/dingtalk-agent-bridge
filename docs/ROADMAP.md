@@ -1,6 +1,8 @@
 # 交付路线图
 
-E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。目前可直接在已接入的群和私聊用组织工作区处理文件。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。原群和私聊均已实测文件处理。E163 又验证了组织知识、历史记忆、按技能判断和 TSV 交付。宿主恢复后，两条排队请求各自执行一次。公开 PR 查询受宿主抓取限制。[用户场景实测](agent-im-workflows.md)
+
+实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
 
 核心 IM 已可使用。CLI、HTTP 和持久 consumer 独立，模型、会话及回复正文由可选的 Agent 宿主负责。E155 已通过 OpenClaw 原生通道群聊及私聊的真实文件交办与客户端下载。E156 核对了 `d444ccf` 的 26 个运行模块，部署时三项服务为 transport、群 Kimi 和私聊 Pi。 [能力总览](102-user-requirements-and-roadmap.md) · [E155 文件验收](155-openclaw-two-route-file-acceptance.md) · [E156 部署](156-native-channel-deployment.md)
 

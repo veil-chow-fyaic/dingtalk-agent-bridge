@@ -25,7 +25,21 @@ parser.add_argument(
     "--overlap-file-turns", action="store_true",
     help="Submit both first-turn file jobs together to exercise same-directory concurrent host writes",
 )
+parser.add_argument(
+    "--workspace-context", action="store_true",
+    help="Probe identity injection, reading a dated memory note and invoking a workspace skill",
+)
+parser.add_argument(
+    "--native-memory", action="store_true",
+    help="With --workspace-context, locate the dated note using builtin keyword memory_search and memory_get",
+)
 args = parser.parse_args()
+native_memory = args.native_memory
+if native_memory and not args.workspace_context:
+    parser.error("--native-memory requires --workspace-context")
+if args.overlap_file_turns and args.workspace_context:
+    parser.error("--overlap-file-turns applies only to the file-turn probe")
+context_only = args.workspace_context
 overlap_file_turns = args.overlap_file_turns
 product = Path(__file__).resolve().parents[1]
 plugin = product / "integrations/openclaw-channel"
@@ -143,6 +157,82 @@ def payload_text(obj):
     return json.dumps(obj, ensure_ascii=False)
 
 
+# The synthetic model must extract each answer from the host prompt or a real
+# tool result. Generate fresh values so that a stale workspace cannot pass.
+context_values = {key: uuid.uuid4().hex[:12] for key in ("identity", "memory", "format")}
+label_template = "SHIP/" + context_values["format"] + "/C-{carton}"
+context_skill = "fixture-dispatch-label"
+context_note = "memory/2024-06-07.md"
+if native_memory:
+    context_note = f"memory/2023-07-{10 + int(uuid.uuid4().hex[:4], 16) % 18:02}.md"
+    signed_line = 41 + int(uuid.uuid4().hex[:4], 16) % 7
+context_cases = {
+    "IDENTITY": ("fixture-group", "Which call sign does our team use?", context_values["identity"]),
+    "MEMORY": ("fixture-dm", "What was the routing exception in the June 7, 2024 note?", context_values["memory"]),
+    "FORMAT": ("fixture-group", "Apply the dispatch label skill to carton 17.", label_template.replace("{carton}", "17")),
+}
+if native_memory:
+    context_cases["MEMORY"] = ("fixture-dm", "Which Acorn Fjord waiver code applies to amber freight?", context_values["memory"])
+
+
+def native_recall_answer(replies, tools):
+    assert {"memory_search", "memory_get"} <= tools, "native memory tools missing"
+    def call(name, arguments):
+        return {"tool_calls": [{"index": 0, "id": "call_" + name, "type": "function",
+                               "function": {"name": name, "arguments": json.dumps(arguments)}}]}
+    if not replies:
+        return call("memory_search", {"query": "Acorn Fjord waiver amber freight", "maxResults": 5, "minScore": 0})
+    result = json.loads(replies[-1]["content"])
+    if len(replies) == 1:
+        assert result["provider"] == "none" and result["debug"]["backend"] == "builtin"
+        hits = [hit for hit in result["results"] if "Acorn Fjord waiver for amber freight" in hit["snippet"]]
+        assert len(hits) == 1 and context_values["memory"] not in payload_text(result)
+        hit = hits[0]
+        line = re.search(r"signed entry at line ([0-9]+)", hit["snippet"])
+        assert line, "index snippet did not return directions to the signed entry"
+        assert hit["path"] == context_note, "index returned a different memory file"
+        return call("memory_get", {"path": hit["path"], "from": int(line[1]), "lines": 1})
+    assert len(replies) == 2 and result["path"] == context_note
+    answer = re.search(r"Routing exception: ([0-9a-f]{12})", result["text"])
+    assert answer, "native memory_get did not return the signed entry"
+    return {"content": answer[1]}
+
+
+def context_answer(key, messages, tools):
+    user_index = max(i for i, m in enumerate(messages)
+                     if m["role"] == "user" and "mark-" + key in payload_text(m))
+    system = "\n".join(str(m["content"]) for m in messages if m["role"] == "system")
+    replies = [m for m in messages[user_index + 1:] if m["role"] == "tool"]
+    if key == "MEMORY" and native_memory:
+        assert context_values["memory"] not in system
+        assert "memory/" not in payload_text(messages[user_index])
+        return native_recall_answer(replies, tools)
+    if key == "IDENTITY":
+        match = re.search(r"Dispatch call sign: ([0-9a-f]{12})", system)
+        assert match, "workspace identity file not injected"
+        return {"content": match[1]}
+    if not replies:
+        assert "read" in tools, "workspace read tool missing"
+        path = context_note
+        if key == "FORMAT":
+            # Pick the location advertised by the real host, including its
+            # workspace-skill:// URI on hosts that resolve virtual locations.
+            match = re.search(r"<location>([^<]*" + context_skill + r"/SKILL\.md)</location>", system)
+            assert match, "workspace skill missing from host catalog"
+            path = match[1]
+        return {"tool_calls": [{"index": 0, "id": "context_" + key, "type": "function",
+                                "function": {"name": "read", "arguments": json.dumps({"path": path})}}]}
+    assert len(replies) == 1, "unexpected repeated read"
+    if key == "MEMORY":
+        match = re.search(r"Routing exception: ([0-9a-f]{12})", payload_text(replies[0]))
+        assert match, "read did not return the dated memory note"
+        return {"content": match[1]}
+    rule = re.search(r"Shipping label template: ([A-Za-z0-9{}/-]+)", payload_text(replies[0]))
+    carton = re.search(r"carton ([0-9]+)", payload_text(messages[user_index]))
+    assert rule and "{carton}" in rule[1] and carton, "missing skill rule or user-supplied carton"
+    return {"content": rule[1].replace("{carton}", carton[1])}
+
+
 class Provider(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
@@ -156,7 +246,7 @@ class Provider(BaseHTTPRequestHandler):
             requests.append(data)
             (root / "provider.json").write_text(json.dumps(requests, indent=2, ensure_ascii=False))
         key = next(
-            (s for s in ("G1", "D1", "G2", "D2", "CANCELPROBE") if "mark-" + s in user), None
+            (s for s in (*context_cases, "G1", "D1", "G2", "D2", "CANCELPROBE") if "mark-" + s in user), None
         )
         delta = {"role": "assistant"}
         stop = "stop"
@@ -166,7 +256,12 @@ class Provider(BaseHTTPRequestHandler):
                 "ORG-SHARED-HANDBOOK" in payload_text(m) for m in msgs if m["role"] == "system"
             ), "organization workspace instructions missing"
             route = "fixture-group" if key.startswith("G") else "fixture-dm"
-            if key == "CANCELPROBE":
+            if key in context_cases:
+                result = context_answer(key, msgs, {t["function"]["name"] for t in data.get("tools", [])})
+                delta.update(result)
+                if "tool_calls" in result:
+                    stop = "tool_calls"
+            elif key == "CANCELPROBE":
                 (root / "cancel-entered").touch()
                 time.sleep(8)
                 delta["content"] = "LATE-CANCELLED-REPLY"
@@ -440,6 +535,38 @@ with ExitStack() as stack:
     cfg["tools"].update(tool_policy)
     organization = cfg["agents"]["list"][1] if july_host else cfg["agents"]["entries"]["org-team"]
     organization["tools"] = tool_policy
+    if context_only:
+        workspace = root / "workspace"
+        (workspace / "IDENTITY.md").write_text("# Identity\nDispatch call sign: " + context_values["identity"] + "\n")
+        (workspace / "memory").mkdir()
+        if native_memory:
+            # Search yields the location of a signed entry; only its single-line read contains the answer.
+            lines = [f"Acorn Fjord waiver for amber freight: see signed entry at line {signed_line}."]
+            lines += [f"Archived packing checklist item {i}: verify count, packaging and seal." for i in range(2, signed_line)]
+            lines.append("Routing exception: " + context_values["memory"])
+            (workspace / context_note).write_text("\n".join(lines) + "\n")
+            (workspace / "memory/2021-03-02.md").write_text("Acorn Fjord marine freight label: dried flowers.\n")
+            (workspace / "memory/2022-09-14.md").write_text("Amber cartons on the sunny bridge use bulk packing.\n")
+            cfg["plugins"]["allow"].append("memory-core")
+            cfg["plugins"]["slots"] = {"memory": "memory-core"}
+            cfg["plugins"]["entries"] = {"memory-core": {"enabled": True}}
+            tool_policy["allow"].extend(["memory_search", "memory_get"])
+            search = {"provider": "none", "sources": ["memory"]}
+            if july_host:
+                cfg["agents"]["defaults"]["memorySearch"] = search
+            else:
+                cfg["memory"] = {"search": search}
+                cfg["tools"]["toolSearch"] = False  # Expose the schemas to the deterministic provider.
+        else:
+            (workspace / context_note).write_text("Routing exception: " + context_values["memory"] + "\n")
+        skill = workspace / "skills" / context_skill
+        skill.mkdir(parents=True)
+        (skill / "SKILL.md").write_text(
+            "---\nname: " + context_skill + "\ndescription: Format a warehouse dispatch label.\n---\n"
+            "Shipping label template: " + label_template + "\n"
+            "Substitute the requested carton number for {carton}.\n"
+        )
+        organization["skills"] = [context_skill]
     cfg_path = root / "state/openclaw.json"
     cfg_path.write_text(json.dumps(cfg))
     env = {
@@ -470,6 +597,24 @@ with ExitStack() as stack:
     args = [node, str(host / "openclaw.mjs"), "gateway", "run", "--port", str(gw_port)]
     gateway = start(stack, args, root / "workspace", env, "gateway")
     wait(lambda: (service / "local/runtime/http-token").is_file(), 15, [bridge])
+    if context_only:
+        for key, (route, question, answer) in context_cases.items():
+            text = ("/agent " if route == "fixture-group" else "") + question + " mark-" + key
+            publish(route, message(route, key, text))
+            wait(lambda: dispatch_status(route + "-" + key) == "done", 90, [bridge, gateway])
+        expected = [(route, answer) for route, _, answer in context_cases.values()]
+        assert [(m["route"], m.get("text")) for m in sent()] == expected, "incorrect or duplicated return"
+        print(json.dumps({"hostVersion": version, "hostCommit": build["commit"],
+                          "identityFromSystemContext": True, "memoryViaWorkspaceRead": not native_memory,
+                          "nativeMemorySearchExercised": native_memory,
+                          "nativeMemoryGetExercised": native_memory,
+                          "memorySearchMode": "keyword-only" if native_memory else None,
+                          "skillLocatedInHostCatalog": True,
+                          "skillReadAndRuleApplied": True, "physicalReplies": len(expected),
+                          "workspaceOnlyGlobalAndAgent": True, "provider": "synthetic loopback",
+                          "dws": "synthetic executable"}))
+        sys.exit(0)
+
     def delivered_first(route, key):
         rows = sent()
         return (any(m.get("text") == "result " + key and m["route"] == route for m in rows)

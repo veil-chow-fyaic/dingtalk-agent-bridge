@@ -1,0 +1,183 @@
+{
+  "evidenceId": "E163",
+  "date": "2026-11-19",
+  "sourceBaseline": "0ee8b55",
+  "liveOrganizationHost": {
+    "channelRelease": "0.2.2",
+    "model": "zai/glm-5.3-flash",
+    "groupKnowledge": {
+      "workspaceIdentityPresentInHostPrompt": true,
+      "requestedAliases": 3,
+      "sourceValuesMatched": 3,
+      "toolCallsInTurn": 0,
+      "incomingTaskDone": true,
+      "confirmedReplyOnOriginatingRoute": true,
+      "receivingClientMatched": true
+    },
+    "interruption": {
+      "localTime": "14:46:53 +08:00",
+      "observedSignal": "SIGTERM",
+      "shutdownCompletedCleanly": true,
+      "causeOrIssuer": "not established",
+      "originalResidentLaunchJobsRegisteredAtCheck": 0,
+      "originalGatewayReadyAtCheck": false,
+      "memoryLookupInOriginalDirectChat": "transport recorded once, not claimed or answered at checkpoint",
+      "publicPRLookupInOriginalGroup": "transport recorded once, not claimed or answered at checkpoint",
+      "replayed": false
+    },
+    "skillAvailabilityAtCheckpoint": {
+      "skillCatalogListsAgentReach": true,
+      "dedicatedToolInDingTalkModelReport": false,
+      "installedToolFactoryScope": "WeChat channel only",
+      "webFetchInDingTalkModelReport": true,
+      "memorySearchAndMemoryGetInDingTalkModelReport": true,
+      "realPublicSourceFetchProvedForThisTask": false
+    },
+    "recovery": {
+      "originalEndpointReady": true,
+      "originalResidentLaunchJobsRegistered": 2,
+      "resumedByTestOperator": false,
+      "queuedInputsResubmitted": 0,
+      "eachOriginalInputDoneWithOneConfirmedText": true,
+      "theTwoOriginalSessionIdsRetained": true
+    },
+    "historicalRecall": {
+      "tool": "memory_search",
+      "providerModeReported": "none",
+      "backend": "builtin",
+      "source": "existing dated journal written before the pilot",
+      "answeredDateCauseAndResolutionCorrectly": true,
+      "sourceCited": true,
+      "customerReceivedCorrectAnswer": true,
+      "memoryGetNeededForThisTurn": false
+    },
+    "thirdPartyPRLookup": {
+      "readInstalledSkillInstructions": true,
+      "specializedToolAvailable": false,
+      "webFetchAttempts": 2,
+      "bothFetchesRejectedAsPrivateInternalOrSpecialUseAddress": true,
+      "externalPRDataReturned": false,
+      "modelReportedFailureWithoutInventingCommit": true,
+      "receivedInOriginalGroup": true
+    },
+    "decisionCard": {
+      "readInstalledSkillInstructions": true,
+      "realCalls": [
+        "read"
+      ],
+      "threeBusinessDecisionsMatchSource": true,
+      "newHeaderBeyondThreeNumberedLines": true,
+      "receivedInOriginalDirectChat": true
+    },
+    "userRevisionToFile": {
+      "hostCalledWrite": true,
+      "captionConfirmedOnOriginatingRoute": 1,
+      "fileConfirmedOnOriginatingRoute": 1,
+      "clientSavedWithRequestedName": true,
+      "utf8Bytes": 494,
+      "rowsIncludingHeader": 4,
+      "columns": 2,
+      "threeRulesPreserved": true,
+      "modelWriteEqualsHostFileEqualsClientBytes": true
+    }
+  },
+  "isolatedSdkWorkspaceRegression": {
+    "backends": "real fixed OpenClaw SDK, synthetic provider and DWS transport",
+    "fixedHosts": [
+      {
+        "sdkVersion": "2026.7.1-2",
+        "sdkCommit": "0790d9f593ad30c940ed93b5872a8cf6d6f3cf8c",
+        "identityFromHostPrompt": true,
+        "historicalNoteViaSdkRead": true,
+        "skillFoundReadAndApplied": true,
+        "originalRouteDeliveries": 3,
+        "workspaceOnlyAtHostAndAgent": true
+      },
+      {
+        "sdkVersion": "2026.11.3",
+        "sdkCommit": "41f2b981d240cab9e55b07cba991282a795317b5",
+        "identityFromHostPrompt": true,
+        "historicalNoteViaSdkRead": true,
+        "skillFoundReadAndApplied": true,
+        "originalRouteDeliveries": 3,
+        "workspaceOnlyAtHostAndAgent": true
+      }
+    ],
+    "nativeMemorySearchExercisedByThisMode": false,
+    "fullDefaultContractRerun": [
+      {
+        "sdkVersion": "2026.7.1-2",
+        "totalSends": 7,
+        "duplicatesAfterRestart": 0
+      },
+      {
+        "sdkVersion": "2026.11.3",
+        "totalSends": 11,
+        "duplicatesAfterRestart": 0
+      }
+    ]
+  },
+  "isolatedRealModel": {
+    "model": "local Qwen3-14B Q4_K_M",
+    "sdk": "2026.11.3",
+    "dws": "synthetic",
+    "workspace": "fresh synthetic organization for each run",
+    "runs": [
+      {
+        "hostToolPolicy": "general_tool_policy",
+        "modelRequests": 16,
+        "confirmedOriginalRouteOutputs": 3,
+        "receiverTextsExactlyMatchModel": true,
+        "distinctSessions": 2,
+        "identityAndTwoJournalFactsCorrect": true,
+        "skillRuleReturnedToModel": true,
+        "skillLoader": "read",
+        "businessAnswerCorrect": true,
+        "exactRequestedSingleLine": false,
+        "initialSkillFileBytesPreserved": false,
+        "inventedDeadlineForMissingPolicy": false,
+        "deniedAmbientHomeReads": 2
+      },
+      {
+        "hostToolPolicy": "read_only_tool_policy",
+        "modelRequests": 6,
+        "confirmedOriginalRouteOutputs": 3,
+        "receiverTextsExactlyMatchModel": true,
+        "distinctSessions": 2,
+        "identityAndTwoJournalFactsCorrect": true,
+        "skillRuleReturnedToModel": true,
+        "skillLoader": "skills_read",
+        "businessAnswerCorrect": false,
+        "exactRequestedSingleLine": false,
+        "initialSkillFileBytesPreserved": true,
+        "inventedDeadlineForMissingPolicy": false,
+        "deniedAmbientHomeReads": 2
+      }
+    ],
+    "firstRunFileChange": "model rewrote the synthetic skill instruction and removed its trailing newline",
+    "secondRun": "rule loaded by skills_read, skill file stayed byte-identical, grade and calculation were incorrect",
+    "nativeMemorySearchExercisedInTheseTwoRuns": false,
+    "deterministicSkillTool": {
+      "newIndependentTicket": true,
+      "model": "local Qwen3-14B",
+      "toolBehavior": "pure read-only host function; check arguments and make routing label",
+      "firstInvalidArgumentsRejected": true,
+      "modelReadSkillAndCorrectedArgumentsWithinSameTurn": true,
+      "independentCalculationMatched": true,
+      "replyExactlyMatchedAndConfirmedOnOriginatingRoute": true,
+      "skillBytesPreserved": true
+    }
+  },
+  "isolatedNativeMemoryRegression": {
+    "hostVersions": [
+      "2026.7.1-2",
+      "2026.11.3"
+    ],
+    "userProvidedDatePathOrAnswer": false,
+    "search": "built-in SQLite keyword search with provider none",
+    "searchSnippetContainsAnswer": false,
+    "memoryGetReadsTargetLine": true,
+    "originalDirectReplyPerHost": 1,
+    "semanticVectorSearchExercised": false
+  }
+}

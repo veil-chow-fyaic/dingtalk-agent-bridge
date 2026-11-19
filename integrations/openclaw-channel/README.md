@@ -64,6 +64,8 @@ For a handover to a different durable host, set `accounts.<alias>.consumerInstan
 
 ### Use an existing organization workspace
 
+The pilot covers workspace identity, historical recall, skill-based decisions, and file delivery in the originating chat. Available tools depend on the host and channel. [User workflows and observed limits](../../docs/agent-im-workflows.md)
+
 Append a route binding to the host's existing bindings. Replace the example agent ID and account alias with the intended pair.
 
 ```json

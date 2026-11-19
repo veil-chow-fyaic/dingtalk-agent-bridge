@@ -3,8 +3,8 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E162",
-    "latestUiEvidence": "E162",
+    "documentationEvidence": "E163",
+    "latestUiEvidence": "E163",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
     "candidateProduct": "12a17b4",
@@ -44,7 +44,8 @@
       "direct": "resident-openclaw"
     },
     "residentChannelSource": "12a17b481dd7698824d1460bbb692da5206fe784",
-    "residentIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457"
+    "residentIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457",
+    "residentAvailabilityAtE163": "original gateway ready after recovery; both queued inputs processed; two original routes active"
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {
@@ -831,6 +832,9 @@
       "preservedSha256": "3b05c11cd487faf41fc0ab5344ea0c8d4ee53772bf4b267303214d13d6f79d7e"
     },
     "docs/resident-openclaw-pilot.md": {
+      "role": "current"
+    },
+    "docs/agent-im-workflows.md": {
       "role": "current"
     }
   }

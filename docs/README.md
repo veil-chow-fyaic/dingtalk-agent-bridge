@@ -1,6 +1,6 @@
 # 文档导航
 
-已有微信或其他通道的 OpenClaw 可从[同宿主试点指南](resident-openclaw-pilot.md)开始。
+已有微信或其他通道的 OpenClaw 可从[同宿主试点指南](resident-openclaw-pilot.md)开始。组织知识、记忆、技能及日常交办的实测范围见[用户任务对照](agent-im-workflows.md)。
 
 按要完成的工作选择入口。第一次使用先运行独立 IM 通道，再按需接入 Agent。当前支持范围统一见[能力总览](102-user-requirements-and-roadmap.md)；[完整索引](INDEX.md)保留全部实现、验收和历史材料。
 
