@@ -1,6 +1,8 @@
 # 当前接手事实
 
-**现场部署和执行归属。** E159 的完整回切已完成。E160 再次将两路交回同一组织 OpenClaw，使用新具名消费者，原会话 ID 保留。独立 transport 核心 `d444ccf`、26 个模块；磁盘安装的 0.2.1 插件 JS 及隔离 Python 来自 `c1cf86e`，运行中宿主 JS 版本尚缺独立证明。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
+**E161 现场。** 宿主已在原进程报告插件 `0.2.2` 及已校验的版本配置，群和私聊仍由同一组织 Agent 各自处理。本轮加载后未发出新的真人任务。此前私聊已实测模型中止；新版本的持久取消关联已在两个隔离真实 SDK 验证。 E160 上一笔未知入站保留，严格回切仍会拒绝。 [现场来源与运维范围](../../docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)
+
+**E159 至 E160 的部署沿革。** E159 的完整回切已完成。E160 再次将两路交回同一组织 OpenClaw，使用新具名消费者，原会话 ID 保留。独立 transport 核心 `d444ccf`、26 个模块；磁盘安装的 0.2.1 插件 JS 及隔离 Python 来自 `c1cf86e`，当时未取得运行中宿主 JS 版本的独立证明。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 **已验范围。** 原生 OpenClaw 用真实模型在群聊和私聊读取原件、写出结果，钉钉收件方核对了正文、文件名和原件摘要。E154 一笔旧群正文没有官方任务 ID 或消息 ID，附件未提交。其输入已执行，固定截止点下按原键隔离；新群任务的成功回执单独保留。 [E155 双路收件](../../docs/155-openclaw-two-route-file-acceptance.md) · [E154 原记录](../../docs/154-openclaw-real-files-and-client-receipts.md)
 

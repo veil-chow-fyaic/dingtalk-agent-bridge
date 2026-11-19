@@ -1,0 +1,59 @@
+{
+  "evidenceId": "E161",
+  "date": "2026-11-19",
+  "scope": "source-distributed native OpenClaw channel on the two previously authorized routes",
+  "deployment": {
+    "independentTransport": "d444ccf",
+    "isolatedPython": "c1cf86e",
+    "residentChannelSource": "12a17b481dd7698824d1460bbb692da5206fe784",
+    "installedRelease": "0.2.2",
+    "startupMarker": {
+      "release": "0.2.2",
+      "protocol": "native-cancel-v1",
+      "expectedReleaseChecked": true
+    },
+    "residentRoutes": 2,
+    "retainedHostSessionIds": 2,
+    "originalResidentProcessIdsRetained": true,
+    "oldDeliveryKeysPreserved": true,
+    "coreServicesRestarted": false
+  },
+  "newLiveStop": {
+    "submitted": false,
+    "reason": "the desktop UI reported the machine locked before the new task was submitted"
+  },
+  "releaseFilesSha256": {
+    "LICENSE": "84abeb5c7df996cbdb539911871d2e9d3c9db5ba8ba41f6ac1a830ecaee03994",
+    "index.mjs": "9643fe88a6b87ef771a76a7120ee75dc99b1fa173fb6695f3b5dbfaa1c06cd65",
+    "channel.mjs": "6b4ffce5d511b8405b7e6ff54e37862c7b6de3495cfd752a5103e0e2b485c098",
+    "sidecar.mjs": "cbab19fbf5a70a2373973ac9deb80c54d325a273e98d56c532d27bc0a449a37b",
+    "package.json": "4b52d369484cbef50a851461ea285a5b2d46f6de8bc5d036a838c866acaea062",
+    "openclaw.plugin.json": "12b60a8d58344459c21f8fae05756343f765dbb766a4b137be5ab8ec6ce633a4"
+  },
+  "olderE160Input": "unknown without durable link, retained under original identity; strict handback still refuses",
+  "validation": {
+    "nodeTests": 35,
+    "fixedSDKs": [
+      "2026.7.1-2",
+      "2026.11.3"
+    ],
+    "backend": "isolated synthetic DWS and provider",
+    "eachSDK": [
+      "checked release pin on three gateway starts",
+      "two original files and follow-ups",
+      "restart without replay",
+      "durably linked cancel",
+      "independent subsequent task"
+    ],
+    "julySourceOnlyStartup": "tested in an isolated real July host; exact version-specific directory loaded without a package lookup",
+    "sourceReplacement": "isolated 0.2.0 to 0.2.1 to 0.2.2 preserved unrelated channels; reusing a retired source path missed the new runtime marker, and a fresh version-specific directory passed",
+    "multiReadBaseline": "three isolated timing windows with ten completed SDK reads at c1cf86e, all canceled; the E160 live unknown was not reproduced"
+  },
+  "originalMust": {
+    "passed": 13,
+    "total": 14,
+    "partial": [
+      "R06"
+    ]
+  }
+}

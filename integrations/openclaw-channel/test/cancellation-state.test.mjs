@@ -8,7 +8,7 @@ const deferred = () => { let resolve; const promise=new Promise(r=>{resolve=r;})
 
 async function fixture(t,{kind="direct",send=false,sendError=false,dispatchError=false,settle=true,proactive=false,ioError=false,planError=false}={}) {
   const shutdown=new AbortController(),entered=deferred(),stopped=deferred(),released=deferred(),acked=deferred();
-  const acks=[],sends=[],effects=[];let polled=false,control=false,ready=false;
+  const acks=[],sends=[],effects=[],logs=[];let polled=false,control=false,ready=false;
   const message=(id,text)=>({id,senderId:"owner",accountId:"account",conversationId:"chat",conversationType:kind,
     fromSelf:false,issues:[],parts:[{type:"text",text}]});
   const cfg={channels:{[ID]:{python:"/fixture/python",bridgeRoot:"/fixture",accounts:{user:{bridgeAccountId:"account",
@@ -37,18 +37,22 @@ async function fixture(t,{kind="direct",send=false,sendError=false,dispatchError
       return {deliberateSilentTerminalReply:true};
     }}};
   const account=plugin.config.resolveAccount(cfg,"user");account.pollIntervalMs=1;
-  const running=plugin.gateway.startAccount({cfg,account,abortSignal:shutdown.signal,channelRuntime:runtime});
+  const running=plugin.gateway.startAccount({cfg,account,abortSignal:shutdown.signal,channelRuntime:runtime,log:{warn:line=>logs.push(line)}});
   // Observe immediately; the route can reject on the injected I/O failure.
   const completed=running.catch(error=>error);
   t.after(async()=>{shutdown.abort();released.resolve();await completed;});
   await entered.promise;
-  return {shutdown,acks,sends,effects,stopped,acked,released,completed};
+  return {shutdown,acks,sends,effects,logs,stopped,acked,released,completed};
 }
 
 for(const kind of ["direct","group"])test(`matching ${kind} stop settles as canceled without undoing tools`,{timeout:3000},async t=>{
   const f=await fixture(t,{kind});await f.acked.promise;
   assert.deepEqual(f.acks.find(a=>a.messageId==="task"),{messageId:"task",status:"canceled",cancelMessageId:"stop"});
   assert.equal(f.sends.length,0);assert.deepEqual(f.effects,["local tool effect remains"]);
+  const proof=JSON.parse(f.logs[0].replace("DingTalk turn terminal ",""));
+  assert.equal(proof.status,"canceled");assert.equal(proof.abortReasonMatched,true);
+  assert.equal(proof.sendAttempts,0);assert.equal(proof.ioFailures,0);
+  assert.equal(proof.localToolEffectsRolledBack,false);
 });
 
 test("abort alone cannot mark a still-running dispatcher canceled",{timeout:3000},async t=>{
@@ -62,6 +66,13 @@ for(const scenario of [{send:true},{send:true,sendError:true},{proactive:true},{
   const f=await fixture(t,scenario);await f.acked.promise;
   assert.equal(f.acks.find(a=>a.messageId==="task").status,"unknown");
   assert.equal(f.sends.length,scenario.send || (scenario.proactive && !scenario.planError) ? 1 : 0);
+  const proof=JSON.parse(f.logs[0].replace("DingTalk turn terminal ",""));
+  assert.equal(proof.status,"unknown");assert.equal(proof.matchingStop,true);
+  assert.equal(proof.abortReasonMatched,!scenario.dispatchError);
+  if(scenario.sendError)assert.equal(proof.lastFailedOperation,"send");
+  if(scenario.planError)assert.equal(proof.lastFailedOperation,"plan");
+  for(const secret of ["owner","sent before stop","host tool send","response lost","unrelated model failure"])
+    assert.equal(f.logs[0].includes(secret),false);
  });
 
 test("host shutdown after a stop, before dispatch settles, remains unknown",{timeout:3000},async t=>{

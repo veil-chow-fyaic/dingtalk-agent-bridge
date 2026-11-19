@@ -6,7 +6,7 @@
 
 项目优先使用官方 DWS CLI，提供独立的命令行工具、本机 HTTP API 和持久消息消费者。需要让 Agent 执行任务时，可以接入 OpenClaw 原生通道或可选 gateway。基础 IM 不依赖特定模型、Agent runtime 或测试组织。
 
-**核心 IM 和 OpenClaw 双路文件任务已有真实收发与客户端下载验证，项目仍在持续开发。** 原生语音条出站、部分媒体和真实会话生命周期尚未完成全部验收。具体范围见[能力总览](docs/102-user-requirements-and-roadmap.md)。
+**普通账号 IM 已可用于日常收发，已接入的组织 OpenClaw 可以在原群和私聊处理文件。** 两路都核对过收件正文、文件名和字节，正式消息保留宿主正文。真人账号主动发原生语音条、更多人参与的群聊及部分恢复场景仍待验证。具体范围见[能力总览](docs/102-user-requirements-and-roadmap.md)。
 
 [开始使用](docs/getting-started.md) · [接入 OpenClaw](integrations/openclaw-channel/README.md) · [接口参考](docs/22-generic-tool-and-consumer.md) · [文档导航](docs/README.md) · [已有组织工作区试点](docs/resident-openclaw-pilot.md)
 

@@ -1,5 +1,7 @@
 # 钉钉 bridge 工作约定
 
+当前双路执行归属及根目录运行事实见[组织宿主运维记录](docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)。插件、隔离 Python 侧车和独立 transport 分别核验来源。
+
 E160 的群聊、私聊已在完整回切后重新接入同一组织 OpenClaw，各有唯一执行 owner，独立 transport 核心仍为 `d444ccf`。接续前分别核宿主实际加载版本、具名消费者和路由锁。旧现场取消输入仍 `unknown`，当前严格回切会拒绝；保留该输入和 E154 旧群发送的不同账本，均不得重放。 [E160 现场与测试收据](evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 ## 工作位置和读取顺序

@@ -3,11 +3,11 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E160",
+    "documentationEvidence": "E161",
     "latestUiEvidence": "E160",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
-    "candidateProduct": "c1cf86e",
+    "candidateProduct": "12a17b4",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -16,7 +16,7 @@
     "mustGaps": [
       "R06"
     ],
-    "openclawCandidateProduct": "c1cf86e",
+    "openclawCandidateProduct": "12a17b4",
     "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
     "automationPurpose": "none_user_requested_direct_ownership",
@@ -27,8 +27,7 @@
     "sourceTree": "19fad29acc98af10807b774a24825116cefb0f54",
     "openclawResident": true,
     "dingtalkResidentChannelEnabledAtE156": false,
-    "residentDeploymentEvidence": "E160",
-    "residentChannelAndIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457",
+    "residentDeploymentEvidence": "E161",
     "residentPilotActiveOnRestoreCheckAtE159": false,
     "executionOwnerDuringFirstE159Pilot": {
       "group": "resident-openclaw",
@@ -38,12 +37,14 @@
       "group": "original-group-gateway",
       "direct": "original-direct-gateway"
     },
-    "residentInstalledPluginVersion": "0.2.1",
-    "residentInProcessJavaScriptVersion": "not-established",
+    "residentInstalledPluginVersion": "0.2.2",
+    "residentInProcessJavaScriptVersion": "0.2.2",
     "executionOwnerAtE160": {
       "group": "resident-openclaw",
       "direct": "resident-openclaw"
-    }
+    },
+    "residentChannelSource": "12a17b481dd7698824d1460bbb692da5206fe784",
+    "residentIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457"
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {

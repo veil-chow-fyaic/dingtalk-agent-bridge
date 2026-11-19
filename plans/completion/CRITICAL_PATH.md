@@ -1,5 +1,7 @@
 # 当前关键路径
 
+E161 的组织通道已提供运行中版本凭据。新业务按既有群/私聊入口试用，旧未知的处置边界见[阶段收尾](../../docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+
 独立 transport、常驻插件和实际执行归属以各自收据为准。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json) · [试点操作与回切](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点)
 
 | 工作 | 下一条可执行条件 | 验收边界 |

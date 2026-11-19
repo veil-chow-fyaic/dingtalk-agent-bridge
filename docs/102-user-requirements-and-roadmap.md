@@ -1,10 +1,12 @@
 # 用户需求、交付现状与后续路线
 
+E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。目前可直接在已接入的群和私聊用组织工作区处理文件。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+
 E160 在 E159 完整回切后验证了组织宿主的再次接管。原群与私聊分别延续原宿主会话，两笔新答复均由客户端核对。真实取消中止了模型，未关联的旧入站仍限制当前严格回切。 [现场验收](resident-openclaw-pilot.md#再次接管与运行中取消)
 
 **普通账号 IM 和可选的 OpenClaw 原生通道已交付。** 群聊和私聊各有真实模型读写原件、正文回到原会话、钉钉收件端按原名保存并逐字节核对的证据。正式模式由宿主提供回复正文。首次接入见[入门指南](getting-started.md)，独立核心安装见[E156 部署记录](156-native-channel-deployment.md)。
 
-原 14 项 MUST 中 13 项通过，R06 部分通过。E156 的独立 transport 核心为 `d444ccf`。E160 磁盘安装的宿主插件 0.2.1 和隔离 Python 来源为 `c1cf86e`，当前宿主实际加载的 JS 版本单独取证。 [E160 现场与测试收据](../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
+原 14 项 MUST 中 13 项通过，R06 部分通过。E156 的独立 transport 核心为 `d444ccf`。E160 磁盘安装的宿主插件 0.2.1 和隔离 Python 来源为 `c1cf86e`，当时缺少进程内版本标记，E161 已补充现用版本的现场记录。 [E160 现场与测试收据](../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 ## 产品初衷
 

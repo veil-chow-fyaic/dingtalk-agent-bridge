@@ -1,5 +1,7 @@
 # 交付路线图
 
+E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。目前可直接在已接入的群和私聊用组织工作区处理文件。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+
 核心 IM 已可使用。CLI、HTTP 和持久 consumer 独立，模型、会话及回复正文由可选的 Agent 宿主负责。E155 已通过 OpenClaw 原生通道群聊及私聊的真实文件交办与客户端下载。E156 核对了 `d444ccf` 的 26 个运行模块，部署时三项服务为 transport、群 Kimi 和私聊 Pi。 [能力总览](102-user-requirements-and-roadmap.md) · [E155 文件验收](155-openclaw-two-route-file-acceptance.md) · [E156 部署](156-native-channel-deployment.md)
 
 常驻组织 OpenClaw 已完成授权群聊和私聊的文件任务、两轮续接及通道恢复。第一轮完整回切和再次接管已通过；当前的运维缺口是旧取消输入缺少持久关联，严格回切会拒绝。E154 的旧群发送保留原键。Hermes、DeepSeek Harness 随后分别评估 ACP 接入。 [现场验收](resident-openclaw-pilot.md#现场验收) · [适配器选型](152-community-agent-adapters.md)

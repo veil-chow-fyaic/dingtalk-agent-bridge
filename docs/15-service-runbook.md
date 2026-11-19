@@ -1,5 +1,7 @@
 # 运行、接入与恢复
 
+E161 已在宿主进程核对运行中的插件 `0.2.2`（`12a17b4`）。目前可直接在已接入的群和私聊用组织工作区处理文件。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+
 独立核心部署见[E156记录](156-native-channel-deployment.md)，当前执行归属见[E160 再次接管](resident-openclaw-pilot.md#再次接管与运行中取消)。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
 
 
