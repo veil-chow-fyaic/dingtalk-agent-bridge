@@ -33,17 +33,9 @@ parser.add_argument(
     "--native-memory", action="store_true",
     help="With --workspace-context, locate the dated note using builtin keyword memory_search and memory_get",
 )
-parser.add_argument(
-    "--github-pr", action="store_true",
-    help="With --workspace-context, query an operator-synced public PR fixture via the native channel tool",
-)
 parser.add_argument("--group-participation", action="store_true",
                     help="Exercise no-tool smart-group decisions and a normal reply on a real gateway")
 args = parser.parse_args()
-if args.github_pr and not args.workspace_context:
-    parser.error("--github-pr requires --workspace-context")
-github_pr = args.github_pr
-
 group_probe = args.group_participation
 if group_probe and (args.workspace_context or args.overlap_file_turns):
     parser.error("--group-participation is a separate probe")
@@ -188,11 +180,6 @@ if native_memory:
     context_cases["MEMORY"] = ("fixture-dm", "Which Acorn Fjord waiver code applies to amber freight?", context_values["memory"])
 
 
-if github_pr:
-    merge_sha = uuid.uuid4().hex + uuid.uuid4().hex[:8]
-    context_cases["PULL"] = ("fixture-group", "Look up the merge commit of sample/shop#7.", merge_sha)
-
-
 def native_recall_answer(replies, tools):
     assert {"memory_search", "memory_get"} <= tools, "native memory tools missing"
     def call(name, arguments):
@@ -221,16 +208,6 @@ def context_answer(key, messages, tools):
                      if m["role"] == "user" and "mark-" + key in payload_text(m))
     system = "\n".join(str(m["content"]) for m in messages if m["role"] == "system")
     replies = [m for m in messages[user_index + 1:] if m["role"] == "tool"]
-    if key == "PULL":
-        name = "dingtalk_github_pull_request"
-        assert name in tools, "DingTalk GitHub tool not available to originating group"
-        if not replies:
-            return {"tool_calls": [{"index": 0, "id": "lookup_pr", "type": "function",
-                                    "function": {"name": name, "arguments": json.dumps({"repository": "sample/shop", "number": 7})}}]}
-        assert len(replies) == 1
-        result = json.loads(replies[0]["content"])
-        assert result["source"] == "operator-synced GitHub REST response" and result["merged"]
-        return {"content": result["mergeCommit"]}
     if key == "MEMORY" and native_memory:
         assert context_values["memory"] not in system
         assert "memory/" not in payload_text(messages[user_index])
@@ -574,20 +551,6 @@ with ExitStack() as stack:
     cfg["tools"].update(tool_policy)
     organization = cfg["agents"]["list"][1] if july_host else cfg["agents"]["entries"]["org-team"]
     organization["tools"] = tool_policy
-    if github_pr:
-        snapshots = root / "source-records"
-        snapshots.mkdir()
-        stamp = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
-        sample = {"number": 7, "state": "closed", "merged": True, "merged_at": stamp,
-                  "merge_commit_sha": merge_sha, "base": {"repo": {"private": False, "full_name": "sample/shop"}},
-                  "html_url": "https://github.com/sample/shop/pull/7"}
-        subprocess.run([node, str(product / "scripts/import_openclaw_github_pr.mjs"), str(snapshots), stamp],
-                       input=json.dumps(sample), text=True, check=True, stdout=subprocess.DEVNULL)
-        cfg["channels"]["dingtalk-bridge"]["accounts"]["personal"]["githubPullRequests"] = {
-            "source": "snapshot", "repositories": ["sample/shop"], "snapshotDirectory": str(snapshots)}
-        tool_policy["allow"].append("dingtalk_github_pull_request")
-        if not july_host:
-            cfg["tools"]["toolSearch"] = False
     if context_only:
         workspace = root / "workspace"
         (workspace / "IDENTITY.md").write_text("# Identity\nDispatch call sign: " + context_values["identity"] + "\n")
@@ -672,7 +635,7 @@ with ExitStack() as stack:
         print(json.dumps({"hostVersion": version, "hostCommit": build["commit"],
                           "identityFromSystemContext": True, "memoryViaWorkspaceRead": not native_memory,
                           "nativeMemorySearchExercised": native_memory,
-                          "nativeMemoryGetExercised": native_memory, "githubSnapshotExercised": github_pr,
+                          "nativeMemoryGetExercised": native_memory,
                           "memorySearchMode": "keyword-only" if native_memory else None,
                           "skillLocatedInHostCatalog": True,
                           "skillReadAndRuleApplied": True, "physicalReplies": len(expected),

@@ -6,6 +6,7 @@ import test from "node:test";
 import { buildAgentSessionKey, resolveAgentRoute } from "openclaw/plugin-sdk/routing";
 import { resolveAgentWorkspaceDir } from "openclaw/plugin-sdk/health";
 import { createChannel, dispatchEvent, ID } from "../channel.mjs";
+import extension from "../index.mjs";
 
 const routing = {buildAgentSessionKey,resolveAgentRoute};
 const version = JSON.parse(readFileSync(new URL("../../package.json", import.meta.resolve("openclaw/plugin-sdk/routing")))).version;
@@ -26,6 +27,15 @@ function config() {
   };
   return cfg;
 }
+test("the extension registers a single channel using only the host channel API", () => {
+  const registered = [];
+  extension.register({
+    runtime: {version},
+    registerChannel: ({plugin}) => registered.push(plugin.id),
+  });
+  assert.deepEqual(registered, [ID]);
+});
+
 const plugin=createChannel({routing},()=>assert.fail("must not start a sidecar"));
 const outgoing=(cfg,target,args={})=>plugin.messaging.resolveOutboundSessionRoute({cfg,agentId:organization,accountId:"org",target,...args});
 const fingerprint=(acct,conv)=>createHash("sha256").update(JSON.stringify([acct,conv])).digest("hex");

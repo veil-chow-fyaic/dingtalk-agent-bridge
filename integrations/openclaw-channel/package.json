@@ -1,6 +1,6 @@
 {
   "name": "dingtalk-agent-bridge-channel",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "DingTalk ordinary-account channel for OpenClaw via a local DingTalk Agent Bridge",
   "type": "module",
   "license": "MIT",

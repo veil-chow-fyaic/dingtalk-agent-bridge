@@ -1,8 +1,6 @@
 # DingTalk Bridge channel for OpenClaw
 
-E155 passed real-model and client file acceptance in both group and direct chat. The new group task filters a product catalog by color; it is independent of the unresolved E154 shipment task. Only digests and byte counts are published in the [E155 receipt](../../docs/155-openclaw-two-route-file-acceptance.md). [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) shipped. The [deployment record](../../docs/156-native-channel-deployment.md) identifies the running core and the original gateway bindings.
-
-An OpenClaw channel for existing DingTalk groups and private conversations. Your local DingTalk Agent Bridge handles ordinary-account DWS transport, attachment integrity and delivery reconciliation. OpenClaw owns the agent, prompts, session and reply content.
+This channel delivers messages and verified file originals between DingTalk and an existing OpenClaw agent. The bridge handles ordinary-account transport through DWS, per-chat routing and delivery receipts. OpenClaw owns the agent, its workspace, tool permissions and tool calls. A request to check a code review, search a company handbook or prepare a report follows the same message and file path.
 
 ## Install
 
@@ -21,7 +19,7 @@ For an unattended install on OpenClaw 2026.11.3, review the local source and its
 
 ## Verify the loaded channel
 
-For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.4"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
+For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.5"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
 
 This plugin ships from reviewed local source. OpenClaw 2026.7.1-2 can look up a registry package on cold startup when a local plugin advertises a downloadable channel without an install record. Version 0.2.2 declares its runtime channels in `openclaw.plugin.json` and omits the download catalog entry.
 
@@ -125,49 +123,13 @@ While preparing an original, the route continues receiving input and recognizes 
 
 The inbox cursor advances in the same transaction as its input rows. A restarted owner can safely resume pending downloads which never reached dispatch or cancellation. An interrupted host dispatch stays under its original ID for review. Inspect the private sidecar's `summary` operation with `includeInbox: true` for projection issues, inbox states and failed originals. The bridge can account for events it received; a message missing from upstream history requires separate investigation.
 
-## Read a public GitHub pull request
+## Agent tools
 
-The optional `dingtalk_github_pull_request` tool returns a PR's state, canonical URL, observation time and actual merge commit. Set `githubPullRequests` on the intended DingTalk account and include this specific tool in the invoking agent's effective tool allowlist. The tool factory checks the active channel and account. The tool is unavailable to WeChat and sandboxed runs.
+Configure business tools and their credentials in the OpenClaw agent or its existing tool provider. Once an incoming request is admitted, OpenClaw invokes the tools available in that session and supplies the reply text or files for the channel to deliver. The host also controls network access for those calls.
 
-```json
-{
-  "githubPullRequests": {
-    "source": "public-api",
-    "repositories": ["octocat/Hello-World"]
-  }
-}
-```
+For an offline example using a real, pinned OpenClaw SDK, run `python3 scripts/probe_openclaw_native_channel.py /path/to/openclaw --workspace-context` from the repository root. The probe uses the host’s workspace reader and a skill in an isolated workspace and verifies the replies in simulated DingTalk conversations.
 
-`public-api` uses the fixed GitHub REST host, no credentials, strict SDK egress checks, no redirects, a bounded response and a timeout. Host refusals and GitHub rate limits are returned to the caller. A PR that is open can have a test merge SHA in GitHub's response. This tool only returns a merge commit when the PR has actually merged.
-
-For an organization that already receives public PR data through an approved GitHub integration, select `"source": "snapshot"` and set `snapshotDirectory` to an absolute, canonical directory outside the model workspace. Keep the directory writable only by the trusted source operator and inaccessible to model write tools. Provision it independently of agent queries. The importing user and plugin must be able to write and read it respectively. Given the original JSON from GitHub's single-PR endpoint and its actual UTC acquisition time, run:
-
-```sh
-node scripts/import_openclaw_github_pr.mjs /absolute/operator/pr-records "$FETCHED_AT" < public-pr.json
-```
-
-The UTC timestamp must use ISO 8601 milliseconds, for example `2026-11-19T08:30:00.000Z`. The Node importer uses the project's Python 3 interpreter for a process-released directory lock and durable, atomic replacement. Late or repeated imports keep the newer captured state. Conflicting results with an identical capture time are rejected. The timestamp is supplied by the trusted acquisition process; the importer cannot authenticate the age of manually relabelled JSON. The tool rejects a missing, mismatched or over-15-minute-old record. The returned source and timestamp identify synchronized answers. A live network error never switches the account to synchronized data.
-
-### Collect a configured public PR with the official GitHub CLI
-
-An operator can maintain the synchronized source using the existing authorized `gh` profile. Create a configuration such as `/absolute/operator/github-source.json`. The records directory must already exist.
-
-```json
-{
-  "snapshotDirectory": "/absolute/operator/pr-records",
-  "repositories": { "octocat/Hello-World": [7] }
-}
-```
-
-Run the collector manually from the repository checkout on the approved source machine. Keep the source configuration and collector invocation under operator control. Give the agent read-only access to the records and exclude the collector from its shell/command permissions. The channel package exposes only a record lookup to the model.
-
-```sh
-node scripts/collect_openclaw_github_pr.mjs /absolute/operator/github-source.json
-```
-
-Each entry issues a single official GitHub CLI GET for its configured public PR. The collector checks the public visibility and canonical repository and PR URLs. It takes `asOf` from the same HTTP response's Date and records the receipt time, GitHub request ID and SHA-256 of the response body emitted by `gh`. It publishes typed PR facts and prints one receipt per entry on success. The generated files identify the trusted operator source. A synchronized lookup includes its acquisition time and receipt. Use the source machine's authorized GitHub connectivity independently of agent requests. There is no collector invocation in the plugin, no automatic network retry from snapshot mode, and no registration on WeChat.
-
-To verify tool discovery and file lookup with a real, pinned SDK in an isolated synthetic organization, run `python3 scripts/probe_openclaw_native_channel.py /path/to/openclaw --workspace-context --github-pr`.
+When upgrading from 0.2.3 or 0.2.4, remove the retired `githubPullRequests` setting from each affected DingTalk account and its `dingtalk_github_pull_request` allowlist entries from the host. If that lookup is still needed, configure a suitable tool at the host. Preserve other channel bindings and agent tool permissions during the migration.
 
 ## Send proactively from the host
 
