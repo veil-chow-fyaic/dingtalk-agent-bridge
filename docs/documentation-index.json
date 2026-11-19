@@ -3,11 +3,11 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E165",
-    "latestUiEvidence": "E165",
+    "documentationEvidence": "E166",
+    "latestUiEvidence": "E166",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
-    "candidateProduct": "9604192",
+    "candidateProduct": "5d1c09e",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -16,7 +16,7 @@
     "mustGaps": [
       "R06"
     ],
-    "openclawCandidateProduct": "9604192",
+    "openclawCandidateProduct": "5d1c09e",
     "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
     "automationPurpose": "none_user_requested_direct_ownership",
@@ -27,7 +27,7 @@
     "sourceTree": "19fad29acc98af10807b774a24825116cefb0f54",
     "openclawResident": true,
     "dingtalkResidentChannelEnabledAtE156": false,
-    "residentDeploymentEvidence": "E165",
+    "residentDeploymentEvidence": "E166",
     "residentPilotActiveOnRestoreCheckAtE159": false,
     "executionOwnerDuringFirstE159Pilot": {
       "group": "resident-openclaw",
@@ -37,16 +37,18 @@
       "group": "original-group-gateway",
       "direct": "original-direct-gateway"
     },
-    "residentInstalledPluginVersion": "0.2.4",
-    "residentInProcessJavaScriptVersion": "0.2.4",
+    "residentInstalledPluginVersion": "0.2.5",
+    "residentInProcessJavaScriptVersion": "0.2.5",
     "executionOwnerAtE160": {
       "group": "resident-openclaw",
       "direct": "resident-openclaw"
     },
-    "residentChannelSource": "96041923e09200aeb96e9274aa3eccd44de2d3c9",
+    "residentChannelSource": "5d1c09e0d58d967a420f4987d7a0271b2e51d924",
     "residentIsolatedPythonSource": "96041923e09200aeb96e9274aa3eccd44de2d3c9",
     "residentAvailabilityAtE163": "original gateway ready after recovery; both queued inputs processed; two original routes active",
-    "residentGroupReplyMode": "agent-decides"
+    "residentGroupReplyMode": "agent-decides",
+    "hostBusinessTools": "OpenClaw",
+    "residentBusinessToolsRegisteredByChannel": 0
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {

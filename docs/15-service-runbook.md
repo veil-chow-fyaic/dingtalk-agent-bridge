@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E165 已在原组织宿主加载钉钉插件 0.2.4，独立 transport 仍为 `d444ccf`。原群内，组织 GLM 按提示词对收悉和资料上传保持安静，并按普通提问调用只读 GitHub PR 工具。原群、私聊均收到混合附件分拣结果，四份原件与进入宿主的文件逐字节一致。 [E165 现场收据](../evidence/2026-11-19/openclaw-group-tools-and-mixed-media.json)
+当前组织 OpenClaw 运行钉钉 0.2.5，同一组织 Agent 继续服务原群和私聊。排查工具故障时依次核对原入站、宿主实际工具调用与结果、出站原键和原会话收件。0.2.3–0.2.4 的账户级业务工具配置需在升级时清理。 [插件迁移](../integrations/openclaw-channel/README.md) · [现场收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
 
