@@ -1,0 +1,91 @@
+{
+  "scope": "Synthetic DingTalk DWS and loopback provider, actual pinned OpenClaw SDKs, session stores, filesystem tools and channel sidecars, standalone temporary configuration. No real WeChat or organization workspace tested.",
+  "productModulesSha256": {
+    "integrations/openclaw-channel/channel.mjs": "1e28364733fbe5b3c575c3f9990d8701e19838d702ec3ed5adc3ac5b105df178",
+    "integrations/openclaw-channel/index.mjs": "a997cfde5c19967edb32fe5a41d7268ee1365a68ffe8e9aff188a746915d89b7",
+    "integrations/openclaw-channel/sidecar.mjs": "cbab19fbf5a70a2373973ac9deb80c54d325a273e98d56c532d27bc0a449a37b",
+    "integrations/openclaw-channel/package.json": "54e8624367e4f5ec603cd9339470de5abb0708e227e7a3df373b9f7a1b846fbe",
+    "integrations/openclaw-channel/openclaw.plugin.json": "f14d666a32f479b2c20989d07b48c0e01aa2fdd14124ac8560801b5b03bc75b7",
+    "dingtalk_bridge/host_channel.py": "b15f2d96860a81946e84e61f25ae35379c0f114ad6aafdbfb25a20344bde68db",
+    "scripts/probe_openclaw_native_channel.py": "0bac40236244e3ed11dfd11bacf979282d3dbf157375901a49da2ccada1a61e5"
+  },
+  "earlierResults": [
+    {
+      "version": "2026.7.1-2",
+      "condition": "Canonical media only, before adding flat legacy media fields.",
+      "observed": "Two sources saved by the SDK, but neither group nor DM model context contained a readable attachment."
+    },
+    {
+      "version": "2026.11.3",
+      "condition": "Both global and agent fs.workspaceOnly enabled. Two first-turn writes to distinct filenames in the same organization workspace directory submitted together.",
+      "observed": "Both input files read successfully. One SDK write returned staging directory pathname changed, the requested group output did not exist; group file delivery failed.",
+      "cause": "Exact cause of the host file staging error is not established.",
+      "retryOfFailedInput": false
+    },
+    {
+      "version": "2026.11.3",
+      "condition": "Standalone CLI with no bound org-team session requested its own synthetic file under the non-default agent organization workspace while tools.fs.workspaceOnly=true.",
+      "observed": "Local media authorization denied the file before sending either the caption or the file. Both ordinary in-turn agent artifact replies had already been confirmed.",
+      "newTest": "Explicitly treats an out-of-scope standalone file as a rejected call. A separate synthetic outbound attachment originates in the SDK operator media store."
+    }
+  ],
+  "syntheticWorkspaceOnlyScope": "The global and selected org-team agent set tools.fs.workspaceOnly to true. Only read/write/edit allowlisted; the model issued read/write. Both sources must point into the selected shared workspace media/inbound, match their route, and be read using the real runtime.",
+  "finalRuns": [
+    {
+      "hostVersion": "2026.7.1-2",
+      "hostCommit": "0790d9f593ad30c940ed93b5872a8cf6d6f3cf8c",
+      "routes": 2,
+      "tools": [
+        "read",
+        "write"
+      ],
+      "firstTurnArtifacts": 2,
+      "secondTurns": 2,
+      "reactivePhysicalSends": 6,
+      "proactiveCliInvocations": 2,
+      "proactiveRejectedOutOfScope": 0,
+      "proactiveRejectedNoDurableId": 2,
+      "organizationWorkspaceVerified": true,
+      "workspaceOnlyGlobalAndAgent": true,
+      "initialFileJobsSubmittedTogether": true,
+      "inboundOriginalsStagedInWorkspace": 2,
+      "separateSessionTranscripts": 2,
+      "proactivePhysicalSends": 0,
+      "totalPhysicalSends": 6,
+      "restartDuplicates": 0,
+      "cancelLatePhysicalSends": 0,
+      "provider": "synthetic loopback",
+      "dws": "synthetic executable"
+    },
+    {
+      "hostVersion": "2026.11.3",
+      "hostCommit": "41f2b981d240cab9e55b07cba991282a795317b5",
+      "routes": 2,
+      "tools": [
+        "read",
+        "write"
+      ],
+      "firstTurnArtifacts": 2,
+      "secondTurns": 2,
+      "reactivePhysicalSends": 6,
+      "proactiveCliInvocations": 4,
+      "proactiveRejectedOutOfScope": 1,
+      "proactiveRejectedNoDurableId": 0,
+      "organizationWorkspaceVerified": true,
+      "workspaceOnlyGlobalAndAgent": true,
+      "initialFileJobsSubmittedTogether": false,
+      "inboundOriginalsStagedInWorkspace": 2,
+      "separateSessionTranscripts": 2,
+      "proactivePhysicalSends": 4,
+      "totalPhysicalSends": 10,
+      "restartDuplicates": 0,
+      "cancelLatePhysicalSends": 0,
+      "provider": "synthetic loopback",
+      "dws": "synthetic executable"
+    }
+  ],
+  "localRegression": {
+    "python": 571,
+    "node": 20
+  }
+}

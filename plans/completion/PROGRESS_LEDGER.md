@@ -461,3 +461,7 @@ E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按
 ## E157 — 核心 IM 阶段收尾与常驻宿主试点
 
 入口已按用户场景重整。原生通道文件验收沿用 E155，实际部署沿用 E156。已确认常驻宿主与已验适配器的版本差异，组织 agent 和会话隔离按[试点指南](../../docs/resident-openclaw-pilot.md)推进。真实试点与历史文件验收分别计证。
+
+## E158 — 常驻宿主兼容
+
+公开阶段收尾已由 [PR #12](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/12) 合并。适配器补齐旧宿主文件字段、组织会话路由和可命名的持久 consumer。原部署 E156 与实际模型文件验收 E155 仍分别记证。 [双版本收据](../../evidence/2026-11-19/openclaw-resident-sdk.json)

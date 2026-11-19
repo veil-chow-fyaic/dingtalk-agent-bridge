@@ -1,3 +1,4 @@
+import { routing } from "./routing-fixture.mjs";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { setTimeout as sleep } from "node:timers/promises";
@@ -33,7 +34,7 @@ test("busy route keeps nine jobs available across shutdown and still observes a 
     }
   }));
   const runtime={
-    routing:{resolveAgentRoute:({peer})=>({agentId:"a",sessionKey:"test:"+peer.id,mainSessionKey:"main"})},
+    routing,
     session:{resolveStorePath:()=>"synthetic",recordInboundSession:async()=>{}},
     reply:{finalizeInboundContext:x=>x,dispatchReplyWithBufferedBlockDispatcher:async ({ctx,replyOptions})=>{
       started.push(ctx.MessageSid);

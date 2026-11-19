@@ -13,6 +13,16 @@ export const schema = manifest.channelConfigs[ID].schema;
 const section = cfg => cfg.channels?.[ID] ?? {};
 const digest = value => createHash("sha256").update(value).digest("hex");
 const key = (...pieces) => "oc-" + digest(JSON.stringify(pieces));
+// The host manifest accepts only a floor. Enforce the package's discontinuous
+// peer range for local-source installations that skip npm peer resolution.
+export function supportsHostVersion(version) {
+  if (typeof version !== "string") return false;
+  const release = version.split("+")[0];
+  if (release === "2026.7.1-2") return true;
+  const parts = /^2026\.(\d+)\.(\d+)$/.exec(release);
+  return Boolean(parts && (Number(parts[1]) > 11 || (Number(parts[1]) === 11 && Number(parts[2]) >= 3)));
+}
+
 function resolveAccount(cfg, selected) {
   const config = section(cfg);
   const accounts = config.accounts ?? {};
@@ -21,6 +31,10 @@ function resolveAccount(cfg, selected) {
   const account = accounts[accountId];
   if (!account) return {accountId, enabled:false, configured:false, routes:[]};
   const routes = account.routes ?? [];
+  if (account.consumerInstance !== undefined &&
+      (typeof account.consumerInstance !== "string" || !/^[a-z0-9][a-z0-9-]{0,31}$/u.test(account.consumerInstance))) {
+    throw new Error("Invalid DingTalk bridge consumer instance");
+  }
   if (!isAbsolute(config.python ?? "") || !isAbsolute(config.bridgeRoot ?? "") ||
       !account.bridgeAccountId || !routes.length || new Set(routes.map(r=>r.conversationId)).size !== routes.length ||
       routes.some(r => !r.conversationId || !["group","direct"].includes(r.conversationType) ||
@@ -28,9 +42,24 @@ function resolveAccount(cfg, selected) {
         !r.allowSenders.length || r.allowSenders.some(id => typeof id !== "string" || !id || id === "*"))) {
     throw new Error("Invalid DingTalk bridge account, routes, or sender allowlist");
   }
-  return {accountId, bridgeAccountId:account.bridgeAccountId, routes, enabled:config.enabled !== false && account.enabled !== false,
+  return {accountId, bridgeAccountId:account.bridgeAccountId, consumerInstance:account.consumerInstance, routes, enabled:config.enabled !== false && account.enabled !== false,
     configured:true, python:config.python, bridgeRoot:config.bridgeRoot, bridgePort:config.bridgePort ?? 18768,
     pollIntervalMs:config.pollIntervalMs ?? 2000};
+}
+
+function conversationBinding(routing, cfg, account, route) {
+  // OpenClaw normalizes peer IDs; physical DingTalk selectors are opaque and case-sensitive.
+  const peer = {kind:route.conversationType, id:digest(JSON.stringify([account.bridgeAccountId, route.conversationId]))};
+  const selectors = {channel:ID, accountId:account.accountId, peer,
+    dmScope:"per-account-channel-peer", groupScope:"per-group"};
+  const binding = routing.resolveAgentRoute({cfg, ...selectors});
+  // A binding override or identity link can change the resolved key even when its
+  // last component still looks like this peer. Compare against the host's canonical builder.
+  const expected = routing.buildAgentSessionKey({...selectors, agentId:binding.agentId});
+  if (binding.sessionKey !== expected || binding.sessionKey === binding.mainSessionKey) {
+    throw new Error("DingTalk requires an isolated conversation session; check its account binding and identity links");
+  }
+  return {binding,peer};
 }
 
 function classify(account, route, msg) {
@@ -78,6 +107,9 @@ async function stageInbound(runtime, parts, signal) {
     const name = basename(p.name || p.path);
     const saved = await runtime.media.saveMediaBuffer(bytes, undefined, "inbound", MAX, name, undefined,
       {assertCommitAllowed:()=>signal.throwIfAborted()});
+    // Older SDKs ignore the optional commit guard. Do not continue a canceled
+    // turn into context/session preparation after their media write completes.
+    signal.throwIfAborted();
     media.push({path:saved.path, contentType:saved.contentType, fileName:name, sizeBytes:bytes.length,
       ...(p.quoteId ? {source:"quote",messageId:p.quoteId} : {})});
   }
@@ -142,7 +174,8 @@ async function deliver(params) {
   return result;
 }
 
-export async function dispatchEvent({sdk, runtime, cfg, account, route, client, message, input, signal}) {
+export async function dispatchEvent({sdk, runtime, cfg, account, route, client, message, input, signal,
+  binding = conversationBinding(runtime.routing, cfg, account, route).binding}) {
   // Resolve only admitted commands. User text cannot supply a path, source sender or message ID.
   const selectionNotice = text => confirmed(client, {
     key:key(account.bridgeAccountId,route.conversationId,message.id,"selection-notice"), text,
@@ -188,14 +221,6 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     }
     input = {...input, body:selection.task, attachments};
   }
-  // Host session key normalization can fold opaque or case-sensitive conversation IDs.
-  // Include both physical route selectors in the opaque, lowercase peer key.
-  const peerId = digest(JSON.stringify([account.bridgeAccountId, route.conversationId]));
-  const binding = runtime.routing.resolveAgentRoute({cfg, channel:ID, accountId:account.accountId,
-    peer:{kind:route.conversationType, id:peerId}, dmScope:"per-account-channel-peer", groupScope:"per-group"});
-  if (!binding.sessionKey.endsWith(":" + peerId) || binding.sessionKey === binding.mainSessionKey) {
-    throw new Error("DingTalk channel requires isolated peer sessions");
-  }
   const media = selectedMedia ?? await stageInbound(runtime, input.attachments, signal);
   const quote = input.quote;
   const ctx = runtime.reply.finalizeInboundContext({
@@ -209,6 +234,14 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     ...(quote ? {ReplyToId:quote.id, ReplyToSender:quote.senderId,
       ReplyToBody:quote.parts.filter(p=>p.type==="text").map(p=>p.text).join("")} : {}),
     media,
+    // July SDKs consume the flat media fields; newer SDKs prefer `media` and
+    // project these aliases themselves. Both representations share only the
+    // verified host-staged originals, in the same order (including quotes).
+    ...(media.length ? {
+      MediaPath:media[0].path, MediaPaths:media.map(item=>item.path),
+      MediaType:media[0].contentType || "application/octet-stream",
+      MediaTypes:media.map(item=>item.contentType || "application/octet-stream"),
+    } : {}),
   });
   let recordError, deliveryError, sent = 0, payloadIndex = 0;
   await runtime.session.recordInboundSession({
@@ -248,7 +281,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
   }
 }
 
-async function runRoute({sdk,runtime,cfg,account,route,client,signal,log}) {
+async function runRoute({sdk,runtime,cfg,account,route,binding,client,signal,log}) {
   let active;
   const ack = (msg,status) => client.request("ack", {messageId:msg.id,status});
   const start = ({msg,input}) => {
@@ -257,7 +290,7 @@ async function runRoute({sdk,runtime,cfg,account,route,client,signal,log}) {
     const promise = (async()=>{
       let status = "done";
       try {
-        await dispatchEvent({sdk,runtime,cfg,account,route,client,message:msg,input,signal:turnSignal});
+        await dispatchEvent({sdk,runtime,cfg,account,route,binding,client,message:msg,input,signal:turnSignal});
       } catch {
         status = "unknown";
         log?.warn?.("DingTalk turn requires local review; its claim will not be replayed");
@@ -309,6 +342,7 @@ export function createChannel(sdk, createClient = openSidecar) {
   const live = new Map();
   const liveKey = (accountId,conversationId) => JSON.stringify([accountId,conversationId]);
   const outbound = async params => {
+    if (params.threadId != null) throw new Error("DingTalk threaded delivery is unsupported");
     const account = resolveAccount(params.cfg,params.accountId);
     const client = live.get(liveKey(account.accountId,params.to));
     if (!account.enabled || !client) throw new Error("DingTalk target is not an active, configured route");
@@ -385,7 +419,16 @@ export function createChannel(sdk, createClient = openSidecar) {
     // CLI and host tools route through the live Gateway owner of the sidecar.
     // Stable conversation IDs are user-configured. The route allowlist is still checked at send.
     messaging:{targetResolver:{looksLikeId: value => typeof value === "string" && /^\S+$/.test(value),
-      hint:"configured DingTalk conversation ID"}},
+      hint:"configured DingTalk conversation ID"},
+      resolveOutboundSessionRoute:({cfg,agentId,accountId,target,threadId,resolvedTarget})=>{
+        const account = resolveAccount(cfg,accountId);
+        const route = account.routes.find(r=>r.conversationId===target);
+        if (!account.enabled || !route || threadId != null || (resolvedTarget && resolvedTarget.to!==target)) return null;
+        const {binding,peer} = conversationBinding(sdk.routing,cfg,account,route);
+        if (binding.agentId!==agentId) return null;
+        return {sessionKey:binding.sessionKey,baseSessionKey:binding.sessionKey,recipientSessionExact:true,
+          peer,chatType:route.conversationType,from:ID+":"+route.conversationId,to:route.conversationId};
+      }},
     outbound:{deliveryMode:"gateway",sendText:outbound,sendMedia:outbound,
       resolveTarget:({cfg,to,accountId}) => {
         const account = cfg && resolveAccount(cfg,accountId);
@@ -407,12 +450,14 @@ export function createChannel(sdk, createClient = openSidecar) {
       const signal = AbortSignal.any([abortSignal,controller.signal]);
       const jobs = [];
       try {
-        for (const route of account.routes) {
+        // Resolve every route before starting any sidecar or consuming any input.
+        const routes = account.routes.map(route=>({route,binding:conversationBinding(runtime.routing,cfg,account,route).binding}));
+        for (const {route,binding} of routes) {
           const target = liveKey(account.accountId,route.conversationId);
           if (live.has(target)) throw new Error("DingTalk route already active");
           const client = createClient(account,route);
           live.set(target,client);
-          jobs.push(runRoute({sdk,runtime,cfg,account,route,client,signal,log}).finally(()=>live.delete(target)));
+          jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,signal,log}).finally(()=>live.delete(target)));
         }
         await Promise.all(jobs);
       } catch (err) { if (!abortSignal.aborted) throw err; }

@@ -1,5 +1,7 @@
 # 用户需求、交付现状与后续路线
 
+E158 在两个固定 OpenClaw 版本上验证了组织 agent 的双路独立会话与文件权限。接入方法及合成验证范围见[常驻试点](resident-openclaw-pilot.md)。
+
 **普通账号 IM 和可选的 OpenClaw 原生通道已交付。** 群聊和私聊各有真实模型读写原件、正文回到原会话、钉钉收件端按原名保存并逐字节核对的证据。正式模式由宿主提供回复正文。首次接入见[入门指南](getting-started.md)，现场服务版本见[部署记录](156-native-channel-deployment.md)。
 
 E157 阶段收尾以 E155 双路接收端证据、E156 部署为准。当前产品为 `d444ccf`。原 14 项 MUST 中 13 项通过，R06 部分通过。下一阶段在已有 OpenClaw 中复用有组织资料的 agent，验证钉钉与其他渠道的会话隔离及实际工作流。[同宿主试点](resident-openclaw-pilot.md)

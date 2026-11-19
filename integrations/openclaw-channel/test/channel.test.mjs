@@ -1,3 +1,4 @@
+import { routing } from "./routing-fixture.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdtemp, writeFile } from "node:fs/promises";
@@ -54,10 +55,11 @@ function setup({messages = {}, dispatch, select, confirmed = true, stopAfter = O
     },
   }));
   const channelRuntime={
-    routing:{resolveAgentRoute:({accountId,peer,dmScope,groupScope})=>{
+    routing:{...routing,resolveAgentRoute:(params)=>{
+      const {dmScope,groupScope} = params;
       assert.equal(dmScope,"per-account-channel-peer");
       assert.equal(groupScope,"per-group");
-      return {agentId:"agent",sessionKey:`agent:agent:${ID}:${accountId}:${peer.kind}:${peer.id}`,mainSessionKey:"agent:agent:main"};
+      return routing.resolveAgentRoute(params);
     }},
     media:{saveMediaBuffer:async(data,type,subdir,limit,name)=>{
       assert.deepEqual(data,bytes); assert.equal(subdir,"inbound");
@@ -242,5 +244,29 @@ test("invalid or unavailable filename selection produces one actionable notice a
     assert.equal(state.sends.length,1);
     assert.match(state.sends[0][1].text,/--files|原件/);
     assert.equal(state.acks[0].status,"done");
+  }
+});
+
+
+test("optional consumer instance is stable, explicit and restricted to a safe name",()=>{
+  const cfg=fixture(), plugin=createChannel({});
+  const resolve=()=>plugin.config.resolveAccount(cfg,"user");
+  assert.equal(resolve().consumerInstance,undefined);
+  cfg.channels[ID].accounts.user.consumerInstance="organization-01";
+  assert.equal(resolve().consumerInstance,"organization-01");
+  for (const value of ["","../x","Upper","_x","x/y","x\n","x".repeat(33),null]) {
+    cfg.channels[ID].accounts.user.consumerInstance=value;
+    assert.throws(resolve,/consumer instance/);
+  }
+});
+
+
+test("local installs enforce the same two host release lines as the package peer", async () => {
+  const {supportsHostVersion} = await import("../channel.mjs");
+  for (const v of ["2026.7.1-2", "2026.7.1-2+build", "2026.11.3", "2026.12.1"]) {
+    assert.equal(supportsHostVersion(v), true, v);
+  }
+  for (const v of [undefined, "", "2026.7.1", "2026.7.1-3", "2026.10.1", "2026.11.2", "2026.12.1-rc.1", "2027.1.0"]) {
+    assert.equal(supportsHostVersion(v), false, v);
   }
 });
