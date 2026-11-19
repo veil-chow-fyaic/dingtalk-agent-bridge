@@ -1,15 +1,16 @@
 # Agent接入面与验证范围
 
-E132（2026-11-16）按本项目实现及已有证据更新。协议研究、适配器实现、部署和真实用户闭环分别计证；原R09至少一个本地执行器已满足，不增加四类全部通过门槛。版本/现场现状统一见[总览](../102-user-requirements-and-roadmap.md)。
+E154（2026-11-19）补原生OpenClaw私聊真实文件样本及群未知投递；其他路径保留各自原阶段范围。协议研究、适配器实现、部署和真实用户闭环分别计证；原R09至少一个本地执行器已满足，不增加四类全部通过门槛。版本/现场现状统一见[总览](../102-user-requirements-and-roadmap.md)。
 
 | 运行器 | 本项目实际路径 | 已验证的范围 | 当前边界 |
 |---|---|---|---|
-| Kimi Code | CLI stream-json，原生session；工作区文件输入 | 历史Read/Write/Bash、群/私聊文件交付、续接/控制样本；E115/E116持久网络环境和两路UI | AIC保持Kimi；E131 2.1.1返回订阅服务访问403，只有版本事件，无工具/结果；E133用户授权最小请求仍同类403、无周限额明确信息，需既有访问恢复证据；不阻塞IM通道 |
+| Kimi Code | CLI stream-json，原生session；工作区文件输入 | 历史Read/Write/Bash、群/私聊文件交付、续接/控制样本；E115/E116持久网络环境和两路UI | E150群绑定Kimi；E131 2.1.1返回订阅服务访问403，只有版本事件，无工具/结果；E133用户授权最小请求仍同类403、无周限额明确信息，需既有访问恢复证据；不阻塞IM通道 |
 | Codex | exec/resume、JSON事件和结构化结果；原生SIGINT→turn/interrupt | E119修复取消，E120真实Python/续接/取消/下载UI；旧E118迟到写入失败保留 | 旧私聊原生new归档后已迁Pi；未实现独立App Server adapter，旧超时不再被写成当前“尚不可用” |
-| Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | 已部署原私聊；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
-| OpenClaw | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
+| Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | E150私聊绑定；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
+| OpenClaw 内置CLI适配 | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
+| OpenClaw 原生ChannelPlugin | 2026.11.3 Gateway → 插件 → Python侧车 → bridge/DWS | E154私聊14B真实read/write、同会话正文、9字节原件和精确名称已验 | 群模型43正确但正文投递未知、附件未提交；双路接收未通过；临时canary接管不作部署完成声明 |
 
-OpenClaw 原生通道插件已在 E153 分支实现，它接入已有 OpenClaw Gateway。Hermes 与 DeepSeek Harness 的 ACP 执行器仍待接入。[原生通道与验证范围](../153-channel-presentation-and-openclaw.md)。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
+[E153合成宿主](../153-channel-presentation-and-openclaw.md)与[E154现场结果](../154-openclaw-real-files-and-client-receipts.md)分别计证；合并/部署见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。Hermes与DeepSeek Harness的ACP执行器仍待接入。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
 
 ## 共同契约与各自终态
 
@@ -19,11 +20,11 @@ Pi要求agent_settled、最后assistant stopReason=stop及exit0，agent_end可�
 
 原生会话绑定runtime契约；变更先new归档、零未决、显式binding迁移，不能仅换kind/模型后把旧session交给另一CLI。取消/超时/父死亡清理按运行器原生机制及有界守护处理，不保证恶意脱组或外部效果回滚。详见[运行手册](../15-service-runbook.md)。
 
-## OpenClaw配置和归属
+## 内置OpenClaw CLI适配的配置和归属（E127）
 
 E127使用外置不可变专用JSON路径/SHA和agent main绑定，三个workspace占位定位本代目录；独立home/state/cache/profile、最小环境、禁插件/ACP/任意层include/宿主env覆盖。bridge网络白名单先应用，再筛最小环境；不会复制既有runtime凭据。系统HOME同名profile存在时拒绝，未把保护钩子声称OS沙箱。
 
-agent exec每次新UUID，不直接满足多轮；远端Gateway turn不随本地CLI退出自动停止。当前采用local唯一宿主，不能同时启动另一个通道插件消费同一路消息。未来若走插件/Gateway，须单独设计turn归属和远端取消，不把本轮local合成证据外推过去。
+agent exec每次新UUID，不直接满足多轮；远端Gateway turn不随本地CLI退出自动停止。该CLI适配采用local唯一宿主，不能同时启动另一个通道插件消费同一路消息。原生插件的归属和取消另见E153/E154，不把本节local合成证据外推过去。
 
 ## 研究来源与历史范围
 

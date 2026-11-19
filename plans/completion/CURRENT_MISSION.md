@@ -1,6 +1,6 @@
 # 当前任务
 
-E153 工作分支为 `codex/native-agent-channel`，起点是已核对的公开主分支 `e4b650f`。产品消息默认由宿主决定，原生 OpenClaw 通道与内置 gateway 分路独占。[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)
+E154私聊真实模型/客户端文件验收通过；群正文未知、附件从未提交，双路验收尚未完成。下一步按原键核对群结果，不换键或UI补发。E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。 [证据范围](../../docs/154-openclaw-real-files-and-client-receipts.md)。
 
 当前主线是让已有 Agent 宿主复用普通账号群聊和私聊的双向文字、文件与会话能力。E152 已完成原始需求和社区项目核对，首选交付 OpenClaw 原生通道，再用 ACP 对接 Hermes 和 DeepSeek Harness。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
 

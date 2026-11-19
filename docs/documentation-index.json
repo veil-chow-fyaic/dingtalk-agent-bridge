@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E153",
-    "latestUiEvidence": "E151",
+    "documentationEvidence": "E154",
+    "latestUiEvidence": "E154",
     "deployedProduct": "0e151fb",
     "deploymentEvidence": "E150",
-    "candidateProduct": "E153",
+    "candidateProduct": "E154",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -792,6 +792,9 @@
       "role": "reference"
     },
     "integrations/openclaw-channel/README.md": {
+      "role": "reference"
+    },
+    "docs/154-openclaw-real-files-and-client-receipts.md": {
       "role": "reference"
     }
   }

@@ -1,9 +1,13 @@
 # 变更记录
 
-## 下一阶段开发分支
+## E154 · OpenClaw 候选现场实测（部分完成）
 
 - 内置 gateway 的产品模式直接交付宿主正文和产物，原接单提示和短任务号可通过诊断模式开启。
-- 新增普通账号 OpenClaw 原生通道，复用既有事件、原件和投递账本。[分支验证范围](docs/153-channel-presentation-and-openclaw.md)
+- 原生通道私聊14B真实read/write及客户端文件已验，结果20、9字节和精确名称匹配。群模型43正确，但正文投递未知、附件未提交。
+- 首次私聊4B把预期20写成10，客户端下载也确认是10；下一次14B算对20，但与旧输出重名，客户端保存时加了 `(1)`，精确文件名未通过。最终私聊改用未占用的新名称通过，前两次记录仍保留。
+- 钉钉遇到同名文件可能添加 `(1)` 等序号；需要精确名称时，应选择本会话/钉盘尚未占用的输出名。以客户端另存后的实际字节、SHA-256和名称验收，不额外要求图形编辑器。
+
+本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。 [实测范围](docs/154-openclaw-real-files-and-client-receipts.md) · [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)（合并与部署收据）
 
 记录影响使用者的变化。源码中的包版本当前为 `0.1.0`，不表示已发布正式版本、存在远端 release 或通过全部验收。精确部署与证据见[当前总览](docs/102-user-requirements-and-roadmap.md)，完整历史见[证据账本](plans/completion/EVIDENCE.md)。
 
@@ -51,6 +55,6 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 
 - 独立 CLI、loopback HTTP API、持久 consumer；group/direct 多路由与显式身份。
 - 持久发送回执、幂等、未知状态对账、原件缓存与摘要校验。
-- 可选 gateway 的任务/session/outbox、发送人白名单、取消和恢复；Kimi/Codex/Pi 有各自真实验证范围，OpenClaw 尚缺真实模型验收。
+- 可选 gateway 的任务/session/outbox、发送人白名单、取消和恢复；Kimi/Codex/Pi 有各自真实验证范围，当阶段OpenClaw尚缺真实模型验收；后续原生通道私聊实测见E154。
 
 历史失败、未证类型与长期可靠性证据保持在[验收矩阵](plans/completion/ACCEPTANCE_MATRIX.md)。本记录不承诺任意格式、所有组织、所有模型或持续无错误运行。

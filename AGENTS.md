@@ -1,5 +1,7 @@
 # 钉钉 bridge 工作约定
 
+E154部分实测：私聊14B真实read/write与客户端下载通过；群正文原键未知、附件未提交。E150运输在跑，两路执行权暂交canary、旧gateways暂退；禁止按旧绑定并发恢复执行。合并/正式部署只按[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)实际收据，自动合并未开启。
+
 2026-11-18，E153。用户已要求下一阶段在新分支 `codex/native-agent-channel` 开发，核心 IM 工作树保留。部署与开发分支的区别见[阶段记录](docs/153-channel-presentation-and-openclaw.md)。
 
 E152。主线是普通账号群/私聊 IM 及可选 Agent 适配器。按用户意见暂缓真人账号主动发原生语音条。实际部署为 E150 的 `0e151fb`，媒体实测至 E151。宿主接口、社区先例与建议的首项交付见[适配器选型](docs/152-community-agent-adapters.md)。
@@ -12,7 +14,7 @@ E152。主线是普通账号群/私聊 IM 及可选 Agent 适配器。按用户�
 
 ## 产品与当前执行边界
 
-交付runtime/组织无关的普通账号IM工具，CLI/HTTP/consumer独立，gateway可选。DWS负责身份、通讯、历史、资源、办公，bridge补路由/白名单/任务/session/幂等/原件/恢复。原R09至少一个执行器已满足；Kimi/Codex/Pi各自已验范围保留，Pi图片及OpenClaw真实模型/UI未验，不追加四runtime全过门槛。
+交付runtime/组织无关的普通账号IM工具，CLI/HTTP/consumer独立，gateway可选。DWS负责身份、通讯、历史、资源、办公，bridge补路由/白名单/任务/session/幂等/原件/恢复。原R09至少一个执行器已满足；Kimi/Codex/Pi各自已验范围保留，Pi图片及内置OpenClaw CLI适配的真实模型/UI未验；E154原生通道私聊另有真实文件样本、群投递未知，不追加四runtime全过门槛。
 
 优先使用官方 DWS，以用户能收发、获取、处理和播放的结果判断媒体能力。群和私聊均已实证 WAV 文件、MP4 视频卡片，以及原生语音入站和客户端播放。程序主动发音频可用 WAV 附件。独立 video 协议尚未验证。
 

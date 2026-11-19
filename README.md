@@ -8,11 +8,11 @@
 
 **可用于普通账号的群聊和私聊。** 已验证文字、文件、引用、接收原生语音、组合图片逐张保存，以及由真实工具处理后回传文件。普通账号通过 bridge 发音频时可用 WAV 附件；原生语音条出站尚未实现。[能力与范围](docs/102-user-requirements-and-roadmap.md) · [交付路线图](docs/ROADMAP.md)
 
-E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。
+核心IM已登记部署检查点为[E150](docs/150-native-voice-and-acceptance-scope.md)。E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。
 
 14 项 MUST 已通过 13 项，R06 媒体验收为部分通过。[原判据与四方向矩阵](plans/completion/ACCEPTANCE_MATRIX.md)
 
-开发分支 `codex/native-agent-channel` 提供可选的 OpenClaw 普通账号通道，并将内置 gateway 的聊天正文默认交由宿主决定。[安装与配置](integrations/openclaw-channel/README.md) · [消息模式与验证范围](docs/153-channel-presentation-and-openclaw.md)
+OpenClaw 原生通道已完成私聊真实模型文件任务和客户端下载；群聊模型已完成，正文投递未知、附件尚未提交，双路验收未完成。[安装与配置](integrations/openclaw-channel/README.md) · [实测与保留失败](docs/154-openclaw-real-files-and-client-receipts.md) · [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)（合并与部署收据）
 
 ## 可以做什么
 
@@ -25,7 +25,7 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 | 多文件任务 | 多条附件关联同一任务、实际工具处理、文件回原会话及客户端下载打开已有真实验证；不等于任意多文件合成一个消息气泡 |
 | 单条图文组合 | 群聊、私聊各验一条双 PNG 消息。可从会话「文件」进入「图片及视频」，选中缩略图，在查看器中下载并保存，四张原件均已打开并核对 SHA-256。任意多文件同一气泡仍未实现 |
 | 程序消费 | HTTP 事件接口、持久游标、附件物化和异常消息隔离；consumer 不自动调用模型或回复 |
-| 可选任务执行 | Kimi、Codex、Pi 各有实际工具/会话/交付证据；OpenClaw 适配尚缺真实模型验收，具体范围见[运行器接入表](docs/architecture/agent-integration-map.md) |
+| 可选任务执行 | Kimi、Codex、Pi 各有实际工具/会话/交付证据；OpenClaw 原生通道私聊文件任务已实测，群聊仍为未知投递；内置CLI适配另计，具体范围见[运行器接入表](docs/architecture/agent-integration-map.md) |
 
 DWS 负责认证、通讯、历史、资源和办公能力；bridge 补充路由、持久状态、原件校验和执行控制。PNG/JPEG 原生图片上传使用[窄补充入口](integrations/dws_image_upload/README.md)，复用固定官方实现。单文件上限 20 MiB，原生图片上限 2 MiB。未知投递保留原业务键对账，不自动换键重发。
 

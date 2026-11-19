@@ -598,3 +598,15 @@ E150（2026-11-17）：实际部署 `0e151fb`，25模块与已测wheel、实际�
 ## E153 — 产品消息呈现与 OpenClaw 原生宿主
 
 2026-11-18。只读核对历史发件账本，逐层定位装饰和投递逻辑。新分支实现产品/诊断呈现、原生宿主插件、路由独占与持久收发。各层检验和真实账户范围见[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)。
+
+## E154 — OpenClaw部分现场实测
+
+E154 原生 OpenClaw 通道的私聊真实文件任务已通过：14B 模型实际读取本次唯一输入，处理三条 SKU，写出唯一结果文件；客户端显示与模型一致的完整正文，另存的9字节原件 `total\n20\n` 与宿主文件一致，精确文件名通过。
+
+群聊模型结果为43，但发送正文返回 `request_failed` / `outcome_unknown`。原键没有 `openTaskId` 或 `messageId`，当前历史未命中；附件从未提交。群聊接收未通过，不能将模型完成计为投递成功，也不换键重发。
+
+首次私聊4B把预期20写成10，客户端下载也确认是10；下一次14B算对20，但与旧输出重名，客户端保存时加了 `(1)`，精确文件名未通过。最终私聊改用未占用的新名称通过，前两次记录仍保留。
+
+E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。 本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。
+
+[阶段报告](../../docs/154-openclaw-real-files-and-client-receipts.md) · [脱敏结果](../../evidence/2026-11-19/openclaw-real-files-and-client-receipts.json)。原UI材料不公开，原PRD/矩阵不改。

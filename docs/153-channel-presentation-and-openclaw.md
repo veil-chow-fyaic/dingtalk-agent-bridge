@@ -1,5 +1,7 @@
 # E153 · 聊天正文与 OpenClaw 原生通道
 
+以下保留E153阶段的实现/合成测试和当时现场状态；后续私聊真实文件及群未知投递见[E154](154-openclaw-real-files-and-client-receipts.md)，合并/部署收据见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。
+
 开发分支 `codex/native-agent-channel` 从已验证的公共主分支 `e4b650f` 建立。现场运行的版本仍是 E150 的 `0e151fb`。本阶段的次序是查清用户看见的消息由谁生成，调整内置 gateway 的默认呈现，再把同一套普通账号收发接到现有 OpenClaw Gateway。
 
 ## 一条消息由谁决定

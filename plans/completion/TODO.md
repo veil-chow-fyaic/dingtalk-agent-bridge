@@ -4,7 +4,10 @@
 
 - [x] E152 核对原始需求与三类宿主的普通账号社区项目、官方协议、媒体与可靠性边界。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
 - [x] E153 新分支实现产品/诊断呈现和 OpenClaw 原生通道。[E153 实现与验收](../../docs/153-channel-presentation-and-openclaw.md)
-- [ ] OpenClaw 真实模型与授权钉钉客户端的双路两轮文件任务、取消和恢复验收。原绑定与未知交付须按既有流程核对。
+- [x] E154原生OpenClaw私聊14B真实read/write、正文及客户端唯一9字节文件通过；4B错误和14B重名失败保留。
+- [ ] 群原键未知投递核对：正文request_failed/outcome_unknown，无openTaskId/messageId且历史未命中，附件未提交；不换键重发。
+- [ ] 原生通道双路整体、真实两轮续接、取消和恢复按各自证据验收；E153合成结果不替代现场。
+- [ ] [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 合并/CI/部署按收据推进，自动合并未开启。
 - [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。
 - [x] 通用CLI/HTTP/consumer、双路文字/常用文件/PNG/JPEG/WAV/MP4、引用、持久任务/session/outbox与原件同会话交付。
 - [x] E150三处产品修复：无DNS启动、新路由图片helper继承、原生语音标记与原件消费；533项源码及双Python安装各通过，独立审查完成。
@@ -24,4 +27,4 @@
 
 用户要求已授权事项直接闭环，不要靠定时提示推动；原bridge聊天自动化已删除。仅对明确新入口或真实缺口继续，不重复旧受阻点击/403探测，不以巡检或文档数量充进度。
 
-OpenClaw真实模型/UI、Pi图片、R15办公更多流程、R16跨组织/多人、R17流式/审批、C05多宿主仅实际需求和现成授权条件具备时独立推进。R09至少一个执行器已满足。现场范围、凭据及系统禁令保持AGENTS。
+OpenClaw群接收及未覆盖的真实生命周期、Pi图片、R15办公更多流程、R16跨组织/多人、R17流式/审批、C05多宿主仅实际需求和现成授权条件具备时独立推进。R09至少一个执行器已满足。现场范围、凭据及系统禁令保持AGENTS。
