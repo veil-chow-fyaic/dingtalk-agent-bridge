@@ -524,7 +524,7 @@ with ExitStack() as stack:
     publish("fixture-dm", message("fixture-dm", "stop", "/stop"))
     wait(
         lambda: dispatch_status("fixture-dm-stop") == "done"
-        and dispatch_status("fixture-dm-slow") == "unknown",
+        and dispatch_status("fixture-dm-slow") == "canceled",
         30,
         [bridge, gateway],
     )
@@ -537,8 +537,27 @@ with ExitStack() as stack:
         for r, k in [("fixture-group", "G1"), ("fixture-dm", "D1")]
     )
 
+    # A confirmed unsent cancellation is terminal across restart, not replayable.
+    def cancel_calls():
+        return sum("mark-CANCELPROBE" in next((payload_text(m) for m in reversed(item["messages"])
+                   if m["role"] == "user" and "mark-" in payload_text(m)), "") for item in requests)
+    calls_before_restart = cancel_calls()
+    assert calls_before_restart == 1
+    stop_process(gateway)
+    gateway = start(stack, args, root / "workspace", env, "gateway-after-cancel")
+    publish("fixture-dm", message("fixture-dm", "after-cancel", "mark-D2"))
+    wait(lambda: dispatch_status("fixture-dm-after-cancel") == "done", 70, [bridge, gateway])
+    assert dispatch_status("fixture-dm-slow") == "canceled" and cancel_calls() == calls_before_restart
+    assert len(sent()) == first + 1 and sent()[-1].get("text") == "second D2"
+    first = len(sent())
+
     stores = list((service / "local/consumers").glob("openclaw-*-org-pilot-01/inbox.sqlite3"))
     assert len(stores) == 2
+    cancellation_links = []
+    for path in stores:
+        with sqlite3.connect(path.as_uri() + "?mode=ro", uri=True) as db:
+            cancellation_links.extend(db.execute("SELECT message_id,cancel_message_id FROM host_cancellations"))
+    assert cancellation_links == [("fixture-dm-slow", "fixture-dm-stop")]
     # 2026.7 stores JSONL files. 2026.11 uses a per-agent SQLite transcript with optional zstd events.
     org = root / "state/agents/org-team"
     if july_host:
@@ -684,6 +703,10 @@ with ExitStack() as stack:
                 "totalPhysicalSends": len(sent()),
                 "restartDuplicates": 0,
                 "cancelLatePhysicalSends": 0,
+                "unsentCancelStatus": "canceled",
+                "canceledTurnReplayedAfterRestart": False,
+                "postCancelNewTurnPassed": True,
+                "cancellationLinkPersisted": True,
                 "provider": "synthetic loopback",
                 "dws": "synthetic executable",
             }

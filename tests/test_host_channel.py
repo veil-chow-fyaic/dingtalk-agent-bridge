@@ -2,6 +2,7 @@ import base64
 import hashlib
 import io
 import json
+import sqlite3
 from pathlib import Path
 import tempfile
 import unittest
@@ -125,6 +126,86 @@ class HostChannelTests(unittest.TestCase):
         self.api.events.append(event(3, text='/agent cancel'))
         self.assertIsNone(self.channel.poll_cancel(active['id'])['message'])
         self.assertIsNone(self.channel.poll_cancel('unknown-id')['message'])
+
+    def canceled_turn(self):
+        self.api.events = [event(1, text='/agent work'), event(2, text='/agent cancel'),
+                           event(3, text='/agent next')]
+        self.assertEqual(self.channel.poll()['message']['id'], 'm1')
+        self.assertEqual(self.channel.poll_cancel('m1')['message']['id'], 'm2')
+        self.channel.ack('m2', 'done')
+
+    def test_confirmed_unsent_cancellation_is_terminal_across_restart(self):
+        self.canceled_turn()
+        request = {'op': 'ack', 'messageId': 'm1', 'status': 'canceled', 'cancelMessageId': 'm2'}
+        self.assertEqual(self.channel.handle(request), {'status': 'canceled'})
+        mapping = [tuple(row) for row in self.channel.db.execute('SELECT * FROM host_cancellations')]
+        self.assertEqual(mapping, [('m1', 'm2')])
+        self.open()
+        self.assertEqual(self.channel.handle(request), {'status': 'canceled'})
+        with self.assertRaisesRegex(ChannelError, 'dispatch_state_conflict'):
+            self.channel.handle({**request, 'cancelMessageId': 'm3'})
+        self.assertEqual([tuple(row) for row in self.channel.db.execute('SELECT * FROM host_cancellations')], mapping)
+        self.assertEqual(self.channel.handle({'op': 'summary'})['dispatch'], {'canceled': 1, 'done': 1})
+        self.assertEqual(self.channel.poll()['message']['id'], 'm3')
+
+    def test_cancellation_mapping_and_terminal_status_commit_atomically(self):
+        self.canceled_turn()
+        self.channel.db.execute("""CREATE TRIGGER reject_cancel BEFORE UPDATE OF status ON host_dispatch
+            WHEN NEW.status='canceled' BEGIN SELECT RAISE(ABORT, 'synthetic commit failure'); END""")
+        with self.assertRaisesRegex(sqlite3.IntegrityError, 'synthetic commit failure'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.assertEqual(self.channel.db.execute('SELECT count(*) FROM host_cancellations').fetchone()[0], 0)
+        self.assertEqual(self.channel.db.execute("SELECT status FROM host_dispatch WHERE message_id='m1'").fetchone()[0], 'claimed')
+        self.channel.db.execute('DROP TRIGGER reject_cancel')
+        self.assertEqual(self.channel.ack('m1', 'canceled', 'm2'), {'status': 'canceled'})
+
+    def test_cancellation_requires_matching_stop_and_acknowledged_control(self):
+        self.api.events = [event(1, text='/agent work'), event(2, text='/agent cancel', sender='stranger'),
+                           event(3, text='/agent cancel')]
+        self.channel.poll()
+        with self.assertRaisesRegex(ChannelError, 'invalid_ack'):
+            self.channel.ack('m1', 'canceled')
+        with self.assertRaisesRegex(ChannelError, 'cancellation_not_proven'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.assertEqual(self.channel.poll_cancel('m1')['message']['id'], 'm3')
+        with self.assertRaisesRegex(ChannelError, 'cancellation_not_proven'):
+            self.channel.ack('m1', 'canceled', 'm3')
+        self.channel.ack('m3', 'done')
+        with self.assertRaisesRegex(ChannelError, 'cancellation_not_proven'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.assertEqual(self.channel.ack('m1', 'canceled', 'm3'), {'status': 'canceled'})
+
+    def test_send_before_stop_keeps_unknown_and_cannot_be_reclassified(self):
+        self.canceled_turn()
+        self.channel.handle({'op': 'send', 'key': 'submitted', 'text': 'already sent'})
+        with self.assertRaisesRegex(ChannelError, 'cancellation_not_proven'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.channel.ack('m1', 'unknown')
+        with self.assertRaisesRegex(ChannelError, 'dispatch_state_conflict'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.open()
+        self.assertEqual(self.channel.poll()['message']['id'], 'm3')
+        self.assertEqual(len(self.api.sends), 1)
+        self.assertEqual(self.channel.db.execute('SELECT count(*) FROM host_cancellations').fetchone()[0], 0)
+
+    def test_lost_send_response_and_restarted_stop_proof_stay_unknown(self):
+        self.canceled_turn()
+        self.api.lost = True
+        with self.assertRaises(OSError):
+            self.channel.handle({'op': 'send', 'key': 'lost', 'text': 'uncertain'})
+        with self.assertRaisesRegex(ChannelError, 'cancellation_not_proven'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.open()
+        with self.assertRaisesRegex(ChannelError, 'dispatch_state_conflict'):
+            self.channel.ack('m1', 'canceled', 'm2')
+        self.assertEqual(self.channel.handle({'op': 'summary'})['dispatch'], {'unknown': 1, 'done': 1})
+        self.assertEqual(self.channel.db.execute('SELECT count(*) FROM host_cancellations').fetchone()[0], 0)
+        self.assertEqual(self.channel.poll()['message']['id'], 'm3')
+
+    def test_earlier_turn_send_does_not_block_new_unsent_cancellation(self):
+        self.channel.handle({'op': 'send', 'key': 'earlier', 'text': 'earlier turn'})
+        self.canceled_turn()
+        self.assertEqual(self.channel.ack('m1', 'canceled', 'm2'), {'status': 'canceled'})
 
     def test_quoted_group_attachment_sha_and_bad_bytes(self):
         self.api.events = [event(1, text='/agent inspect this', refs=[ref('fileId', 'source')], quote={

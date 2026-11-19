@@ -149,7 +149,7 @@ test("cancel only reaches current sender's run and fences late output", async()=
   assert.equal(state.sends.length,0);
   assert.equal(state.acks.find(a=>a.messageId==="cancel").status,"done");
   assert.equal(state.acks.find(a=>a.messageId==="wrong").status,"ignored");
-  assert.equal(state.acks.find(a=>a.messageId==="task").status,"unknown");
+  assert.equal(state.acks.find(a=>a.messageId==="task").status,"canceled");
   if(state.contexts.length) assert.equal(aborted,true);
 });
 

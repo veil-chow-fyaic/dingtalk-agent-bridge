@@ -85,6 +85,10 @@ class HostChannel:
         self.control_turn = None
         self.control_cursor = 0
         self.file_selection = None
+        # Ephemeral evidence only: a restarted owner cannot certify cancellation.
+        self.send_attempts = 0
+        self.claim_send_epochs = {}
+        self.cancel_matches = {}
         _, key = execution_scope(route)
         # This path is also held for the full lifetime of a pre-plugin gateway.
         # Sharing only its lock preserves its existing inbox, tasks and session.
@@ -99,6 +103,8 @@ class HostChannel:
             self.db.executescript('''
                 CREATE TABLE IF NOT EXISTS host_dispatch (
                     message_id TEXT PRIMARY KEY, status TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_cancellations (
+                    message_id TEXT PRIMARY KEY, cancel_message_id TEXT NOT NULL UNIQUE);
                 CREATE TABLE IF NOT EXISTS host_sends (
                     key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_plans (
@@ -137,6 +143,7 @@ class HostChannel:
         # A process death after this commit therefore needs review, never a second turn.
         with self.db:
             self.db.execute("INSERT INTO host_dispatch VALUES (?, 'claimed')", (message['id'],))
+        self.claim_send_epochs[message['id']] = self.send_attempts
         return message
 
     def receive(self):
@@ -192,7 +199,9 @@ class HostChannel:
                 continue
             text = raw.strip()
             if (direct and text == '/stop') or re.fullmatch(r'/agent\s+(?:cancel|/stop)', text):
-                return {'message': self.claim(msg)}
+                control = self.claim(msg)
+                self.cancel_matches[control['id']] = active_id
+                return {'message': control}
         # Immediately examine the next page when there is local or upstream backlog.
         # Each call fetches at most one transport page and reads at most 200 inbox rows.
         return {'message': None, 'hasMore': len(page) == 200}
@@ -266,14 +275,29 @@ class HostChannel:
                  and p.get('name') == selected['name'] and p['resource'] == selected['resource']]
         return {'part': part}
 
-    def ack(self, mid, status):
-        if not isinstance(mid, str) or status not in ('done', 'ignored', 'unknown'):
+    def ack(self, mid, status, cancel_id=None):
+        if (not isinstance(mid, str) or status not in ('done', 'ignored', 'unknown', 'canceled')
+                or (status == 'canceled' and (not isinstance(cancel_id, str) or not cancel_id))):
             raise ChannelError('invalid_ack')
         with self.db:
             row = self.db.execute('SELECT status FROM host_dispatch WHERE message_id=?', (mid,)).fetchone()
             if row is None or row[0] not in ('claimed', status):
                 raise ChannelError('dispatch_state_conflict')
+            if status == 'canceled' and row[0] == 'claimed':
+                control = self.db.execute('SELECT status FROM host_dispatch WHERE message_id=?',
+                                          (cancel_id,)).fetchone()
+                if (self.cancel_matches.get(cancel_id) != mid or control is None or control[0] != 'done'
+                        or self.claim_send_epochs.get(mid) != self.send_attempts):
+                    raise ChannelError('cancellation_not_proven')
+                self.db.execute('INSERT INTO host_cancellations VALUES (?,?)', (mid, cancel_id))
+            elif status == 'canceled':
+                prior = self.db.execute('SELECT cancel_message_id FROM host_cancellations WHERE message_id=?',
+                                        (mid,)).fetchone()
+                if prior is None or prior[0] != cancel_id:
+                    raise ChannelError('dispatch_state_conflict')
             self.db.execute('UPDATE host_dispatch SET status=? WHERE message_id=?', (status, mid))
+        self.claim_send_epochs.pop(mid, None)
+        self.cancel_matches = {control: active for control, active in self.cancel_matches.items() if active != mid}
         if self.file_selection and self.file_selection[0] == mid:
             self.file_selection = None
         return {'status': status}
@@ -410,6 +434,9 @@ class HostChannel:
         return receipt
 
     def send(self, key, request):
+        # Conservatively include retries/invalid requests. No canceled claim may
+        # conceal a send whose stdio/HTTP outcome could have been lost.
+        self.send_attempts += 1
         intent, content = self.submission(request)
         self.verify_planned_send(key, intent, content)
         fingerprint = hashlib.sha256(json.dumps(intent, sort_keys=True).encode()).hexdigest()
@@ -453,7 +480,7 @@ class HostChannel:
                 return self.select_files(mid)
             return self.selected_file(mid, request.get('index'))
         if op == 'ack':
-            return self.ack(request.get('messageId'), request.get('status'))
+            return self.ack(request.get('messageId'), request.get('status'), request.get('cancelMessageId'))
         if op == 'summary':
             return {'cursor': self.inbox.cursor, 'dispatch': dict(self.db.execute(
                 'SELECT status,count(*) FROM host_dispatch GROUP BY status'))}

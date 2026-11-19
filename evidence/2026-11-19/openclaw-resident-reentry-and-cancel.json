@@ -1,0 +1,67 @@
+{
+  "evidenceId": "E160",
+  "date": "2026-11-19",
+  "scope": "Resident DingTalk group and direct channel; synthetic business inputs in actual resident workspace, actual tools and receiving client.",
+  "runtimeAtCheckpoint": {
+    "independentTransportCoreCommit": "d444ccf9f720b10c77b961b2bedd33476fb8d46d",
+    "coreModules": 26,
+    "installedChannelVersion": "0.2.1",
+    "installedJavaScriptAndIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457",
+    "loadedHostJavaScriptVersion": "not independently established from the running process",
+    "groupExecutionOwner": "resident-openclaw",
+    "directExecutionOwner": "resident-openclaw"
+  },
+  "reentryAfterE159FullHandback": {
+    "sameOrganizationAgentAndHostAccount": true,
+    "newNamedConsumer": true,
+    "hostSessionIdsRetainedFromFirstPilot": 2,
+    "newIndependentFollowups": {
+      "group": 1,
+      "direct": 1
+    },
+    "receivingClientMatchedEachRoutesOriginalBatch": true,
+    "confirmedNewPhysicalDeliveries": 2,
+    "replayedPhysicalDeliveries": 0
+  },
+  "liveStop": {
+    "control": "/stop",
+    "sentByOriginalRequester": true,
+    "modelAborted": true,
+    "readOnlyToolCallsBeforeStop": 10,
+    "assistantFinalTextAfterStop": false,
+    "lateDeliveriesObserved": 0,
+    "controlStatus": "done",
+    "claimedInputStatus": "unknown",
+    "durableCancellationRelationFound": false,
+    "inputRetried": false,
+    "subsequentIndependentQuerySucceeded": true
+  },
+  "handback": {
+    "earlierVerifiedFullHandback": "E159",
+    "strictHandbackWithNewUnlinkedUnknown": "would refuse",
+    "unrelatedEarlierE154Send": "outcome_unknown; retained under original key"
+  },
+  "candidateValidation": {
+    "pythonTestsPassed": 577,
+    "nodeTestsPassed": 30,
+    "fixedRealSdkVersions": [
+      "2026.7.1-2",
+      "2026.11.3"
+    ],
+    "testBackends": "synthetic DWS and provider",
+    "checked": [
+      "durable link from cancel control to the target input",
+      "restart",
+      "independent subsequent task"
+    ],
+    "productionRetroactiveResolution": false
+  },
+  "originalMust": {
+    "passed": 13,
+    "total": 14,
+    "partial": [
+      "R06"
+    ],
+    "fullProductAcceptance": false
+  }
+}

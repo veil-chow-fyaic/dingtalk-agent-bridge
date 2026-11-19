@@ -91,6 +91,6 @@ Inbox先同事务写原事件与游标，再物化媒体。pending_media、media
 
 有时间范围的本地统计、部署版本、UI矩阵及未完成项见[当前状态](17-requirements-progress-review.md)和[验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)。Kimi/Codex/Pi各自真实工具与交付证据保留；E131 Kimi订阅访问403导致该次任务失败，内置 OpenClaw CLI 执行器的验证仍限合成样本。原生 OpenClaw 通道已有群聊、私聊真实模型文件任务和客户端逐件下载证据。通用工具无需启动任何runtime。群/私聊、音视频file、引用气泡、双PNG组合各按实际范围记录，各类语音方向和组合能力按矩阵逐格判断，任意单消息多文件及外部群未验。WeCom模型仅为参考，本项目没有兼容其WebSocket接口的承诺。
 
-[原生通道双路验收](155-openclaw-two-route-file-acceptance.md) · [部署与现用 owner](156-native-channel-deployment.md)
+[原生通道双路验收](155-openclaw-two-route-file-acceptance.md) · [核心部署](156-native-channel-deployment.md) · [常驻执行归属](resident-openclaw-pilot.md#现场验收)
 
 产品与合成fixture可分享；身份/令牌、聊天、UI及原始运行证据留本机`local/`。复核已完成实验只读，不再次发送。历史失败、未知和平台阻塞保持原状态，24h按真实时长单独判定。

@@ -3,11 +3,11 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E158",
-    "latestUiEvidence": "E155",
+    "documentationEvidence": "E160",
+    "latestUiEvidence": "E160",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
-    "candidateProduct": "E158",
+    "candidateProduct": "c1cf86e",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -16,7 +16,7 @@
     "mustGaps": [
       "R06"
     ],
-    "openclawCandidateProduct": "92b4f4b",
+    "openclawCandidateProduct": "c1cf86e",
     "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
     "automationPurpose": "none_user_requested_direct_ownership",
@@ -25,8 +25,25 @@
     "sourceCommit": "92b4f4bb04beb8e4791006a659c08aba58d7bfaf",
     "publicMergeCommit": "d59e7e40997498f6aacc9bded22a1f588c9de0ac",
     "sourceTree": "19fad29acc98af10807b774a24825116cefb0f54",
-    "openclawResident": false,
-    "dingtalkResidentChannelEnabledAtE156": false
+    "openclawResident": true,
+    "dingtalkResidentChannelEnabledAtE156": false,
+    "residentDeploymentEvidence": "E160",
+    "residentChannelAndIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457",
+    "residentPilotActiveOnRestoreCheckAtE159": false,
+    "executionOwnerDuringFirstE159Pilot": {
+      "group": "resident-openclaw",
+      "direct": "resident-openclaw"
+    },
+    "executionOwnerAtFirstE159RestoreCheck": {
+      "group": "original-group-gateway",
+      "direct": "original-direct-gateway"
+    },
+    "residentInstalledPluginVersion": "0.2.1",
+    "residentInProcessJavaScriptVersion": "not-established",
+    "executionOwnerAtE160": {
+      "group": "resident-openclaw",
+      "direct": "resident-openclaw"
+    }
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {

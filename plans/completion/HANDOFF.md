@@ -1,10 +1,10 @@
 # 当前接手事实
 
-**现场部署和执行归属。** E156 核对 `d444ccf` 的 26 个产品模块及启动来源。transport、群 Kimi gateway、私聊 Pi gateway 已恢复；101 个既有任务、245 条 Agent 发件记录和原会话绑定均已核对。临时 OpenClaw 已退出。 [部署及短观察](../../docs/156-native-channel-deployment.md)
+**现场部署和执行归属。** E159 的完整回切已完成。E160 再次将两路交回同一组织 OpenClaw，使用新具名消费者，原会话 ID 保留。独立 transport 核心 `d444ccf`、26 个模块；磁盘安装的 0.2.1 插件 JS 及隔离 Python 来自 `c1cf86e`，运行中宿主 JS 版本尚缺独立证明。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 **已验范围。** 原生 OpenClaw 用真实模型在群聊和私聊读取原件、写出结果，钉钉收件方核对了正文、文件名和原件摘要。E154 一笔旧群正文没有官方任务 ID 或消息 ID，附件未提交。其输入已执行，固定截止点下按原键隔离；新群任务的成功回执单独保留。 [E155 双路收件](../../docs/155-openclaw-two-route-file-acceptance.md) · [E154 原记录](../../docs/154-openclaw-real-files-and-client-receipts.md)
 
-**下一阶段。** 在已有微信通道的 OpenClaw 上试点常驻钉钉，只用原授权钉钉范围。先核单一 owner、旧未知和游标，验证两轮会话、取消、恢复和回切。微信只读无内容健康状态。实测原件、账号信息和日志留本机。 [试点操作](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点) · [当前任务池](TODO.md)
+**接续工作。** 已实测模型因 `/stop` 中止；控制行 `done`、原已领取输入 `unknown`，两者没有持久关联。这笔旧入站将阻止当前严格回切，原任务未重试；E154 则是另一笔群发送结局未知。后续独立查询正常。 [现场与合成范围](../../docs/resident-openclaw-pilot.md#再次接管与运行中取消)
 
 ## 较早版本与证据
 
