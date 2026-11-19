@@ -8,7 +8,7 @@
 - [ ] E154旧群原键未知投递核对（新任务不关闭）：正文request_failed/outcome_unknown，无openTaskId/messageId且历史未命中，附件未提交；不换键重发。
 - [x] E155原生通道双路真实模型/运输及客户端文件验收；新群商品筛色任务独立于旧43未知。
 - [ ] 真实两轮续接、取消和恢复按各自证据验收；E153合成结果不替代现场。
-- [ ] [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已满足双路文件验收，可进入合并检查；合并/CI/部署状态只按实际收据，部署回执待取得。
+- [x] [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)四项CI通过并合并；[E156部署收据](../../docs/156-native-channel-deployment.md)核对26模块、原三服务及短观察。OpenClaw未常驻执行，全部产品仍未完成。
 - [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。
 - [x] 通用CLI/HTTP/consumer、双路文字/常用文件/PNG/JPEG/WAV/MP4、引用、持久任务/session/outbox与原件同会话交付。
 - [x] E150三处产品修复：无DNS启动、新路由图片helper继承、原生语音标记与原件消费；533项源码及双Python安装各通过，独立审查完成。

@@ -4,7 +4,7 @@ E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛
 
 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
 
-核心运输已登记检查点仍为E150 / `0e151fb`；E154记录过临时canary接管及旧gateway退让，当前归属与后续部署须另按实际收据核对。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
+E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](156-native-channel-deployment.md)。
 
 **当前主线（E152）** 是让使用 OpenClaw、Hermes 和 DeepSeek Harness 的人能从普通钉钉群和私聊交付任务、取回原件。先采用宿主公开插件接口和 ACP，复用 bridge 的收发和对账。程序主动发原生语音条按用户意见暂缓。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
 
@@ -36,13 +36,13 @@ E154旧43出库单的未知投递与附件未提交仍保留当时事实；新�
 
 | 层次 | 结果 |
 |---|---|
-| 核心运输与执行方 | E150 / `0e151fb`为已登记核心运输；临时canary与正式部署分开，最新合并/部署看[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)实际收据 |
-| 安装候选 | E150，同一MIT wheel `865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed` |
+| 核心运输与执行方 | E156 / `d444ccf`，26模块；transport与原群Kimi/私聊Pi gateway已启动，默认product；canary已停止，未常驻OpenClaw执行。见[部署记录](156-native-channel-deployment.md) |
+| E150历史安装包 | E150，同一MIT wheel `865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed` |
 | E150 本地完整测试 | 冻结源码、Python3.14安装、Python3.11安装各533项通过，每套一次；初轮532中的真实失败保留，测试契约改后再验证 |
 | 原24h观察 | 观察产品是旧部署`2b479a8`，不是新候选。原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。 |
-| 原生OpenClaw候选 | E155两路文件接收通过；新群筛色任务独立，E154旧未知不改。本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。 |
+| 原生OpenClaw通道 | E155两路文件接收通过；新群筛色任务独立，E154旧未知不改。本候选本机回归为569项Python测试和14项Node测试；该本机测试记录不扩写为多环境安装；PR #9的四项CI通过及合并另按E156收据登记。 |
 | 正常续期 | E028已证access预刷新及跨旧到期同步；无效refresh凭据恢复未证，不能称凭据系统根治 |
-| GitHub | [公开MIT仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，受保护main、两个系统和两个 Python 版本的四项检查、PR、隐私排除和私密漏洞报告；具体运行SHA见E150及GitHub检查 |
+| GitHub | [公开MIT仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，受保护main、两个系统和两个 Python 版本的四项检查、PR、隐私排除和私密漏洞报告；具体部署/合并SHA见E156，历史检查范围按各阶段记录 |
 
 E150 的产品变更包括避免 HTTP 启动时反向 DNS 查询、同账号新路由继承图片 helper、解析入站语音标记。E151 的现场验证沿用该部署及固定 DWS v1.0.67。
 

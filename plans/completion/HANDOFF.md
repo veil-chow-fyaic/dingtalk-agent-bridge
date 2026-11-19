@@ -4,7 +4,7 @@ E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛
 
 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
 
-核心运输已登记检查点仍为E150 / `0e151fb`；E154记录过临时canary接管及旧gateway退让，当前归属与后续部署须另按实际收据核对。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
+E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](../../docs/156-native-channel-deployment.md)。
 
 首次私聊4B把预期20写成10，客户端下载也确认是10；下一次14B算对20，但与旧输出重名，客户端保存时加了 `(1)`，精确文件名未通过。最终私聊改用未占用的新名称通过，前两次记录仍保留。 [脱敏结果](../../evidence/2026-11-19/openclaw-real-files-and-client-receipts.json)。
 
@@ -12,9 +12,9 @@ E154旧43出库单的未知投递与附件未提交仍保留当时事实；新�
 
 ## 版本与证据
 
-- E150核心运输部署检查点：`0e151fb78a61e44cf2d593c58ac559bd9d598f9c` / E150，25模块。当前文档HEAD可能更后，不能冒充部署。
-- 同一已测MIT wheel：`865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed`；[验证](../../evidence/2026-11-17/native-voice-inbound-validation.json)为源码/Python3.14安装/Python3.11安装各533通过；[首轮失败](../../evidence/2026-11-17/native-voice-inbound-initial.json)保留。
-- 本次私有实现/测试/入口调查在`local/native-voice-20261117/`；维护/六库备份/新固定cut/积压/启动来源在`local/native-voice-deployment-20261117/`。该次E150维护核对99任务/240 Agent outbox/session与群Kimi/私聊Pi绑定；当前两路执行权临时交canary，不能按旧绑定启动gateway。
+- E150历史运输部署检查点：`0e151fb78a61e44cf2d593c58ac559bd9d598f9c` / E150，25模块。当前文档HEAD可能更后，不能冒充部署。
+- E150历史已测MIT wheel（不代表E156的26模块安装包）：`865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed`；[验证](../../evidence/2026-11-17/native-voice-inbound-validation.json)为源码/Python3.14安装/Python3.11安装各533通过；[首轮失败](../../evidence/2026-11-17/native-voice-inbound-initial.json)保留。
+- 本次私有实现/测试/入口调查在`local/native-voice-20261117/`；维护/六库备份/新固定cut/积压/启动来源在`local/native-voice-deployment-20261117/`。该次E150维护核对99任务/240 Agent outbox/session与群Kimi/私聊Pi绑定；E154临时canary阶段已结束；E156实际执行归属和短观察见上方部署记录。
 - 原run `parallel-hardening-24h-20261116`固定北京时间2026-11-17 18:29:37.189681结束并已审；审计在`local/observation-reviews/parallel-hardening-20261117/`，原run不修改/重审/补造。原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。
 - GitHub公开MIT、受保护main。原本地提交与邮箱规范化公开提交保留等树映射，GitHub合并HEAD/CI测试HEAD另记；最新推送回执在`local/github-publication-20261117/`。不重写原历史、不关闭邮箱隐私、不强推、不跳过检查。
 

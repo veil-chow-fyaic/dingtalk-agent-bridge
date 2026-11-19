@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "stage": "E156",
+  "scope": "Core deployment and short observation, not full-product or resident OpenClaw acceptance",
+  "publication": {
+    "pullRequest": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9",
+    "fourRequiredChecksPassed": true,
+    "mergedAt": "2026-11-19T02:35:34Z",
+    "publicMergeCommit": "d59e7e40997498f6aacc9bded22a1f588c9de0ac"
+  },
+  "identity": {
+    "sourceCommit": "92b4f4bb04beb8e4791006a659c08aba58d7bfaf",
+    "deployedCommit": "d444ccf9f720b10c77b961b2bedd33476fb8d46d",
+    "sameTree": "19fad29acc98af10807b774a24825116cefb0f54",
+    "documentationCommit": "Separate documentation PR; not the deployed product"
+  },
+  "actualReceipt": {
+    "schemaVersion": 1,
+    "recordedAt": "2026-11-19T02:47:52.038178Z",
+    "deployedCommit": "d444ccf9f720b10c77b961b2bedd33476fb8d46d",
+    "deployedTree": "19fad29acc98af10807b774a24825116cefb0f54",
+    "codeSha256": {
+      "__init__.py": "1e819b31dff40118eac7c2eecd56b1c30b02eedb416ef12b209cbfcd30fd207e",
+      "__main__.py": "e518cfc9d6bf73ab8eecbf43a2ec095762d421a5b9556c40986bdca5d36d7c8d",
+      "agent_gateway.py": "2d3be72582a53f7474fe33179b7484247d50163fd5c6c76296475fdc6997474a",
+      "agent_runtime.py": "4d7b948f9c2cb47cd626085ab099240afcc02a30fbff31e9a75eab05d76ae440",
+      "cli.py": "815c49d4125db30c34c40d9e297c4244270521c49a56b520c25071e8609722ad",
+      "composition.py": "cae4dd8ec26aace698cefd2fa704ee1de2893aa6d6e622d21b8b5441750308f1",
+      "configure.py": "6be4c1688a40debe3b5e430add6702c748ddd0e8cfcdb6cbcb1a7ad5e2632a81",
+      "consume.py": "c458a18f145f719b5dd5149141437fe3f212f8eeb6c4473f56d5fb8322d9b3a6",
+      "consumer.py": "75a3e0f25d72ae744a1cdcf2330367c6e9a8df31510d4a55abc47479e12a8410",
+      "core.py": "14055055a114d1442e6f33f1cfad2e471cc0edcfcb4118babd798e7ab7f5559b",
+      "discovery.py": "56e45dd35a84b92c96e1516ca105a678e4f2572939a7fc13d7e84b74373a2653",
+      "doctor.py": "ed8badb484c9709321a309824c70bc3cf7ba29eee1ceedd7db2b96cb4987957b",
+      "dws_access.py": "a596eb9b17a0c8e22227672a195b58114a900ae3e5043a2c4ddd5fa8957905c7",
+      "host_channel.py": "00f7a6ada932ca9209eb02253dd4fe8db6bee1fe9c6b7e3ecf2b3b7a67b9c9ee",
+      "local_http.py": "f57f05cd746e086577e79d853300c557f13c32c1593b3ae1d7907a737d10c3c7",
+      "message_model.py": "b8bce1e91dd4837291c6f1a257cc8745e91ff1aaeadd61723658ab6cea685308",
+      "official_proxy.py": "c4d9f8ec2b8638e979740f50a8bd8902880381ec0525cd0536376dbba69df2f0",
+      "official_tools.py": "540c64735848d5a2b504ba80fbc7635794ec848be79c71882536c1309f57e398",
+      "openclaw_runtime.py": "00a9c92b1bf86c01b6df10115792ae901f3fd17f6d294342e9f0041f8536098a",
+      "provenance.py": "a4e1197dac1afa7f931a7ec5d993de398d7aff14b23e7d3516de50b45c9555ce",
+      "rejection.py": "fd9550c296c6c09f590f647f7799d860ad71dc04c0d5e833c908523ddf71a948",
+      "routing.py": "e92c7a097d29630f7d2fe9cdaf442a14b282ff2513329c91947e4bdc04b14c5f",
+      "runtime_guard.py": "a0972be8aae364b2b26b423527823d9640712224404698ba1f205d12526f4ec7",
+      "service_manager.py": "ab960ce1386fa6cc9b548d4a1466f56c763a4026a99e6c905e5d956fc1b4b1b3",
+      "stream.py": "047d0d8282497d5f6b399658077c7b6bc86cbd3aa92086bc333d410f74c865e4",
+      "text_limits.py": "0a51f87ead744f6774265983182e8bc1eeb5ed449e9390fc93c77e40f7b896c2"
+    },
+    "services": {
+      "transport": {
+        "running": true,
+        "startupVerified": true
+      },
+      "groupGateway": {
+        "runtime": "kimi",
+        "running": true,
+        "startupVerified": true
+      },
+      "directGateway": {
+        "runtime": "pi",
+        "running": true,
+        "startupVerified": true
+      }
+    },
+    "canaryStopped": true,
+    "defaultPresentation": "product",
+    "startupSourcesVerified": true,
+    "configSourcesVerified": true,
+    "statePreserved": true,
+    "guardReady": true,
+    "startupReceiptSha256": "69c95dd0b5ddbba4e7323bf70c6b1120dfe6ed5a5bd9bded31931794a00dca80",
+    "coverage": {
+      "cut": "2026-11-19T02:39:55.752100Z",
+      "sameSnapshot": true,
+      "group": {
+        "watermark": "2026-11-19T02:39:57.946949Z",
+        "historyWindowAbsent": true
+      },
+      "direct": {
+        "watermark": "2026-11-19T02:39:59.096965Z",
+        "historyWindowAbsent": true
+      },
+      "receiptSha256": "bacdf394042b3786432b069423b88d40ec0c8e948bfffae5f703943a5a6cb4a8"
+    },
+    "isolation": {
+      "isolatedUnknownCount": 1,
+      "exactScopeVerified": true,
+      "unknownRemainsUnknown": true,
+      "replayed": false,
+      "resolved": false,
+      "otherPendingCount": 0,
+      "otherUnknownCount": 0,
+      "receiptSha256": "2db074cdb6d538e35b6292d4918360540783bc7f3027de08277b5d953c6308b5"
+    },
+    "shortObservation": {
+      "startedAt": "2026-11-19T02:46:27.409401Z",
+      "endedAt": "2026-11-19T02:47:27.424897Z",
+      "requiredSeconds": 60,
+      "elapsedSeconds": 60.00505337497452,
+      "samples": 13,
+      "unreachableSamples": 0,
+      "errorSamples": 0,
+      "routeErrorOccurrences": 0,
+      "evidenceValid": true,
+      "durationReached": true,
+      "startupSourcesVerified": true,
+      "cutoffCoverageVerified": true,
+      "reviewSha256": "2b8790e1a57f88f34170404064efeab138b4ba81b6ea91615b1e1c37f9e6d560"
+    }
+  },
+  "inputReceiptSha256": "93bb195f05d635daa3d74c03d6580ad2bbadfacfcdba104007860d286ee40ce9",
+  "residentOpenclawClaimed": false,
+  "oldUnknownResolved": false,
+  "fullProductAcceptance": false,
+  "rawChatIdentifiersPathsOrScreenshotsPublished": false
+}

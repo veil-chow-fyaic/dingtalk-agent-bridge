@@ -1,12 +1,12 @@
 # 交付路线图
 
-E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
+E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](156-native-channel-deployment.md)。
 
 **当前优先级（E152）**。先做 OpenClaw 原生通道，再让 bridge 通过 ACP 调用 Hermes 和 DeepSeek Harness。已有 Hermes Gateway 可进一步通过平台插件接入。程序以普通账号主动发语音条暂缓，恢复条件继续记在 R06。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
 
 2026-11-18，E151 已完成群聊和私聊原生语音入站及客户端逐图保存。固定 DWS 转发没有保留音频，普通账号原生出站仍受限。[现场结果](151-native-voice-and-image-saving.md) · [能力总览](102-user-requirements-and-roadmap.md) · [原判据](../plans/completion/01-PRD.md) · [逐格矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)
 
-E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。
+E150历史部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。
 
 原MUST仍缺：R06；真实未验格保持，尚未完成全部验收。
 
@@ -16,7 +16,7 @@ E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动�
 
 **已完成。** 源码中的配置助手 `select` 已修复同账号新增路由漏继承 `imageUploadBinary` 的问题；不会因此赋予另一账号的 profile 或权限。独立安装、CLI/HTTP/consumer 与图片契约已有验证。HTTP 服务启动也已移除对反向 DNS 查询的依赖，保留真实 loopback 绑定、端口和认证行为。[配置证据](145-delivery-and-recovery-closeout.md) · [实际 CI 根因](149-github-public-launch-and-ci.md)
 
-**现场核验已完成。** E150已部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。 版本与已测wheel/启动来源逐项核对，R01按原判据收口；后续文档HEAD另计。
+**E150阶段现场核验已完成。** E150当时部署产品 `0e151fb`：25模块与同一已测MIT wheel及实际启动来源/配置一致；原三受管服务恢复，99任务/240 Agent outbox/session与原绑定保持，固定cut补读及零积压审查通过。部署后60秒12采样零记录错误，截止覆盖与启动来源核验通过。 版本与已测wheel/启动来源逐项核对，R01按原判据收口；后续文档HEAD另计。
 
 ## R06：原生语音双向与准确媒体能力
 
