@@ -40,19 +40,18 @@ function classify(account, route, msg) {
   const raw = msg.parts.filter(p => p.type === "text").map(p => p.text).join("");
   if (route.conversationType === "group" && !/^\/agent(?:\s|$)/.test(raw)) return null;
   const body = raw.replace(/^\/agent(?:\s+|$)/, "");
-  // The built-in gateway's historical filename selector has a different owner and ledger.
-  // Do not run a file task without the input the sender explicitly requested.
-  if (route.conversationType === "group" && /^--files(?:\s|$)/.test(body)) return null;
+  const selectFiles = route.conversationType === "group" && /^--files(?:\s|$)/.test(body);
   const cancel = (route.conversationType === "direct" && raw.trim() === "/stop") ||
     /^\/agent\s+(?:cancel|\/stop)$/.test(raw.trim());
   if (cancel && (msg.quote || msg.parts.length !== 1 || msg.parts[0].type !== "text")) return null;
   const quote = msg.quote?.senderId === msg.senderId ? msg.quote : undefined;
   // A file task with an unverified quoted sender must not run as a text-only request.
-  if (!quote && msg.quote?.parts?.some(part => part.type !== "text")) return null;
+  const unverifiedQuote = Boolean(msg.quote && !quote && route.conversationType === "group");
+  if (!unverifiedQuote && !quote && msg.quote?.parts?.some(part => part.type !== "text")) return null;
   const quotedParts = (quote?.parts ?? []).map(p => ({...p,quoteId:quote.id}));
   const attachments = [...msg.parts, ...quotedParts].filter(p => p.type !== "text");
   if (!body && !attachments.length) return null;
-  return {body, raw, cancel, attachments, quote};
+  return {body, raw, cancel, attachments, quote, selectFiles, unverifiedQuote};
 }
 
 async function stageInbound(runtime, parts, signal) {
@@ -144,6 +143,51 @@ async function deliver(params) {
 }
 
 export async function dispatchEvent({sdk, runtime, cfg, account, route, client, message, input, signal}) {
+  // Resolve only admitted commands. User text cannot supply a path, source sender or message ID.
+  const selectionNotice = text => confirmed(client, {
+    key:key(account.bridgeAccountId,route.conversationId,message.id,"selection-notice"), text,
+  }, signal);
+  const usage = '请先在本群发送文件，再发送 /agent --files ["原文件名"] 具体任务。';
+  if (input.unverifiedQuote) {
+    await selectionNotice('这条引用缺少可核验的来源。' + usage);
+    return;
+  }
+  let selectedMedia;
+  if (input.selectFiles) {
+    const unavailable = '指定文件的原件暂时无法核验，任务尚未执行。';
+    let selection;
+    try {
+      selection = await client.request("selectFiles", {messageId:message.id});
+    } catch {
+      signal.throwIfAborted();
+      await selectionNotice(unavailable);
+      return;
+    }
+    if (selection.error) {
+      const reason = selection.error === "file_selection_missing_or_ambiguous"
+        ? '在你此前 30 分钟、本群最近 50 条消息中，找不到唯一匹配的原文件。'
+        : '文件选择格式有误。';
+      await selectionNotice(reason + usage);
+      return;
+    }
+    if (!Number.isSafeInteger(selection.count) || selection.count < 1 || selection.count > 8 || !selection.task) {
+      throw new Error("Invalid DingTalk file selection");
+    }
+    const attachments = [];
+    try {
+      for (let index = 0; index < selection.count; index++) {
+        signal.throwIfAborted();
+        const {part} = await client.request("selectedFile", {messageId:message.id, index});
+        attachments.push(part);
+      }
+      selectedMedia = await stageInbound(runtime, attachments, signal);
+    } catch {
+      signal.throwIfAborted();
+      await selectionNotice(unavailable);
+      return;
+    }
+    input = {...input, body:selection.task, attachments};
+  }
   // Host session key normalization can fold opaque or case-sensitive conversation IDs.
   // Include both physical route selectors in the opaque, lowercase peer key.
   const peerId = digest(JSON.stringify([account.bridgeAccountId, route.conversationId]));
@@ -152,7 +196,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
   if (!binding.sessionKey.endsWith(":" + peerId) || binding.sessionKey === binding.mainSessionKey) {
     throw new Error("DingTalk channel requires isolated peer sessions");
   }
-  const media = await stageInbound(runtime, input.attachments, signal);
+  const media = selectedMedia ?? await stageInbound(runtime, input.attachments, signal);
   const quote = input.quote;
   const ctx = runtime.reply.finalizeInboundContext({
     Body:input.body, RawBody:input.raw, BodyForAgent:input.body, BodyForCommands:input.body,

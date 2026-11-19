@@ -18,7 +18,7 @@ const fixture = () => ({channels:{[ID]:{enabled:true,python:"/fixture/python",br
 const message = (route,id,body,overrides={}) => ({id,accountId:"A",conversationId:route,fromSelf:false,
   conversationType:route==="G"?"group":"direct",senderId:"S",parts:[{type:"text",text:body}],issues:[],...overrides});
 
-function setup({messages = {}, dispatch, confirmed = true, stopAfter = Object.values(messages).flat().length} = {}) {
+function setup({messages = {}, dispatch, select, confirmed = true, stopAfter = Object.values(messages).flat().length} = {}) {
   const cfg=fixture(), controller=new AbortController();
   const sends=[], acks=[], stores=[], staged=[], contexts=[], polled=new Map();
   const sdk={loadMedia:async(path,opts)=>{
@@ -47,6 +47,7 @@ function setup({messages = {}, dispatch, confirmed = true, stopAfter = Object.va
         return {};
       }
       if(op==="plan") return {};
+      if (op==="selectFiles" || op==="selectedFile") return select(op,fields);
       if(op!=="send") throw new Error("unexpected sidecar op");
       sends.push([route.conversationId,fields]);
       return confirmed?{state:"confirmed",message_id:"physical-"+sends.length}:{state:"outcome_unknown"};
@@ -193,15 +194,53 @@ test("literal Markdown remains text and its accompanying artifact is delivered",
   assert.equal(state.acks[0].status, "done");
 });
 
-test("unverified quoted media never turns into a text-only file task", async () => {
+test("incomplete native group quote offers the filename command and never runs as text", async () => {
   for (const senderId of [undefined, "another-user"]) {
-    const route = "G";
-    const msg = message(route, "quoted-file", "/agent 总结所引文件", {
-      quote:{id:"prior", senderId, parts:[{type:"file", name:"source.txt"}]},
-    });
-    const state = setup({messages:{G:[msg]}});
+    for (const parts of [[{type:"file", name:"source.txt"}], [{type:"text", text:"source.txt"}]]) {
+      const msg = message("G", "quoted-file", "/agent 总结所引文件", {quote:{id:"prior", senderId, parts}});
+      const state = setup({messages:{G:[msg]}});
+      await state.run();
+      assert.equal(state.contexts.length, 0);
+      assert.equal(state.acks[0].status, "done");
+      assert.match(state.sends[0][1].text, /--files/);
+    }
+  }
+});
+
+test("group filename command admits only allowed senders and delivers original bytes in named order", async () => {
+  const dir = await mkdtemp(join(tmpdir(),"oc-bridge-selection-"));
+  const path = join(dir,"source");
+  await writeFile(path,bytes);
+  const task = "核对两份材料";
+  const raw = '/agent --files ["B.csv","A.txt"] '+task;
+  const calls = [];
+  const state = setup({messages:{G:[message("G","foreign",raw,{senderId:"X"}),message("G","allowed",raw)]},
+    select(op,fields) {
+      calls.push([op,fields]);
+      if (op === "selectFiles") return {count:2,task};
+      return {part:{type:"file",name:["B.csv","A.txt"][fields.index],path,sha256:sha,sizeBytes:bytes.length}};
+    }});
+  await state.run();
+  assert.deepEqual(calls.map(([op,f])=>[op,f.messageId,f.index]), [
+    ["selectFiles","allowed",undefined],["selectedFile","allowed",0],["selectedFile","allowed",1]]);
+  assert.deepEqual(state.staged, ["B.csv","A.txt"]);
+  assert.equal(state.contexts[0].BodyForAgent, task);
+  assert.equal(state.contexts[0].RawBody, raw);
+  assert.deepEqual(state.acks.map(a=>a.status),["ignored","done"]);
+});
+
+test("invalid or unavailable filename selection produces one actionable notice and zero model turns", async () => {
+  for (const failure of ["file_selection_invalid","file_selection_missing_or_ambiguous","download","changed"]) {
+    const state = setup({messages:{G:[message("G","request",'/agent --files ["a.txt"] read')]},
+      select(op) {
+        if (op === "selectFiles") return failure.startsWith("file_") ? {error:failure} : {task:"read",count:1};
+        if (failure === "download") throw new Error("original not available");
+        return {part:{type:"file",path:"/missing",name:"a.txt",sha256:sha,sizeBytes:bytes.length}};
+      }});
     await state.run();
-    assert.equal(state.contexts.length, 0);
-    assert.equal(state.acks[0].status, "ignored");
+    assert.equal(state.contexts.length,0);
+    assert.equal(state.sends.length,1);
+    assert.match(state.sends[0][1].text,/--files|原件/);
+    assert.equal(state.acks[0].status,"done");
   }
 });

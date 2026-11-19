@@ -35,6 +35,9 @@ elif '+chat-messages' in a:
         {**raw, 'messageId':'original', 'senderId':'other', 'text':'[文件] source.txt fileId: f',
          'resourceRefs':[{'type':'fileId','resourceId':'f'}]},
         {**raw, 'messageId':'output', 'senderId':'self', 'text':'my reply'}]}
+    if Path('submit-selector').exists():
+        record['messages'].append({**raw,'messageId':'request','senderId':'other',
+                                   'text':'/agent --files ["source.txt"] inspect'})
 elif '+messages-mget' in a:
     dest = Path(a[a.index('--output-dir')+1])/'source.txt'
     dest.parent.mkdir(parents=True); dest.write_bytes(b'verified')
@@ -116,6 +119,18 @@ print(json.dumps(record))
                     self.assertEqual(recovered[2]['message_id'], 'sent-artifact')
                     sends = [json.loads(line) for line in (root/'sent.jsonl').read_text().splitlines()]
                     self.assertEqual(sends, [['text', text], ['artifact', artifact.decode()]])
+
+                    (root/'submit-selector').touch()
+                    with urlopen(request, timeout=5) as response:
+                        self.assertEqual(response.status, 200)
+                    received, selection, original, _, idle = sidecar([
+                        {'op':'poll'}, {'op':'selectFiles', 'messageId':'request'},
+                        {'op':'selectedFile', 'messageId':'request', 'index':0},
+                        {'op':'ack', 'messageId':'request', 'status':'done'}, {'op':'poll'}])
+                    self.assertEqual(received['message']['id'], 'request')
+                    self.assertEqual(selection, {'count':1, 'task':'inspect'})
+                    self.assertEqual(Path(original['part']['path']).read_bytes(), b'verified')
+                    self.assertIsNone(idle['message'])
                 finally:
                     if service.poll() is None:
                         service.send_signal(signal.SIGTERM)

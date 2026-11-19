@@ -1,6 +1,5 @@
 """DingTalk tasks -> durable local Agent sessions -> same-conversation text/files."""
 import argparse
-from datetime import datetime
 import hashlib
 import json
 import os
@@ -19,7 +18,7 @@ from .agent_runtime import (LocalRuntime,RuntimeStopped,RuntimeFailure,RuntimeSe
                             runtime_environment,runtime_binding)
 from .consumer import Inbox,HydrationPending,execution_scope
 from .core import ArtifactIntegrityError
-from .message_model import media_parts
+from .message_model import file_request, media_parts, select_file_sources
 from .routing import route_configs
 from .text_limits import AGENT_PREFIX, reply_chunks
 from .official_tools import enabled as official_tools_enabled, prepare as prepare_official_tools
@@ -84,43 +83,6 @@ def self_delivery_state(db, message_id, *, startup_outbox_rowid=None):
         "AND (json_type(receipt, '$.message_id') IS NOT 'text' OR trim(json_extract(receipt, '$.message_id')) = '')"
         + attempted + ' LIMIT 1', params).fetchone()
     return 'deferred_self_delivery_review' if pending else None
-
-
-def file_request(model,command):
-    return model['conversationType']=='group' and command is not None and (command=='--files' or command.startswith('--files '))
-
-
-def select_file_sources(model,command,previous):
-    """Bind explicit names once; no implicit latest-file or cross-sender lookup."""
-    try:
-        raw=command[len('--files'):].lstrip()
-        names,end=json.JSONDecoder().raw_decode(raw)
-        task=raw[end:].strip()
-        if (not isinstance(names,list) or not 1<=len(names)<=8 or
-            any(not isinstance(n,str) or not n or len(n)>255 or any(c in n for c in '/\\\x00\r\n') for n in names) or
-            len(set(names))!=len(names) or not task or task in {'status','状态','cancel','取消','new','新会话'} or
-            model['issues'] or model.get('quote') or list(media_parts(model))):
-            raise ValueError('file_selection_invalid')
-        requested_at=datetime.fromisoformat(model['receivedAt'])
-    except (ValueError,TypeError) as exc:
-        raise ValueError('file_selection_invalid') from exc
-    sources=[]
-    for name in names:
-        matches=[]
-        for candidate in previous:
-            if (candidate is None or candidate['issues'] or candidate['senderId']!=model['senderId'] or
-                candidate['fromSelf'] is not model['fromSelf'] or
-                candidate['accountId']!=model['accountId'] or candidate['conversationId']!=model['conversationId']):continue
-            try:age=(requested_at-datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
-            except (TypeError,ValueError):continue
-            if not 0<=age<=1800:continue
-            # Only the actual sender's top-level files, never quoted resources.
-            for part in candidate['parts']:
-                if part['type']=='file' and part.get('name')==name:
-                    matches.append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
-        if len(matches)!=1:raise ValueError('file_selection_missing_or_ambiguous')
-        sources.append(matches[0])
-    return task,sources
 
 
 def status_text(summary, *, diagnostic=False):

@@ -2,7 +2,7 @@
 import argparse
 import base64
 import binascii
-from contextlib import ExitStack
+from contextlib import ExitStack, closing
 import hashlib
 import json
 import os
@@ -17,6 +17,7 @@ from urllib.request import Request
 
 from .consumer import Inbox, acquire_consumer_lock, execution_scope
 from .local_http import urlopen
+from .message_model import file_request, materialize, normalize, select_file_sources
 from .routing import route_configs
 
 MAX_FILE = 20 * 1024 * 1024
@@ -79,6 +80,7 @@ class HostChannel:
         self.api = api
         self.control_turn = None
         self.control_cursor = 0
+        self.file_selection = None
         _, key = execution_scope(route)
         # This path is also held for the full lifetime of a pre-plugin gateway.
         # Sharing only its lock preserves its existing inbox, tasks and session.
@@ -188,6 +190,75 @@ class HostChannel:
         # Each call fetches at most one transport page and reads at most 200 inbox rows.
         return {'message': None, 'hasMore': len(page) == 200}
 
+    def previous_file_candidates(self, row):
+        # seq can contain large gaps from overlap polls. Count actual route events,
+        # including malformed ones, across the host's first-activation cursor.
+        path = self.inbox.cache_root.with_name('bridge.sqlite3')
+        with closing(sqlite3.connect(path.as_uri() + '?mode=ro', uri=True)) as history:
+            history.execute('BEGIN')
+            scope = history.execute("SELECT value FROM meta WHERE key='scope'").fetchone()
+            if scope is None or json.loads(scope[0]) != [self.route['profile'], self.route['group']]:
+                raise ChannelError('file_history_scope_mismatch')
+            anchor = history.execute('SELECT body FROM events WHERE seq=? AND message_id=?',
+                                     (row['seq'], row['message_id'])).fetchone()
+            if anchor is None or {'seq': row['seq'], **json.loads(anchor[0])} != json.loads(row['raw']):
+                raise ChannelError('file_history_anchor_mismatch')
+            rows = history.execute('SELECT message_id, body FROM events WHERE seq<? ORDER BY seq DESC LIMIT 50',
+                                   (row['seq'],)).fetchall()
+        previous = []
+        for mid, body in rows:
+            event = json.loads(body)
+            if (event.get('message_id') != mid or event.get('account_id') != self.route['accountId']
+                    or event.get('conversation_id') != self.route['group'] or event.get('conversation_type') != 'group'):
+                raise ChannelError('file_history_scope_mismatch')
+            try:
+                previous.append(normalize(event, self.route))
+            except (ValueError, KeyError, TypeError):
+                continue  # The built-in selector also excludes quarantined projections.
+        return previous
+
+    def select_files(self, mid):
+        if self.file_selection is not None:
+            old_mid, task, originals = self.file_selection
+            if old_mid != mid:
+                raise ChannelError('file_selection_busy')
+            return {'task': task, 'count': len(originals)}
+        row = self.db.execute("""
+            SELECT i.seq,i.message_id,i.raw,i.model FROM inbox i JOIN host_dispatch d USING(message_id)
+            WHERE i.message_id=? AND d.status='claimed' AND i.state='normalized'""", (mid,)).fetchone()
+        if row is None:
+            raise ChannelError('file_selection_requires_claim')
+        model = json.loads(row['model'])
+        text = ''.join(part['text'] for part in model['parts'] if part['type'] == 'text')
+        addressed = re.fullmatch(r'/agent\s+(.*)', text, flags=re.DOTALL)
+        command = addressed[1] if addressed else None
+        if model['fromSelf'] is not False or not file_request(model, command):
+            return {'error': 'file_selection_invalid'}
+        previous = self.previous_file_candidates(row)
+        try:
+            task, sources = select_file_sources(model, command, previous)
+        except ValueError as exc:
+            return {'error': str(exc)}
+        by_id = {candidate['id']: candidate for candidate in previous}
+        originals = [(by_id[src['messageId']], src) for src in sources]
+        # This owner serializes turns. A lost claim is quarantined on restart.
+        # Retain the selected identities while originals are downloaded one at a time.
+        self.file_selection = (mid, task, originals)
+        return {'task': task, 'count': len(originals)}
+
+    def selected_file(self, mid, index):
+        if self.file_selection is None or self.file_selection[0] != mid:
+            raise ChannelError('file_selection_requires_claim')
+        originals = self.file_selection[2]
+        if type(index) is not int or not 0 <= index < len(originals):
+            raise ChannelError('invalid_file_selection_index')
+        original, selected = originals[index]
+        ledger = self.api('/v1/attachments', {'message_id': original['id']})
+        materialize(original, ledger, self.root, self.inbox.cache_root)
+        part, = [p for p in original['parts'] if p['type'] == 'file'
+                 and p.get('name') == selected['name'] and p['resource'] == selected['resource']]
+        return {'part': part}
+
     def ack(self, mid, status):
         if not isinstance(mid, str) or status not in ('done', 'ignored', 'unknown'):
             raise ChannelError('invalid_ack')
@@ -196,6 +267,8 @@ class HostChannel:
             if row is None or row[0] not in ('claimed', status):
                 raise ChannelError('dispatch_state_conflict')
             self.db.execute('UPDATE host_dispatch SET status=? WHERE message_id=?', (status, mid))
+        if self.file_selection and self.file_selection[0] == mid:
+            self.file_selection = None
         return {'status': status}
 
     def submission(self, request):
@@ -365,6 +438,13 @@ class HostChannel:
             if not isinstance(active_id, str) or not active_id:
                 raise ChannelError('invalid_active_message')
             return self.poll_cancel(active_id)
+        if op in ('selectFiles', 'selectedFile'):
+            mid = request.get('messageId')
+            if not isinstance(mid, str) or not mid:
+                raise ChannelError('invalid_file_selection_message')
+            if op == 'selectFiles':
+                return self.select_files(mid)
+            return self.selected_file(mid, request.get('index'))
         if op == 'ack':
             return self.ack(request.get('messageId'), request.get('status'))
         if op == 'summary':
@@ -392,6 +472,8 @@ def serve(channel, stdin, stdout):
             result = {'ok': True, 'result': channel.handle(request)}
         except ChannelError as exc:
             result = {'ok': False, 'error': str(exc)}
+        except sqlite3.Error:
+            result = {'ok': False, 'error': 'sidecar_database_unavailable'}
         except HTTPError as exc:
             with exc:
                 result = {'ok': False, 'error': f'transport_http_{exc.code}'}
