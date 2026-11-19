@@ -1,6 +1,6 @@
 # DingTalk Bridge channel for OpenClaw
 
-E155 passed real-model and client file acceptance in both group and direct chat. The new group task filters a product catalog by color; it is independent of the unresolved E154 shipment task. Only digests and byte counts are published in the [E155 receipt](../../docs/155-openclaw-two-route-file-acceptance.md). Merge and deployment remain separate receipts in [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9).
+E155 passed real-model and client file acceptance in both group and direct chat. The new group task filters a product catalog by color; it is independent of the unresolved E154 shipment task. Only digests and byte counts are published in the [E155 receipt](../../docs/155-openclaw-two-route-file-acceptance.md). [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) shipped. The [deployment record](../../docs/156-native-channel-deployment.md) identifies the running core and the original gateway bindings.
 
 An OpenClaw channel for existing DingTalk groups and private conversations. Your local DingTalk Agent Bridge handles ordinary-account DWS transport, attachment integrity and delivery reconciliation. OpenClaw owns the agent, prompts, session and reply content.
 

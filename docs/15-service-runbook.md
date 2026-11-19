@@ -1,6 +1,6 @@
 # 运行、接入与恢复
 
-E150 部署 `0e151fb`。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
+当前部署见[E156记录](156-native-channel-deployment.md)。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。

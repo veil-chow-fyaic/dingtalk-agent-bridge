@@ -1,6 +1,6 @@
 # 通用CLI、HTTP路由与持久消费
 
-运行产品为 E150 的 `0e151fb`。E151 在两路完成原生语音入站及组合图片客户端保存。CLI、HTTP 与持久 consumer 独立于组织、模型和 runtime。[能力总览](102-user-requirements-and-roadmap.md) · [媒体实测](151-native-voice-and-image-saving.md)
+运行产品与服务归属见[E156记录](156-native-channel-deployment.md)。E151 在两路完成原生语音入站及组合图片客户端保存。CLI、HTTP 与持久 consumer 独立于组织、模型和 runtime。[能力总览](102-user-requirements-and-roadmap.md) · [媒体实测](151-native-voice-and-image-saving.md)
 
 ## 调用方式
 

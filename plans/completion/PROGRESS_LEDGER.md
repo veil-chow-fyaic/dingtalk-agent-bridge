@@ -453,3 +453,7 @@ E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛
 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。 真实多轮续接、取消和重启分别验收，E153合成范围不升级；原R06与全部产品完成状态不改。
 
 [阶段报告](../../docs/155-openclaw-two-route-file-acceptance.md) · [脱敏收据](../../evidence/2026-11-19/openclaw-two-route-file-acceptance.json)；原私有材料不公开。
+
+## E156 — PR #9合并与核心部署
+
+E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](../../docs/156-native-channel-deployment.md)。 原Kimi/Pi绑定、canary停止、默认product与短观察按实际收据；单笔隔离未知保持，其他未决为0。原E154/E155、原判据和全部产品未完成状态保持。

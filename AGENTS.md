@@ -1,10 +1,10 @@
 # 钉钉 bridge 工作约定
 
-E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
+E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按收据核验；版本、归属和边界见[部署记录](docs/156-native-channel-deployment.md)。
 
 2026-11-18，E153。用户已要求下一阶段在新分支 `codex/native-agent-channel` 开发，核心 IM 工作树保留。部署与开发分支的区别见[阶段记录](docs/153-channel-presentation-and-openclaw.md)。
 
-E152。主线是普通账号群/私聊 IM 及可选 Agent 适配器。按用户意见暂缓真人账号主动发原生语音条。实际部署为 E150 的 `0e151fb`，媒体实测至 E151。宿主接口、社区先例与建议的首项交付见[适配器选型](docs/152-community-agent-adapters.md)。
+E152。主线是普通账号群/私聊 IM 及可选 Agent 适配器。按用户意见暂缓真人账号主动发原生语音条。E152阶段登记部署为 E150 的 `0e151fb`，媒体实测至 E151；当前部署见上方E156记录。宿主接口、社区先例与建议的首项交付见[适配器选型](docs/152-community-agent-adapters.md)。
 
 ## 工作位置和读取顺序
 
@@ -63,4 +63,4 @@ E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL�
 
 E144配置候选与E149 HTTP启动修复已随E150合入部署，不再次应用补丁。R12资料/R14 Git隐私检出按原判据已经通过，R01部署收口；原24h run已完成一次审计，不重置/重审。
 
-E150已在原观察审计后按维护规范快进合入并部署0e151fb；后续文档提交不改变25模块。公开发布保留本地原SHA与只改邮箱的等树映射；受保护main走PR和四检查，不强推/跳过保护，GitHub测试合并SHA、实际mainSHA与现场部署分别记录。公开贡献者在自己的clone工作，本文件绝对路径/现场身份仅原维护workspace适用。
+E150历史部署为0e151fb/25模块；E156实际部署与26模块按独立收据登记，后续文档提交不冒充运行产品。公开发布保留本地原SHA与只改邮箱的等树映射；受保护main走PR和四检查，不强推/跳过保护，GitHub测试合并SHA、实际mainSHA与现场部署分别记录。公开贡献者在自己的clone工作，本文件绝对路径/现场身份仅原维护workspace适用。
