@@ -1,6 +1,6 @@
 # DingTalk Bridge channel for OpenClaw
 
-E154 live verification is partial: a real 14B model read the unique direct-chat input, wrote the correct result, and the client-saved file matched its bytes, SHA-256 and exact filename. The group model returned 43, but its text delivery is unresolved and its attachment was never submitted. See the [live results and retained failures](../../docs/154-openclaw-real-files-and-client-receipts.md). Merge/deployment receipts remain in [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9); the temporary canary handover is not a completed deployment.
+E155 passed real-model and client file acceptance in both group and direct chat. The new group task filters a product catalog by color; it is independent of the unresolved E154 shipment task. Only digests and byte counts are published in the [E155 receipt](../../docs/155-openclaw-two-route-file-acceptance.md). Merge and deployment remain separate receipts in [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9).
 
 An OpenClaw channel for existing DingTalk groups and private conversations. Your local DingTalk Agent Bridge handles ordinary-account DWS transport, attachment integrity and delivery reconciliation. OpenClaw owns the agent, prompts, session and reply content.
 
@@ -68,4 +68,4 @@ openclaw message send --channel dingtalk-bridge --account personal --target YOUR
 
 The CLI delegates to the running Gateway. Its durable queue assigns each send an intent ID. A new command with the same text delivers a new message. On recovery the channel looks up the persisted parts of the original intent and reconciles their existing bridge keys. The host receives a successful receipt only after all physical message IDs are confirmed. An incomplete plan or ambiguous part stays unresolved. Calls that bypass the host queue or supply multiple independent payloads without an individual durable ID are refused before transport.
 
-SDK/lifecycle tests retain their synthetic scope. E154 adds the real direct-chat file result; group delivery remains unresolved. Do not retry an unknown send with a new key or assume the attachment was sent. See the [adapter evidence](../../docs/architecture/agent-integration-map.md) and [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9).
+SDK/lifecycle tests retain their synthetic scope. E155 adds accepted real group/direct file samples; it does not resolve the old E154 unknown send. Never retry an unknown intent under a new key. See [E155](../../docs/155-openclaw-two-route-file-acceptance.md) and [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) for the precise acceptance and publication boundaries.

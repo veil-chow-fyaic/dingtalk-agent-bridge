@@ -1,10 +1,10 @@
 # 用户需求、交付现状与后续路线
 
-**E154 部分实测。** E154 原生 OpenClaw 通道的私聊真实文件任务已通过：14B 模型实际读取本次唯一输入，处理三条 SKU，写出唯一结果文件；客户端显示与模型一致的完整正文，另存的9字节原件 `total\n20\n` 与宿主文件一致，精确文件名通过。
+E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 [E155证据](155-openclaw-two-route-file-acceptance.md)。
 
-群聊模型结果为43，但发送正文返回 `request_failed` / `outcome_unknown`。原键没有 `openTaskId` 或 `messageId`，当前历史未命中；附件从未提交。群聊接收未通过，不能将模型完成计为投递成功，也不换键重发。
+E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
 
-E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。 [现场范围](154-openclaw-real-files-and-client-receipts.md)。
+核心运输已登记检查点仍为E150 / `0e151fb`；E154记录过临时canary接管及旧gateway退让，当前归属与后续部署须另按实际收据核对。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
 
 **当前主线（E152）** 是让使用 OpenClaw、Hermes 和 DeepSeek Harness 的人能从普通钉钉群和私聊交付任务、取回原件。先采用宿主公开插件接口和 ACP，复用 bridge 的收发和对账。程序主动发原生语音条按用户意见暂缓。[社区适配器选型与验收顺序](152-community-agent-adapters.md)
 
@@ -36,11 +36,11 @@ E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。�
 
 | 层次 | 结果 |
 |---|---|
-| 核心运输与临时执行方 | 运输仍为`0e151fb` / E150；E154两路执行权暂交canary，旧gateways暂退。候选未合并/正式部署，收据见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) |
+| 核心运输与执行方 | E150 / `0e151fb`为已登记核心运输；临时canary与正式部署分开，最新合并/部署看[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)实际收据 |
 | 安装候选 | E150，同一MIT wheel `865d05154cc61e0011d2333a00f6ff9f86564607ef1e74f04a3c9b5a4eff60ed` |
 | E150 本地完整测试 | 冻结源码、Python3.14安装、Python3.11安装各533项通过，每套一次；初轮532中的真实失败保留，测试契约改后再验证 |
 | 原24h观察 | 观察产品是旧部署`2b479a8`，不是新候选。原 `parallel-hardening-24h-20261116` 于北京时间2026-11-17 18:29:37固定截止自然封存：2877采样、0不可达、18错误采样/29路由错误记录、1新事件、0重复、0维护；13完整性与29项截止/来源检查全部通过。29个已观测路由错误均有后续同路新完整同步/清错，保守观测上界30.187秒，无未恢复/未知采样。完整24h、双路同事务水位覆盖及启动来源通过；zero_recorded_errors/stability_pass仍false，不承诺零故障、上游无丢失或本run自然refresh。 |
-| 原生OpenClaw候选 | E154私聊真实文件接收通过；群正文未知、附件未提交。本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。 |
+| 原生OpenClaw候选 | E155两路文件接收通过；新群筛色任务独立，E154旧未知不改。本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。 |
 | 正常续期 | E028已证access预刷新及跨旧到期同步；无效refresh凭据恢复未证，不能称凭据系统根治 |
 | GitHub | [公开MIT仓库](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge)，受保护main、两个系统和两个 Python 版本的四项检查、PR、隐私排除和私密漏洞报告；具体运行SHA见E150及GitHub检查 |
 
@@ -50,7 +50,7 @@ E150 的产品变更包括避免 HTTP 启动时反向 DNS 查询、同账号新�
 
 原 MUST 缺口为 **R06**。普通账号原生语音条出站在固定普通账号 DWS 中没有已确认的创建入口，实测转发未保留音频；可发送 WAV 文件。独立 video 协议四格仍未验，既有 MP4 视频卡片、播放和下载已验。多文件任务可逐件关联、逐件交付，任意多文件单气泡仍缺。
 
-Kimi两次403的任务保持失败，无工具/结果，不重发、不换runtime绕过。OpenClaw原生通道私聊真实read/write和客户端下载已验，群未知投递继续按原键处理；真实多轮/生命周期、Pi图片、跨组织多人和更多办公按独立证据推进。新的官方普通账号原生发送契约可用于重新评估 R06。
+Kimi两次403的任务保持失败，无工具/结果，不重发、不换runtime绕过。OpenClaw原生通道E155双路真实文件已验；E154旧未知投递继续独立按原键处理，真实多轮/生命周期、Pi图片、跨组织多人和更多办公按独立证据推进。新的官方普通账号原生发送契约可用于重新评估 R06。
 
 DWS最初Keychain直接失败点已定位，永久根因未知；桥接层有两并发/90秒+15秒清理/持久暂停。普通history错误可随正常轮询恢复，凭据/进程/清理故障不自动resume。UI截图临时ENOENT由补建目录恢复，与Keychain不是同一问题，目录消失原因未定。
 

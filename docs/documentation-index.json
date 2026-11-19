@@ -3,11 +3,11 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E154",
-    "latestUiEvidence": "E154",
+    "documentationEvidence": "E155",
+    "latestUiEvidence": "E155",
     "deployedProduct": "0e151fb",
     "deploymentEvidence": "E150",
-    "candidateProduct": "E154",
+    "candidateProduct": "E155",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -796,6 +796,10 @@
     },
     "docs/154-openclaw-real-files-and-client-receipts.md": {
       "role": "reference"
+    },
+    "docs/155-openclaw-two-route-file-acceptance.md": {
+      "role": "historical",
+      "preservedSha256": "38ddf5123dac9fe621496b47965d951be88f6a0e64a0bc26bea2d39bd16e6cc6"
     }
   }
 }

@@ -8,7 +8,7 @@
 |---|---|
 | 安装并接通一个会话 | [上手指南](getting-started.md) · [身份、组织开通与接入经验](11-onboarding-lessons.md) |
 | 使用CLI、HTTP或独立consumer | [接口参考](22-generic-tool-and-consumer.md) · [OpenAPI](../api/openapi.json) · [路由模板](../config.routes.example.json) |
-| 接入OpenClaw原生通道 | [安装](../integrations/openclaw-channel/README.md) · [E154部分现场结果](154-openclaw-real-files-and-client-receipts.md) · [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) |
+| 接入OpenClaw原生通道 | [安装](../integrations/openclaw-channel/README.md) · [E155双路文件](155-openclaw-two-route-file-acceptance.md) · [E154保留失败](154-openclaw-real-files-and-client-receipts.md) · [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) |
 | 接入已有运行器 | [实际支持与验证范围](architecture/agent-integration-map.md) · [运行器中立接入边界](21-existing-runtime-integration.md) · [配置模板](../config.agent.example.json) |
 | 收取语音或保存组合原图 | [实测与客户端操作](151-native-voice-and-image-saving.md) |
 | 处理图片 | [图片上传补充的构建与边界](../integrations/dws_image_upload/README.md) |

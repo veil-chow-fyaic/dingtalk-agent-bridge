@@ -610,3 +610,11 @@ E154 原生 OpenClaw 通道的私聊真实文件任务已通过：14B 模型实�
 E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。 本候选本机回归为569项Python测试和14项Node测试；测试通过不代替真实群聊接收，也不扩写为多环境安装或本PR云CI结果。
 
 [阶段报告](../../docs/154-openclaw-real-files-and-client-receipts.md) · [脱敏结果](../../evidence/2026-11-19/openclaw-real-files-and-client-receipts.json)。原UI材料不公开，原PRD/矩阵不改。
+
+## E155 — 独立群任务与双路文件验收
+
+E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
+
+双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。 真实多轮续接、取消和重启分别验收，E153合成范围不升级；原R06与全部产品完成状态不改。
+
+[阶段报告](../../docs/155-openclaw-two-route-file-acceptance.md) · [脱敏收据](../../evidence/2026-11-19/openclaw-two-route-file-acceptance.json)；原私有材料不公开。

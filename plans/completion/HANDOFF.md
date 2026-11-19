@@ -1,10 +1,10 @@
 # 当前接手事实
 
-E154 原生 OpenClaw 通道的私聊真实文件任务已通过：14B 模型实际读取本次唯一输入，处理三条 SKU，写出唯一结果文件；客户端显示与模型一致的完整正文，另存的9字节原件 `total\n20\n` 与宿主文件一致，精确文件名通过。
+E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 [E155收据](../../evidence/2026-11-19/openclaw-two-route-file-acceptance.json)。
 
-群聊模型结果为43，但发送正文返回 `request_failed` / `outcome_unknown`。原键没有 `openTaskId` 或 `messageId`，当前历史未命中；附件从未提交。群聊接收未通过，不能将模型完成计为投递成功，也不换键重发。
+E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。
 
-E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。
+核心运输已登记检查点仍为E150 / `0e151fb`；E154记录过临时canary接管及旧gateway退让，当前归属与后续部署须另按实际收据核对。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
 
 首次私聊4B把预期20写成10，客户端下载也确认是10；下一次14B算对20，但与旧输出重名，客户端保存时加了 `(1)`，精确文件名未通过。最终私聊改用未占用的新名称通过，前两次记录仍保留。 [脱敏结果](../../evidence/2026-11-19/openclaw-real-files-and-client-receipts.json)。
 
@@ -24,7 +24,7 @@ E151 群聊 4.32 秒（11,674 字节）、私聊 3.68 秒（9,932 字节），�
 
 E151 用原 E134 两条图文消息完成了会话文件查看器逐图保存、磁盘打开及 SHA-256 核对。E011/E146 的气泡点击失败仍按当时结果记录。R07 核心依据 E095 等通过；任意多文件同一气泡仍缺。E131 Kimi 403 及原 R13 观察结果保留。
 
-原验收表未完为R06及矩阵保留交互格，原生OpenClaw已实现并通过私聊实测，群投递仍未知、其余宿主另行推进，见[关键路径](CRITICAL_PATH.md)和[总览](../../docs/102-user-requirements-and-roadmap.md)。全部MUST尚未通过，不发布稳定完成声明。
+原验收表未完为R06及矩阵保留交互格，原生OpenClaw已通过E155双路文件实测；E154旧未知、其余宿主及生命周期分别推进，见[关键路径](CRITICAL_PATH.md)和[总览](../../docs/102-user-requirements-and-roadmap.md)。全部MUST尚未通过，不发布稳定完成声明。
 
 ## 操作边界
 

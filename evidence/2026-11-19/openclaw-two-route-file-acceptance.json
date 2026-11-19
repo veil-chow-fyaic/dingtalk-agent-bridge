@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "stage": "E155",
+  "scope": "Real two-route file acceptance; no merge or deployment certification",
+  "routes": {
+    "group": {
+      "modelAndTransportPassed": true,
+      "accepted": true,
+      "artifact": {
+        "sha256": "27fbd594b79cde22c91cf638e187f726fcd916d05e354b35edcc74620e5497bb",
+        "bytes": 11
+      },
+      "collectorSha256": "6319ca9debe9fc46a59a1741f04b2762aec90cbd4d261affce4c81764507c1ef",
+      "receiverBodyMatchesHarness": true,
+      "receiverBodySha256": "a997a719b15d73d610b14928d0b845a514dadbc3eaf9823a9c0b964991a4db0e",
+      "bridgeDiagnosticPrefixOrTaskIdObserved": false
+    },
+    "direct": {
+      "modelAndTransportPassed": true,
+      "accepted": true,
+      "artifact": {
+        "sha256": "32f19951669a9d7c38db85b5ee0a075e6111621784cb9ee6af39b867281a8ee8",
+        "bytes": 9
+      },
+      "collectorSha256": "40808958eef18113edfda39fbb009f43052984556493553a53573499e0d16b7b",
+      "receiverBodyMatchesHarness": true,
+      "receiverBodySha256": "6ba8a6ed44788ba90cdd87251b9dca81871794ba2091bee513bd4e439541c07b",
+      "bridgeDiagnosticPrefixOrTaskIdObserved": false
+    }
+  },
+  "groupTask": "independent product-catalog color filter",
+  "independentOfE154ShipmentTask": true,
+  "uniqueOutputNameVerifiedByCollector": true,
+  "e154UnknownResolutionClaimed": false,
+  "bothRoutesFileAcceptancePassed": true,
+  "pullRequest": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9",
+  "mergeStatus": "read actual GitHub receipt",
+  "deploymentStatus": "separate receipt pending",
+  "rawChatNamesPathsIdentifiersPublished": false,
+  "fullProductAcceptance": false
+}

@@ -1,5 +1,9 @@
 # 变更记录
 
+## E155 · 双路文件验收通过，合并与部署另记
+
+E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。 [证据范围](docs/155-openclaw-two-route-file-acceptance.md)。
+
 ## E154 · OpenClaw 候选现场实测（部分完成）
 
 - 内置 gateway 的产品模式直接交付宿主正文和产物，原接单提示和短任务号可通过诊断模式开启。

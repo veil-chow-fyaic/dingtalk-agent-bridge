@@ -1,6 +1,6 @@
 # 当前任务
 
-E154私聊真实模型/客户端文件验收通过；群正文未知、附件从未提交，双路验收尚未完成。下一步按原键核对群结果，不换键或UI补发。E150运输继续运行；两路执行权暂交 canary，旧 gateways 暂退。这是临时实测接管，不是新版本正式部署。[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9) 已转为可审阅，自动合并未开启；合并、CI和部署以其实际收据为准。 [证据范围](../../docs/154-openclaw-real-files-and-client-receipts.md)。
+E155 双路文件验收通过：群聊采用全新独立的商品目录颜色筛选任务，私聊按其真实文件接收证明核定；两路collector的modelAndTransportPassed与accepted均为true。客户端文件分别核对字节、SHA-256及唯一名称，公开记录只保留摘要和长度。 E154旧43出库单的未知投递与附件未提交仍保留当时事实；新筛色任务不是重试，不关闭旧原键，也不补造旧任务交付。 双路文件验收已满足，可进入[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)的合并检查；是否已合并以实际GitHub回执为准。部署收据尚待单独取得，不由本次验收推定正式部署。
 
 当前主线是让已有 Agent 宿主复用普通账号群聊和私聊的双向文字、文件与会话能力。E152 已完成原始需求和社区项目核对，首选交付 OpenClaw 原生通道，再用 ACP 对接 Hermes 和 DeepSeek Harness。[E152 适配器调查](../../docs/152-community-agent-adapters.md)
 

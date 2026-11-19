@@ -1,6 +1,6 @@
 # Agent接入面与验证范围
 
-E154（2026-11-19）补原生OpenClaw私聊真实文件样本及群未知投递；其他路径保留各自原阶段范围。协议研究、适配器实现、部署和真实用户闭环分别计证；原R09至少一个本地执行器已满足，不增加四类全部通过门槛。版本/现场现状统一见[总览](../102-user-requirements-and-roadmap.md)。
+E155（2026-11-19）补原生OpenClaw双路文件样本；E154旧未知另行保留，其他路径保留各自原阶段范围。协议研究、适配器实现、部署和真实用户闭环分别计证；原R09至少一个本地执行器已满足，不增加四类全部通过门槛。版本/现场现状统一见[总览](../102-user-requirements-and-roadmap.md)。
 
 | 运行器 | 本项目实际路径 | 已验证的范围 | 当前边界 |
 |---|---|---|---|
@@ -8,9 +8,9 @@ E154（2026-11-19）补原生OpenClaw私聊真实文件样本及群未知投递�
 | Codex | exec/resume、JSON事件和结构化结果；原生SIGINT→turn/interrupt | E119修复取消，E120真实Python/续接/取消/下载UI；旧E118迟到写入失败保留 | 旧私聊原生new归档后已迁Pi；未实现独立App Server adapter，旧超时不再被写成当前“尚不可用” |
 | Pi | 0.84.2 / 914cf147，JSON print模式；完整UUID/独立session目录 | E122契约/396×3，E123真实Python、续接、取消/文件UI | E150私聊绑定；关闭扩展/skills/prompt templates/themes自动发现；image_files未声明 |
 | OpenClaw 内置CLI适配 | 2026.11.3 / 41f2b981，agent --local、stdin、完整UUID预入账、整对象JSON | E127薄适配/423×3及完整CLI合成6样本18检查；E128父进程死亡/gateway恢复/new两turn25检查及新增3专项×3 | 500191a适配代码随E134/2467fe2部署，未配置绑定或进行真实模型/DWS/UI验收；image_files未声明；不是ACP或远端Gateway适配 |
-| OpenClaw 原生ChannelPlugin | 2026.11.3 Gateway → 插件 → Python侧车 → bridge/DWS | E154私聊14B真实read/write、同会话正文、9字节原件和精确名称已验 | 群模型43正确但正文投递未知、附件未提交；双路接收未通过；临时canary接管不作部署完成声明 |
+| OpenClaw 原生ChannelPlugin | 2026.11.3 Gateway → 插件 → Python侧车 → bridge/DWS | E155两路真实模型/运输/客户端文件验收通过，公开只留SHA与长度 | 新群商品筛色任务与E154旧43未知独立；多轮/生命周期另验，部署待实际收据 |
 
-[E153合成宿主](../153-channel-presentation-and-openclaw.md)与[E154现场结果](../154-openclaw-real-files-and-client-receipts.md)分别计证；合并/部署见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。Hermes与DeepSeek Harness的ACP执行器仍待接入。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
+[E153合成宿主](../153-channel-presentation-and-openclaw.md)与[E154原未知](../154-openclaw-real-files-and-client-receipts.md)、[E155双路文件](../155-openclaw-two-route-file-acceptance.md)分别计证；合并/部署见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。Hermes与DeepSeek Harness的ACP执行器仍待接入。三者的社区实现、稳定版本及本桥验收范围见[普通账号适配器调查](../152-community-agent-adapters.md)。
 
 ## 共同契约与各自终态
 
