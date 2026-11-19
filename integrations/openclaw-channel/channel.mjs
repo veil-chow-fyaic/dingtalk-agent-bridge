@@ -7,6 +7,17 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { openSidecar } from "./sidecar.mjs";
 
 export const ID = "dingtalk-bridge";
+export const RELEASE = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
+export const CHANNEL_PROTOCOL = "native-cancel-v1";
+export function assertExpectedRelease(expected) {
+  if (expected !== undefined && expected !== RELEASE) {
+    throw new Error(`DingTalk expectedRelease does not match loaded plugin release ${RELEASE}`);
+  }
+}
+const errorName = error => ["Error", "AbortError", "TimeoutError", "TypeError"].includes(error?.name) ? error.name : "other";
+const errorKind = error => ["Dispatch reply operation aborted", "Request was aborted", "Request was aborted.",
+  "This operation was aborted"].includes(error?.message) ? "abort_message" : "other";
+
 const MAX = 20 * 1024 * 1024;
 const manifest = JSON.parse(readFileSync(new URL("./openclaw.plugin.json", import.meta.url), "utf8"));
 export const schema = manifest.channelConfigs[ID].schema;
@@ -301,9 +312,18 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,s
         status = entry.cancelMessageId && cancel.signal.aborted && !signal.aborted && stopped &&
           activity.sendAttempts === entry.sendAttempts && activity.ioFailures === entry.ioFailures
           ? "canceled" : "unknown";
-        log?.warn?.(status === "canceled"
-          ? "DingTalk turn canceled before delivery; completed local tool effects are not rolled back"
-          : "DingTalk turn requires local review; its claim will not be replayed");
+        // Fixed keys, booleans and counters only; never log IDs, text, paths or raw errors.
+        log?.warn?.("DingTalk turn terminal " + JSON.stringify({
+          release:RELEASE,protocol:CHANNEL_PROTOCOL,status,matchingStop:Boolean(entry.cancelMessageId),
+          userSignalAborted:cancel.signal.aborted,hostSignalAborted:signal.aborted,
+          abortReasonMatched:stopped,errorIsSignalReason:turnSignal.aborted && error === turnSignal.reason,
+          errorCauseIsSignalReason:turnSignal.aborted && error?.cause === turnSignal.reason,
+          hasErrorCause:error?.cause !== undefined,
+          errorName:errorName(error),errorKind:errorKind(error),causeName:errorName(error?.cause),
+          sendAttempts:activity.sendAttempts-entry.sendAttempts,ioFailures:activity.ioFailures-entry.ioFailures,
+          lastFailedOperation:activity.ioFailures === entry.ioFailures ? null : activity.lastFailedOperation,
+          localToolEffectsRolledBack:false,
+        }));
       }
       await ack(msg,status,status === "canceled" ? {cancelMessageId:entry.cancelMessageId} : {});
     })();
@@ -457,7 +477,12 @@ export function createChannel(sdk, createClient = openSidecar) {
       },
     },
     gateway:{startAccount:async({cfg,account,abortSignal,channelRuntime:runtime,log})=>{
+      const expectedRelease = cfg.plugins?.entries?.[ID]?.config?.expectedRelease;
+      assertExpectedRelease(expectedRelease);
       if (!runtime || !account.enabled) throw new Error("DingTalk bridge channel runtime unavailable");
+      log?.info?.("DingTalk channel runtime " + JSON.stringify({
+        release:RELEASE,protocol:CHANNEL_PROTOCOL,expectedReleaseChecked:expectedRelease !== undefined,
+      }));
       const controller = new AbortController();
       const signal = AbortSignal.any([abortSignal,controller.signal]);
       const jobs = [];
@@ -470,11 +495,16 @@ export function createChannel(sdk, createClient = openSidecar) {
           const transport = createClient(account,route);
           // Observe every route send, including host tools/proactive sends during a turn.
           // Increment before crossing stdio: a rejected or lost response is not proof of no send.
-          const activity = {sendAttempts:0,ioFailures:0};
+          const activity = {sendAttempts:0,ioFailures:0,lastFailedOperation:null};
           const client = {stop:()=>transport.stop(),request:async(op,fields)=>{
             if (op === "send") activity.sendAttempts++;
             try { return await transport.request(op,fields); }
-            catch (error) { activity.ioFailures++; throw error; }
+            catch (error) {
+              activity.ioFailures++;
+              activity.lastFailedOperation = ["poll","pollCancel","ack","send","plan","selectFiles","selectedFile",
+                "status","reconcile","lookupPlan"].includes(op) ? op : "other";
+              throw error;
+            }
           }};
           live.set(target,client);
           jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}).finally(()=>live.delete(target)));

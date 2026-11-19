@@ -1,21 +1,26 @@
 {
   "name": "dingtalk-agent-bridge-channel",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "DingTalk ordinary-account channel for OpenClaw via a local DingTalk Agent Bridge",
   "type": "module",
   "license": "MIT",
-  "files": ["*.mjs", "openclaw.plugin.json", "LICENSE"],
-  "scripts": {"test": "node --test test/*.test.mjs"},
-  "peerDependencies": {"openclaw": "2026.7.1-2 || >=2026.11.3 <2027"},
+  "files": [
+    "*.mjs",
+    "openclaw.plugin.json",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "peerDependencies": {
+    "openclaw": "2026.7.1-2 || >=2026.11.3 <2027"
+  },
   "openclaw": {
-    "extensions": ["./index.mjs"],
-    "install": {"minHostVersion": ">=2026.7.1-2"},
-    "channel": {
-      "id": "dingtalk-bridge",
-      "label": "DingTalk Bridge",
-      "selectionLabel": "DingTalk (ordinary account via bridge)",
-      "docsPath": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge",
-      "blurb": "Existing DingTalk direct and group conversations through a local bridge."
+    "extensions": [
+      "./index.mjs"
+    ],
+    "install": {
+      "minHostVersion": ">=2026.7.1-2"
     }
   }
 }

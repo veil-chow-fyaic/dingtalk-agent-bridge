@@ -2,7 +2,7 @@ import { dirname, join } from "node:path";
 import { loadWebMediaRaw } from "openclaw/plugin-sdk/web-media";
 import { buildOutboundMediaLoadOptions, extractOriginalFilename, getMediaDir } from "openclaw/plugin-sdk/media-runtime";
 import { buildAgentSessionKey, resolveAgentRoute } from "openclaw/plugin-sdk/routing";
-import { createChannel, ID, supportsHostVersion } from "./channel.mjs";
+import { assertExpectedRelease, createChannel, ID, supportsHostVersion } from "./channel.mjs";
 
 const outboundRoot = () => join(getMediaDir(), "outbound");
 async function loadMedia(path, options) {
@@ -16,6 +16,7 @@ async function loadMedia(path, options) {
 export default {
   id:ID, name:"DingTalk Bridge",
   register(api) {
+    assertExpectedRelease(api.pluginConfig?.expectedRelease);
     if (!supportsHostVersion(api.runtime.version)) {
       throw new Error("DingTalk Bridge supports OpenClaw 2026.7.1-2 or stable >=2026.11.3 <2027");
     }
