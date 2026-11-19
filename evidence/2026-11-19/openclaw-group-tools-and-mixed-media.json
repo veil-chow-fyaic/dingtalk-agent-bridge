@@ -1,0 +1,139 @@
+{
+  "id": "E165",
+  "date": "2026-11-19",
+  "nativeHost": "OpenClaw 2026.7.1-2",
+  "model": "zai/glm-5.3-flash",
+  "installed": {
+    "0.2.3": {
+      "source": "8762585d2d1c5786834e97b42ddc480f9b688166",
+      "pythonModules": 27,
+      "extensionFiles": 8
+    },
+    "0.2.4": {
+      "source": "96041923e09200aeb96e9274aa3eccd44de2d3c9",
+      "pythonModules": 27,
+      "extensionFiles": 8
+    }
+  },
+  "currentlyLoaded": "0.2.4",
+  "standaloneTransport": "d444ccf",
+  "sharedHost": {
+    "gatewayAndWechatSupervisorPidsRetained": true,
+    "unrelatedConfigComparedOnEachWrite": true,
+    "wechatChannelLifecycleTriggered": false,
+    "readinessBefore": {
+      "http": 503,
+      "failing": [
+        "wechat-bridge"
+      ]
+    },
+    "readinessBeforeFinalPatch": {
+      "http": 503,
+      "failing": [
+        "wechat-bridge"
+      ]
+    },
+    "readinessAtAudit": {
+      "http": 200,
+      "failing": []
+    }
+  },
+  "github": {
+    "ordinaryUnprefixedGroupRequest": true,
+    "channelTool": "dingtalk_github_pull_request",
+    "pr": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/17",
+    "mergeCommit": "555e03943b34d41d64d5bf4dc7701bb006eb1c96",
+    "asOf": "2026-11-19T09:06:20.000Z",
+    "source": "operator-synced official GitHub REST response",
+    "prResponseBodySha256": "48b4791c2453a29c31d8d9f93471ef3349a2d85acd7d830145b4ba29bf27ff43",
+    "finalReceiverVerified": true,
+    "confirmedReplies": 1,
+    "maximumSourceAgeMinutes": 15,
+    "directExternalFetchOnThisHost": "restricted"
+  },
+  "mixedMedia": {
+    "sourceMessagesPerRoute": 2,
+    "groupAndDirectPayloadsReceivedByteForByte": 4,
+    "groupAndDirectSeparateBatchCodesCorrect": true,
+    "groupAndDirectDominantColorCorrect": true,
+    "exactGroupImageDimensions": "host lacked an applicable inspection tool. The user received an explicit limitation and the correct TSV batch."
+  },
+  "groupParticipation": {
+    "activePolicy": "agent-decides",
+    "nativeGroupVerified": true,
+    "separateSilentInputs": 4,
+    "silentKinds": [
+      "acknowledgment",
+      "standalone image",
+      "standalone document",
+      "thank-you after a confirmed task"
+    ],
+    "confirmedPerInputReplyRecordedOnFinalRelease": true,
+    "waitingAtAudit": 0
+  },
+  "isolatedQwen": {
+    "scope": "Isolated OpenClaw 2026.11.3 and local Qwen3-14B Q4_K_M, generated media, synthetic DWS group and direct routes.",
+    "explicitMixedOriginals": {
+      "group": {
+        "imageAndDocumentVerifiedInRequestedOrder": true,
+        "modelTools": [
+          "png_dimensions",
+          "read"
+        ],
+        "pixelDimensionsAndDocumentLotCorrect": true,
+        "confirmedFinalTextCount": 1
+      },
+      "dm": {
+        "imageAndDocumentVerifiedInRequestedOrder": true,
+        "modelTools": [
+          "png_dimensions",
+          "read"
+        ],
+        "pixelDimensionsAndDocumentLotCorrect": true,
+        "confirmedFinalTextCount": 1
+      },
+      "firstRunLimitation": "Both originals reached each model turn. The model initially chose a virtual media identifier for a filesystem tool. A fresh run with explicit workspace/tool guidance passed both routes."
+    },
+    "recentPhotoFollowup": {
+      "initial": {
+        "barePhotoBeforeQuestion": "silent",
+        "ordinaryGroupQuestionCorrect": true,
+        "ambiguousFollowupClarifications": 1,
+        "directPhotoQuestionCorrect": true,
+        "receiverContainedLocalPaths": false
+      },
+      "withConfirmedOutcomeContext": {
+        "barePhotoBeforeQuestion": "silent",
+        "ordinaryGroupQuestionCorrect": true,
+        "ambiguousFollowupClarifications": 1,
+        "directPhotoQuestionCorrect": true,
+        "receiverContainedLocalPaths": false
+      }
+    },
+    "participationLimit": {
+      "initial": {
+        "laterBareUploads": 2,
+        "repliesRepeatingPriorAnswer": 2,
+        "classifierSawPriorConfirmedAnswer": false
+      },
+      "withConfirmedOutcomeContext": {
+        "laterBareUploads": 2,
+        "repliesRepeatingPriorAnswer": 2,
+        "classifierSawPriorConfirmedAnswer": true
+      },
+      "interpretation": "The operator preference asked for silence on standalone uploads. This model still elected to answer after an earlier image question. Explicit receipt context is available to the classifier; the requested silence is not guaranteed."
+    }
+  },
+  "finalOfflineTests": {
+    "python": 602,
+    "node": 56,
+    "groupGatewayProbes": [
+      "2026.7.1-2",
+      "2026.11.3"
+    ],
+    "githubGatewayProbesBeforeFinalPatch": [
+      "2026.7.1-2",
+      "2026.11.3"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E163 原组织宿主在知识答复后曾停机，恢复后两笔原输入均已处理并返回原会话。接续前核对原消息、宿主及所有者。 [日常任务验收](docs/agent-im-workflows.md)
+E165 原组织 OpenClaw 已加载钉钉 0.2.4，智能群与原私聊使用同一组织上下文与独立会话。操作时分别核对 transport、宿主实际加载的插件、专属侧车与旧未知账本。 [现场收据](evidence/2026-11-19/openclaw-group-tools-and-mixed-media.json)
 
 双路部署沿革及根目录运行事实见[组织宿主运维记录](docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)。插件、隔离 Python 侧车和独立 transport 分别核验来源。
 

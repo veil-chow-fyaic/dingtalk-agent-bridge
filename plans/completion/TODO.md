@@ -1,5 +1,8 @@
 # 当前任务池
 
+- [x] E164 完成旧输入核对、双路回切和再次接管。
+- [x] E165 交付按群参与、连续附件与原件关联，并在原组织宿主完成真实 GitHub 工具及两路混合文件验收。 [业务样本和模型限制](../../docs/agent-im-workflows.md)
+
 唯一活动清单；标准在[PRD](01-PRD.md)/[矩阵](ACCEPTANCE_MATRIX.md)，现状在[总览](../../docs/102-user-requirements-and-roadmap.md)，全部既有工作在[EVIDENCE](EVIDENCE.md)/[账本](PROGRESS_LEDGER.md)。
 
 - [x] E152 核对原始需求与三类宿主的普通账号社区项目、官方协议、媒体与可靠性边界。[E152 适配器调查](../../docs/152-community-agent-adapters.md)

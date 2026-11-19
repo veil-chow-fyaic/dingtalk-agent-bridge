@@ -3,11 +3,11 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E164",
-    "latestUiEvidence": "E164",
+    "documentationEvidence": "E165",
+    "latestUiEvidence": "E165",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
-    "candidateProduct": "12a17b4",
+    "candidateProduct": "9604192",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -16,7 +16,7 @@
     "mustGaps": [
       "R06"
     ],
-    "openclawCandidateProduct": "12a17b4",
+    "openclawCandidateProduct": "9604192",
     "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
     "automationPurpose": "none_user_requested_direct_ownership",
@@ -27,7 +27,7 @@
     "sourceTree": "19fad29acc98af10807b774a24825116cefb0f54",
     "openclawResident": true,
     "dingtalkResidentChannelEnabledAtE156": false,
-    "residentDeploymentEvidence": "E161",
+    "residentDeploymentEvidence": "E165",
     "residentPilotActiveOnRestoreCheckAtE159": false,
     "executionOwnerDuringFirstE159Pilot": {
       "group": "resident-openclaw",
@@ -37,15 +37,16 @@
       "group": "original-group-gateway",
       "direct": "original-direct-gateway"
     },
-    "residentInstalledPluginVersion": "0.2.2",
-    "residentInProcessJavaScriptVersion": "0.2.2",
+    "residentInstalledPluginVersion": "0.2.4",
+    "residentInProcessJavaScriptVersion": "0.2.4",
     "executionOwnerAtE160": {
       "group": "resident-openclaw",
       "direct": "resident-openclaw"
     },
-    "residentChannelSource": "12a17b481dd7698824d1460bbb692da5206fe784",
-    "residentIsolatedPythonSource": "c1cf86ea1804eb694a2fd258f3a560bc4adcc457",
-    "residentAvailabilityAtE163": "original gateway ready after recovery; both queued inputs processed; two original routes active"
+    "residentChannelSource": "96041923e09200aeb96e9274aa3eccd44de2d3c9",
+    "residentIsolatedPythonSource": "96041923e09200aeb96e9274aa3eccd44de2d3c9",
+    "residentAvailabilityAtE163": "original gateway ready after recovery; both queued inputs processed; two original routes active",
+    "residentGroupReplyMode": "agent-decides"
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {
