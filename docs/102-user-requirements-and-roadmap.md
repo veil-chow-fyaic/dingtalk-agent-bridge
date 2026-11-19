@@ -1,14 +1,14 @@
 # 用户需求、交付现状与后续路线
 
-E166 已在原组织宿主加载 0.2.5（来源 `5d1c09e`），独立 transport 仍为 E156 的 `d444ccf`。钉钉插件负责消息、原件和回复投递。工具、数据源、凭据和执行权限归宿主。 原群两表对账已从客户端下载复算。临时 PR 查询触发宿主工具，受现场 DNS 限制。 [现场收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
+## 本阶段交付范围
 
-E162 已在群聊实测同一发起人取消正在执行的任务，取消关联已落盘。实际宿主、版本及取消边界见[组织试点结果](resident-openclaw-pilot.md#现场加载版本与本轮试用)。
+普通账号的独立 IM 工具与可选 OpenClaw 通道可在已验证的一个授权群和一个私聊中日常使用。两路均实测收发文字、图片、常用文件、WAV 和 MP4，交由真实模型处理，并在钉钉收件端按原名下载结果。正式模式由宿主决定回复内容，bridge 不添加诊断前缀或任务号。群聊可按命令、真实 @、每条消息或提示词判断参与。 [入门指南](getting-started.md) · [业务场景与群策略](agent-im-workflows.md)
 
-E160 在 E159 完整回切后验证了组织宿主的再次接管。原群与私聊分别延续原宿主会话，两笔新答复均由客户端核对。真实取消中止了模型，当时缺少旧入站的持久取消关联。E164 已隔离这笔原输入并完成双路回切及重新接管。 [现场验收](resident-openclaw-pilot.md#再次接管与运行中取消)
+E167 在原群从钉钉客户端交办一份新的 7 行库位盘点表。组织 OpenClaw 用自己的 `write` 工具生成补货清单，原群收到正文和 CSV。收件端下载后逐行复算，3 个库位共需 20 件，文件字节与宿主写入一致。 [本次收件验收](../evidence/2026-11-19/stage-delivery-inventory.json)
 
-**普通账号 IM 和可选的 OpenClaw 原生通道已交付。** 群聊和私聊各有真实模型读写原件、正文回到原会话、钉钉收件端按原名保存并逐字节核对的证据。正式模式由宿主提供回复正文。首次接入见[入门指南](getting-started.md)，独立核心安装见[E156 部署记录](156-native-channel-deployment.md)。
+现场沿用 E156 独立 transport `d444ccf` 和 E166 的组织 OpenClaw 钉钉插件 0.2.5（源码 `5d1c09e`）。Agent 工具、权限和网络由宿主管理。一次临时 GitHub PR 查询触发了原生工具，现场 DNS 导致宿主在发出 HTTP 请求前拒绝访问。 [宿主工具收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
-原 14 项 MUST 中 13 项通过，R06 部分通过。E156 的独立 transport 核心为 `d444ccf`。E160 磁盘安装的宿主插件 0.2.1 和隔离 Python 来源为 `c1cf86e`，当时缺少进程内版本标记，E161 已补充现用版本的现场记录。 [E160 现场与测试收据](../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
+原 14 项 MUST 中 **13 项通过，R06 部分通过**。本阶段暂缓原生语音条出站。任意多个普通文件合为一个气泡、Hermes 与 DeepSeek Harness 端到端接入、多人和跨组织现场使用仍待验证。双路回切、恢复后续问及真实取消已有独立收据。 [原验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [恢复与取消实测](resident-openclaw-pilot.md#再次接管与运行中取消)
 
 ## 产品初衷
 

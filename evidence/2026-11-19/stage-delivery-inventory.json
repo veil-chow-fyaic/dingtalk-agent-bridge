@@ -1,0 +1,51 @@
+{
+  "id": "E167",
+  "date": "2026-11-19",
+  "scope": "Stage delivery for ordinary-account IM and the resident OpenClaw channel on one authorized group and one direct chat. This new file task used the group only.",
+  "newRuntimeDeployment": false,
+  "executionModel": "zai/glm-5.3-flash",
+  "task": "Stock replenishment from a new synthetic inventory CSV sent through the native DingTalk client",
+  "input": {
+    "rows": 7,
+    "acceptedCsvRowsMatchSource": true,
+    "sha256": "f5aea35d2e21bfb9673fe61583ba1ffa17588bfc4dd26bbc64a978ef511a7352"
+  },
+  "receiver": {
+    "filename": "库位补货建议.csv",
+    "bytes": 75,
+    "sha256": "ea97b296b73fe69f06dcf9df80976c0e765305883270c5da78f1762794ad35d3",
+    "rows": 3,
+    "units": 20,
+    "headersRowsAndOrderIndependentlyRecomputed": true,
+    "nativeClientDownloaded": true,
+    "downloadMatchesHostWriteAndTransportHash": true,
+    "visibleBodyMatchesConfirmedText": true,
+    "bridgeDiagnosticPrefixPresent": false
+  },
+  "hostTool": "write",
+  "confirmedDeliveries": {
+    "text": 1,
+    "file": 1
+  },
+  "sharedHost": {
+    "sameGatewayAndWechatSupervisorPids": true,
+    "readyzBefore": {
+      "http": 503,
+      "failing": [
+        "wechat-bridge"
+      ]
+    },
+    "readyzAfter": {
+      "http": 200,
+      "failing": []
+    },
+    "wechatMessageTested": false
+  },
+  "originalBaseline": {
+    "requiredPassed": 13,
+    "requiredPartial": [
+      "R06"
+    ],
+    "fullProductAcceptance": false
+  }
+}
