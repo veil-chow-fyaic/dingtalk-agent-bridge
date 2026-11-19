@@ -216,3 +216,42 @@ class GroupParticipationTests(unittest.TestCase):
         self.assertEqual(h.db.execute('SELECT COUNT(*) FROM host_silent_replies').fetchone()[0], 0)
         self.assertEqual(self.smart(h)['id'],'m2')
         self.assertEqual(h.status('independent',reconcile=True)['state'],'confirmed')
+
+    def test_after_answer_a_new_picture_sees_only_proven_prior_outcomes_across_restart(self):
+        h = self.open()
+        first = event(1, text='[图片消息](mediaId=first)', refs=[ref('mediaId','first')])
+        question = event(2, text='What is the order number on my last picture?')
+        last = event(3, text='[图片消息](mediaId=second)', refs=[ref('mediaId','second')])
+        self.api.events = [first, question, last]
+        self.assertEqual(self.smart(h)['id'],'m1')
+        h.ack('m1','done',silent_reason='agent_decision')
+        self.assertEqual(self.smart(h)['id'],'m2')
+        h.begin_group_dispatch('m2')
+        h.send('physical-reply-key', {'text':'Order number 4321','groupTurnId':'m2'})
+        h.status('physical-reply-key', reconcile=True)
+        h.ack('m2','done')
+        h = self.open()
+        self.assertEqual(self.smart(h)['id'],'m3')
+        recent = h.handle({'op':'groupContext','messageId':'m3','allowSenders':['other']})['recent']
+        self.assertEqual([(item['assistantOutcome'], item['attachments']) for item in recent],
+                         [('silent',1),('replied',0)])
+        self.assertEqual(recent[-1]['text'],'What is the order number on my last picture?')
+        self.assertNotIn('4321', str(recent))
+        self.assertNotIn('physical-reply-key', str(recent))
+
+    def test_unrelated_or_unconfirmed_sends_cannot_label_an_old_question_as_answered(self):
+        h = self.open()
+        self.api.events = [event(i, text='request') for i in range(1,5)]
+        for i in range(1,4):
+            mid = self.smart(h)['id']
+            h.begin_group_dispatch(mid)
+            fields = {'text':'ping'} if i == 1 else {'text':'reply','groupTurnId':mid}
+            receipt = h.send('key-'+mid,fields)
+            self.assertEqual(receipt['state'],'submitted')
+            if i != 2:
+                h.status('key-'+mid, reconcile=True)
+            h.ack(mid,'unknown' if i == 3 else 'done')
+        self.smart(h)
+        recent = h.handle({'op':'groupContext','messageId':'m4','allowSenders':['other']})['recent']
+        self.assertEqual(len(recent),3)
+        self.assertFalse(any('assistantOutcome' in row for row in recent))

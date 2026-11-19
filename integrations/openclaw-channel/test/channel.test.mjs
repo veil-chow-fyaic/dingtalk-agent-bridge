@@ -386,6 +386,15 @@ test("group model can explicitly elect silence or dispatch ordinary tasks with o
   assert.equal(state.acks.find(a=>a.messageId==="denied").status,"ignored");
 });
 
+test("only a normal group reply carries the admitted inbound source",async()=>{
+  const state=setup({groupPolicy:{groupReplyMode:"agent-decides"},decide:async()=>"REPLY",
+    messages:{G:[message("G","question","what was on my last order?")],D:[message("D","dm","hi")]},
+    dispatch:async({dispatcherOptions})=>{await dispatcherOptions.deliver({text:"4321"},{kind:"final"});return {}; }});
+  await state.run();
+  assert.equal(state.sends.find(([r])=>r==="G")[1].groupTurnId,"question");
+  assert.equal(state.sends.find(([r])=>r==="D")[1].groupTurnId,undefined);
+});
+
 test("a malformed tool-free decision defers the original instead of marking it silent",async()=>{
   const state=setup({groupPolicy:{groupReplyMode:"agent-decides"},
     decide:async()=>"could be useful",messages:{G:[message("G","later","hi")]}});
@@ -474,6 +483,10 @@ test("ambiguous smart-group media references ask for a quote without running a t
   const state=setup({groupPolicy:{groupReplyMode:"agent-decides"},decide:async()=>"REPLY",messages:{G:[
     message("G","single","读刚才那张图上的订单号"),
     message("G","both","对比刚才那张图和刚才那份文件"),
+    message("G","pair","对比刚才那张图和文件"),
+    message("G","plural","比较刚才两张照片里的库存"),
+    message("G","foreign","读她刚刚发的那张图片"),
+    message("G","english","Compare the last two images"),
   ]},select:(op,fields)=>{
     assert.equal(op,"selectFiles");
     assert.deepEqual(fields,{messageId:"single",recentKind:"image"});
@@ -482,5 +495,5 @@ test("ambiguous smart-group media references ask for a quote without running a t
   await state.run();
   assert.equal(state.contexts.length,0);
   assert.equal(state.staged.length,0);
-  assert.deepEqual(state.sends.map(([,req])=>/引用.*--attachments/u.test(req.text)),[true,true]);
+  assert.deepEqual(state.sends.map(([,req])=>/引用.*--attachments/u.test(req.text)),Array(6).fill(true));
 });

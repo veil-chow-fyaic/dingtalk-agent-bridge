@@ -121,6 +121,9 @@ class HostChannel:
                     message_id TEXT PRIMARY KEY, reason TEXT NOT NULL, attempts INTEGER NOT NULL, retry_at REAL NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_silent_replies (
                     message_id TEXT PRIMARY KEY, reason TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_group_reply_keys (
+                    key TEXT PRIMARY KEY, message_id TEXT NOT NULL, confirmed INTEGER NOT NULL DEFAULT 0);
+                CREATE INDEX IF NOT EXISTS host_group_reply_turn ON host_group_reply_keys(message_id, confirmed);
                 CREATE TABLE IF NOT EXISTS host_sends (
                     key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_plans (
@@ -565,6 +568,9 @@ class HostChannel:
         if (not isinstance(result, dict) or result.get('key') != key or not result.get('state')
                 or result['state'] == 'confirmed' and not result.get('message_id')):
             raise ChannelError('invalid_transport_receipt')
+        if self.route.get('conversationType') == 'group' and result['state'] == 'confirmed':
+            with self.db:
+                self.db.execute('UPDATE host_group_reply_keys SET confirmed=1 WHERE key=? AND confirmed=0', (key,))
         return {name: result.get(name) for name in ('key', 'state', 'task_id', 'message_id')}
 
     def plan(self, intent, part, count, keys):
@@ -656,16 +662,26 @@ class HostChannel:
         self.send_attempts += 1
         intent, content = self.submission(request)
         self.verify_planned_send(key, intent, content)
+        turn = request.get('groupTurnId')
+        if turn is not None and (self.route.get('conversationType') != 'group' or not isinstance(turn, str)
+                or not self.db.execute("SELECT 1 FROM host_dispatch WHERE message_id=? AND status='claimed'", (turn,)).fetchone()
+                or self.db.execute('SELECT 1 FROM host_plan_keys WHERE key=?', (key,)).fetchone()):
+            raise ChannelError('invalid_group_reply_source')
         fingerprint = hashlib.sha256(json.dumps(intent, sort_keys=True).encode()).hexdigest()
         old = self.db.execute('SELECT fingerprint FROM host_sends WHERE key=?', (key,)).fetchone()
         if old is not None:
             if old[0] != fingerprint:
                 raise ChannelError('idempotency_conflict')
+            if turn is not None and not self.db.execute(
+                    'SELECT 1 FROM host_group_reply_keys WHERE key=? AND message_id=?', (key, turn)).fetchone():
+                raise ChannelError('group_reply_source_conflict')
             return self.status(key, reconcile=True)
         payload = self.stage(intent, content)
         # The process owns the route lock, so only this reservation can send this key.
         with self.db:
             self.db.execute('INSERT INTO host_sends VALUES (?,?)', (key, fingerprint))
+            if turn is not None:
+                self.db.execute('INSERT INTO host_group_reply_keys(key,message_id) VALUES (?,?)', (key, turn))
         result = self.api('/v1/send', {'idempotency_key': key, **payload})
         return self.receipt(key, result)
 

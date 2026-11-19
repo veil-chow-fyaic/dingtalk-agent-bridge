@@ -177,11 +177,20 @@ function recentMediaKind(text) {
   // Keep implicit inference narrow. Other wording can use a native quote or an
   // explicit selector. The sidecar independently checks identity, time and uniqueness.
   const prefix = "(?:(?:刚才|刚刚|我刚|上面|前面|之前|上一条|前一条)(?:我|发|传|过|来|的|那|这|一|个|份|张|条|了){0,10}|那张|那份|上一张|上一份)";
+  // A plural, mixed, or explicitly third-party reference needs a human choice.
+  const noun = "(?:图片?|照片|截图|文件|文档|表格|附件)";
+  const plural = new RegExp("(?:刚才|刚刚|上面|前面|之前|这些|那些|这组|那组)(?:我|发|传|过|来|的|那|这|了){0,6}(?:这几|那几|几|两|[2-9]|[二三四五六七八九]|多|一组|一批)(?:张|份|个)?" + noun);
+  const foreign = new RegExp("(?:别人|对方|他|她|他们|她们)(?:刚才|刚刚|刚|发|传|过|来|的|那|这|一|张|份|个|了){1,12}" + noun);
+  if (plural.test(text) || foreign.test(text) || /(?:这些|那些|这组|那组)(?:图片?|照片|文件|文档|附件)/u.test(text) ||
+      /\b(?:last|previous|those) (?:two |three |few )?(?:photos|images|screenshots|files|documents|attachments)\b/iu.test(text)) {
+    return "clarify";
+  }
   const image = new RegExp(prefix+"(?:图片?|照片|截图)").test(text) ||
     /(?:\b(?:last|previous) (?:photo|image|screenshot)\b|\b(?:photo|image|screenshot) I just sent\b)/iu.test(text);
   const file = new RegExp(prefix+"(?:文件|文档|表格)").test(text) ||
     /(?:\b(?:last|previous) (?:file|document)\b|\b(?:file|document) I just sent\b)/iu.test(text);
-  if (image && file) return "multiple";
+  const pair = /(?:图片?|照片|截图)(?:和|与|及|、)(?:那份|那个|这份)?(?:附件|文件|文档|表格)|(?:附件|文件|文档|表格)(?:和|与|及|、)(?:那张|这张)?(?:图片?|照片|截图)/u;
+  if (image && file || (image || file) && pair.test(text)) return "clarify";
   if (image || file) return image ? "image" : "file";
   return new RegExp(prefix+"附件").test(text) || /\blast attachment\b/iu.test(text) ? "attachment" : null;
 }
@@ -226,7 +235,8 @@ async function* deliveryComponents({sdk, text, urls, seed, signal, mediaAccess, 
 async function deliver(params) {
   let result;
   for await (const component of deliveryComponents(params)) {
-    result = await confirmed(params.client, component, params.signal);
+    result = await confirmed(params.client, params.groupTurnId ? {...component,groupTurnId:params.groupTurnId} : component,
+      params.signal);
   }
   if (!result) throw new Error("DingTalk delivery has no text or supported media");
   return result;
@@ -307,7 +317,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
   const recent = route.groupReplyMode === "agent-decides" && !input.selectFiles &&
     !input.quote && !input.attachments.length ? recentMediaKind(input.body) : null;
   const clarify = '请引用你想处理的那一条原消息，或使用 /agent --attachments [{"image":1},"文件名"] 加上要求。';
-  if (recent === "multiple") {
+  if (recent === "clarify") {
     await selectionNotice(clarify);
     return;
   }
@@ -417,6 +427,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
         const urls = payload.mediaUrls?.length ? payload.mediaUrls : payload.mediaUrl ? [payload.mediaUrl] : [];
         if (!payload.text && !urls.length) return {visibleReplySent:false};
         const receipt = await deliver({sdk,client,text:payload.text,urls,signal,
+          groupTurnId:route.conversationType === "group" ? message.id : undefined,
           privatePaths:[account.bridgeRoot, ...input.attachments.map(part=>part.path), ...media.map(item=>item.path)],
           seed:[account.bridgeAccountId,route.conversationId,message.id,payloadIndex++],
           // OpenClaw validates source access for this turn and stages local outputs

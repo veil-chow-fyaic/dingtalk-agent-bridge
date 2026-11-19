@@ -98,7 +98,15 @@ def recent_group_context(db, mid, allow_senders):
     if incoming['conversationType'] != 'group' or incoming['senderId'] not in allow_senders:
         raise ValueError('group_context_scope')
     lines = []
-    for row in db.execute('SELECT model FROM inbox WHERE seq<? ORDER BY seq DESC LIMIT 16', (current['seq'],)):
+    rows = db.execute("""SELECT i.model, CASE
+                WHEN d.status='done' AND s.message_id IS NOT NULL THEN 'silent'
+                WHEN d.status='done' AND EXISTS (SELECT 1 FROM host_group_reply_keys r
+                     WHERE r.message_id=i.message_id AND r.confirmed=1) THEN 'replied'
+                END AS outcome
+            FROM inbox i LEFT JOIN host_dispatch d USING(message_id)
+            LEFT JOIN host_silent_replies s USING(message_id)
+            WHERE i.seq<? ORDER BY i.seq DESC LIMIT 16""", (current['seq'],))
+    for row in rows:
         msg = json.loads(row['model']) if row['model'] else None
         if (not msg or msg.get('issues') or msg.get('accountId') != incoming['accountId']
                 or msg.get('conversationId') != incoming['conversationId'] or msg.get('fromSelf') is None
@@ -107,7 +115,8 @@ def recent_group_context(db, mid, allow_senders):
         lines.append({'speaker': 'assistant' if msg['fromSelf'] else
                       'current_sender' if msg['senderId'] == incoming['senderId'] else 'other_sender',
                       'text': ''.join(p['text'] for p in msg['parts'] if p['type'] == 'text')[:600],
-                      'attachments': sum(p['type'] != 'text' for p in msg['parts'])})
+                      'attachments': sum(p['type'] != 'text' for p in msg['parts']),
+                      **({'assistantOutcome': row['outcome']} if row['outcome'] else {})})
         if len(lines) == 8:
             break
     return list(reversed(lines))

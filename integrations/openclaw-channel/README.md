@@ -21,7 +21,7 @@ For an unattended install on OpenClaw 2026.11.3, review the local source and its
 
 ## Verify the loaded channel
 
-For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.3"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
+For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.4"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
 
 This plugin ships from reviewed local source. OpenClaw 2026.7.1-2 can look up a registry package on cold startup when a local plugin advertises a downloadable channel without an install record. Version 0.2.2 declares its runtime channels in `openclaw.plugin.json` and omits the download catalog entry.
 
