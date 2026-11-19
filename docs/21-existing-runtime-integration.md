@@ -1,5 +1,7 @@
 # 通用工具边界与运行器接入
 
+原生OpenClaw Gateway通道已有[E155双路真实文件验收](155-openclaw-two-route-file-acceptance.md)，E154旧未知记录保持。下述内置CLI适配是另一条路径，合并与部署见[PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)。
+
 E132（2026-11-16）整理。产品是通用IM中间件，任何Agent/程序可使用CLI/HTTP/持久consumer；用户无需先选某个runtime才能开发或使用通道。E133新增、E134部署CLI/HTTP的composition，接收字面文字和逐张绑定SHA的有序图片；不改gateway的现有逐件交付，见[接口说明](22-generic-tool-and-consumer.md)。组织/profile、精确会话及运行器都是配置，不能将测试群写入产品逻辑。
 
 ## 当前接入层次

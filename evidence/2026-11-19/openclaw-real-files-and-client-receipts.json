@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "stage": "E154",
+  "date": "2026-11-19",
+  "candidateCommit": "f3e0b5a60f07365639e1abf4af0e8ef384cdc982",
+  "scope": "Partial real canary acceptance; parent verified private primary materials, reviewer prepared public summary only",
+  "direct": {
+    "passed": true,
+    "modelSize": "14B",
+    "uniqueInputReadByActualTool": true,
+    "inputSkuRowsMatched": 3,
+    "hostInjectedFullAttachmentText": true,
+    "actualWriteTool": true,
+    "expectedTotal": 20,
+    "observedTotal": 20,
+    "sameConversationReply": true,
+    "clientSaveAs": true,
+    "clientFileBytes": 9,
+    "expectedContentEscaped": "total\\n20\\n",
+    "expectedContentSha256": "32f19951669a9d7c38db85b5ee0a075e6111621784cb9ee6af39b867281a8ee8",
+    "clientAndToolBytesMatched": true,
+    "exactUniqueFilenameMatched": true,
+    "clientAndHarnessBodySha256": "6ba8a6ed44788ba90cdd87251b9dca81871794ba2091bee513bd4e439541c07b"
+  },
+  "group": {
+    "passed": false,
+    "modelResult": 43,
+    "dwsError": "request_failed",
+    "deliveryState": "outcome_unknown",
+    "originalKeyHasOpenTaskId": false,
+    "originalKeyHasMessageId": false,
+    "historyMatched": false,
+    "attachmentSubmitted": false,
+    "newKeyRetryAuthorized": false
+  },
+  "preservedDirectAttempts": [
+    {
+      "modelSize": "4B",
+      "expectedTotal": 20,
+      "observedTotal": 10,
+      "clientBytesVerified": true,
+      "passed": false
+    },
+    {
+      "modelSize": "14B",
+      "expectedTotal": 20,
+      "observedTotal": 20,
+      "clientAddedNumericSuffix": "(1)",
+      "exactFilenameMatched": false,
+      "passed": false
+    }
+  ],
+  "localRegression": {
+    "pythonTests": 569,
+    "nodeTests": 14,
+    "scope": "Local source/plugin regression only; not current PR cloud CI or multi-environment wheel installation"
+  },
+  "executionState": {
+    "coreTransportDeployment": "0e151fb",
+    "coreTransportRunning": true,
+    "bothRoutesExecutionOwner": "temporary canary",
+    "oldGatewaysSteppedBack": true,
+    "newCandidateDeploymentClaimed": false
+  },
+  "publication": {
+    "pullRequest": "https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9",
+    "readyForReview": true,
+    "autoMergeEnabled": false,
+    "mergedClaimed": false,
+    "deploymentReceiptClaimed": false
+  },
+  "bothRoutesPassed": false,
+  "originalAcceptanceMatrixChanged": false,
+  "fullProductAcceptance": false,
+  "rawUiPublished": false,
+  "limits": [
+    "Group attachment never submitted; no proof of group client delivery",
+    "Unknown result is retained under its original key; no new-key or UI resend",
+    "No exact private account, route, message, task, SDK UUID or local paths published",
+    "No real multi-turn/cancel/restart pass inferred from a file result",
+    "Client Save As and actual bytes/hash/name determine receipt; no separate graphical-editor requirement"
+  ]
+}

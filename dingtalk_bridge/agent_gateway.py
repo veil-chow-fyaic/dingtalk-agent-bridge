@@ -1,6 +1,5 @@
 """DingTalk tasks -> durable local Agent sessions -> same-conversation text/files."""
 import argparse
-from datetime import datetime
 import hashlib
 import json
 import os
@@ -17,11 +16,11 @@ from urllib.error import HTTPError
 from .agent_runtime import (LocalRuntime,RuntimeStopped,RuntimeFailure,RuntimeSessionError,RuntimeResultError,
                             timeout_seconds,validate_runtime_result,runtime_manifest,checked_session,require_capabilities,
                             runtime_environment,runtime_binding)
-from .consumer import Inbox,HydrationPending
+from .consumer import Inbox,HydrationPending,execution_scope
 from .core import ArtifactIntegrityError
-from .message_model import media_parts
+from .message_model import file_request, media_parts, select_file_sources
 from .routing import route_configs
-from .text_limits import reply_chunks
+from .text_limits import AGENT_PREFIX, reply_chunks
 from .official_tools import enabled as official_tools_enabled, prepare as prepare_official_tools
 
 
@@ -50,7 +49,7 @@ def contract_json(contract):
     return json.dumps(contract,sort_keys=True,separators=(',',':'),ensure_ascii=False)
 
 
-def command_for(model,settings):
+def command_for(model,settings, *, legacy_prefix=False):
     if model.get('senderId') not in settings['allowedSenderIds'] or model.get('fromSelf') is None:return None
     text=''.join(p['text'] for p in model['parts'] if p['type']=='text').strip()
     prefix=settings.get('prefix','/agent')
@@ -59,53 +58,45 @@ def command_for(model,settings):
     if model['fromSelf']:
         if not settings.get('allowSelfCommands') or not addressed:return None
     elif model['conversationType']=='group' and not addressed:return None
-    if text.startswith('[Agent]'):return None
+    if legacy_prefix and text.startswith('[Agent]'):
+        return None
     if addressed:text=text[len(prefix):].strip()
     return text or ('请处理收到的附件。' if list(media_parts(model)) else None)
 
 
-def file_request(model,command):
-    return model['conversationType']=='group' and command is not None and (command=='--files' or command.startswith('--files '))
+def self_delivery_state(db, message_id, *, startup_outbox_rowid=None):
+    """Classify an opt-in self command using sent-message IDs and pending outputs."""
+    echo = db.execute(
+        "SELECT 1 FROM outbox WHERE json_extract(receipt, '$.message_id')=? LIMIT 1", (message_id,)).fetchone()
+    if echo:
+        return 'outbound_echo'
+    # Between a send and its native receipt, even the displayed Markdown may
+    # differ from the payload. Revisit self commands after reconciliation so a
+    # harness reply can't run as a user command. Peers bypass this check.
+    # A stopped snapshot has no proven never-attempted entries. A live process
+    # knows which rows it created itself. This also covers rollback to a gateway
+    # that doesn't update the attempt field on rows left by a newer process.
+    attempted = '' if startup_outbox_rowid is None else ' AND (send_attempted=1 OR rowid<=?)'
+    params = () if startup_outbox_rowid is None else (startup_outbox_rowid,)
+    pending = db.execute(
+        "SELECT 1 FROM outbox WHERE state NOT IN ('rejected','failed','upload_unknown') "
+        "AND (json_type(receipt, '$.message_id') IS NOT 'text' OR trim(json_extract(receipt, '$.message_id')) = '')"
+        + attempted + ' LIMIT 1', params).fetchone()
+    return 'deferred_self_delivery_review' if pending else None
 
 
-def select_file_sources(model,command,previous):
-    """Bind explicit names once; no implicit latest-file or cross-sender lookup."""
-    try:
-        raw=command[len('--files'):].lstrip()
-        names,end=json.JSONDecoder().raw_decode(raw)
-        task=raw[end:].strip()
-        if (not isinstance(names,list) or not 1<=len(names)<=8 or
-            any(not isinstance(n,str) or not n or len(n)>255 or any(c in n for c in '/\\\x00\r\n') for n in names) or
-            len(set(names))!=len(names) or not task or task in {'status','状态','cancel','取消','new','新会话'} or
-            model['issues'] or model.get('quote') or list(media_parts(model))):
-            raise ValueError('file_selection_invalid')
-        requested_at=datetime.fromisoformat(model['receivedAt'])
-    except (ValueError,TypeError) as exc:
-        raise ValueError('file_selection_invalid') from exc
-    sources=[]
-    for name in names:
-        matches=[]
-        for candidate in previous:
-            if (candidate is None or candidate['issues'] or candidate['senderId']!=model['senderId'] or
-                candidate['fromSelf'] is not model['fromSelf'] or
-                candidate['accountId']!=model['accountId'] or candidate['conversationId']!=model['conversationId']):continue
-            try:age=(requested_at-datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
-            except (TypeError,ValueError):continue
-            if not 0<=age<=1800:continue
-            # Only the actual sender's top-level files, never quoted resources.
-            for part in candidate['parts']:
-                if part['type']=='file' and part.get('name')==name:
-                    matches.append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
-        if len(matches)!=1:raise ValueError('file_selection_missing_or_ambiguous')
-        sources.append(matches[0])
-    return task,sources
-
-
-def status_text(summary):
+def status_text(summary, *, diagnostic=False):
     jobs,delivery=summary['jobs'],summary['delivery']
     attention=sum(jobs.get(s,0) for s in ('blocked','failed','interrupted'))
     uncertain=sum(delivery.get(s,0) for s in ('submitted','outcome_unknown','upload_unknown'))
-    return ('[Agent] 任务状态：执行中 '+str(jobs.get('running',0))+'，排队 '+str(jobs.get('queued',0))
+    if not diagnostic:
+        active = jobs.get('running', 0)
+        waiting = jobs.get('queued', 0) + jobs.get('waiting_media', 0)
+        status = f'正在处理 {active} 个任务，另有 {waiting} 个等待处理。' if active or waiting else '当前没有待处理的任务。'
+        if uncertain:
+            status += f'有 {uncertain} 条回复的送达情况尚待确认。'
+        return status
+    return ('任务状态：执行中 '+str(jobs.get('running',0))+'，排队 '+str(jobs.get('queued',0))
             +'，等待附件 '+str(jobs.get('waiting_media',0))+'。\n'
             +'已完成 '+str(jobs.get('completed',0))+'，已取消 '+str(jobs.get('cancelled',0))
             +'；需处理的历史记录 '+str(attention)+'。\n'
@@ -114,7 +105,41 @@ def status_text(summary):
             +'，投递失败 '+str(delivery.get('failed',0))+'。')
 
 
-def stage_outputs(root,workspace,job_id,result):
+def failure_text(exc, state, settings, *, diagnostic):
+    if state == 'cancelled':
+        return '任务已停止。'
+    if state == 'blocked':
+        reset = settings.get('prefix', '/agent') + ' new'
+        normal = f'暂时无法接着原来的对话处理。历史已保留，如需另开对话，请发送 {reset}。'
+        detail = ('原会话与当前执行器配置的兼容性尚未确认，本次任务未执行，原会话和历史已保留。'
+                  f'可由维护者核对升级记录；若确定从新上下文开始，请发送 {reset}，再提交新任务。本次任务不会自动重做。')
+    elif isinstance(exc, RuntimeFailure) and exc.stage == 'capability':
+        normal = '当前助手无法处理这类任务。'
+        detail = '当前执行器未声明任务要求的能力，本次任务未执行。请核对执行器配置；不会自动更换执行器或重做任务。'
+    elif isinstance(exc, RuntimeStopped) and str(exc) == 'timeout':
+        seconds = settings['runtime'].get('timeoutSeconds', 600)
+        normal = '处理超时。请先核对已经生成的文件或变更，再决定是否继续。'
+        detail = (f'本次任务执行超时（{seconds}秒），未完成且未自动重做，未发送结果文件。'
+                  '已产生的文件或外部变更可能仍存在，请先核对；可拆分任务后继续。')
+    elif isinstance(exc, ArtifactTooLarge):
+        normal = '结果超过单个文件 20 MiB 的上限。请将结果压缩或拆分后交付。'
+        detail = ('结果文件超过20 MiB交付上限，本次任务未完成，未发送结果文件。'
+                  '已保留执行记录；请补充任务要求，将结果压缩或拆分到每个文件不超过20 MiB。')
+    elif isinstance(exc, RuntimeResultError):
+        normal = '这次没有取得可交付的结果。请先核对是否已经生成文件或产生其他变更。'
+        detail = ('本次任务的执行结果格式无法确认，未交付结果文件，也未自动重做。'
+                  '工具可能已生成文件或产生其他变更；已保留记录，可先核对已有产物，再明确要求只读校验和交付。')
+    elif isinstance(exc, RuntimeFailure):
+        normal = '暂时无法确认任务是否完成。请先核对已有结果，再决定是否继续。'
+        detail = ('执行器未提供可信的任务完成记录，本次任务未完成，未交付结果文件，也未自动重做。'
+                  '已保留会话与执行记录；工具可能已产生变更，请先核对。')
+    else:
+        normal = '这次处理没有完成。可以查询状态或补充说明。'
+        detail = '本次任务未完成，已保留记录；可以查询状态或补充说明。'
+    return detail if diagnostic else normal
+
+
+def stage_outputs(root,workspace,job_id,result, *, diagnostic=False):
     root=Path(root).resolve();workspace=Path(workspace).resolve();exports=(workspace/'exports').resolve()
     if not exports.is_relative_to(workspace):raise ValueError('Exports directory escaped workspace')
     staged=[]
@@ -123,7 +148,12 @@ def stage_outputs(root,workspace,job_id,result):
         if not path.is_relative_to(exports) or not path.is_file():raise ValueError('Artifact must be an existing file under exports/')
         if path.stat().st_size>20*1024*1024:raise ArtifactTooLarge('Artifact exceeds bridge file limit (20 MiB)')
         data=path.read_bytes();digest=hashlib.sha256(data).hexdigest()
-        destination=root/'local/outbox/agent'/job_id/(str(i)+'-'+re.sub(r'[^\w.\-]','_',path.name))
+        folder=root/'local/outbox/agent'/job_id
+        if diagnostic:
+            destination=folder/(str(i)+'-'+re.sub(r'[^\w.\-]','_',path.name))
+        else:
+            # Keep collision handling in private directories, outside the recipient's filename.
+            destination=folder/str(i)/path.name
         destination.parent.mkdir(parents=True,exist_ok=True,mode=0o700)
         if destination.exists() and destination.read_bytes()!=data:raise ValueError('Staged artifact changed')
         destination.write_bytes(data);destination.chmod(0o600)
@@ -135,14 +165,19 @@ class Gateway:
     def __init__(self,root,route,state_name,settings,api=None,runtime=None):
         timeout_seconds(settings['runtime'])
         runtime_environment(settings['runtime'])
+        presentation = settings.get('chatPresentation', 'product')
+        if presentation not in ('product', 'diagnostic'):
+            raise ValueError('chatPresentation must be product or diagnostic')
+        self.diagnostic = presentation == 'diagnostic'
         self.root=Path(root).resolve();self.route=route;self.settings=settings
+        if route.get('executionOwner', 'gateway') != 'gateway':
+            raise ValueError('Route assigned to another execution owner')
         official_tools_enabled(settings)
         if not settings.get('allowedSenderIds'):raise ValueError('Configure allowedSenderIds before executing local tasks')
         initial_cursor=settings.get('initialCursor',0)
         if type(initial_cursor) is not int or initial_cursor<0:raise ValueError('initialCursor must be a non-negative event sequence')
         self.scope={'account_id':route['accountId'],'conversation_id':route['group']}
-        scope=json.dumps([route['accountId'],route['profile'],route['group'],route.get('conversationType','group')])
-        self.key=hashlib.sha256(scope.encode()).hexdigest()[:24]
+        scope,self.key=execution_scope(route)
         self.local=self.root/'local/agents'/self.key;self.local.mkdir(parents=True,exist_ok=True,mode=0o700)
         self.inbox=Inbox(self.root,route,'agent-'+self.key,state_name)
         # A new deployment can explicitly start after a recorded history baseline.
@@ -158,7 +193,7 @@ class Gateway:
           CREATE TABLE IF NOT EXISTS jobs(id TEXT PRIMARY KEY,seq INTEGER UNIQUE NOT NULL,command TEXT NOT NULL,
             model TEXT NOT NULL,state TEXT NOT NULL,error TEXT,result TEXT);
           CREATE TABLE IF NOT EXISTS outbox(key TEXT PRIMARY KEY,job_id TEXT NOT NULL,payload TEXT NOT NULL,
-            state TEXT NOT NULL DEFAULT 'pending',receipt TEXT,error TEXT);
+            state TEXT NOT NULL DEFAULT 'pending',receipt TEXT,error TEXT,send_attempted INTEGER NOT NULL DEFAULT 1);
         ''')
         if 'runtime_context' not in {r[1] for r in self.db.execute('PRAGMA table_info(jobs)')}:
             self.db.execute('ALTER TABLE jobs ADD COLUMN runtime_context TEXT')
@@ -166,13 +201,24 @@ class Gateway:
         prior=self.db.execute('SELECT value FROM meta WHERE key="binding"').fetchone()
         if prior and prior[0]!=binding:self.close();raise ValueError('Gateway runtime/scope changed; use an explicit new deployment')
         with self.db:
+            # Legacy gateway writes (including during rollback) cannot prove
+            # that a pending send never left the process. New emits start at 0.
+            if 'send_attempted' not in {r[1] for r in self.db.execute('PRAGMA table_info(outbox)')}:
+                self.db.execute('ALTER TABLE outbox ADD COLUMN send_attempted INTEGER NOT NULL DEFAULT 1')
+            self.startup_outbox_rowid = self.db.execute('SELECT coalesce(max(rowid),0) FROM outbox').fetchone()[0]
             self.db.execute('INSERT OR IGNORE INTO meta VALUES("binding",?)',(binding,))
             self.db.execute('INSERT OR IGNORE INTO meta VALUES("generation","0")')
+            # Intake scans the persisted inbox. Enabling literal "[Agent]" content
+            # must not turn previously ignored direct messages into fresh jobs.
+            self.db.execute('INSERT OR IGNORE INTO meta VALUES("legacy_prefix_cursor",?)',
+                            (str(self.inbox.cursor if prior else 0),))
+            self.legacy_prefix_cursor = int(self.db.execute(
+                'SELECT value FROM meta WHERE key="legacy_prefix_cursor"').fetchone()[0])
             # Executing tools may have changed the world before a crash. Never replay them automatically.
             interrupted=self.db.execute('SELECT id FROM jobs WHERE state="running"').fetchall()
             self.db.execute('UPDATE jobs SET state="interrupted",error="process_restart" WHERE state="running"')
             for row in interrupted:
-                self.emit(row['id'],'interrupted',{'text':'[Agent] 上次任务执行期间服务中断，执行结果未确认，未自动重做。工具可能仍在执行或已产生结果；请先核对后再决定如何继续。'})
+                self.notice(row['id'],'interrupted','上次任务执行期间服务中断，执行结果未确认，未自动重做。工具可能仍在执行或已产生结果；请先核对后再决定如何继续。')
         (self.local/'tasks.sqlite3').chmod(0o600)
 
     def http(self,path,data=None):
@@ -195,7 +241,29 @@ class Gateway:
 
     def emit(self,job_id,label,payload):
         key='agent-'+job_id+'-'+label
-        self.db.execute('INSERT OR IGNORE INTO outbox(key,job_id,payload) VALUES(?,?,?)',(key,job_id,json.dumps(payload,ensure_ascii=False)))
+        self.db.execute('INSERT OR IGNORE INTO outbox(key,job_id,payload,send_attempted) VALUES(?,?,?,0)',(key,job_id,json.dumps(payload,ensure_ascii=False)))
+
+    def notice(self, job_id, label, text, *, diagnostic_text=None):
+        if self.diagnostic:
+            text = AGENT_PREFIX + (diagnostic_text if diagnostic_text is not None else text)
+        elif label == 'ack':
+            return
+        self.emit(job_id, label, {'text': text})
+
+    def command(self, model, seq=None):
+        if seq is None and self.legacy_prefix_cursor:
+            row = self.inbox.db.execute('SELECT seq FROM inbox WHERE message_id=?', (model['id'],)).fetchone()
+            seq = row[0] if row else None
+        command = command_for(model, self.settings, legacy_prefix=seq is not None and seq <= self.legacy_prefix_cursor)
+        if command is not None and model['fromSelf']:
+            with self.lock:
+                # An accepted task can finish hydration even if an unrelated
+                # outbound message temporarily lacks a receipt.
+                job_id = hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
+                known = self.db.execute('SELECT 1 FROM jobs WHERE id=?', (job_id,)).fetchone()
+                if not known and self_delivery_state(self.db, model['id'], startup_outbox_rowid=self.startup_outbox_rowid):
+                    return None
+        return command
 
     def download_ready(self,mid):
         # Only the network request runs on this daemon thread; SQLite stays on the intake thread.
@@ -219,7 +287,7 @@ class Gateway:
         with self.lock:
             for row in self.db.execute('SELECT model FROM jobs WHERE state="waiting_media"'):
                 if any(s['messageId']==model['id'] for s in json.loads(row[0]).get('fileSources',[])):return True
-        if command_for(model,self.settings) is None:return False
+        if self.command(model) is None:return False
         job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
         with self.lock:
             row=self.db.execute('SELECT state FROM jobs WHERE id=?',(job_id,)).fetchone()
@@ -227,7 +295,7 @@ class Gateway:
 
     def bind_file_requests(self):
         for row in self.inbox.db.execute('SELECT seq,model FROM inbox WHERE model!="null" ORDER BY seq'):
-            model=json.loads(row['model']);command=command_for(model,self.settings)
+            model=json.loads(row['model']);command=self.command(model, row['seq'])
             if not file_request(model,command):continue
             job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
             with self.lock,self.db:
@@ -241,9 +309,9 @@ class Gateway:
                 self.db.execute('INSERT INTO jobs(id,seq,command,model,state,error) VALUES(?,?,?,?,?,?)',
                     (job_id,row['seq'],command,json.dumps(model,ensure_ascii=False),state,error))
                 if state=='blocked':
-                    self.emit(job_id,'blocked',{'text':'[Agent] 未执行文件任务。请使用 /agent --files ["原文件名"] 具体任务；'
-                        '最多8个不同文件名，须为你在本群此前50条消息、30分钟内发送的文件。缺失或同名不明确时不会猜选；不能将控制命令作为文件任务。'})
-                else:self.emit(job_id,'ack',{'text':'[Agent] 已接收任务 '+job_id[:8]+'，正在获取指定附件。'})
+                    self.notice(job_id,'blocked','未执行文件任务。请使用 '+self.settings.get('prefix','/agent')+' --files ["原文件名"] 具体任务。'
+                        '最多8个不同文件名，须为你在本群此前50条消息、30分钟内发送的文件。缺失或同名不明确时不会猜选；不能将控制命令作为文件任务。')
+                else:self.notice(job_id,'ack','已接收任务 '+job_id[:8]+'，正在获取指定附件。')
 
     def ready_file_requests(self):
         with self.lock,self.db:
@@ -282,7 +350,7 @@ class Gateway:
         self.ready_file_requests()
         # normalized includes explicitly authorized owner commands; Inbox.ready's general self filter stays intact.
         for row in self.inbox.db.execute('SELECT seq,model,state FROM inbox WHERE model!="null" ORDER BY seq'):
-            model=json.loads(row['model']);command=command_for(model,self.settings)
+            model=json.loads(row['model']);command=self.command(model, row['seq'])
             if command is None or file_request(model,command):continue
             job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
             state='blocked' if model['issues'] else 'queued' if row['state']=='normalized' else 'waiting_media'
@@ -294,12 +362,12 @@ class Gateway:
                         (json.dumps(model,ensure_ascii=False),job_id))
                     continue
                 if state=='blocked':
-                    self.emit(job_id,'blocked',{'text':'[Agent] 这条消息有未能完整解析的内容，暂未执行；请改用文字加文件附件重新说明。'});continue
+                    self.notice(job_id,'blocked','这条消息有未能完整解析的内容，暂未执行；请改用文字加文件附件重新说明。');continue
                 if command in {'status','状态'}:
                     # The query itself is complete before taking its snapshot;
                     # otherwise an idle conversation falsely reports one queued job.
                     self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
-                    self.emit(job_id,'status',{'text':status_text(self.summary())})
+                    self.notice(job_id,'status',status_text(self.summary(), diagnostic=self.diagnostic))
                 elif command in {'cancel','取消'}:
                     running=self.db.execute('SELECT count(*) FROM jobs WHERE state="running"').fetchone()[0]
                     if running:self.cancel.set()
@@ -308,8 +376,8 @@ class Gateway:
                         pending=self.db.execute('SELECT id FROM jobs WHERE id!=? AND state IN ("queued","waiting_media") ORDER BY seq LIMIT 1',(job_id,)).fetchone()
                         if pending:self.db.execute('UPDATE jobs SET state="cancelled",error="cancelled_before_execution" WHERE id=?',(pending[0],))
                     self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
-                    self.emit(job_id,'cancel',{'text':'[Agent] 已请求停止当前任务。' if running else '[Agent] 已取消最早等待中的任务。' if pending else '[Agent] 当前没有正在执行或等待的任务。'})
-                else:self.emit(job_id,'ack',{'text':'[Agent] 已接收任务 '+job_id[:8]+('，正在获取附件。' if state=='waiting_media' else '，将执行并回传结果。')})
+                    self.notice(job_id,'cancel','已请求停止当前任务。' if running else '已取消最早等待中的任务。' if pending else '当前没有正在执行或等待的任务。')
+                else:self.notice(job_id,'ack','已接收任务 '+job_id[:8]+('，正在获取附件。' if state=='waiting_media' else '，将执行并回传结果。'))
 
     def summary(self):
         with self.lock:
@@ -344,7 +412,7 @@ class Gateway:
                 self.db.execute('UPDATE meta SET value=CAST(value AS INTEGER)+1 WHERE key="generation"')
                 self.db.execute('DELETE FROM meta WHERE key IN ("session_id","session_contract")')
                 self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job['id'],))
-                self.emit(job['id'],'new',{'text':'[Agent] 已开始新会话。'});return True
+                self.notice(job['id'],'new','已开始新会话。');return True
             session=self.db.execute('SELECT value FROM meta WHERE key="session_id"').fetchone()
         model=json.loads(job['model']);inputs=[];input_info=[];images=[];run_dir=self.local/'runs'/job['id']
         try:
@@ -387,10 +455,12 @@ class Gateway:
                     self.db.execute('INSERT OR REPLACE INTO meta VALUES("session_contract",?)',(frozen_contract,))
             result=self.runtime.run(prompt,workspace,run_dir,session[0] if session else None,self.cancel,remember,images)
             result=validate_runtime_result(result)
-            outputs=stage_outputs(self.root,workspace,job['id'],result)
+            outputs=stage_outputs(self.root,workspace,job['id'],result,diagnostic=self.diagnostic)
+            text=result['text']
+            if self.diagnostic:
+                text=text.replace('![','[') or '任务已完成。'
             with self.lock,self.db:
-                text=result['text'].replace('![','[')
-                for index,chunk in reply_chunks(text):
+                for index,chunk in reply_chunks(text, AGENT_PREFIX if self.diagnostic else ''):
                     self.emit(job['id'],'text-'+str(index),{'text':chunk})
                 for index,item in enumerate(outputs):
                     path=self.root/item['file']
@@ -405,18 +475,11 @@ class Gateway:
             incompatible=isinstance(exc,RuntimeSessionError) and exc.code in {
                 'runtime_session_contract_missing','runtime_session_contract_changed'}
             state='blocked' if incompatible else 'cancelled' if isinstance(exc,RuntimeStopped) and str(exc)=='cancelled' else 'failed'
-            notice=('[Agent] 任务已停止。' if state=='cancelled' else
-                    '[Agent] 原会话与当前执行器配置的兼容性尚未确认，本次任务未执行，原会话和历史已保留。可由维护者核对升级记录；若确定从新上下文开始，请发送 /agent new，再提交新任务。本次任务不会自动重做。' if incompatible else
-                    '[Agent] 当前执行器未声明任务要求的能力，本次任务未执行。请核对执行器配置；不会自动更换执行器或重做任务。' if isinstance(exc,RuntimeFailure) and exc.stage=='capability' else
-                    '[Agent] 本次任务执行超时（'+str(self.settings['runtime'].get('timeoutSeconds',600))+'秒），未完成且未自动重做，未发送结果文件。已产生的文件或外部变更可能仍存在，请先核对；可拆分任务后继续。' if isinstance(exc,RuntimeStopped) and str(exc)=='timeout' else
-                    '[Agent] 结果文件超过20 MiB交付上限，本次任务未完成，未发送结果文件。已保留执行记录；请补充任务要求，将结果压缩或拆分到每个文件不超过20 MiB。' if isinstance(exc,ArtifactTooLarge) else
-                    '[Agent] 本次任务的执行结果格式无法确认，未交付结果文件，也未自动重做。工具可能已生成文件或产生其他变更；已保留记录，可先核对已有产物，再明确要求只读校验和交付。' if isinstance(exc,RuntimeResultError) else
-                    '[Agent] 执行器未提供可信的任务完成记录，本次任务未完成，未交付结果文件，也未自动重做。已保留会话与执行记录；工具可能已产生变更，请先核对。' if isinstance(exc,RuntimeFailure) else
-                    '[Agent] 本次任务未完成，已保留记录；可以查询状态或补充说明。')
+            notice = failure_text(exc, state, self.settings, diagnostic=self.diagnostic)
             with self.lock,self.db:
                 error=exc.code if isinstance(exc,RuntimeFailure) else type(exc).__name__
                 self.db.execute('UPDATE jobs SET state=?,error=? WHERE id=?',(state,error,job['id']))
-                self.emit(job['id'],'error',{'text':notice})
+                self.notice(job['id'],'error',notice)
         return True
 
     def flush(self):
@@ -440,6 +503,11 @@ class Gateway:
                         else:
                             raise ValueError('artifact_digest_unavailable')
                 # A lost HTTP response is retried with the identical bridge idempotency key/payload.
+                if not row['send_attempted']:
+                    # Commit BEFORE calling the transport. On process death or a
+                    # lost HTTP response, intake must wait for the original key.
+                    with self.lock,self.db:
+                        self.db.execute('UPDATE outbox SET send_attempted=1 WHERE key=?', (row['key'],))
                 receipt=self.api('/v1/send',{'idempotency_key':row['key'],**payload})
                 if receipt['state'] in {'submitted','outcome_unknown'}:
                     receipt=self.api('/v1/reconcile',{'idempotency_key':row['key']})
@@ -447,17 +515,17 @@ class Gateway:
                     self.db.execute('UPDATE outbox SET state=?,receipt=?,error=NULL WHERE key=?',
                         (receipt['state'],json.dumps(receipt),row['key']))
                     if receipt['state'] in {'rejected','failed'}:
-                        self.emit(row['job_id'],'delivery-issue',{'text':'[Agent] 任务 '+row['job_id'][:8]
-                            +' 的部分回复未送达（发送被拒绝或投递失败）。已保留任务结果；不会自动重发失败内容。'
-                            +'可发送 /agent status 查看状态。'})
+                        detail='部分回复未送达（发送被拒绝或投递失败）。已保留任务结果；不会自动重发失败内容。'
+                        detail+='可发送 '+self.settings.get('prefix','/agent')+' status 查看状态。'
+                        self.notice(row['job_id'],'delivery-issue',detail,diagnostic_text='任务 '+row['job_id'][:8]+' 的'+detail)
             except ArtifactIntegrityError:
                 # The bridge only emits this before a new send reservation. An
                 # existing key returns its receipt instead, including unknowns.
                 with self.lock,self.db:
                     self.db.execute('UPDATE outbox SET state="failed",error="artifact_integrity_mismatch" WHERE key=?',
                                     (row['key'],))
-                    self.emit(row['job_id'],'delivery-issue',{'text':'[Agent] 任务 '+row['job_id'][:8]
-                        +' 的结果文件在排队后发生变化，未发送该文件。原任务和摘要已保留，未自动重做或改发其他内容。'})
+                    detail='结果文件在排队后发生变化，未发送该文件。原任务和摘要已保留，未自动重做或改发其他内容。'
+                    self.notice(row['job_id'],'delivery-issue',detail,diagnostic_text='任务 '+row['job_id'][:8]+' 的'+detail)
             except Exception as exc:
                 with self.lock,self.db:self.db.execute('UPDATE outbox SET error=? WHERE key=?',(type(exc).__name__,row['key']))
 

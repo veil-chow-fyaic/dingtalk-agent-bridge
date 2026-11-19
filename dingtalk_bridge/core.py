@@ -388,8 +388,8 @@ class Bridge:
                     return {**self.delivery(key), 'replayed': True}
                 stage_composition(self.root, payload, sources)
         elif text is not None:
-            if not isinstance(text, str) or not text or len(text.encode()) > 65536 or '![' in text:
-                raise ValueError('Use plain text up to 64 KiB; inline images need a separate verified route')
+            if not isinstance(text, str) or not text or len(text.encode()) > 65536:
+                raise ValueError('Use non-empty plain text up to 64 KiB')
             payload = {'kind': 'text', 'text': text}
             if reply_to is not None:
                 payload['reply_to'] = reply_to

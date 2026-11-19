@@ -1,6 +1,7 @@
 """Conservative DWS history projection. Unknown structure never becomes a ready turn."""
 from datetime import datetime
 import hashlib
+import json
 from pathlib import Path
 import re
 from zoneinfo import ZoneInfo
@@ -153,3 +154,40 @@ def materialize(model,ledger,root,cache_root=None):
     for candidate,record,resource in verified:
         candidate.update(record,verified=True,aliasOf=dict(resource))
     return model
+
+
+def file_request(model,command):
+    return model['conversationType']=='group' and command is not None and (command=='--files' or command.startswith('--files '))
+
+
+def select_file_sources(model,command,previous):
+    """Bind explicit names once; no implicit latest-file or cross-sender lookup."""
+    try:
+        raw=command[len('--files'):].lstrip()
+        names,end=json.JSONDecoder().raw_decode(raw)
+        task=raw[end:].strip()
+        if (not isinstance(names,list) or not 1<=len(names)<=8 or
+            any(not isinstance(n,str) or not n or len(n)>255 or any(c in n for c in '/\\\x00\r\n') for n in names) or
+            len(set(names))!=len(names) or not task or task in {'status','状态','cancel','取消','new','新会话'} or
+            model['issues'] or model.get('quote') or list(media_parts(model))):
+            raise ValueError('file_selection_invalid')
+        requested_at=datetime.fromisoformat(model['receivedAt'])
+    except (ValueError,TypeError) as exc:
+        raise ValueError('file_selection_invalid') from exc
+    sources=[]
+    for name in names:
+        matches=[]
+        for candidate in previous:
+            if (candidate is None or candidate['issues'] or candidate['senderId']!=model['senderId'] or
+                candidate['fromSelf'] is not model['fromSelf'] or
+                candidate['accountId']!=model['accountId'] or candidate['conversationId']!=model['conversationId']):continue
+            try:age=(requested_at-datetime.fromisoformat(candidate['receivedAt'])).total_seconds()
+            except (TypeError,ValueError):continue
+            if not 0<=age<=1800:continue
+            # Only the actual sender's top-level files, never quoted resources.
+            for part in candidate['parts']:
+                if part['type']=='file' and part.get('name')==name:
+                    matches.append({'messageId':candidate['id'],'resource':part['resource'],'name':name})
+        if len(matches)!=1:raise ValueError('file_selection_missing_or_ambiguous')
+        sources.append(matches[0])
+    return task,sources

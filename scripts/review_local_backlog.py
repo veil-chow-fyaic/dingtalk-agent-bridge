@@ -17,20 +17,24 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from prepare_history_deployment import Snapshot, check_snapshot, digest, meta_value
-from dingtalk_bridge.agent_gateway import command_for, file_request
+from dingtalk_bridge.agent_gateway import command_for, file_request, self_delivery_state
 from dingtalk_bridge.message_model import normalize, media_parts
 from dingtalk_bridge.routing import route_configs
 
 
-def classify(model, settings, route_key, jobs):
+def classify(model, settings, route_key, jobs, tasks, *, legacy_prefix):
     if not isinstance(model, dict):return {'classification': 'quarantined'}
     mid=model.get('id')
     if not isinstance(mid,str) or not mid:raise ValueError('invalid_saved_model')
     job_id=hashlib.sha256((route_key+'\0'+mid).encode()).hexdigest()[:24]
     if job_id in jobs:
         return {'classification':'existing_job','jobId':job_id,'priorJobState':jobs[job_id]}
-    command=command_for(model, settings)
+    command=command_for(model, settings, legacy_prefix=legacy_prefix)
     if command is None:return {'classification':'ignored_by_task_policy'}
+    if model['fromSelf']:
+        state = self_delivery_state(tasks, mid)
+        if state:
+            return {'classification':state}
     if file_request(model,command):kind='file_selection_review'
     elif model['issues']:kind='blocked_content_review'
     elif command in {'status','状态','cancel','取消','new','新会话'}:
@@ -76,6 +80,10 @@ def preview(root, deployment_review, config='local/service-config.json'):
                 if cursor_raw is not None and not re.fullmatch(r'0|[1-9][0-9]*',cursor_raw):
                     raise ValueError('invalid_consumer_cursor')
                 cursor=int(cursor_raw or 0)
+                # A pre-presentation gateway will freeze its current inbox cursor
+                # on first launch. Mirror that boundary without mutating the DB.
+                saved_legacy = meta_value(tasks, 'legacy_prefix_cursor')
+                legacy_cursor = int(saved_legacy) if saved_legacy is not None else cursor
                 jobs=dict(tasks.execute('SELECT id,state FROM jobs'))
                 maximum=bridge.execute('SELECT coalesce(max(seq),0) FROM events').fetchone()[0]
                 # Explicit initialCursor may intentionally precede future events;
@@ -90,7 +98,7 @@ def preview(root, deployment_review, config='local/service-config.json'):
                         raise ValueError('saved_model_scope_mismatch')
                     item={'seq':row['seq'],'messageId':row['message_id'],'origin':'stored_inbox',
                           'inboxState':row['state'],'modelSha256':digest(row['model'].encode()),
-                          **classify(model,settings,key,jobs)}
+                          **classify(model,settings,key,jobs,tasks,legacy_prefix=row['seq']<=legacy_cursor)}
                     entries.append(item);seqs.add(row['seq']);mids.add(row['message_id'])
                 for row in bridge.execute('SELECT seq,message_id,body FROM events WHERE seq>? ORDER BY seq',(cursor,)):
                     if row['seq'] in seqs or row['message_id'] in mids:raise ValueError('duplicate_intake_identity')
@@ -103,7 +111,7 @@ def preview(root, deployment_review, config='local/service-config.json'):
                         model=normalize({'seq':row['seq'],**value},route)
                     except (ValueError,KeyError,TypeError):
                         item['classification']='quarantined'
-                    else:item.update(classify(model,settings,key,jobs))
+                    else:item.update(classify(model,settings,key,jobs,tasks,legacy_prefix=row['seq']<=legacy_cursor))
                     entries.append(item);seqs.add(row['seq']);mids.add(row['message_id'])
                 counts={}
                 for item in entries:counts[item['classification']]=counts.get(item['classification'],0)+1

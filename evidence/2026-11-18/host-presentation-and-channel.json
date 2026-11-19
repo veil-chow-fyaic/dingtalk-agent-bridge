@@ -1,0 +1,50 @@
+{
+  "stage": "E153",
+  "branch": "codex/native-agent-channel",
+  "basePublicCommit": "e4b650fdef6e072fc7c057a81bc9f5a90d093477",
+  "scope": "Feature branch, verified against actual host with synthetic provider and DWS",
+  "existingDingTalkDeployment": "0e151fb",
+  "oldGatewayTextAudit": {
+    "databases": 4,
+    "confirmedText": 214,
+    "confirmedTextWithAgentPrefix": 214,
+    "confirmedAcceptanceNotices": 98
+  },
+  "localRegression": {
+    "python": 563,
+    "pythonFailures": 0,
+    "node": 12,
+    "nodeFailures": 0
+  },
+  "fixedDwsContract": {
+    "version": "1.0.67",
+    "commit": "63a7c4906c7dee10750011ea309b9eb78abb7eb0",
+    "rpc": "mock",
+    "ordinarySendAndReplyCases": 4,
+    "allPassed": true,
+    "upstreamTrimsOuterWhitespace": true
+  },
+  "nativeOpenClaw": {
+    "hostVersion": "2026.11.3",
+    "routes": 2,
+    "tools": [
+      "read",
+      "write"
+    ],
+    "firstTurnArtifacts": 2,
+    "secondTurns": 2,
+    "reactivePhysicalSends": 6,
+    "proactiveCliInvocations": 3,
+    "proactivePhysicalSends": 4,
+    "totalPhysicalSends": 10,
+    "restartDuplicates": 0,
+    "cancelLatePhysicalSends": 0,
+    "provider": "synthetic loopback",
+    "dws": "synthetic executable",
+    "commit": "41f2b981d240cab9e55b07cba991282a795317b5",
+    "cliPrimaryReceiptsMatched": 3,
+    "distinctProactiveConfirmedMessageIds": 4
+  },
+  "testedWithRealDingTalkAndRealOpenClawModel": false,
+  "coreAcceptanceMatrixChanged": false
+}

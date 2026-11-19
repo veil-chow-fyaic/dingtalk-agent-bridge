@@ -21,6 +21,10 @@ python3 -m venv .venv
 
 路由模板默认history轮询，本机当前也仅使用history，不启动共享bus。独立部署如需官方事件提示，应先核共享bus生命周期和清理边界，再明确添加`receiveMode: "stream_hint"`。提示仅唤醒history，15秒轮询继续兜底。原生PNG/JPEG上传需另配`imageUploadBinary`，构建及官方边界见[图片补充说明](../integrations/dws_image_upload/README.md)。不要把未配置的能力当默认可用。
 
+## 聊天正文与调试
+
+E153 分支的通用 CLI / HTTP 发送调用方提供的正文，内置 gateway 默认 `chatPresentation: "product"`，交付宿主正文和文件，只在失败或用户显式请求状态、取消、新会话时给必要反馈。需要历史接单回执、短任务号和前缀时，在指定 gateway 配置中设置 `chatPresentation: "diagnostic"`。已有投递沿原 payload 和 key 对账。原生 OpenClaw 通道采用宿主的回复策略。[消息呈现与 OpenClaw 通道](153-channel-presentation-and-openclaw.md)
+
 ## 当前本机部署与管理
 
 本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。客户端显示liev及“通过AI发送”，`[Agent]`仅为文字前缀，没有新建bot。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。

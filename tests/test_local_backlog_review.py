@@ -85,17 +85,19 @@ class LocalBacklogReviewTests(unittest.TestCase):
         self.assertEqual(d[1]['classification'],'text_task_review')
         for records in (g,d):
             for seq in (3,4,5):self.assertEqual(records[seq]['classification'],'control_review')
-            for seq in (6,7,8):self.assertEqual(records[seq]['classification'],'ignored_by_task_policy')
+            for seq in (7,8):self.assertEqual(records[seq]['classification'],'ignored_by_task_policy')
             self.assertEqual(records[11]['classification'],'quarantined')
             self.assertEqual(records[12]['classification'],'existing_job')
             self.assertEqual(records[12]['priorJobState'],'failed')
             self.assertEqual(records[2]['origin'],'stored_inbox')
             self.assertEqual(records[9]['origin'],'unconsumed_transport')
+        self.assertEqual(g[6]['classification'],'ignored_by_task_policy')
+        self.assertEqual(d[6]['classification'],'text_task_review')
         self.assertEqual(g[9]['classification'],'ignored_by_task_policy')
         self.assertEqual(g[10]['classification'],'file_selection_review')
         self.assertEqual(d[9]['classification'],'media_task_review')
         self.assertEqual(group['candidateTasksOrNotices'],5)
-        self.assertEqual(direct['candidateTasksOrNotices'],7)
+        self.assertEqual(direct['candidateTasksOrNotices'],8)
 
     def test_stale_review_and_sidecars_refuse_without_mutation(self):
         plan=self.plan()
@@ -133,7 +135,7 @@ class LocalBacklogReviewTests(unittest.TestCase):
         result=subprocess.run(command,capture_output=True,text=True,timeout=15)
         self.assertEqual(result.returncode,0,result.stdout+result.stderr)
         safe=json.loads(result.stdout)
-        self.assertEqual(safe['unconsumedLocalEvents'],14);self.assertEqual(safe['candidateTasksOrNotices'],12)
+        self.assertEqual(safe['unconsumedLocalEvents'],14);self.assertEqual(safe['candidateTasksOrNotices'],13)
         for private in ('synthetic-user','synthetic-message','DO_NOT_EXPORT','PRIVATE'):
             self.assertNotIn(private,result.stdout+result.stderr)
         path=self.root/'local/backlog-reviews/synthetic/preview.json';saved=path.read_bytes()

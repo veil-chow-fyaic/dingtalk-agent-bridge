@@ -44,6 +44,18 @@ class Tests(unittest.TestCase):
     def tearDown(self):
         self.b.close()
         self.tmp.cleanup()
+    def test_plain_text_and_quoted_reply_keep_literal_image_syntax(self):
+        text = '  [Agent] 原文\n![例](./missing-image.png)\n  '
+        self.b.sync()
+        for key, source in [('literal', None), ('quote-literal', 'm2')]:
+            self.assertEqual(self.b.send(key, text=text, reply_to=source)['state'], 'confirmed')
+            args = self.fake.send_args[-1]
+            flag = '--content' if source else '--text'
+            self.assertEqual(args[args.index(flag)+1], text)
+            self.assertNotIn('--markdown', args)
+            self.assertTrue(self.b.send(key, text=text, reply_to=source)['replayed'])
+        self.assertEqual((self.fake.sent, self.fake.uploaded), (2, 0))
+
     def test_idempotency_survives_restart(self):
         self.assertEqual(self.b.send('k', text='hello')['state'], 'confirmed')
         self.b.close()
