@@ -2,7 +2,7 @@
 
 核心 IM 已可使用。CLI、HTTP 和持久 consumer 独立，模型、会话及回复正文由可选的 Agent 宿主负责。E155 已通过 OpenClaw 原生通道群聊及私聊的真实文件交办与客户端下载。E156 核对了 `d444ccf` 的 26 个运行模块，部署时三项服务为 transport、群 Kimi 和私聊 Pi。 [能力总览](102-user-requirements-and-roadmap.md) · [E155 文件验收](155-openclaw-two-route-file-acceptance.md) · [E156 部署](156-native-channel-deployment.md)
 
-常驻组织 OpenClaw 已完成授权群聊和私聊的文件任务、两轮续接及通道恢复。第一轮完整回切已通过，下一步验收执行中取消。E154 的旧群发送保留原键。Hermes、DeepSeek Harness 随后分别评估 ACP 接入。 [现场验收](resident-openclaw-pilot.md#现场验收) · [适配器选型](152-community-agent-adapters.md)
+常驻组织 OpenClaw 已完成授权群聊和私聊的文件任务、两轮续接及通道恢复。第一轮完整回切和再次接管已通过；当前的运维缺口是旧取消输入缺少持久关联，严格回切会拒绝。E154 的旧群发送保留原键。Hermes、DeepSeek Harness 随后分别评估 ACP 接入。 [现场验收](resident-openclaw-pilot.md#现场验收) · [适配器选型](152-community-agent-adapters.md)
 
 原 PRD 的 14 项 MUST 已通过 13 项。剩余 R06 中，普通账号主动发送原生语音条已按用户意见暂缓，可发送 WAV 原件。 [PRD](../plans/completion/01-PRD.md) · [验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md)
 
@@ -48,7 +48,7 @@
 | R15 官方办公流程 | 受管 DWS 文档、待办、日程、邮件、个人钉盘、听记已有局部闭环 | 根据一个实际用户工作流补精确对象、权限、结果回读和必要客户端交付；密送等仅在其独立读取证据存在后声明 | 办公可选；默认策略不扩大，不因会议/文档能力增多而替代 IM 验收 |
 | R16 跨组织/外部联系人 | 身份与路由隔离已实现，同组织证据保留 | 未来用用户已有且明确授权的真实外部联系人/会话，核可见性、发送者、收发/资源访问和明确拒绝；按普通账号/bot 分层记录 | 当前多人暂跳过；不加人、不建 bot、不改权限；没有授权样本就维持未验 |
 | R17 流式卡片、审批、执行中追问 | 状态/取消/new 和任务审计已具备 | 由一个实际交互需求选择官方可用入口，核审批前无副作用、拒绝/取消/超时、重连不重复；先确定普通账号与 bot 的能力边界 | 不把完整管理平台列核心阻塞，不因有卡片 API 就替用户启用新身份 |
-| 既有执行器与多宿主并发 | Kimi/Codex/Pi 各自已验范围；原生 OpenClaw 双路文件已验，内置 CLI 适配有合成契约验证 | E154 旧未知按原键保留。常驻宿主的执行中取消与 Pi 图片分别验收；多宿主并发按实际需求安排 | 原 R09 已满足；不索取/复制其他 runtime 凭据，不以四 runtime 全过为前置。C05 不凭假设扩建 |
+| 既有执行器与多宿主并发 | Kimi/Codex/Pi 各自已验范围；原生 OpenClaw 双路文件已验，内置 CLI 适配有合成契约验证 | E154 旧未知按原键保留。旧取消输入的回切审查与 Pi 图片分别跟踪；多宿主并发按实际需求安排 | 原 R09 已满足；不索取/复制其他 runtime 凭据，不以四 runtime 全过为前置。C05 不凭假设扩建 |
 
 ## GitHub 跟踪与交付
 

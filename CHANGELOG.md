@@ -1,5 +1,9 @@
 # 变更记录
 
+## E160 · 组织宿主再次接管
+
+完整回切后，钉钉群聊和私聊重新接入原组织 Agent，两份原会话均可续问。真人私聊的 `/stop` 已中止模型；该次入站仍缺少持久取消关联。[收据与适用范围](docs/resident-openclaw-pilot.md#再次接管与运行中取消)
+
 ## OpenClaw channel 0.2.1
 
 A same-sender cancellation before any delivery records the canceled input and its stop message in one transaction. A previously submitted send, interrupted owner or uncertain I/O retains its original delivery state. The terminal record survives restart. Local tool actions that already completed may still be visible in the agent workspace.

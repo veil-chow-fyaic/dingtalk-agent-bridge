@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E159 的独立 transport 继续使用 `d444ccf` 的 26 个核心模块。既有组织 OpenClaw 通过 PR #13（`2388a04`）的插件及隔离 Python 侧车接管原授权群与私聊，每路只允许一个执行 owner。在随后完成的第一轮回切中，原双路 gateway 的程序与会话均通过恢复检查。更改执行归属前先核现场锁与原键账本。 [常驻现场收据](evidence/2026-11-19/openclaw-resident-live-pilot.json)
+E160 的群聊、私聊已在完整回切后重新接入同一组织 OpenClaw，各有唯一执行 owner，独立 transport 核心仍为 `d444ccf`。接续前分别核宿主实际加载版本、具名消费者和路由锁。旧现场取消输入仍 `unknown`，当前严格回切会拒绝；保留该输入和 E154 旧群发送的不同账本，均不得重放。 [E160 现场与测试收据](evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 ## 工作位置和读取顺序
 

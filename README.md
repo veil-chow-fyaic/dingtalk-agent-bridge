@@ -62,7 +62,7 @@ python3 -m venv .venv
 
 普通群消息只接收，`/agent` 才交办任务；私聊按白名单接收。群附件可按[插件说明](integrations/openclaw-channel/README.md#use-the-channel)用精确文件名关联。更多运行器的实现与实测范围见[接入表](docs/architecture/agent-integration-map.md)。
 
-常驻宿主实测中，群聊和私聊都完成了原文件处理与第二轮追问。客户端收到宿主原文和按原名返回的文件，没有桥接任务号前缀。仅断开和恢复钉钉通道后，断开期间的一条新私聊收到一次回复。完整回切已恢复原双路执行器，并核对会话及七条投递回执。常驻宿主的真实任务取消仍待验。 [现场验收](docs/resident-openclaw-pilot.md#现场验收)
+常驻宿主已实测群聊、私聊文件交办及独立追问。完整切回原执行器后，再次接入同一组织 Agent，两路都保留原会话。用户发 `/stop` 能中止正在执行的任务；现场一笔已中止的输入缺少取消关联，仍会阻止严格回切。后续独立查询正常。 [常驻验收与当前限制](docs/resident-openclaw-pilot.md#再次接管与运行中取消)
 
 ## 运行与排错
 

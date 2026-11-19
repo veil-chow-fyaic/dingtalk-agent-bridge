@@ -13,7 +13,7 @@ git:
   license: MIT
 runtime:
   mode: 主Agent直接负责，子Agent隔离候选实现及离线验证
-  execution_owner_checkpoint: E159
+  execution_owner_checkpoint: E160
   checkpoint_minutes: 45
   single_agent: false
   chat_automation: deleted_do_not_recreate

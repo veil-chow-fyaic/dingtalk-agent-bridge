@@ -1,10 +1,10 @@
 # 当前接手事实
 
-**现场部署和执行归属。** 独立 transport 继续使用 E156 核对的 26 个核心模块 `d444ccf`。首轮试点中原群、私聊各由既有组织 OpenClaw 唯一执行，完整回切的恢复检查确认原两路 gateway 已接回。插件和隔离 Python 侧车来自 `2388a04`（PR #13），原内置 gateway 的任务与会话绑定保留。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json)
+**现场部署和执行归属。** E159 的完整回切已完成。E160 再次将两路交回同一组织 OpenClaw，使用新具名消费者，原会话 ID 保留。独立 transport 核心 `d444ccf`、26 个模块；磁盘安装的 0.2.1 插件 JS 及隔离 Python 来自 `c1cf86e`，运行中宿主 JS 版本尚缺独立证明。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 
 **已验范围。** 原生 OpenClaw 用真实模型在群聊和私聊读取原件、写出结果，钉钉收件方核对了正文、文件名和原件摘要。E154 一笔旧群正文没有官方任务 ID 或消息 ID，附件未提交。其输入已执行，固定截止点下按原键隔离；新群任务的成功回执单独保留。 [E155 双路收件](../../docs/155-openclaw-two-route-file-acceptance.md) · [E154 原记录](../../docs/154-openclaw-real-files-and-client-receipts.md)
 
-**接续工作。** 两路已通过真实文件任务、第二轮追问和仅断开钉钉通道后的恢复。积压的一条新私聊在恢复后回复一次。七条本轮物理回执已纳入完整回切审查；后续再次接管和执行中取消分别计证。 [试点收据与操作](../../docs/resident-openclaw-pilot.md#现场验收) · [任务池](TODO.md)
+**接续工作。** 已实测模型因 `/stop` 中止；控制行 `done`、原已领取输入 `unknown`，两者没有持久关联。这笔旧入站将阻止当前严格回切，原任务未重试；E154 则是另一笔群发送结局未知。后续独立查询正常。 [现场与合成范围](../../docs/resident-openclaw-pilot.md#再次接管与运行中取消)
 
 ## 较早版本与证据
 
