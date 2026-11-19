@@ -3,8 +3,8 @@
   "updated": "2026-11-19",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E166",
-    "latestUiEvidence": "E166",
+    "documentationEvidence": "E167",
+    "latestUiEvidence": "E167",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
     "candidateProduct": "5d1c09e",
@@ -48,7 +48,9 @@
     "residentAvailabilityAtE163": "original gateway ready after recovery; both queued inputs processed; two original routes active",
     "residentGroupReplyMode": "agent-decides",
     "hostBusinessTools": "OpenClaw",
-    "residentBusinessToolsRegisteredByChannel": 0
+    "residentBusinessToolsRegisteredByChannel": 0,
+    "stageDeliveryEvidence": "E167",
+    "fullProductAcceptance": false
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {
