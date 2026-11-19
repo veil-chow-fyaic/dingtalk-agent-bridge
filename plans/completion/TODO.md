@@ -14,7 +14,7 @@
 - [x] E162 群聊真实取消已验证模型中止、零次发送尝试和唯一持久关联。 [现场收据](../../evidence/2026-11-19/openclaw-resident-live-group-cancel.json)
 - [x] E161 核验运行中插件版本、同一消费者和两条原宿主会话。 [现场记录](../../docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)
 - [x] E160 真实 `/stop` 中止模型，未观察到最终正文或迟到投递。再次接管保留双路会话，后续独立查询正常。
-- [ ] 处置原现场未关联的已中止入站。保留原输入为 `unknown`、当前严格回切拒绝。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
+- [x] E164 已隔离原发起人叫停的历史入站，保留 `unknown`。真实回切和再接管、新私聊续问均通过。 [E160 现场与测试收据](../../evidence/2026-11-19/openclaw-resident-reentry-and-cancel.json)
 - [x] 第一轮六阶段完整回切已恢复原两个 gateway，核对原程序与会话、七条试点物理回执和 E154 原隔离。 [回切步骤](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点)
 - [x] [PR #9](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/9)四项CI通过并合并；[E156部署收据](../../docs/156-native-channel-deployment.md)核对26模块、原三服务及短观察。该次部署仅启用原内置执行器。
 - [ ] 复用 ACP 对接 Hermes、DeepSeek Harness，按各自宿主验证会话与任务交付；Hermes 自带 Gateway 通过外部平台插件接入。

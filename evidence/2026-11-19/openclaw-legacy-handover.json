@@ -1,0 +1,38 @@
+{
+  "evidenceId": "E164",
+  "date": "2026-11-19",
+  "originalUnknownGroupOutput": {
+    "retained": true,
+    "unconfirmedOriginalKeys": 1,
+    "resent": false
+  },
+  "legacyDirectInput": {
+    "nativeSameSenderStop": true,
+    "historicalReadOnlyToolCalls": 10,
+    "abortedModelTurn": true,
+    "persistedDispatchRemains": "unknown",
+    "finalDeliveryDetermined": false,
+    "matchedExactHoldInHandback": 1,
+    "replayedIntoNextConsumer": false
+  },
+  "completeRollback": {
+    "fixedCutVerified": true,
+    "nativeInboxBackupsMatchRetiredStores": true,
+    "confirmedPriorPhysicalReplies": {
+      "direct": 5,
+      "group": 3
+    },
+    "originalExecutorsRestoredAndChecked": true
+  },
+  "newHandover": {
+    "previousHandoffDigestVerified": true,
+    "groupAndDirectPriorSessionsRetained": true,
+    "newNamedConsumer": true,
+    "directCustomerFollowupConfirmedOnce": true,
+    "sameHeaderVerifiedInNativeClient": true
+  },
+  "wechatDuringSwitch": {
+    "originalSharedGatewayAndWechatSupervisorPidsRetained": true,
+    "unchangedOtherSettings": true
+  }
+}

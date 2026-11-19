@@ -4,6 +4,7 @@ import { open } from "node:fs/promises";
 import { basename, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 import { setTimeout as sleep } from "node:timers/promises";
+import { decideGroupReply } from "./participation.mjs";
 import { openSidecar } from "./sidecar.mjs";
 
 export const ID = "dingtalk-bridge";
@@ -34,6 +35,15 @@ export function supportsHostVersion(version) {
   return Boolean(parts && (Number(parts[1]) > 11 || (Number(parts[1]) === 11 && Number(parts[2]) >= 3)));
 }
 
+const replyModes = ["command","mention","always","agent-decides"];
+function validGroupPolicy(route) {
+  if (route.groupReplyMode === undefined && route.groupReplyPrompt === undefined) return true;
+  return route.conversationType === "group" && replyModes.includes(route.groupReplyMode) &&
+    (route.groupReplyPrompt === undefined || (route.groupReplyMode === "agent-decides" &&
+      typeof route.groupReplyPrompt === "string" && route.groupReplyPrompt.trim().length > 0 &&
+      route.groupReplyPrompt.length <= 2000));
+}
+
 function resolveAccount(cfg, selected) {
   const config = section(cfg);
   const accounts = config.accounts ?? {};
@@ -48,7 +58,7 @@ function resolveAccount(cfg, selected) {
   }
   if (!isAbsolute(config.python ?? "") || !isAbsolute(config.bridgeRoot ?? "") ||
       !account.bridgeAccountId || !routes.length || new Set(routes.map(r=>r.conversationId)).size !== routes.length ||
-      routes.some(r => !r.conversationId || !["group","direct"].includes(r.conversationType) ||
+      routes.some(r => !validGroupPolicy(r) || !r.conversationId || !["group","direct"].includes(r.conversationType) ||
         !Number.isSafeInteger(r.initialCursor) || r.initialCursor < 0 || !Array.isArray(r.allowSenders) ||
         !r.allowSenders.length || r.allowSenders.some(id => typeof id !== "string" || !id || id === "*"))) {
     throw new Error("Invalid DingTalk bridge account, routes, or sender allowlist");
@@ -78,11 +88,16 @@ function classify(account, route, msg) {
       msg.conversationId !== route.conversationId || msg.conversationType !== route.conversationType ||
       !route.allowSenders.includes(msg.senderId) || !Array.isArray(msg.parts) || msg.issues?.length) return null;
   const raw = msg.parts.filter(p => p.type === "text").map(p => p.text).join("");
-  if (route.conversationType === "group" && !/^\/agent(?:\s|$)/.test(raw)) return null;
+  const group = route.conversationType === "group";
+  const mode = route.groupReplyMode ?? "command";
+  const explicitCommand = /^\/agent(?:\s|$)/.test(raw);
+  const mentioned = msg.mentionedSelf === true;
   const body = raw.replace(/^\/agent(?:\s+|$)/, "");
-  const selectFiles = route.conversationType === "group" && /^--files(?:\s|$)/.test(body);
+  const selectFiles = (!group || explicitCommand) && /^--attachments(?:\s|$)/.test(body) ||
+    (group && explicitCommand && /^--files(?:\s|$)/.test(body));
   const cancel = (route.conversationType === "direct" && raw.trim() === "/stop") ||
     /^\/agent\s+(?:cancel|\/stop)$/.test(raw.trim());
+  if (group && !cancel && ((mode === "command" && !explicitCommand) || (mode === "mention" && !mentioned))) return null;
   if (cancel && (msg.quote || msg.parts.length !== 1 || msg.parts[0].type !== "text")) return null;
   const quote = msg.quote?.senderId === msg.senderId ? msg.quote : undefined;
   // A file task with an unverified quoted sender must not run as a text-only request.
@@ -91,7 +106,8 @@ function classify(account, route, msg) {
   const quotedParts = (quote?.parts ?? []).map(p => ({...p,quoteId:quote.id}));
   const attachments = [...msg.parts, ...quotedParts].filter(p => p.type !== "text");
   if (!body && !attachments.length) return null;
-  return {body, raw, cancel, attachments, quote, selectFiles, unverifiedQuote};
+  return {body, raw, cancel, attachments, quote, selectFiles, unverifiedQuote,
+    explicitCommand, mentioned, agentDecides:group && mode === "agent-decides" && !explicitCommand};
 }
 
 async function stageInbound(runtime, parts, signal) {
@@ -185,13 +201,73 @@ async function deliver(params) {
   return result;
 }
 
-export async function dispatchEvent({sdk, runtime, cfg, account, route, client, message, input, signal,
+export async function dispatchEvent({sdk, runtime, cfg, account, route, client, message, input, signal, onClaimed,
   binding = conversationBinding(runtime.routing, cfg, account, route).binding}) {
+  if (input.agentDecides) {
+    try {
+      const {recent} = await client.request("groupContext", {messageId:message.id, allowSenders:route.allowSenders});
+      const current = {text:input.body.slice(0,4000), attachments:input.attachments.slice(0,8).map(
+        part=>({type:part.type, name:typeof part.name === "string" ? part.name.slice(0,120) : undefined})),
+        quotedText:input.quote?.parts.filter(p=>p.type === "text").map(p=>p.text).join("").slice(0,600)};
+      const decision = await (sdk.decideGroupReply ?? decideGroupReply)({
+        cfg, agentId:binding.agentId, preference:route.groupReplyPrompt, recent, current, signal,
+      });
+      signal.throwIfAborted();
+      if (decision === "NO_REPLY") return {silent:"agent_decision"};
+      if (decision !== "REPLY") throw new Error("Unknown participation decision");
+    } catch {
+      signal.throwIfAborted();
+      // Only the tool-free decision ran. No organization task or message was submitted.
+      return {defer:"classifier_unavailable"};
+    }
+  }
+  if (message.participationPreparing) {
+    signal.throwIfAborted();
+    const {state} = await client.request("beginGroupDispatch",{messageId:message.id});
+    if (state === "stopping") {
+      // The sidecar has already paired a stop. Its in-flight pollCancel will
+      // abort this turn; never start the organization task in the meantime.
+      if (!signal.aborted) await new Promise(resolve=>signal.addEventListener("abort", resolve, {once:true}));
+    }
+    signal.throwIfAborted();
+    if (state !== "claimed") throw new Error("DingTalk group dispatch did not acquire its claim");
+    onClaimed?.();
+  }
   // Resolve only admitted commands. User text cannot supply a path, source sender or message ID.
   const selectionNotice = text => confirmed(client, {
     key:key(account.bridgeAccountId,route.conversationId,message.id,"selection-notice"), text,
   }, signal);
-  const usage = '请先在本群发送文件，再发送 /agent --files ["原文件名"] 具体任务。';
+  const unavailableOriginal = async () => {
+    // Smart-group inputs reach preparation only after an affirmative participation decision.
+    await selectionNotice("这条消息的附件原件下载或校验失败，任务未执行。请重新发送附件和要求。");
+  };
+  if (message.mediaPreparing) {
+    // No model or send before the sidecar has verified the complete original.
+    // Polling leaves the stdio loop available for newer input and matching stops.
+    for (;;) {
+      signal.throwIfAborted();
+      const prepared = await client.request("prepareMedia", {messageId:message.id});
+      signal.throwIfAborted();
+      if (prepared.state === "ready" || prepared.state === "unavailable") onClaimed?.();
+      if (prepared.state === "unavailable") {
+        await unavailableOriginal();
+        return;
+      }
+      if (prepared.state === "ready") {
+        if (prepared.message?.id !== message.id || prepared.message.senderId !== message.senderId) {
+          throw new Error("DingTalk prepared media identity mismatch");
+        }
+        input = classify(account,route,{...prepared.message, mentionedSelf:message.mentionedSelf});
+        if (!input?.attachments.length && !input?.unverifiedQuote) throw new Error("Invalid DingTalk prepared media");
+        break;
+      }
+      if (prepared.state !== "waiting" && prepared.state !== "retrying") throw new Error("Invalid DingTalk media state");
+      await sleep(prepared.state === "retrying" ? 1000 : 100, undefined, {signal});
+    }
+  }
+  const usage = /^--attachments(?:\s|$)/.test(input.body)
+    ? '请先在此会话发送原件，再用 /agent --attachments [{"image":1},"文件名"] 加上任务说明。图片 1 表示你最近发送的那一张。'
+    : '请先在本群发送文件，再发送 /agent --files ["原文件名"] 具体任务。';
   if (input.unverifiedQuote) {
     await selectionNotice('这条引用缺少可核验的来源。' + usage);
     return;
@@ -209,7 +285,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     }
     if (selection.error) {
       const reason = selection.error === "file_selection_missing_or_ambiguous"
-        ? '在你此前 30 分钟、本群最近 50 条消息中，找不到唯一匹配的原文件。'
+        ? '在你此前 30 分钟、此会话最近 50 条消息中，找不到唯一匹配的原件。'
         : '文件选择格式有误。';
       await selectionNotice(reason + usage);
       return;
@@ -221,8 +297,15 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     try {
       for (let index = 0; index < selection.count; index++) {
         signal.throwIfAborted();
-        const {part} = await client.request("selectedFile", {messageId:message.id, index});
-        attachments.push(part);
+        for (;;) {
+          const response = await client.request("selectedFile", {messageId:message.id, index, background:true});
+          signal.throwIfAborted();
+          if (response.state !== "waiting") {
+            attachments.push(response.part);
+            break;
+          }
+          await sleep(100, undefined, {signal});
+        }
       }
       selectedMedia = await stageInbound(runtime, attachments, signal);
     } catch {
@@ -232,7 +315,16 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     }
     input = {...input, body:selection.task, attachments};
   }
-  const media = selectedMedia ?? await stageInbound(runtime, input.attachments, signal);
+  let media;
+  try {
+    media = selectedMedia ?? await stageInbound(runtime, input.attachments, signal);
+  } catch (error) {
+    signal.throwIfAborted();
+    if (!message.mediaPreparing) throw error;
+    await client.request("recordMediaStageFailure", {messageId:message.id});
+    await unavailableOriginal();
+    return;
+  }
   const quote = input.quote;
   const ctx = runtime.reply.finalizeInboundContext({
     Body:input.body, RawBody:input.raw, BodyForAgent:input.body, BodyForCommands:input.body,
@@ -240,7 +332,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     AccountId:account.accountId, SessionKey:binding.sessionKey, SenderId:message.senderId,
     MessageSid:message.id, Provider:ID, Surface:ID, OriginatingChannel:ID, OriginatingTo:route.conversationId,
     // Admission to chat does not grant OpenClaw owner commands or elevated tools.
-    CommandAuthorized:false, WasMentioned:route.conversationType === "group" ? true : undefined,
+    CommandAuthorized:false, WasMentioned:route.conversationType === "group" ? input.mentioned || input.explicitCommand : undefined,
     GroupSubject:route.conversationType === "group" ? route.conversationId : undefined,
     ...(quote ? {ReplyToId:quote.id, ReplyToSender:quote.senderId,
       ReplyToBody:quote.parts.filter(p=>p.type==="text").map(p=>p.text).join("")} : {}),
@@ -254,7 +346,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
       MediaTypes:media.map(item=>item.contentType || "application/octet-stream"),
     } : {}),
   });
-  let recordError, deliveryError, sent = 0, payloadIndex = 0;
+  let recordError, deliveryError, explicitNoReply = false, sent = 0, payloadIndex = 0;
   await runtime.session.recordInboundSession({
     storePath:runtime.session.resolveStorePath(cfg.session?.store, {agentId:binding.agentId}),
     sessionKey:binding.sessionKey, ctx, onRecordError:error=>{recordError=error;},
@@ -267,6 +359,11 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     replyOptions:{disableBlockStreaming:true, abortSignal:signal},
     dispatcherOptions:{
       onError:error=>{deliveryError=error;},
+      onSkip:(payload,info)=>{
+        if (info.kind === "final" && info.reason === "silent" && payload.text?.trim() === "NO_REPLY") {
+          explicitNoReply = true;
+        }
+      },
       deliver:async(payload,info)=>{
         // Buffered dispatch emits completed media-bearing replies as "block" even when
         // token streaming is disabled. Partial token callbacks are never registered here.
@@ -287,24 +384,30 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     }});
   signal.throwIfAborted();
   if (deliveryError || Object.values(result?.failedCounts ?? {}).some(Boolean) ||
-      (!sent && !result?.deliberateSilentTerminalReply)) {
+      (!sent && !explicitNoReply && !result?.deliberateSilentTerminalReply)) {
     throw deliveryError ?? new Error("DingTalk turn has no confirmed delivery or explicit silent completion");
   }
+  if (!sent) return {silent:explicitNoReply ? "agent_no_reply" : "host_policy"};
 }
 
 async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}) {
-  let active;
+  let active, closing = false;
   const ack = (msg,status,extra = {}) => client.request("ack", {messageId:msg.id,status,...extra});
   const start = ({msg,input}) => {
     const cancel = new AbortController();
     const turnSignal = AbortSignal.any([signal,cancel.signal]);
     const entry = {messageId:msg.id,sender:msg.senderId,cancel,finished:false,error:null,
+      preflight:Boolean(msg.participationPreparing || msg.mediaPreparing),
       cancelMessageId:null,sendAttempts:activity.sendAttempts,ioFailures:activity.ioFailures};
     const promise = (async()=>{
-      let status = "done";
+      let status = "done", outcome;
       try {
-        await dispatchEvent({sdk,runtime,cfg,account,route,binding,client,message:msg,input,signal:turnSignal});
+        outcome = await dispatchEvent({sdk,runtime,cfg,account,route,binding,client,message:msg,input,signal:turnSignal,
+          onClaimed:()=>{entry.preflight=false;}});
       } catch (error) {
+        // Reopening the ledger releases pre-execution reservations and quarantines
+        // actual execution. Shutdown must not permanently quarantine a tool-free decision.
+        if ((signal.aborted || closing) && entry.preflight && !entry.cancelMessageId) return;
         // A matching stop is only terminal once dispatch has actually settled.
         // Any submitted send, uncertain I/O or host shutdown retains quarantine.
         const stopped = error === turnSignal.reason ||
@@ -325,7 +428,12 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,s
           localToolEffectsRolledBack:false,
         }));
       }
-      await ack(msg,status,status === "canceled" ? {cancelMessageId:entry.cancelMessageId} : {});
+      if (outcome?.defer) {
+        await client.request("deferParticipation",{messageId:msg.id, reason:outcome.defer});
+      } else {
+        await ack(msg,status,status === "canceled" ? {cancelMessageId:entry.cancelMessageId} :
+          outcome?.silent ? {silentReason:outcome.silent} : {});
+      }
     })();
     // Consume errors immediately even if a claim fails while a poll is pending.
     entry.promise = promise.then(()=>{entry.finished=true;},error=>{entry.finished=true; entry.error=error;});
@@ -338,7 +446,8 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,s
       // During a turn poll solely for that sender's stop; waiting work stays in SQLite.
       const {message:msg,hasMore} = active
         ? await client.request("pollCancel", {activeMessageId:active.messageId})
-        : await client.request("poll");
+        : await client.request("poll", {orderedMedia:true,
+          ...(route.groupReplyMode === "agent-decides" ? {deferGroupExecution:true} : {})});
       if (msg) {
         const input = classify(account,route,msg);
         if (active) {
@@ -360,6 +469,7 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,s
     }
   } finally {
     // A stop fences any subsequent physical sends. Outstanding claims retain their ledger entries.
+    closing = true;
     active?.cancel.abort();
     client.stop();
   }
@@ -502,7 +612,7 @@ export function createChannel(sdk, createClient = openSidecar) {
             catch (error) {
               activity.ioFailures++;
               activity.lastFailedOperation = ["poll","pollCancel","ack","send","plan","selectFiles","selectedFile",
-                "status","reconcile","lookupPlan"].includes(op) ? op : "other";
+                "status","reconcile","lookupPlan","groupContext","deferParticipation","beginGroupDispatch"].includes(op) ? op : "other";
               throw error;
             }
           }};

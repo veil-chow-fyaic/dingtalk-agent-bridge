@@ -2,22 +2,27 @@
 import argparse
 import base64
 import binascii
+from concurrent.futures import Future
 from contextlib import ExitStack, closing
 import hashlib
 import json
 import os
 import re
+import signal
 import sqlite3
 from pathlib import Path
 import sys
 import tempfile
+from threading import Thread
+import time
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
 from urllib.request import Request
 
 from .consumer import Inbox, acquire_consumer_lock, execution_scope
+from .group_participation import GroupMentions, recent_group_context
 from .local_http import urlopen
-from .message_model import file_request, materialize, normalize, select_file_sources
+from .message_model import file_request, materialize, media_parts, normalize, select_file_sources
 from .routing import route_configs
 
 MAX_FILE = 20 * 1024 * 1024
@@ -70,7 +75,7 @@ def stage_original(root, filename, data, digest):
 
 
 class HostChannel:
-    def __init__(self, root, route, state_name, initial_cursor, api, *, consumer_instance=None):
+    def __init__(self, root, route, state_name, initial_cursor, api, *, consumer_instance=None, mention_senders=()):
         if route.get('executionOwner') != 'openclaw' or not route.get('selfSenderId'):
             raise ChannelError('route_not_configured_for_host')
         if type(initial_cursor) is not int or initial_cursor < 0:
@@ -82,6 +87,11 @@ class HostChannel:
         self.root = Path(root).resolve()
         self.route = route
         self.api = api
+        self.media_worker = None
+        self.mention_senders = frozenset(mention_senders)
+        if self.mention_senders and route.get('conversationType') != 'group':
+            raise ChannelError('mentions_require_group')
+        self.mention_index = GroupMentions(self.root, route) if self.mention_senders else None
         self.control_turn = None
         self.control_cursor = 0
         self.file_selection = None
@@ -105,6 +115,12 @@ class HostChannel:
                     message_id TEXT PRIMARY KEY, status TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_cancellations (
                     message_id TEXT PRIMARY KEY, cancel_message_id TEXT NOT NULL UNIQUE);
+                CREATE TABLE IF NOT EXISTS host_media_failures (
+                    message_id TEXT PRIMARY KEY, reason TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_participation_wait (
+                    message_id TEXT PRIMARY KEY, reason TEXT NOT NULL, attempts INTEGER NOT NULL, retry_at REAL NOT NULL);
+                CREATE TABLE IF NOT EXISTS host_silent_replies (
+                    message_id TEXT PRIMARY KEY, reason TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_sends (
                     key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS host_plans (
@@ -117,6 +133,9 @@ class HostChannel:
             with self.db:
                 self.db.execute('INSERT OR IGNORE INTO meta VALUES ("cursor", ?)',
                                 (str(initial_cursor),))
+                # No task execution or outbound delivery can begin until media preparation promotes
+                # this claim. Observing a stop also promotes it first, so a stop cannot replay.
+                self.db.execute("DELETE FROM host_dispatch WHERE status='preparing'")
                 self.db.execute("UPDATE host_dispatch SET status='unknown' WHERE status='claimed'")
             self.resources = stack.pop_all()
 
@@ -129,7 +148,11 @@ class HostChannel:
               AND json_extract(model,'$.fromSelf')=0
               AND json_array_length(model,'$.issues')=0
               AND NOT EXISTS (SELECT 1 FROM host_dispatch d WHERE d.message_id=inbox.message_id)
-              ORDER BY seq''')
+              AND NOT EXISTS (
+                SELECT 1 FROM host_participation_wait w JOIN inbox earlier USING(message_id)
+                WHERE w.retry_at>? AND earlier.seq<=inbox.seq
+                  AND json_extract(earlier.model,'$.senderId')=json_extract(inbox.model,'$.senderId'))
+              ORDER BY seq''', (time.time(),))
         try:
             ready = next(self.inbox.iter_ready(rows), None)
         finally:
@@ -138,13 +161,48 @@ class HostChannel:
             return None
         return self.claim(ready['message'])
 
-    def claim(self, message):
+    def claim(self, message, status='claimed'):
+        mid = message['id']
+        waiting = self.db.execute('SELECT retry_at FROM host_participation_wait WHERE message_id=?', (mid,)).fetchone()
+        if waiting and waiting[0] > time.time():
+            return None
+        if self.mention_index is not None and message['senderId'] in self.mention_senders:
+            raw = ''.join(p['text'] for p in message['parts'] if p['type'] == 'text')
+            # A stop is an always-available same-sender control; it cannot cause a visible reply.
+            if not re.fullmatch(r'/agent\s+(?:cancel|/stop)', raw.strip()):
+                seq = self.db.execute('SELECT seq FROM inbox WHERE message_id=?', (mid,)).fetchone()[0]
+                mentioned = self.mention_index.check(message, seq, self.inbox.cursor)
+                if mentioned is None:
+                    with self.db:
+                        self.wait_for_participation(mid, 'mention_lookup_unavailable')
+                    return None
+                message = {**message, 'mentionedSelf': mentioned}
         # Stdio delivery and arbitrary host/tool execution cannot share a transaction.
         # A process death after this commit therefore needs review, never a second turn.
         with self.db:
-            self.db.execute("INSERT INTO host_dispatch VALUES (?, 'claimed')", (message['id'],))
+            self.db.execute('INSERT INTO host_dispatch VALUES (?, ?)', (message['id'], status))
         self.claim_send_epochs[message['id']] = self.send_attempts
         return message
+
+    def wait_for_participation(self, mid, reason):
+        previous = self.db.execute('SELECT attempts FROM host_participation_wait WHERE message_id=?', (mid,)).fetchone()
+        attempts = previous[0] + 1 if previous else 1
+        delay = min(300, 15 * 2 ** min(attempts - 1, 5))
+        self.db.execute('INSERT OR REPLACE INTO host_participation_wait VALUES (?,?,?,?)',
+                        (mid, reason, attempts, time.time() + delay))
+
+    def defer_participation(self, mid, reason):
+        # A preparing reservation has not admitted business execution. Independent
+        # outbound queue activity on this route cannot belong to the tool-free classifier.
+        if reason != 'classifier_unavailable' or mid not in self.claim_send_epochs:
+            raise ChannelError('participation_deferral_not_proven')
+        with self.db:
+            changed = self.db.execute("DELETE FROM host_dispatch WHERE message_id=? AND status='preparing'", (mid,))
+            if changed.rowcount != 1:
+                raise ChannelError('dispatch_state_conflict')
+            self.wait_for_participation(mid, reason)
+        self.claim_send_epochs.pop(mid)
+        return {'pending': True}
 
     def receive(self):
         query = urlencode({'after': self.inbox.cursor, 'limit': 200})
@@ -167,12 +225,121 @@ class HostChannel:
             message = self.claim_ready()
         return {'message': message}
 
+    def poll_ordered(self, *, defer_group_execution=False):
+        # Choose the next normalized projection in transport order before requiring
+        # attachment bytes. The host can apply sender/group policy without downloads.
+        if self.db.execute("SELECT 1 FROM host_dispatch WHERE status IN ('claimed','preparing') LIMIT 1").fetchone():
+            return {'message': None}
+        query = """
+            SELECT model FROM inbox i WHERE i.state IN ('normalized','pending_media','media_failed')
+            AND json_extract(i.model,'$.fromSelf')=0 AND json_array_length(i.model,'$.issues')=0
+            AND NOT EXISTS (SELECT 1 FROM host_dispatch d WHERE d.message_id=i.message_id)
+            AND NOT EXISTS (
+                SELECT 1 FROM host_participation_wait w JOIN inbox earlier USING(message_id)
+                WHERE w.retry_at>? AND earlier.seq<=i.seq
+                  AND json_extract(earlier.model,'$.senderId')=json_extract(i.model,'$.senderId'))
+            ORDER BY seq LIMIT 1"""
+        row = self.db.execute(query, (time.time(),)).fetchone()
+        if row is None:
+            self.receive()
+            row = self.db.execute(query, (time.time(),)).fetchone()
+        if row is None:
+            return {'message': None}
+        model = json.loads(row['model'])
+        if any(media_parts(model)):
+            model['mediaPreparing'] = True
+            return {'message': self.claim(model, 'preparing')}
+        if defer_group_execution and self.route.get('conversationType') == 'group':
+            # The host decides admission and may ask its tool-free model. No business
+            # turn, send or file selection can run until beginGroupDispatch succeeds.
+            model['participationPreparing'] = True
+            return {'message': self.claim(model, 'preparing')}
+        return {'message': self.claim(model)}
+
+    def begin_group_dispatch(self, mid):
+        if mid in self.cancel_matches.values():
+            return {'state': 'stopping'}
+        with self.db:
+            changed = self.db.execute("UPDATE host_dispatch SET status='claimed' WHERE message_id=? AND status='preparing'",
+                                      (mid,))
+            if self.route.get('conversationType') != 'group' or changed.rowcount != 1:
+                raise ChannelError('dispatch_state_conflict')
+        return {'state': 'claimed'}
+
+    def prepare_media(self, mid):
+        row = self.db.execute("""
+            SELECT i.seq,i.state,i.model,i.attempts FROM inbox i JOIN host_dispatch d USING(message_id)
+            WHERE i.message_id=? AND d.status='preparing'""", (mid,)).fetchone()
+        if row is None:
+            # A pollCancel reply may be crossing stdio while the host's timer requests
+            # preparation one last time. The matched stop will abort that timer.
+            if mid in self.cancel_matches.values():
+                return {'state': 'waiting'}
+            raise ChannelError('media_preparation_requires_claim')
+
+        def finish(model=None):
+            with self.db:
+                self.db.execute("UPDATE host_dispatch SET status='claimed' WHERE message_id=?", (mid,))
+                if model is None:
+                    self.db.execute('INSERT INTO host_media_failures VALUES (?,?)', (mid, 'original_unavailable'))
+            return {'state': 'unavailable'} if model is None else {'state': 'ready', 'message': model}
+
+        if row['state'] == 'normalized':
+            ready = next(self.inbox.iter_ready([row]), None)
+            if ready is not None:
+                return finish(ready['message'])
+
+        def download_original():
+            model = json.loads(row['model'])
+            ledger = self.api('/v1/attachments', {'message_id': mid})
+            return materialize(model, ledger, self.root, self.inbox.cache_root)
+
+        future = self.media_result(('inbound', mid), download_original)
+        if future is None:
+            return {'state': 'waiting'}
+        try:
+            model = future.result()
+        except Exception as exc:
+            with self.db:
+                self.db.execute(
+                    "UPDATE inbox SET state='media_failed',error=?,attempts=attempts+1 WHERE message_id=?",
+                    (type(exc).__name__, mid))
+            if row['attempts'] + 1 >= 3:
+                return finish()
+            return {'state': 'retrying'}
+        with self.db:
+            self.db.execute(
+                "UPDATE inbox SET model=?,state='normalized',error=NULL,attempts=attempts+1 WHERE message_id=?",
+                (json.dumps(model, ensure_ascii=False), mid))
+        return finish(model)
+
+    def media_result(self, key, read):
+        # At most one attachment read per route. SQLite/dispatch state stays on the
+        # stdio thread, which remains free to ingest new input and match stop commands.
+        if self.media_worker is not None:
+            owner, future = self.media_worker
+            if not future.done():
+                return None
+            self.media_worker = None
+            if owner == key:
+                return future
+
+        future = Future()
+        def work():
+            try:
+                future.set_result(read())
+            except Exception as exc:
+                future.set_exception(exc)
+        Thread(target=work, name='dingtalk-inbound-media', daemon=True).start()
+        self.media_worker = (key, future)
+        return None
+
     def poll_cancel(self, active_id):
         """During a turn, keep other work durable and search only for a later text stop."""
         active = self.db.execute("""
             SELECT i.seq, json_extract(i.model,'$.senderId') AS sender
             FROM inbox i JOIN host_dispatch d USING(message_id)
-            WHERE i.message_id=? AND d.status='claimed'""", (active_id,)).fetchone()
+            WHERE i.message_id=? AND d.status IN ('claimed','preparing')""", (active_id,)).fetchone()
         if active is None:
             # Its terminal acknowledgment might have reached stdio before this poll.
             return {'message': None}
@@ -199,7 +366,12 @@ class HostChannel:
                 continue
             text = raw.strip()
             if (direct and text == '/stop') or re.fullmatch(r'/agent\s+(?:cancel|/stop)', text):
-                control = self.claim(msg)
+                # If interrupted after the stop is claimed, the original needs review;
+                # the safe-to-retry pre-model state no longer applies.
+                with self.db:
+                    self.db.execute("UPDATE host_dispatch SET status='claimed' WHERE message_id=? AND status='preparing'",
+                                    (active_id,))
+                    control = self.claim(msg)
                 self.cancel_matches[control['id']] = active_id
                 return {'message': control}
         # Immediately examine the next page when there is local or upstream backlog.
@@ -225,12 +397,12 @@ class HostChannel:
         for mid, body in rows:
             event = json.loads(body)
             if (event.get('message_id') != mid or event.get('account_id') != self.route['accountId']
-                    or event.get('conversation_id') != self.route['group'] or event.get('conversation_type') != 'group'):
+                    or event.get('conversation_id') != self.route['group'] or event.get('conversation_type') != self.route.get('conversationType','group')):
                 raise ChannelError('file_history_scope_mismatch')
             try:
                 previous.append(normalize(event, self.route))
             except (ValueError, KeyError, TypeError):
-                continue  # The built-in selector also excludes quarantined projections.
+                previous.append(None)  # Image positions before this row cannot be resolved safely.
         return previous
 
     def select_files(self, mid):
@@ -247,42 +419,76 @@ class HostChannel:
         model = json.loads(row['model'])
         text = ''.join(part['text'] for part in model['parts'] if part['type'] == 'text')
         addressed = re.fullmatch(r'/agent\s+(.*)', text, flags=re.DOTALL)
-        command = addressed[1] if addressed else None
-        if model['fromSelf'] is not False or not file_request(model, command):
+        direct = model['conversationType'] == 'direct'
+        command = addressed[1] if addressed else text if direct else None
+        mixed = command is not None and (command == '--attachments' or command.startswith('--attachments '))
+        if model['fromSelf'] is not False or not (mixed or file_request(model, command)):
             return {'error': 'file_selection_invalid'}
         previous = self.previous_file_candidates(row)
         try:
-            task, sources = select_file_sources(model, command, previous)
+            task, sources = select_file_sources(model, command, previous, allow_images=mixed)
         except ValueError as exc:
             return {'error': str(exc)}
-        by_id = {candidate['id']: candidate for candidate in previous}
+        by_id = {candidate['id']: candidate for candidate in previous if candidate is not None}
         originals = [(by_id[src['messageId']], src) for src in sources]
         # This owner serializes turns. A lost claim is quarantined on restart.
         # Retain the selected identities while originals are downloaded one at a time.
         self.file_selection = (mid, task, originals)
         return {'task': task, 'count': len(originals)}
 
-    def selected_file(self, mid, index):
+    def selected_file(self, mid, index, background=False):
         if self.file_selection is None or self.file_selection[0] != mid:
             raise ChannelError('file_selection_requires_claim')
         originals = self.file_selection[2]
         if type(index) is not int or not 0 <= index < len(originals):
             raise ChannelError('invalid_file_selection_index')
         original, selected = originals[index]
-        ledger = self.api('/v1/attachments', {'message_id': original['id']})
-        materialize(original, ledger, self.root, self.inbox.cache_root)
-        part, = [p for p in original['parts'] if p['type'] == 'file'
-                 and p.get('name') == selected['name'] and p['resource'] == selected['resource']]
-        return {'part': part}
+        def read_original():
+            ledger = self.api('/v1/attachments', {'message_id': original['id']})
+            materialize(original, ledger, self.root, self.inbox.cache_root)
+            if 'imagePartIndex' in selected:
+                part = original['parts'][selected['imagePartIndex']]
+                if part['type'] != 'image' or part['resource'] != selected['resource']:
+                    raise ChannelError('selection_original_changed')
+                return part
+            part, = [p for p in original['parts'] if p['type'] == 'file'
+                     and p.get('name') == selected['name'] and p['resource'] == selected['resource']]
+            return part
 
-    def ack(self, mid, status, cancel_id=None):
+        if not background:
+            return {'part': read_original()}
+        future = self.media_result(('selected', mid, index), read_original)
+        return {'state': 'waiting'} if future is None else {'part': future.result()}
+
+    def ack(self, mid, status, cancel_id=None, silent_reason=None):
+        if silent_reason is not None and (status != 'done' or silent_reason not in
+                                          ('agent_decision', 'agent_no_reply', 'host_policy')):
+            raise ChannelError('invalid_silent_ack')
         if (not isinstance(mid, str) or status not in ('done', 'ignored', 'unknown', 'canceled')
                 or (status == 'canceled' and (not isinstance(cancel_id, str) or not cancel_id))):
             raise ChannelError('invalid_ack')
         with self.db:
             row = self.db.execute('SELECT status FROM host_dispatch WHERE message_id=?', (mid,)).fetchone()
-            if row is None or row[0] not in ('claimed', status):
+            allowed = {status}
+            if silent_reason != 'agent_decision':
+                allowed.add('claimed')
+            if status in ('ignored', 'unknown') or silent_reason == 'agent_decision':
+                allowed.add('preparing')
+            if row is None or row[0] not in allowed:
                 raise ChannelError('dispatch_state_conflict')
+            if silent_reason and row[0] in ('claimed', 'preparing'):
+                if mid not in self.claim_send_epochs:
+                    raise ChannelError('silent_completion_not_proven')
+                if row[0] == 'claimed' and self.claim_send_epochs[mid] != self.send_attempts:
+                    # The business agent or an independent outbound queue could have sent.
+                    # Keep this turn for reconciliation and leave the route able to poll.
+                    status = 'unknown'
+                else:
+                    self.db.execute('INSERT INTO host_silent_replies VALUES (?,?)', (mid, silent_reason))
+            elif row[0] == status:
+                silent = self.db.execute('SELECT reason FROM host_silent_replies WHERE message_id=?', (mid,)).fetchone()
+                if (silent[0] if silent else None) != silent_reason:
+                    raise ChannelError('dispatch_state_conflict')
             if status == 'canceled' and row[0] == 'claimed':
                 control = self.db.execute('SELECT status FROM host_dispatch WHERE message_id=?',
                                           (cancel_id,)).fetchone()
@@ -295,6 +501,7 @@ class HostChannel:
                                         (mid,)).fetchone()
                 if prior is None or prior[0] != cancel_id:
                     raise ChannelError('dispatch_state_conflict')
+            self.db.execute('DELETE FROM host_participation_wait WHERE message_id=?', (mid,))
             self.db.execute('UPDATE host_dispatch SET status=? WHERE message_id=?', (status, mid))
         self.claim_send_epochs.pop(mid, None)
         self.cancel_matches = {control: active for control, active in self.cancel_matches.items() if active != mid}
@@ -466,7 +673,21 @@ class HostChannel:
                 return self.lookup_plan(intent)
             return self.plan(intent, request.get('partIndex'), request.get('partCount'), request.get('keys'))
         if op == 'poll':
-            return self.poll()
+            return (self.poll_ordered(defer_group_execution=request.get('deferGroupExecution') is True)
+                    if request.get('orderedMedia') is True else self.poll())
+        if op == 'beginGroupDispatch':
+            return self.begin_group_dispatch(request.get('messageId'))
+        if op == 'prepareMedia':
+            return self.prepare_media(request.get('messageId'))
+        if op == 'recordMediaStageFailure':
+            mid = request.get('messageId')
+            with self.db:
+                row = self.db.execute('SELECT d.status,i.model FROM host_dispatch d JOIN inbox i USING(message_id) '
+                                      'WHERE d.message_id=?', (mid,)).fetchone()
+                if row is None or row['status'] != 'claimed' or not any(media_parts(json.loads(row['model']))):
+                    raise ChannelError('media_stage_failure_requires_claim')
+                self.db.execute('INSERT OR IGNORE INTO host_media_failures VALUES (?,?)', (mid, 'host_stage_failed'))
+            return {'recorded': True}
         if op == 'pollCancel':
             active_id = request.get('activeMessageId')
             if not isinstance(active_id, str) or not active_id:
@@ -478,12 +699,28 @@ class HostChannel:
                 raise ChannelError('invalid_file_selection_message')
             if op == 'selectFiles':
                 return self.select_files(mid)
-            return self.selected_file(mid, request.get('index'))
+            return self.selected_file(mid, request.get('index'), request.get('background') is True)
+        if op == 'groupContext':
+            return {'recent': recent_group_context(self.db, request.get('messageId'), request.get('allowSenders'))}
+        if op == 'deferParticipation':
+            return self.defer_participation(request.get('messageId'), request.get('reason'))
         if op == 'ack':
-            return self.ack(request.get('messageId'), request.get('status'), request.get('cancelMessageId'))
+            return self.ack(request.get('messageId'), request.get('status'), request.get('cancelMessageId'),
+                            request.get('silentReason'))
         if op == 'summary':
-            return {'cursor': self.inbox.cursor, 'dispatch': dict(self.db.execute(
+            summary = {'cursor': self.inbox.cursor, 'dispatch': dict(self.db.execute(
                 'SELECT status,count(*) FROM host_dispatch GROUP BY status'))}
+            if request.get('includeInbox') is True:
+                summary['participationPending'] = dict(self.db.execute(
+                    'SELECT reason,count(*) FROM host_participation_wait GROUP BY reason'))
+                summary['silentReplies'] = dict(self.db.execute(
+                    'SELECT reason,count(*) FROM host_silent_replies GROUP BY reason'))
+                summary['inboxStates'] = dict(self.db.execute('SELECT state,count(*) FROM inbox GROUP BY state'))
+                summary['projectionIssues'] = self.db.execute(
+                    "SELECT count(*) FROM inbox WHERE json_array_length(model,'$.issues')>0").fetchone()[0]
+                summary['mediaFailures'] = dict(self.db.execute(
+                    'SELECT reason,count(*) FROM host_media_failures GROUP BY reason'))
+            return summary
         if op in ('send', 'status', 'reconcile'):
             key = request.get('key')
             if not isinstance(key, str) or not 1 <= len(key) <= 128:
@@ -522,6 +759,7 @@ def main():
     parser.add_argument('--account-id', required=True)
     parser.add_argument('--conversation-id', required=True)
     parser.add_argument('--initial-cursor', required=True, type=int)
+    parser.add_argument('--mention-sender', action='append', default=[])
     parser.add_argument('--consumer-instance')
     parser.add_argument('--config', default='local/service-config.json')
     parser.add_argument('--port', default=18768, type=int)
@@ -531,7 +769,10 @@ def main():
     for route, state_name in routes:
         if (route['accountId'], route['group']) == (args.account_id, args.conversation_id):
             channel = HostChannel(root, route, state_name, args.initial_cursor,
-                                  route_api(root, route, args.port), consumer_instance=args.consumer_instance)
+                                  route_api(root, route, args.port), consumer_instance=args.consumer_instance,
+                                  mention_senders=args.mention_sender)
+            if channel.mention_index is not None:
+                signal.signal(signal.SIGTERM, channel.mention_index.stop_when_drained)
             try:
                 serve(channel, sys.stdin.buffer, sys.stdout)
             finally:

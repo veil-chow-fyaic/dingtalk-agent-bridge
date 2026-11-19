@@ -24,12 +24,15 @@ class FilesDWS(Fake):
         raw = next(record for record in self.messages if record['messageId'] == mid)
         self.downloaded.append(mid)
         content = ('原件:' + mid).encode()
-        path = Path(args[args.index('--output-dir') + 1]) / 'original'
-        (self.root / path).parent.mkdir(parents=True)
-        (self.root / path).write_bytes(content)
-        ledger = {'ok': True, 'downloads': [{'resourceType':'fileId', 'resourceId':raw['resourceRefs'][0]['resourceId'],
-                                              'localPath': str(path),
-                                              'sizeBytes': len(content)}]}
+        downloads = []
+        for index, resource in enumerate(raw['resourceRefs']):
+            path = Path(args[args.index('--output-dir') + 1]) / f'original-{index}'
+            (self.root / path).parent.mkdir(parents=True,exist_ok=True)
+            blob = content if len(raw['resourceRefs']) == 1 else content + bytes([index])
+            (self.root / path).write_bytes(blob)
+            downloads.append({'resourceType':resource['type'],'resourceId':resource['resourceId'],
+                              'localPath':str(path),'sizeBytes':len(blob)})
+        ledger = {'ok': True, 'downloads': downloads}
         return {'messages': [raw], 'resourceDownloads': ledger}
 
 
@@ -132,3 +135,37 @@ class GroupFileSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ChannelError, 'scope_mismatch'):
             self.channel.handle({'op':'selectFiles', **msg})
         self.assertEqual(self.dws.downloaded, [])
+
+    def test_explicit_mixed_sources_follow_request_order_and_freeze_at_command(self):
+        def photos(seq, sender, ids):
+            return event(seq,' '.join('[图片消息](mediaId='+rid+')' for rid in ids),sender=sender,
+                         refs=[ref('mediaId',rid) for rid in ids])['raw']
+        prior = [photos(1,'other',['old']), file(2,'交接单.txt'),photos(3,'other',['left','right']),
+                 photos(4,'stranger',['foreign'])]
+        request = event(5,'/agent --attachments [{"image":2},"交接单.txt",{"image":1}] 核对')['raw']
+        msg = self.admit(prior, request, [photos(6,'other',['late'])])
+        self.assertEqual(self.channel.handle({'op':'selectFiles',**msg}),{'count':3,'task':'核对'})
+        parts = [self.channel.handle({'op':'selectedFile',**msg,'index':n})['part'] for n in range(3)]
+        self.assertEqual([p['resource']['resourceId'] for p in parts],['left','resource-2','right'])
+        self.assertEqual([p['type'] for p in parts],['image','file','image'])
+        self.assertNotEqual(parts[0]['sha256'],parts[2]['sha256'])
+        for p in parts:self.assertEqual(hashlib.sha256(Path(p['path']).read_bytes()).hexdigest(),p['sha256'])
+
+    def test_missing_malformed_or_unpositioned_image_does_not_substitute_an_older_one(self):
+        prior=[event(1,'[图片消息](mediaId=before)',refs=[ref('mediaId','before')])['raw'],
+               event(2,'[图片消息]',refs=[ref('mediaId','bad')])['raw']]
+        msg=self.admit(prior,event(3,'/agent --attachments [{"image":1}] 核对')['raw'])
+        self.assertEqual(self.channel.handle({'op':'selectFiles',**msg}),{'error':'file_selection_missing_or_ambiguous'})
+        self.assertFalse(self.dws.downloaded)
+
+    def test_invalid_or_duplicate_positions_and_quoted_only_sources_are_rejected(self):
+        from dingtalk_bridge.message_model import normalize,select_file_sources
+        origin=normalize(event(1,'引用',quote=event(11,'[图片消息](mediaId=only-quote)',
+                                                     refs=[ref('mediaId','only-quote')])['raw']),CFG)
+        request=normalize(event(2,'请处理'),CFG)
+        for argument in ('[{"image":0}]','[{"image":true}]','[{"image":2,"file":"x"}]',
+                         '[{"image":1},{"image":1}]','["same.txt","same.txt"]'):
+            with self.subTest(argument=argument),self.assertRaisesRegex(ValueError,'file_selection_invalid'):
+                select_file_sources(request,'--attachments '+argument+' 核对',[origin],allow_images=True)
+        with self.assertRaisesRegex(ValueError,'file_selection_missing_or_ambiguous'):
+            select_file_sources(request,'--attachments [{"image":1}] 核对',[origin],allow_images=True)
