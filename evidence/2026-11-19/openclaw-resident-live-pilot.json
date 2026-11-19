@@ -1,0 +1,80 @@
+{
+  "evidenceId": "E159",
+  "date": "2026-11-19",
+  "scope": "Existing organization OpenClaw, authorized DingTalk group and direct chat, synthetic task materials, real tools and receiving client.",
+  "deployment": {
+    "transportCoreCommit": "d444ccf9f720b10c77b961b2bedd33476fb8d46d",
+    "transportCoreModuleCount": 26,
+    "transportRunsIndependently": true,
+    "channelAndIsolatedPythonSourceCommit": "2388a045dd75a0fe23e68de399055545e6b1f9ab",
+    "sourcePullRequest": 13,
+    "executionOwnerByRoute": {
+      "group": "resident-openclaw",
+      "direct": "resident-openclaw"
+    },
+    "priorGatewayTaskBindingsRetained": true
+  },
+  "business": {
+    "sameOrganizationWorkspace": true,
+    "distinctDingTalkSessions": 2,
+    "routes": [
+      "group",
+      "direct"
+    ],
+    "turnsPerRoute": 2,
+    "realToolsReadRulesAndInputAndWroteResult": true,
+    "syntheticInputFiles": 2,
+    "outputFileBytesByRoute": {
+      "group": 20,
+      "direct": 20
+    },
+    "receivedFilenamesAndContentsMatched": true,
+    "confirmedDeliveriesToOriginalConversations": 6,
+    "replyBodyPreserved": true,
+    "bridgeDebugPrefixVisible": false
+  },
+  "channelDisconnectRecovery": {
+    "scope": "Only the added DingTalk channel was disconnected and reconnected.",
+    "routeExecutionLocksReleased": 2,
+    "existingServicePidsAndReadinessPreserved": 2,
+    "newDirectInputsRecordedByTransportWhileDisconnected": 1,
+    "newDirectInputsClaimedWhileDisconnected": 0,
+    "sameAccountAliasAndConsumerRestored": true,
+    "retainedDingTalkSessionIds": 2,
+    "previouslyConfirmedKeysChecked": 6,
+    "previouslyConfirmedKeysReplayed": 0,
+    "visibleRepliesToNewDirectInput": 1
+  },
+  "heldEarlierUnknown": "E154 original group text remains unknown under its original key.",
+  "pending": [
+    "Live cancellation during the resident host turn",
+    "A later return to the organization host has not been verified at this checkpoint"
+  ],
+  "originalMust": {
+    "passed": 13,
+    "total": 14,
+    "partial": [
+      "R06"
+    ],
+    "fullProductAcceptance": false
+  },
+  "originalOwnerHandback": {
+    "state": "passed",
+    "phasesPassed": [
+      "fence",
+      "rollback-cut",
+      "rollback-plan",
+      "rollback",
+      "restore",
+      "restore-check"
+    ],
+    "groupAndDirectOriginalGatewaysVerified": true,
+    "originalProgramsAndSessionsVerified": true,
+    "physicalReceiptsReviewed": 7,
+    "previousE154IsolationVerified": true,
+    "executionOwnerAtRestoreCheck": {
+      "group": "original-group-gateway",
+      "direct": "original-direct-gateway"
+    }
+  }
+}

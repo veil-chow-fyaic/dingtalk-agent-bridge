@@ -281,24 +281,33 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
   }
 }
 
-async function runRoute({sdk,runtime,cfg,account,route,binding,client,signal,log}) {
+async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}) {
   let active;
-  const ack = (msg,status) => client.request("ack", {messageId:msg.id,status});
+  const ack = (msg,status,extra = {}) => client.request("ack", {messageId:msg.id,status,...extra});
   const start = ({msg,input}) => {
     const cancel = new AbortController();
     const turnSignal = AbortSignal.any([signal,cancel.signal]);
+    const entry = {messageId:msg.id,sender:msg.senderId,cancel,finished:false,error:null,
+      cancelMessageId:null,sendAttempts:activity.sendAttempts,ioFailures:activity.ioFailures};
     const promise = (async()=>{
       let status = "done";
       try {
         await dispatchEvent({sdk,runtime,cfg,account,route,binding,client,message:msg,input,signal:turnSignal});
-      } catch {
-        status = "unknown";
-        log?.warn?.("DingTalk turn requires local review; its claim will not be replayed");
+      } catch (error) {
+        // A matching stop is only terminal once dispatch has actually settled.
+        // Any submitted send, uncertain I/O or host shutdown retains quarantine.
+        const stopped = error === turnSignal.reason ||
+          (error?.name === "AbortError" && error.cause === turnSignal.reason);
+        status = entry.cancelMessageId && cancel.signal.aborted && !signal.aborted && stopped &&
+          activity.sendAttempts === entry.sendAttempts && activity.ioFailures === entry.ioFailures
+          ? "canceled" : "unknown";
+        log?.warn?.(status === "canceled"
+          ? "DingTalk turn canceled before delivery; completed local tool effects are not rolled back"
+          : "DingTalk turn requires local review; its claim will not be replayed");
       }
-      await ack(msg,status);
+      await ack(msg,status,status === "canceled" ? {cancelMessageId:entry.cancelMessageId} : {});
     })();
     // Consume errors immediately even if a claim fails while a poll is pending.
-    const entry = {messageId:msg.id,sender:msg.senderId,cancel,finished:false,error:null};
     entry.promise = promise.then(()=>{entry.finished=true;},error=>{entry.finished=true; entry.error=error;});
     active = entry;
   };
@@ -314,7 +323,10 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,signal,log
         const input = classify(account,route,msg);
         if (active) {
           if (!input?.cancel || msg.senderId !== active.sender) throw new Error("Invalid DingTalk stop claim");
-          if (!active.finished) active.cancel.abort();
+          if (!active.finished) {
+            active.cancelMessageId ??= msg.id;
+            active.cancel.abort();
+          }
           await ack(msg,active.finished ? "ignored" : "done");
         } else if (!input || input.cancel) {
           await ack(msg,"ignored");
@@ -455,9 +467,17 @@ export function createChannel(sdk, createClient = openSidecar) {
         for (const {route,binding} of routes) {
           const target = liveKey(account.accountId,route.conversationId);
           if (live.has(target)) throw new Error("DingTalk route already active");
-          const client = createClient(account,route);
+          const transport = createClient(account,route);
+          // Observe every route send, including host tools/proactive sends during a turn.
+          // Increment before crossing stdio: a rejected or lost response is not proof of no send.
+          const activity = {sendAttempts:0,ioFailures:0};
+          const client = {stop:()=>transport.stop(),request:async(op,fields)=>{
+            if (op === "send") activity.sendAttempts++;
+            try { return await transport.request(op,fields); }
+            catch (error) { activity.ioFailures++; throw error; }
+          }};
           live.set(target,client);
-          jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,signal,log}).finally(()=>live.delete(target)));
+          jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}).finally(()=>live.delete(target)));
         }
         await Promise.all(jobs);
       } catch (err) { if (!abortSignal.aborted) throw err; }

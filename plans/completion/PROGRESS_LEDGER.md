@@ -465,3 +465,9 @@ E156：PR #9已合并，实际部署`d444ccf`、26模块及三受管服务已按
 ## E158 — 常驻宿主兼容
 
 公开阶段收尾已由 [PR #12](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/pull/12) 合并。适配器补齐旧宿主文件字段、组织会话路由和可命名的持久 consumer。原部署 E156 与实际模型文件验收 E155 仍分别记证。 [双版本收据](../../evidence/2026-11-19/openclaw-resident-sdk.json)
+
+## E159 · 组织宿主常驻通道
+
+独立 transport 仍使用 `d444ccf`；PR #13 的 `2388a04` 提供常驻插件及隔离 Python 侧车。双路由既有组织 OpenClaw 接单，原 gateway 任务绑定保留。继续现场核实取消和完整回切。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json)
+
+E159 第一轮完整回切已通过。`restore-check` 时原群、私聊 gateway 已接回，后续再进组织宿主按独立状态记录。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json)

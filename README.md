@@ -58,11 +58,11 @@ python3 -m venv .venv
 
 ## 可选：接入已有 Agent
 
-[OpenClaw 原生通道](integrations/openclaw-channel/README.md)让已有 Gateway 接收钉钉任务，由 OpenClaw 负责 Agent、提示词、会话和回复内容，bridge 负责钉钉运输与交付核对。已实测的宿主版本为 **2026.11.3**，群聊和私聊均完成过真实文件任务及客户端原件接收。启用前要明确发送人白名单和路由执行归属，避免同一条消息同时交给两个执行器。
+已有 OpenClaw 的用户可以把钉钉群聊和私聊绑到自己的组织 Agent。Agent 共用其工作区和工具，每条会话保留独立的上下文和回复目的地。每条钉钉路由由一个执行器接单，发送人白名单决定谁能使用该工作区。 [插件配置](integrations/openclaw-channel/README.md)
 
 普通群消息只接收，`/agent` 才交办任务；私聊按白名单接收。群附件可按[插件说明](integrations/openclaw-channel/README.md#use-the-channel)用精确文件名关联。更多运行器的实现与实测范围见[接入表](docs/architecture/agent-integration-map.md)。
 
-**下一阶段**验证把钉钉接入已有组织 Agent 工作区，复用其上下文和文件，并与原有渠道并存。这项共享工作区能力尚未完成验收；消息与结果按各自会话路由，不做跨渠道消息转发。真实多轮续接、取消和重启恢复也按独立证据推进。
+常驻宿主实测中，群聊和私聊都完成了原文件处理与第二轮追问。客户端收到宿主原文和按原名返回的文件，没有桥接任务号前缀。仅断开和恢复钉钉通道后，断开期间的一条新私聊收到一次回复。完整回切已恢复原双路执行器，并核对会话及七条投递回执。常驻宿主的真实任务取消仍待验。 [现场验收](docs/resident-openclaw-pilot.md#现场验收)
 
 ## 运行与排错
 

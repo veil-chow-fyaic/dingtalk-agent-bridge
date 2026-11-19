@@ -27,7 +27,7 @@ CLI、HTTP 和 consumer 可独立使用。DWS 身份、会话与资源权限需�
 | 了解 OpenClaw、Hermes、DeepSeek Harness 的接入方式 | [宿主接口与社区方案调查](152-community-agent-adapters.md) |
 | 理解通道、宿主和执行器如何分工 | [中间件架构](architecture/dingtalk-agent-middleware.md) · [官方与社区参考](references/README.md) |
 
-原生 OpenClaw 通道已有群聊、私聊的真实模型文件任务和客户端接收样本；这与内置 OpenClaw CLI 适配的验证范围分别记录。下一阶段验证共享已有组织 Agent 工作区，不转发跨渠道消息；该能力、真实多轮续接及生命周期仍按各自验收记录判断。启用任何执行器前，明确发送人白名单和每条路由的执行归属。
+原生 OpenClaw 已在既有组织工作区完成群聊、私聊的文件交办、独立两轮会话和钉钉通道断开恢复。内置 CLI 适配另有验证范围。 [组织宿主现场验收](resident-openclaw-pilot.md#现场验收)
 
 ## 运行、恢复与排错
 

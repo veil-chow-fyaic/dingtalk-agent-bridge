@@ -1,13 +1,13 @@
 # 运行、接入与恢复
 
-当前部署见[E156记录](156-native-channel-deployment.md)。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
+独立核心部署见[E156记录](156-native-channel-deployment.md)，当前执行归属见[E159 现场验收](resident-openclaw-pilot.md#现场验收)。E151 实测群与私聊原生语音入站、组合逐图客户端保存；主动发音频可使用 WAV 附件。Kimi 403 只影响对应模型任务。[当前总览](102-user-requirements-and-roadmap.md) · [媒体操作与限制](151-native-voice-and-image-saving.md)
 
 
 两个gateway的网络变量已在私有runtime.environment持久配置，E116无代理manager启动及E120 Codex实际env_ready已验。重载仍先读[风险及恢复顺序](114-dws-risks-and-resolution.md)，只用原manager与当前归属，不重放local一次性脚本。auth/doctor/Keychain操作仍禁止，凭据故障保持暂停，不自动认证；完整MUST未完成。
 
 ## 已有 OpenClaw 的常驻钉钉试点
 
-E155 已验证原生通道在群聊、私聊经真实模型读取原件、写出结果、回复原会话，收件客户端保存的文件名和字节均通过。E156 部署了核心 `d444ccf` 的 26 个模块；这次部署恢复的是 transport、群 Kimi gateway 和私聊 Pi gateway，临时 OpenClaw 已退出。下列步骤用于把一个既有 OpenClaw 接进实际运行的钉钉路由。与微信共享宿主的常驻运行、真实多轮、取消及重启仍待取证。[双路文件验收](155-openclaw-two-route-file-acceptance.md) · [部署收据](156-native-channel-deployment.md)
+E159 的常驻组织 OpenClaw 已在原授权群聊和私聊完成一轮接管与完整回切。两路均已验证独立两轮、文件回传及通道断开恢复。以下流程供新接管或回切使用。独立 transport 与宿主侧车的两个源码版本见[现场验收](resident-openclaw-pilot.md#现场验收)。
 
 1. **选定路由。** 原维护现场只使用原授权测试群和私聊，优先一次接管其中一路。在本机核对 profile、钉钉稳定会话/发送者 ID、当前 owner、运行的进程、游标、活动任务、两层发送账本。保留原配置、会话绑定和可回退的版本。固定 DWS 为 v1.0.67。既有一笔群正文保持 `outcome_unknown`、无任务或消息 ID，所属旧输入已经执行，附件未提交。核对原键和隔离收据，意外出现的其它未决项须另审。[原未知记录](154-openclaw-real-files-and-client-receipts.md)
 2. **在宿主上限定钉钉的权限。** 核已安装版本与目标插件兼容性、启用的插件 ID、运行进程和自身配置健康状态。只增量配置 `dingtalk-bridge` 的账号和路由，精确列出 `allowSenders`。把已授权的钉钉账号显式绑定到已有组织 agent。同一 agent 共享工作区中的组织规则和资料，每个钉钉群、私聊及微信渠道分别保存会话并保持各自的回传目标。在启用前核实钉钉发送人可使用该工作区和工具；使用合成资料和会话标记验证路由，不打开组织原件。核绑定时使用钉钉测试数据。微信侧仅核进程/连接健康等无内容状态，不读取或收发微信消息，不复制账号配置和凭据。若变更需要整体重启已有宿主，先确认维护窗口和恢复路径。[插件配置](../integrations/openclaw-channel/README.md)
@@ -37,9 +37,9 @@ python3 -m venv .venv
 
 ## 当前本机部署与管理
 
-本机固定官方DWS v1.0.67，旧全局版本保留。liev是普通真人账号，官方调用使用显式profile；`--as`仅在声明该参数的具体命令适用，不能通用追加；veil是客户端测试用户。钉钉客户端保留普通账号发送者及平台的“通过AI发送”标识。默认产品回复给出宿主正文和文件；`[Agent]`是内置 gateway 诊断模式的文字前缀。群/私聊各一个gateway；群要求白名单发送者的`/agent`前缀，私聊白名单文字或附件可交办，liev自身回复不触发。当前只在新AIC测试群和原两人私聊验收；企业大群/旧群不得发送测试。
+原维护现场固定使用 DWS v1.0.67 和显式账号 profile。客户端显示普通账号发送者及平台的“通过AI发送”标识；内置 gateway 的诊断模式可另加 `[Agent]` 前缀。E159 试点期间，常驻 OpenClaw 接收白名单用户的私聊任务，群任务需要 `/agent` 前缀。自身回复不触发任务。实测仅限既有授权的测试群和私聊。
 
-统一管理器拥有传输及两个gateway；以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
+bridge 管理器维护独立 transport，OpenClaw 宿主管理其钉钉侧车。第一轮回切的恢复检查已确认原两个 gateway 的程序及会话；接续前请核实际归属。以下读取本地进程与准入状态，不调用DWS，不把状态检查当作新增验收：
 
 ```bash
 python3 -m dingtalk_bridge.service_manager status

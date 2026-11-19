@@ -4,11 +4,21 @@
 
 ## 本次交付和版本
 
-已发布的原生通道在 OpenClaw 2026.11.3 上通过真实模型及双路接收端文件验收。该次模型是通过本机服务运行的 Qwen3-14B。核心 bridge 可独立使用 CLI、HTTP 或持久 consumer。[文件样本与客户端核验](155-openclaw-two-route-file-acceptance.md) · [部署记录](156-native-channel-deployment.md)
+已发布的原生通道在 OpenClaw 2026.11.3 上通过真实模型及双路接收端文件验收。核心 bridge 可独立使用 CLI、HTTP 或持久 consumer。[文件样本与客户端核验](155-openclaw-two-route-file-acceptance.md) · [部署记录](156-native-channel-deployment.md)
 
 E156 的插件声明宿主最低版本为 2026.11.3。阶段收尾还用 2026.7.1-2 的真实宿主加载器和隔离配置检查了旧版本，加载器报告版本不满足。单独导入入口并注册插件可以成功，这一步没有验证附件进入模型、回复路由或持久发送。后续适配已在两版真实宿主、合成 DWS 和模型上验证组织工作区、双路附件读写、同会话追问、取消及重启防重。旧版主动发送缺少宿主持久投递 ID，文本与附件都会在调用钉钉前停止；可改用带固定幂等键的 bridge CLI。[试点跟踪](https://github.com/veil-chow-fyaic/dingtalk-agent-bridge/issues/11)
 
 [双版本测试收据](../evidence/2026-11-19/openclaw-resident-sdk.json) 包含群聊与私聊的原件数、独立会话数、重启和取消计数。2026.11.3 在共享工作区并发写同一目录时曾出现一次宿主暂存错误；该版本的双路完整通过样本依次提交两个文件任务。两版均保留工作区文件访问限制。
+
+## 现场验收
+
+首轮 E159 试点中，既有组织 OpenClaw 分别独占原授权钉钉群与私聊的执行权。独立 transport 仍运行 E156 核对的 26 个核心模块（`d444ccf`）。宿主插件及其隔离的 Python 侧车来自 PR #13（`2388a04`）。原内置 gateway 的任务、会话绑定保留。
+
+群聊和私聊分别提交一份合成文件。组织 Agent 在同一工作区用工具读取规则和各自的输入、写出结果，并分别回答第二轮追问。两路各有单独的宿主会话。收件客户端的两份结果文件均为 20 字节，名称及内容各自匹配。六笔投递都确认在原会话，正文保留宿主回复，客户端没有桥接调试前缀。
+
+仅断开新增的钉钉通道后，两路执行锁释放，原有两个服务保持原 PID 和就绪状态。一条新私聊在此期间由 transport 入账，尚未被执行方领取。恢复原账号别名和同一 consumer 后，两个宿主会话 ID 保留；此前六个投递键均未重放，新私聊在客户端恰好收到一条回复。
+
+随后完整切回原双路执行器。`fence`、`rollback-cut`、`rollback-plan`、`rollback`、`restore` 和 `restore-check` 六阶段均通过，复核了原两个 gateway 的执行程序、会话、试点期间的七条物理投递回执和 E154 的持久隔离。此次 `restore-check` 的执行归属为两个原 gateway。常驻宿主的现场取消及之后再次接管需各自收据。 [E159 现场收据](../evidence/2026-11-19/openclaw-resident-live-pilot.json)
 
 ## 试点顺序
 

@@ -1,5 +1,13 @@
 # 变更记录
 
+## OpenClaw channel 0.2.1
+
+A same-sender cancellation before any delivery records the canceled input and its stop message in one transaction. A previously submitted send, interrupted owner or uncertain I/O retains its original delivery state. The terminal record survives restart. Local tool actions that already completed may still be visible in the agent workspace.
+
+## E159 · 常驻组织 OpenClaw 现场验收
+
+群聊和私聊分别完成两轮交办，收到宿主原文和按原名返回的文件。钉钉通道单独断开期间的一条新私聊在恢复后回复一次。随后完整回切原双路执行器，复核七条物理回执。 [现场验收](docs/resident-openclaw-pilot.md#现场验收)
+
 ## OpenClaw channel 0.2.0
 
 - Reuse an existing organization agent while preserving one session and reply destination per DingTalk conversation.

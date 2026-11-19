@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E157 完成核心 IM 与原生 OpenClaw 文件通道的阶段收尾。实际部署以[E156](docs/156-native-channel-deployment.md)为准。下一阶段在已有组织工作区开展双渠道试点，范围见[试点指南](docs/resident-openclaw-pilot.md)。
+E159 的独立 transport 继续使用 `d444ccf` 的 26 个核心模块。既有组织 OpenClaw 通过 PR #13（`2388a04`）的插件及隔离 Python 侧车接管原授权群与私聊，每路只允许一个执行 owner。在随后完成的第一轮回切中，原双路 gateway 的程序与会话均通过恢复检查。更改执行归属前先核现场锁与原键账本。 [常驻现场收据](evidence/2026-11-19/openclaw-resident-live-pilot.json)
 
 ## 工作位置和读取顺序
 
@@ -30,7 +30,7 @@ veil是原生客户端真人，liev是显式profile绑定的DWS真人；UI发送
 
 受管调用最多两并发、90秒请求＋最多15秒清理，凭据故障持久暂停、不自动恢复。办公doc/todo/calendar/mail/drive/minutes六族同样受管；DM显式启用，群关闭。两个旧查询key dab-auth-read-20261112、dab-auth-read-fixed-20261112均已消费，不重试或换key。
 
-共享Stream bus按身份Setsid脱组，无本实例独占退出权，不杀共享bus、不用foreground冒充消费者。现场history-only15秒；127.0.0.1:18768与三服务由原manager按实际归属管理，无开机自启，不按历史PID发信号。运行器、清理守护、OpenClaw保护钩子均不是OS沙箱，不保证恶意脱组隔离或回滚外部副作用。
+共享Stream bus按身份Setsid脱组，无本实例独占退出权，不杀共享bus、不用foreground冒充消费者。现场history-only15秒；独立 transport 由原 manager 管理，新增钉钉侧车由既有 OpenClaw 宿主管理，无开机自启，不按历史PID发信号。运行器、清理守护、OpenClaw保护钩子均不是OS沙箱，不保证恶意脱组隔离或回滚外部副作用。
 
 必要恢复先transport，gateway保持停止；同一SQLite快照watermark≥固定cut且无history_window，封新调用/排空/停transport后核积压及未知，再恢复允许的执行。last_sync.at不是覆盖。runtime更换先原生new归档、零未决、显式binding迁移，不能只改配置或手改SQLite。
 
@@ -59,4 +59,4 @@ E141维护工具：prepare_history_deployment.py --allow-empty-wal只允许WAL�
 
 E144配置候选与E149 HTTP启动修复已随E150合入部署，不再次应用补丁。R12资料/R14 Git隐私检出按原判据已经通过，R01部署收口；原24h run已完成一次审计，不重置/重审。
 
-E150历史部署为0e151fb/25模块；E156实际部署与26模块按独立收据登记，后续文档提交不冒充运行产品。公开发布保留本地原SHA与只改邮箱的等树映射；受保护main走PR和四检查，不强推/跳过保护，GitHub测试合并SHA、实际mainSHA与现场部署分别记录。公开贡献者在自己的clone工作，本文件绝对路径/现场身份仅原维护workspace适用。
+E150历史部署为0e151fb/25模块；E156 的核心部署与 E159 新增宿主侧车分别按收据登记，后续文档提交不冒充运行产品。公开发布保留本地原SHA与只改邮箱的等树映射；受保护main走PR和四检查，不强推/跳过保护，GitHub测试合并SHA、实际mainSHA与现场部署分别记录。公开贡献者在自己的clone工作，本文件绝对路径/现场身份仅原维护workspace适用。
