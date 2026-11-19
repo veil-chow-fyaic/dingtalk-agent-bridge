@@ -1,6 +1,6 @@
 # 当前关键路径
 
-E165 已在原组织宿主加载钉钉插件 0.2.4，独立 transport 仍为 `d444ccf`。原群内，组织 GLM 按提示词对收悉和资料上传保持安静，并按普通提问调用只读 GitHub PR 工具。原群、私聊均收到混合附件分拣结果，四份原件与进入宿主的文件逐字节一致。 [当前能力与限制](../../docs/agent-im-workflows.md)
+E166 已在原组织宿主加载 0.2.5（来源 `5d1c09e`），独立 transport 仍为 E156 的 `d444ccf`。钉钉插件负责消息、原件和回复投递。工具、数据源、凭据和执行权限归宿主。 原测试群完成两份到货表的核对、CSV 回传和客户端下载复算；未同步 PR 的实时查询被宿主地址保护拒绝。 [E166 实测](../../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 独立 transport、常驻插件和实际执行归属以各自收据为准。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json) · [试点操作与回切](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点)
 

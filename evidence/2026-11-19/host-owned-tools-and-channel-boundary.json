@@ -1,0 +1,70 @@
+{
+  "id": "E166",
+  "date": "2026-11-19",
+  "residentHost": "OpenClaw 2026.7.1-2",
+  "executionModel": "zai/glm-5.3-flash",
+  "pluginVersion": "0.2.5",
+  "pluginSource": "5d1c09e0d58d967a420f4987d7a0271b2e51d924",
+  "unchangedPythonModuleCount": 27,
+  "bridgeRegistersBusinessTools": false,
+  "previousScopedGrantsRemoved": 2,
+  "standaloneTransportSource": "d444ccf",
+  "sameSharedGatewayAndWechatSupervisorPids": true,
+  "wechatLifecycleEventDuringUpdate": false,
+  "gatewayReadinessBefore": {
+    "http": 503,
+    "failing": [
+      "wechat-bridge"
+    ]
+  },
+  "gatewayReadinessAfter": {
+    "http": 503,
+    "failing": [
+      "wechat-bridge"
+    ]
+  },
+  "publicPullRequestTest": {
+    "target": "https://github.com/cli/cli/pull/15086",
+    "targetPreviouslySynced": false,
+    "normalGroupQuestion": true,
+    "hostTool": "web_fetch",
+    "hostCalls": 2,
+    "hostHttpRequestsReachedGithub": 0,
+    "domains": [
+      "api.github.com",
+      "github.com"
+    ],
+    "systemDnsClassification": "RFC 2544 benchmark range 198.18.0.0/15 on both GitHub domains",
+    "vpnProductResponsible": "undetermined",
+    "outcome": "live source lookup blocked; user received the host limitation",
+    "confirmedDingTalkResponses": 1,
+    "independentOfficialVerificationAfterDingTalkQuestion": {
+      "base": "trunk",
+      "mergeCommit": "d85ae0e521e44b5ae82a9b95dba7b2ea6c6ee45d",
+      "merged": true,
+      "mergedAt": "2026-11-17T23:35:09Z",
+      "number": 15086,
+      "title": "chore(deps): Bump zod from 4.3.6 to 4.6.6 in /evals",
+      "url": "https://github.com/cli/cli/pull/15086"
+    },
+    "independentResultPassedToHost": false
+  },
+  "reconciliationTest": {
+    "inputFilesInSeparateMessages": 2,
+    "inputDataInHostTurnVerified": true,
+    "hostBusinessTool": "write",
+    "expectedAndDownloadedDifferenceRows": 4,
+    "netDifference": -15,
+    "downloadedBytes": 112,
+    "sha256": "2b7f06e0db194b0dce0cff7d326fb17414986aa34c49e42519492d9eeffce0dc",
+    "downloadMatchesModelWriteAndPhysicalDelivery": true,
+    "confirmedPhysicalDeliveries": 2,
+    "nativeReceiverSavedFile": true
+  },
+  "offlineTests": {
+    "python": 602,
+    "node": 46,
+    "twoFixedSdkContractsPerVersion": 4,
+    "twoFixedSdkHostWorkspaceTools": true
+  }
+}

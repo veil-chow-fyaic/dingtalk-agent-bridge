@@ -1,6 +1,6 @@
 # 钉钉 bridge 工作约定
 
-E165 原组织 OpenClaw 已加载钉钉 0.2.4，智能群与原私聊使用同一组织上下文与独立会话。操作时分别核对 transport、宿主实际加载的插件、专属侧车与旧未知账本。 [现场收据](evidence/2026-11-19/openclaw-group-tools-and-mixed-media.json)
+E166 原组织宿主加载钉钉 0.2.5。插件只注册通道。新业务场景用宿主已有工具验收，权限或网络不足时在宿主侧记录原因。 [两表对账与工具边界](evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 双路部署沿革及根目录运行事实见[组织宿主运维记录](docs/resident-openclaw-pilot.md#现场加载版本与本轮试用)。插件、隔离 Python 侧车和独立 transport 分别核验来源。
 

@@ -41,6 +41,8 @@ test("source-distributed plugin stays out of the downloadable channel catalog", 
   const manifest = JSON.parse(readFileSync(new URL("../openclaw.plugin.json", import.meta.url)));
   assert.deepEqual(pkg.openclaw.extensions, ["./index.mjs"]);
   assert.equal(pkg.openclaw.channel, undefined);
-  assert.ok(manifest.channels.includes(ID));
+  assert.deepEqual(manifest.categories, ["channels"]);
+  assert.deepEqual(manifest.contracts?.tools ?? [], []);
+  assert.deepEqual(manifest.channels, [ID]);
   assert.ok(manifest.channelConfigs[ID]);
 });
