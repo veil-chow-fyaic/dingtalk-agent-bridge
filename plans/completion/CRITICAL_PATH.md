@@ -1,5 +1,7 @@
 # 当前关键路径
 
+本轮源码和真实文件任务已验收。现场部署 0.2.6 与公开合并分开记录，升级可在共享宿主下一次明确维护窗口核对执行 owner、侧车和加载版本。 [E168 文件验收与回归](../../evidence/2026-11-20/im-review-fixes.json)
+
 E166 已在原组织宿主加载 0.2.5（来源 `5d1c09e`），独立 transport 仍为 E156 的 `d444ccf`。钉钉插件负责消息、原件和回复投递。工具、数据源、凭据和执行权限归宿主。 原测试群完成两份到货表的核对、CSV 回传和客户端下载复算；未同步 PR 的实时查询被宿主地址保护拒绝。 [E166 实测](../../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 独立 transport、常驻插件和实际执行归属以各自收据为准。 [E159 现场收据](../../evidence/2026-11-19/openclaw-resident-live-pilot.json) · [试点操作与回切](../../docs/15-service-runbook.md#已有-openclaw-的常驻钉钉试点)

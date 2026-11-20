@@ -99,9 +99,11 @@ function classify(account, route, msg) {
     /^\/agent\s+(?:cancel|\/stop)$/.test(raw.trim());
   if (group && !cancel && ((mode === "command" && !explicitCommand) || (mode === "mention" && !mentioned))) return null;
   if (cancel && (msg.quote || msg.parts.length !== 1 || msg.parts[0].type !== "text")) return null;
-  const quote = msg.quote?.senderId === msg.senderId ? msg.quote : undefined;
+  const confirmedText = msg.confirmedHostTextQuote === true && msg.quote?.id && msg.quote.senderId &&
+    !msg.quote.quote && msg.quote.parts?.length === 1 && msg.quote.parts[0].type === "text";
+  const quote = msg.quote?.senderId === msg.senderId || confirmedText ? msg.quote : undefined;
   // A file task with an unverified quoted sender must not run as a text-only request.
-  const unverifiedQuote = Boolean(msg.quote && !quote && route.conversationType === "group");
+  const unverifiedQuote = Boolean(msg.quote && !quote && (group || msg.quote.parts?.every(p=>p.type === "text")));
   if (!unverifiedQuote && !quote && msg.quote?.parts?.some(part => part.type !== "text")) return null;
   const quotedParts = (quote?.parts ?? []).map(p => ({...p,quoteId:quote.id}));
   const attachments = [...msg.parts, ...quotedParts].filter(p => p.type !== "text");
@@ -247,7 +249,13 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
   if (input.agentDecides) {
     try {
       const {recent} = await client.request("groupContext", {messageId:message.id, allowSenders:route.allowSenders});
-      const current = {text:input.body.slice(0,4000), attachments:input.attachments.slice(0,8).map(
+      // A user's request can be in the final sentence. The normal
+      // DWS message limit is 5120 UTF-16 units. Bound atypical projections
+      // while retaining both ends and keeping Unicode characters intact.
+      const chars = Array.from(input.body);
+      const decisionText = chars.length <= 8192 ? input.body :
+        chars.slice(0,4096).join("") + "\n[…]\n" + chars.slice(-4096).join("");
+      const current = {text:decisionText, attachments:input.attachments.slice(0,8).map(
         part=>({type:part.type, name:typeof part.name === "string" ? part.name.slice(0,120) : undefined})),
         quotedText:input.quote?.parts.filter(p=>p.type === "text").map(p=>p.text).join("").slice(0,600)};
       const decision = await (sdk.decideGroupReply ?? decideGroupReply)({
@@ -298,7 +306,8 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
         if (prepared.message?.id !== message.id || prepared.message.senderId !== message.senderId) {
           throw new Error("DingTalk prepared media identity mismatch");
         }
-        input = classify(account,route,{...prepared.message, mentionedSelf:message.mentionedSelf});
+        input = classify(account,route,{...prepared.message, mentionedSelf:message.mentionedSelf,
+          ...(message.confirmedHostTextQuote ? {quote:message.quote,confirmedHostTextQuote:true} : {})});
         if (!input?.attachments.length && !input?.unverifiedQuote) throw new Error("Invalid DingTalk prepared media");
         break;
       }
@@ -310,7 +319,7 @@ export async function dispatchEvent({sdk, runtime, cfg, account, route, client, 
     ? '请先在此会话发送原件，再用 /agent --attachments [{"image":1},"文件名"] 加上任务说明。图片 1 表示你最近发送的那一张。'
     : '请先在本群发送文件，再发送 /agent --files ["原文件名"] 具体任务。';
   if (input.unverifiedQuote) {
-    await selectionNotice('这条引用缺少可核验的来源。' + usage);
+    await selectionNotice('引用的来源暂时无法核验。请粘贴需要讨论的原文。' + (route.conversationType === 'group' ? usage : ''));
     return;
   }
   let selectedMedia;
@@ -494,15 +503,27 @@ async function runRoute({sdk,runtime,cfg,account,route,binding,client,activity,s
     entry.promise = promise.then(()=>{entry.finished=true;},error=>{entry.finished=true; entry.error=error;});
     active = entry;
   };
+  let pollRetryMs = 0;
   try {
     while (!signal.aborted) {
       if (active?.finished) { if (active.error) throw active.error; active=undefined; }
       // Only claim ordinary messages once the host can actually start them.
       // During a turn poll solely for that sender's stop; waiting work stays in SQLite.
-      const {message:msg,hasMore} = active
-        ? await client.request("pollCancel", {activeMessageId:active.messageId})
-        : await client.request("poll", {orderedMedia:true,
-          ...(route.groupReplyMode === "agent-decides" ? {deferGroupExecution:true} : {})});
+      let polled;
+      try {
+        polled = active ? await client.request("pollCancel", {activeMessageId:active.messageId})
+          : await client.request("poll", {orderedMedia:true,
+            ...(route.groupReplyMode === "agent-decides" ? {deferGroupExecution:true} : {})});
+        pollRetryMs = 0;
+      } catch (error) {
+        // These explicit errors arise in receive(), before the sidecar claims a
+        // row. An ambiguous stdio failure or an auth refusal stops this route.
+        if (!["transport_unavailable","transport_http_502","transport_http_503","transport_http_504"].includes(error?.code)) throw error;
+        pollRetryMs = pollRetryMs ? Math.min(30_000, pollRetryMs * 2) : Math.min(30_000, account.pollIntervalMs);
+        await sleep(pollRetryMs, undefined, {signal});
+        continue;
+      }
+      const {message:msg,hasMore} = polled;
       if (msg) {
         const input = classify(account,route,msg);
         if (active) {
@@ -654,9 +675,11 @@ export function createChannel(sdk, createClient = openSidecar) {
       try {
         // Resolve every route before starting any sidecar or consuming any input.
         const routes = account.routes.map(route=>({route,binding:conversationBinding(runtime.routing,cfg,account,route).binding}));
-        for (const {route,binding} of routes) {
+        if (routes.some(({route})=>live.has(liveKey(account.accountId,route.conversationId)))) {
+          throw new Error("DingTalk route already active");
+        }
+        for (const [index,{route,binding}] of routes.entries()) {
           const target = liveKey(account.accountId,route.conversationId);
-          if (live.has(target)) throw new Error("DingTalk route already active");
           const transport = createClient(account,route);
           // Observe every route send, including host tools/proactive sends during a turn.
           // Increment before crossing stdio: a rejected or lost response is not proof of no send.
@@ -672,9 +695,15 @@ export function createChannel(sdk, createClient = openSidecar) {
             }
           }};
           live.set(target,client);
-          jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}).finally(()=>live.delete(target)));
+          jobs.push(runRoute({sdk,runtime,cfg,account,route,binding,client,activity,signal,log}).catch(error=>{
+            if (!signal.aborted) log?.warn?.(`DingTalk route ${index + 1} (${route.conversationType}) stopped; check its ledger before recovery`);
+            throw error;
+          }).finally(()=>live.delete(target)));
         }
-        await Promise.all(jobs);
+        // A stopped route relinquishes only its own sidecar. Keep the account
+        // alive while it has a healthy route; if every route exits, surface its error.
+        const failed = (await Promise.allSettled(jobs)).find(result=>result.status === "rejected");
+        if (failed) throw failed.reason;
       } catch (err) { if (!abortSignal.aborted) throw err; }
       finally { controller.abort(); await Promise.allSettled(jobs); }
     }},

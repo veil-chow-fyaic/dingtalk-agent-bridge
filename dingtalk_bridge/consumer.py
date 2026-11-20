@@ -6,7 +6,7 @@ import json
 from itertools import islice
 from pathlib import Path
 import sqlite3
-from .message_model import normalize,media_parts,materialize
+from .message_model import completes_history,normalize,media_parts,materialize,truncated_history
 
 
 def _resolve_cache_path(path):
@@ -70,6 +70,14 @@ class Inbox:
     def cursor(self):
         row=self.db.execute('SELECT value FROM meta WHERE key="cursor"').fetchone()
         return int(row[0]) if row else 0
+    @property
+    def revision_cursor(self):
+        row = self.db.execute('SELECT value FROM meta WHERE key="revision_cursor"').fetchone()
+        return int(row[0]) if row else 0
+
+    def read_cursors(self):
+        return {'after':self.cursor, 'after_revision':self.revision_cursor}
+
     def ingest(self,batch):
         events=batch['events'];cursor=self.cursor;last=cursor
         with self.db:
@@ -90,6 +98,40 @@ class Inbox:
                 last=seq
             if type(batch['next_cursor']) is not int or batch['next_cursor']!=last:raise ValueError('cursor_does_not_match_batch')
             self.db.execute('INSERT OR REPLACE INTO meta VALUES ("cursor",?)',(str(last),))
+            first_repaired = None
+            if 'revisions' in batch or 'next_revision_cursor' in batch:
+                previous = self.revision_cursor
+                for item in batch['revisions']:
+                    rev, event = item['revision'], item['event']
+                    seq = event['seq']
+                    if type(rev) is not int or rev <= previous or type(seq) is not int or not 0 < seq <= last:
+                        raise ValueError('invalid_history_revision')
+                    previous = rev
+                    if (event.get('conversation_id')!=self.config['group']
+                            or event.get('account_id')!=self.config.get('accountId','default')
+                            or event.get('conversation_type')!=self.config.get('conversationType','group')):
+                        raise ValueError('cross_scope_revision')
+                    old = self.db.execute('SELECT message_id,raw FROM inbox WHERE seq=?', (seq,)).fetchone()
+                    if old is None:  # Cursor-only activation intentionally skipped this original.
+                        continue
+                    if old['message_id'] != event['message_id']:
+                        raise ValueError('history_revision_identity_mismatch')
+                    before = json.loads(old['raw'])
+                    if not truncated_history(before['raw']):
+                        continue  # Already imported complete; preserve hydration and execution.
+                    if not completes_history(before, event):
+                        raise ValueError('history_revision_identity_mismatch')
+                    model = normalize(event,self.config)
+                    if model['issues']:
+                        raise ValueError('incomplete_history_revision')
+                    state = 'pending_media' if any(media_parts(model)) else 'normalized'
+                    self.db.execute('''UPDATE inbox SET raw=?,model=?,state=?,error=NULL,attempts=0
+                        WHERE seq=?''', (json.dumps(event,ensure_ascii=False),json.dumps(model,ensure_ascii=False),state,seq))
+                    first_repaired = min(seq, first_repaired) if first_repaired is not None else seq
+                if type(batch['next_revision_cursor']) is not int or batch['next_revision_cursor'] != previous:
+                    raise ValueError('revision_cursor_does_not_match_batch')
+                self.db.execute('INSERT OR REPLACE INTO meta VALUES ("revision_cursor",?)',(str(previous),))
+        self.first_repaired_seq = first_repaired
         return len(events)
     def hydrate(self,download,include_self=False,limit=20,eligible=None,priority_message_id=None):
         if type(limit) is not int or limit<1:raise ValueError('Invalid hydration limit')

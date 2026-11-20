@@ -497,3 +497,34 @@ test("ambiguous smart-group media references ask for a quote without running a t
   assert.equal(state.staged.length,0);
   assert.deepEqual(state.sends.map(([,req])=>/引用.*--attachments/u.test(req.text)),Array(6).fill(true));
 });
+
+for (const target of ["G", "D"]) test("confirmed channel text is available to a quoted follow-up on "+target,async()=>{
+  const quote={id:"sent-message",senderId:"channel-account",parts:[{type:"text",text:"原建议"}]};
+  const body=(target==="G"?"/agent ":"")+"请展开这条建议";
+  const f=setup({messages:{[target]:[
+    message(target,"verified",body,{quote,confirmedHostTextQuote:true}),
+    message(target,"unproven",body,{quote}),
+  ]}});
+  await f.run();
+  assert.deepEqual(f.contexts.map(c=>[c.MessageSid,c.ReplyToId,c.ReplyToSender,c.ReplyToBody]),
+    [["verified","sent-message","channel-account","原建议"]]);
+  assert.match(f.sends.at(-1)[1].text,/引用/);
+});
+
+test("smart-group decisions show both ends of exceptionally large projections",async()=>{
+  const body="头"+"🔵".repeat(9000)+"末尾问题";
+  let seen;
+  const f=setup({messages:{G:[message("G","oversize",body)]},groupPolicy:{groupReplyMode:"agent-decides"},
+    decide:async({current})=>{seen=current.text;return "NO_REPLY";}});
+  await f.run();
+  assert.ok(seen.startsWith("头") && seen.endsWith("末尾问题"));
+  assert.ok(seen.isWellFormed() && seen.includes("[…]") && seen.length<body.length);
+});
+
+test("smart-group decision and execution both receive the end of a long ordinary message",async()=>{
+  const body="盘".repeat(5100)+"请帮我核对总数";
+  const f=setup({messages:{G:[message("G","long",body)]},groupPolicy:{groupReplyMode:"agent-decides"},
+    decide:async({current})=>current.text.endsWith("请帮我核对总数")?"REPLY":"NO_REPLY"});
+  await f.run();
+  assert.deepEqual(f.contexts.map(c=>c.BodyForAgent),[body]);
+});

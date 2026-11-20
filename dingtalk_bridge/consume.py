@@ -32,7 +32,7 @@ def main():
     try:
         batches=0
         while True:
-            fetched=inbox.ingest(api('/v1/events?'+urlencode({**selector,'limit':200,'after':inbox.cursor,
+            fetched=inbox.ingest(api('/v1/events?'+urlencode({**selector,'limit':200,**inbox.read_cursors(),
                 'wait_seconds':a.wait_seconds if a.follow else 0})))
             hydrated=inbox.hydrate(lambda mid:api('/v1/attachments',{**selector,'message_id':mid}),include_self=a.hydrate_self)
             print(json.dumps({'fetched':fetched,'hydration':hydrated,**inbox.summary()},ensure_ascii=False),flush=True)

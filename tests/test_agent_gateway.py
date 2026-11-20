@@ -360,6 +360,80 @@ class AgentGatewayTests(unittest.TestCase):
         self.assertEqual([p for p,_ in calls],['/v1/send','/v1/reconcile'])
         self.assertEqual(calls[0][1]['idempotency_key'],calls[1][1]['idempotency_key'])
 
+    def test_new_sends_and_retries_both_progress_under_sustained_backlog_and_restart(self):
+        attempts = []
+        payloads = {}
+        def api(path, data=None):
+            key = data['idempotency_key']
+            if path == '/v1/send':
+                self.assertEqual(payloads.setdefault(key, data.copy()), data)
+                attempts.append(key)
+                if key.endswith('-0') and key.startswith('agent-stalled-'):
+                    raise OSError('synthetic lost response')
+            if key.startswith('agent-stalled-'):
+                return {'state': 'outcome_unknown'}
+            return {'state': 'confirmed', 'message_id': key}
+
+        self.g.api = api
+        with self.g.db:
+            for i in range(30):
+                self.g.emit('stalled', str(i), {'text': str(i)})
+        for _ in range(3):
+            self.g.flush()
+        stalled = {f'agent-stalled-{i}' for i in range(30)}
+        self.assertEqual(set(attempts), stalled)
+
+        attempted_old = set()
+        new = []
+        for turn in range(4):
+            self.g.close()
+            self.g = Gateway(self.root, CFG, None, SETTINGS, api, self.runtime)
+            with self.g.db:
+                for i in range(20):
+                    label = str(20 * turn + i)
+                    self.g.emit('fresh', label, {'text': label})
+                    new.append('agent-fresh-' + label)
+            start = len(attempts)
+            self.g.flush()
+            batch = attempts[start:]
+            self.assertLessEqual(len(batch), 20)
+            self.assertEqual(len(batch), len(set(batch)))
+            self.assertTrue(stalled.intersection(batch))
+            self.assertTrue(set(batch).difference(stalled))
+            attempted_old.update(stalled.intersection(batch))
+        self.assertEqual(attempted_old, stalled)
+        sent_new = [k for k in attempts if k not in stalled]
+        self.assertEqual(sent_new, new[:len(sent_new)])
+
+    def test_older_deferred_cancel_leaves_newer_running_task_alone(self):
+        started, release = threading.Event(), threading.Event()
+        def slow(prompt, workspace, run_dir, session, cancel, remember, images):
+            started.set()
+            if not release.wait(5):
+                raise AssertionError('synthetic task not released')
+            return {'text': 'done', 'files': []}
+        self.runtime.run = slow
+        # A lost reply receipt defers self commands until identity is resolved.
+        with self.g.db:
+            self.g.emit('previous', 'text', {'text': 'previous response'})
+        self.api.fail_once = True
+        self.g.flush()
+        self.api.events = [event(1, text='/agent cancel', sender='self'),
+                           event(2, text='/agent later', sender='other')]
+        self.g.intake()
+        thread = threading.Thread(target=self.g.execute_one)
+        thread.start()
+        try:
+            self.assertTrue(started.wait(2))
+            self.g.flush()
+            self.g.intake()
+            self.assertEqual(self.g.summary()['jobs'], {'completed': 1, 'running': 1})
+            self.assertFalse(self.g.cancel.is_set())
+        finally:
+            release.set()
+            thread.join(5)
+        self.assertFalse(thread.is_alive())
+
     def test_poll_error_does_not_move_cursor_or_create_job(self):
         def offline(*args):raise OSError('offline')
         self.g.api=offline

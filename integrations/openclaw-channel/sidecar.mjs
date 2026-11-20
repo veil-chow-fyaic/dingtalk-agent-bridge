@@ -40,7 +40,10 @@ export function openSidecar(account, route) {
     clearTimeout(request.timer);
     pending.delete(reply.id);
     if (reply.ok === true) request.resolve(reply.result);
-    else request.reject(new Error("DingTalk sidecar: " + (/^[a-z0-9_]{1,80}$/.test(reply.error) ? reply.error : "request_failed")));
+    else {
+      const code = /^[a-z0-9_]{1,80}$/.test(reply.error) ? reply.error : "request_failed";
+      request.reject(Object.assign(new Error("DingTalk sidecar: " + code), {code}));
+    }
   });
   return {
     stop,

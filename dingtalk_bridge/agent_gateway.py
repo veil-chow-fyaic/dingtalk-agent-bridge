@@ -203,8 +203,12 @@ class Gateway:
         with self.db:
             # Legacy gateway writes (including during rollback) cannot prove
             # that a pending send never left the process. New emits start at 0.
-            if 'send_attempted' not in {r[1] for r in self.db.execute('PRAGMA table_info(outbox)')}:
+            outbox_columns = {r[1] for r in self.db.execute('PRAGMA table_info(outbox)')}
+            if 'send_attempted' not in outbox_columns:
                 self.db.execute('ALTER TABLE outbox ADD COLUMN send_attempted INTEGER NOT NULL DEFAULT 1')
+            if 'flush_round' not in outbox_columns:
+                self.db.execute('ALTER TABLE outbox ADD COLUMN flush_round INTEGER NOT NULL DEFAULT 0')
+            self.flush_round = self.db.execute('SELECT coalesce(max(flush_round),0) FROM outbox').fetchone()[0]
             self.startup_outbox_rowid = self.db.execute('SELECT coalesce(max(rowid),0) FROM outbox').fetchone()[0]
             self.db.execute('INSERT OR IGNORE INTO meta VALUES("binding",?)',(binding,))
             self.db.execute('INSERT OR IGNORE INTO meta VALUES("generation","0")')
@@ -293,21 +297,60 @@ class Gateway:
             row=self.db.execute('SELECT state FROM jobs WHERE id=?',(job_id,)).fetchone()
         return row is None or row[0]=='waiting_media'
 
+    def can_admit(self, job_id, model):
+        prior = self.db.execute('SELECT state,error,model FROM jobs WHERE id=?', (job_id,)).fetchone()
+        if prior is None:
+            return True
+        # Intake blocks can be retried only after the provider completed this
+        # exact projection. Runtime failures, cancellation and completed jobs own their IDs.
+        if prior['state'] != 'blocked' or prior['error'] not in (None, 'file_selection_invalid') or model['issues']:
+            return False
+        issues = json.loads(prior['model']).get('issues', [])
+        return any(issue.rsplit(':',1)[-1] in ('partial','truncated') for issue in issues)
+
+    def admit(self, job_id, seq, command, model, state, error=None):
+        # Both callers hold lock/transaction from the admission check through the write.
+        # A provider correction can reveal a command after /new has already run,
+        # including one whose incomplete projection did not create a job at all.
+        archived = self.db.execute("""SELECT 1 FROM jobs WHERE seq>? AND state='completed'
+            AND command IN ('new','新会话') LIMIT 1""", (seq,)).fetchone()
+        notice = None
+        if archived:
+            state, error = 'blocked', 'input_precedes_session_reset'
+            notice = '这条消息属于已归档的会话，未执行。如仍需处理，请在当前会话重新交办。'
+        elif command in ('new', '新会话') and not model['issues']:
+            # A later business turn may already be using this session. A recovered
+            # reset can precede queued work, but cannot roll back an actual claim.
+            overtaken = self.db.execute("""SELECT 1 FROM jobs WHERE seq>?
+                AND command NOT IN ('status','状态','cancel','取消','new','新会话')
+                AND (state IN ('running','completed','interrupted','failed')
+                     OR (state='cancelled' AND error IS NOT 'cancelled_before_execution')) LIMIT 1""", (seq,)).fetchone()
+            if overtaken:
+                state, error = 'blocked', 'reset_overtaken_by_execution'
+                notice = ('这条新会话指令到达时，后续任务已经开始。当前会话已保留。'
+                          '如需重开，请重新发送 '+self.settings.get('prefix','/agent')+' new。')
+        self.db.execute("""INSERT INTO jobs(id,seq,command,model,state,error) VALUES(?,?,?,?,?,?)
+            ON CONFLICT(id) DO UPDATE SET command=excluded.command,model=excluded.model,
+            state=excluded.state,error=excluded.error""",
+            (job_id, seq, command, json.dumps(model,ensure_ascii=False), state, error))
+        if notice:
+            self.notice(job_id, 'session-boundary', notice)
+        return notice is None
+
     def bind_file_requests(self):
         for row in self.inbox.db.execute('SELECT seq,model FROM inbox WHERE model!="null" ORDER BY seq'):
             model=json.loads(row['model']);command=self.command(model, row['seq'])
             if not file_request(model,command):continue
             job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
             with self.lock,self.db:
-                if self.db.execute('SELECT 1 FROM jobs WHERE id=?',(job_id,)).fetchone():continue
+                if not self.can_admit(job_id, model):continue
                 previous=[json.loads(r[0]) for r in self.inbox.db.execute(
                     'SELECT model FROM inbox WHERE seq<? ORDER BY seq DESC LIMIT 50',(row['seq'],))]
                 try:
                     command,sources=select_file_sources(model,command,previous)
                     model['fileSources']=sources;state='waiting_media';error=None
                 except ValueError as exc:state='blocked';error=str(exc)
-                self.db.execute('INSERT INTO jobs(id,seq,command,model,state,error) VALUES(?,?,?,?,?,?)',
-                    (job_id,row['seq'],command,json.dumps(model,ensure_ascii=False),state,error))
+                if not self.admit(job_id,row['seq'],command,model,state,error):continue
                 if state=='blocked':
                     self.notice(job_id,'blocked','未执行文件任务。请使用 '+self.settings.get('prefix','/agent')+' --files ["原文件名"] 具体任务。'
                         '最多8个不同文件名，须为你在本群此前50条消息、30分钟内发送的文件。缺失或同名不明确时不会猜选；不能将控制命令作为文件任务。')
@@ -333,7 +376,7 @@ class Gateway:
                         (json.dumps(model,ensure_ascii=False),row['id']))
 
     def intake(self):
-        batch=self.api('/v1/events?'+urlencode({'after':self.inbox.cursor,'limit':200}))
+        batch=self.api('/v1/events?'+urlencode({**self.inbox.read_cursors(),'limit':200}))
         self.inbox.ingest(batch)
         self.bind_file_requests()
         slot=self.media_slot
@@ -347,7 +390,6 @@ class Gateway:
             include_self=self.settings.get('allowSelfCommands',False),
             eligible=self.needs_media,
             priority_message_id=self.media_slot['id'] if self.media_slot else None)
-        self.ready_file_requests()
         # normalized includes explicitly authorized owner commands; Inbox.ready's general self filter stays intact.
         for row in self.inbox.db.execute('SELECT seq,model,state FROM inbox WHERE model!="null" ORDER BY seq'):
             model=json.loads(row['model']);command=self.command(model, row['seq'])
@@ -355,12 +397,11 @@ class Gateway:
             job_id=hashlib.sha256((self.key+'\0'+model['id']).encode()).hexdigest()[:24]
             state='blocked' if model['issues'] else 'queued' if row['state']=='normalized' else 'waiting_media'
             with self.lock,self.db:
-                inserted=self.db.execute('INSERT OR IGNORE INTO jobs(id,seq,command,model,state) VALUES(?,?,?,?,?)',
-                    (job_id,row['seq'],command,json.dumps(model,ensure_ascii=False),state)).rowcount
-                if not inserted:
+                if not self.can_admit(job_id, model):
                     if state=='queued':self.db.execute('UPDATE jobs SET state="queued",model=? WHERE id=? AND state="waiting_media"',
                         (json.dumps(model,ensure_ascii=False),job_id))
                     continue
+                if not self.admit(job_id,row['seq'],command,model,state):continue
                 if state=='blocked':
                     self.notice(job_id,'blocked','这条消息有未能完整解析的内容，暂未执行；请改用文字加文件附件重新说明。');continue
                 if command in {'status','状态'}:
@@ -369,15 +410,20 @@ class Gateway:
                     self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
                     self.notice(job_id,'status',status_text(self.summary(), diagnostic=self.diagnostic))
                 elif command in {'cancel','取消'}:
-                    running=self.db.execute('SELECT count(*) FROM jobs WHERE state="running"').fetchone()[0]
+                    running=self.db.execute('SELECT 1 FROM jobs WHERE state="running" AND seq<? LIMIT 1',
+                                            (row['seq'],)).fetchone()
                     if running:self.cancel.set()
                     pending=None
                     if not running:
-                        pending=self.db.execute('SELECT id FROM jobs WHERE id!=? AND state IN ("queued","waiting_media") ORDER BY seq LIMIT 1',(job_id,)).fetchone()
+                        pending=self.db.execute('SELECT id FROM jobs WHERE seq<? AND state IN ("queued","waiting_media") ORDER BY seq LIMIT 1',
+                                                (row['seq'],)).fetchone()
                         if pending:self.db.execute('UPDATE jobs SET state="cancelled",error="cancelled_before_execution" WHERE id=?',(pending[0],))
                     self.db.execute('UPDATE jobs SET state="completed" WHERE id=?',(job_id,))
                     self.notice(job_id,'cancel','已请求停止当前任务。' if running else '已取消最早等待中的任务。' if pending else '当前没有正在执行或等待的任务。')
                 else:self.notice(job_id,'ack','已接收任务 '+job_id[:8]+('，正在获取附件。' if state=='waiting_media' else '，将执行并回传结果。'))
+        # A worker can claim the earliest queued job immediately. Publish ready
+        # file jobs only after earlier commands in this inbox batch are admitted.
+        self.ready_file_requests()
 
     def summary(self):
         with self.lock:
@@ -483,7 +529,21 @@ class Gateway:
         return True
 
     def flush(self):
-        with self.lock:rows=self.db.execute('SELECT * FROM outbox WHERE state IN ("pending","submitted","outcome_unknown") ORDER BY rowid LIMIT 20').fetchall()
+        # First sends keep insertion order. Previously attempted or failed-to-prepare
+        # items rotate on their original keys, even with new deliveries every poll.
+        limit = 20
+        fresh = "state='pending' AND send_attempted=0 AND error IS NULL"
+        with self.lock, self.db:
+            first = self.db.execute(f'SELECT * FROM outbox WHERE {fresh} ORDER BY rowid LIMIT ?', (limit,)).fetchall()
+            retry = self.db.execute(f'''SELECT * FROM outbox
+                WHERE state IN ('pending','submitted','outcome_unknown') AND NOT ({fresh})
+                ORDER BY flush_round,rowid LIMIT ?''', (limit,)).fetchall()
+            first = first[:max(limit // 2, limit - len(retry))]
+            rows = first + retry[:limit - len(first)]
+            if rows:
+                self.flush_round += 1
+                self.db.executemany('UPDATE outbox SET flush_round=? WHERE key=?',
+                                    [(self.flush_round, row['key']) for row in rows])
         for row in rows:
             try:
                 payload = json.loads(row['payload'])

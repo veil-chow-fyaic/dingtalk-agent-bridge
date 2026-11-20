@@ -4,9 +4,11 @@
 
 普通账号的独立 IM 工具与可选 OpenClaw 通道可在已验证的一个授权群和一个私聊中日常使用。两路均实测收发文字、图片、常用文件、WAV 和 MP4，交由真实模型处理，并在钉钉收件端按原名下载结果。正式模式由宿主决定回复内容，bridge 不添加诊断前缀或任务号。群聊可按命令、真实 @、每条消息或提示词判断参与。 [入门指南](getting-started.md) · [业务场景与群策略](agent-im-workflows.md)
 
+E168 审查的 3 个 P1、5 个 P2 均有代码和回归覆盖，公开修复源码为 `907e8e4`，OpenClaw 通道版本为 `0.2.6`。一份新的月台盘点表从钉钉客户端发入原群，经独立 consumer 交给本地 Qwen3-14B。原群收到正文和一个 CSV，接收端下载后复算 3 个非零差异，合计 +1 箱。模型首稿合计有误，发出前已复核。 [E168 文件验收与回归](../evidence/2026-11-20/im-review-fixes.json)
+
 E167 在原群从钉钉客户端交办一份新的 7 行库位盘点表。组织 OpenClaw 用自己的 `write` 工具生成补货清单，原群收到正文和 CSV。收件端下载后逐行复算，3 个库位共需 20 件，文件字节与宿主写入一致。 [本次收件验收](../evidence/2026-11-19/stage-delivery-inventory.json)
 
-现场沿用 E156 独立 transport `d444ccf` 和 E166 的组织 OpenClaw 钉钉插件 0.2.5（源码 `5d1c09e`）。Agent 工具、权限和网络由宿主管理。一次临时 GitHub PR 查询触发了原生工具，现场 DNS 导致宿主在发出 HTTP 请求前拒绝访问。 [宿主工具收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
+本次真实任务使用 E156 独立 transport `d444ccf`。E166 是原组织宿主加载插件 0.2.5（源码 `5d1c09e`）的最近部署收据。E168 开始时，原宿主端口拒绝连接，两项原服务均未加载。文件验收结束后，端口已可连接，原 gateway 作业已加载，原微信容器作业当时仍未加载。此次现场验收使用独立执行器，共享宿主升级另行安排。Agent 工具、权限和网络由宿主管理。一次临时 GitHub PR 查询触发了原生工具，现场 DNS 导致宿主在发出 HTTP 请求前拒绝访问。 [宿主工具收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 原 14 项 MUST 中 **13 项通过，R06 部分通过**。本阶段暂缓原生语音条出站。任意多个普通文件合为一个气泡、Hermes 与 DeepSeek Harness 端到端接入、多人和跨组织现场使用仍待验证。双路回切、恢复后续问及真实取消已有独立收据。 [原验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [恢复与取消实测](resident-openclaw-pilot.md#再次接管与运行中取消)
 

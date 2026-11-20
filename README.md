@@ -10,6 +10,8 @@
 
 [开始使用](docs/getting-started.md) · [接入 OpenClaw](integrations/openclaw-channel/README.md) · [接口参考](docs/22-generic-tool-and-consumer.md) · [文档导航](docs/README.md) · [已有组织工作区试点](docs/resident-openclaw-pilot.md) · [Agent 日常任务实测](docs/agent-im-workflows.md)
 
+OpenClaw 通道 0.2.6 已修复群聊轮询故障拖停私聊的问题。独立 consumer 支持接收 DWS 后续补全的历史消息，可选 gateway 会分别调度新回复和旧回执。最近一次真实群聊对账收到 3 行差异，客户端下载件与模型产物逐字节一致。 [E168 文件验收与回归](evidence/2026-11-20/im-review-fixes.json)
+
 ## 能做什么
 
 | 使用场景 | 当前能力与范围 |

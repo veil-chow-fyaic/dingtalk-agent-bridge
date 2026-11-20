@@ -4,6 +4,7 @@ import base64
 import binascii
 from concurrent.futures import Future
 from contextlib import ExitStack, closing
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -15,9 +16,10 @@ import sys
 import tempfile
 from threading import Thread
 import time
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request
+from zoneinfo import ZoneInfo
 
 from .consumer import Inbox, acquire_consumer_lock, execution_scope
 from .group_participation import GroupMentions, recent_group_context
@@ -47,8 +49,13 @@ def route_api(root, route, port):
             data = json.dumps({**payload, **scope}).encode()
         request = Request(f'http://127.0.0.1:{port}{path}', data=data, headers={
             'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'})
-        with urlopen(request, timeout=120) as response:
-            return json.load(response)
+        try:
+            with urlopen(request, timeout=120) as response:
+                return json.load(response)
+        except HTTPError:
+            raise
+        except (URLError, TimeoutError, ConnectionError) as exc:
+            raise ChannelError('transport_unavailable') from exc
     return call
 
 
@@ -164,6 +171,44 @@ class HostChannel:
             return None
         return self.claim(ready['message'])
 
+    def confirmed_text_quote(self, message):
+        # Only extend quote authority to a physical text message issued by this
+        # consumer on this route. A native display name never supplies identity.
+        quoted = message.get('quote')
+        if (not quoted or quoted.get('senderId') == message['senderId']
+                or quoted.get('senderId') not in (None, self.route['selfSenderId'])
+                or not quoted.get('id') or quoted.get('quote') or quoted.get('issues')
+                or len(quoted['parts']) != 1 or quoted['parts'][0]['type'] != 'text'):
+            return message
+        path = self.inbox.cache_root.with_name('bridge.sqlite3')
+        try:
+            with closing(sqlite3.connect(path.as_uri() + '?mode=ro', uri=True)) as history:
+                history.execute('BEGIN')
+                scope = history.execute("SELECT value FROM meta WHERE key='scope'").fetchone()
+                if not scope or json.loads(scope[0]) != [self.route['profile'], self.route['group']]:
+                    return message
+                rows = history.execute("SELECT key,payload FROM deliveries WHERE message_id=? AND state='confirmed' LIMIT 2",
+                                       (quoted['id'],)).fetchall()
+            if len(rows) != 1:
+                return message
+            key, encoded = rows[0]
+            payload = json.loads(encoded)
+            if not isinstance(payload, dict) or payload.get('kind') != 'text' or not isinstance(payload.get('text'), str):
+                return message
+            text = payload['text']
+            if not text.strip() or text.strip() != quoted['parts'][0]['text'].strip():
+                return message
+            intent = {k: payload[k] for k in ('text', 'reply_to') if k in payload}
+            fingerprint = hashlib.sha256(json.dumps(intent, sort_keys=True).encode()).hexdigest()
+            own = self.db.execute('SELECT 1 FROM host_sends WHERE key=? AND fingerprint=?',
+                                  (key, fingerprint)).fetchone()
+            if own:
+                return {**message, 'confirmedHostTextQuote': True,
+                        'quote': {**quoted, 'senderId': self.route['selfSenderId']}}
+        except (sqlite3.Error, ValueError, TypeError):
+            pass
+        return message
+
     def claim(self, message, status='claimed'):
         mid = message['id']
         waiting = self.db.execute('SELECT retry_at FROM host_participation_wait WHERE message_id=?', (mid,)).fetchone()
@@ -185,7 +230,7 @@ class HostChannel:
         with self.db:
             self.db.execute('INSERT INTO host_dispatch VALUES (?, ?)', (message['id'], status))
         self.claim_send_epochs[message['id']] = self.send_attempts
-        return message
+        return self.confirmed_text_quote(message)
 
     def wait_for_participation(self, mid, reason):
         previous = self.db.execute('SELECT attempts FROM host_participation_wait WHERE message_id=?', (mid,)).fetchone()
@@ -208,17 +253,22 @@ class HostChannel:
         return {'pending': True}
 
     def receive(self):
-        query = urlencode({'after': self.inbox.cursor, 'limit': 200})
+        query = urlencode({**self.inbox.read_cursors(), 'limit': 200})
         batch = self.api('/v1/events?' + query)
         if (batch.get('account_id'), batch.get('conversation_id')) != (
                 self.route['accountId'], self.route['group']):
             raise ChannelError('transport_route_mismatch')
-        if len(batch['events']) > 200:
+        if len(batch['events']) > 200 or len(batch.get('revisions', [])) > 200:
             raise ChannelError('oversized_transport_batch')
         if any(event.get('conversation_type') != self.route.get('conversationType', 'group')
                for event in batch['events']):
             raise ChannelError('transport_conversation_type_mismatch')
-        return self.inbox.ingest(batch)
+        fetched = self.inbox.ingest(batch)
+        if self.control_turn is not None and self.inbox.first_repaired_seq is not None:
+            active = self.db.execute('SELECT seq FROM inbox WHERE message_id=?',(self.control_turn,)).fetchone()
+            if active is not None:
+                self.control_cursor = max(active['seq'], min(self.control_cursor, self.inbox.first_repaired_seq - 1))
+        return fetched
 
     def poll(self):
         message = self.claim_ready()
@@ -337,15 +387,35 @@ class HostChannel:
         self.media_worker = (key, future)
         return None
 
+    def stop_can_follow(self, active, stop):
+        # History seq records first observation. An older message discovered by a
+        # later overlap poll can therefore have a larger seq. Time acts only as a
+        # veto; the original sequence and same-sender claim are still required.
+        def instants(message):
+            stamp = datetime.fromisoformat(message['receivedAt'])
+            if stamp.tzinfo is None:
+                raise ValueError('missing timestamp offset')
+            if message.get('timeZoneAssumed'):
+                zone = ZoneInfo(self.route.get('historyTimezone','Asia/Shanghai'))
+                return [stamp.replace(tzinfo=zone, fold=fold).astimezone(timezone.utc) for fold in (0, 1)]
+            return [stamp.astimezone(timezone.utc)]
+
+        try:
+            # A local timestamp in the repeated DST hour can have two UTC
+            # instants. Do not pair when one possible ordering predates the task.
+            return min(instants(stop)) >= max(instants(active))
+        except (KeyError, TypeError, ValueError, OverflowError):
+            return False
+
     def poll_cancel(self, active_id):
         """During a turn, keep other work durable and search only for a later text stop."""
         active = self.db.execute("""
-            SELECT i.seq, json_extract(i.model,'$.senderId') AS sender
-            FROM inbox i JOIN host_dispatch d USING(message_id)
+            SELECT i.seq,i.model FROM inbox i JOIN host_dispatch d USING(message_id)
             WHERE i.message_id=? AND d.status IN ('claimed','preparing')""", (active_id,)).fetchone()
         if active is None:
             # Its terminal acknowledgment might have reached stdio before this poll.
             return {'message': None}
+        active_model = json.loads(active['model'])
         if self.control_turn != active_id:
             self.control_turn, self.control_cursor = active_id, active['seq']
         if self.control_cursor >= self.inbox.cursor:
@@ -359,7 +429,7 @@ class HostChannel:
             if row['status'] is not None:
                 continue
             msg = json.loads(row['model'])
-            if (not msg or msg['senderId'] != active['sender'] or msg['fromSelf'] is not False
+            if (not msg or msg['senderId'] != active_model['senderId'] or msg['fromSelf'] is not False
                     or msg['issues'] or msg.get('quote') or len(msg['parts']) != 1
                     or msg['parts'][0]['type'] != 'text'):
                 continue
@@ -369,6 +439,12 @@ class HostChannel:
                 continue
             text = raw.strip()
             if (direct and text == '/stop') or re.fullmatch(r'/agent\s+(?:cancel|/stop)', text):
+                if not self.stop_can_follow(active_model, msg):
+                    # Keep the recovered text in the inbox. This older control
+                    # cannot be reassigned to another task after a restart.
+                    with self.db:
+                        self.db.execute("INSERT INTO host_dispatch VALUES (?, 'ignored')", (msg['id'],))
+                    continue
                 # If interrupted after the stop is claimed, the original needs review;
                 # the safe-to-retry pre-model state no longer applies.
                 with self.db:

@@ -62,6 +62,26 @@ def prepare(root, local, value):
     return payload, sources
 
 
+def publish_original(target, content, *, replace_partial=False):
+    """Publish a complete private file without replacing another writer's result."""
+    with tempfile.NamedTemporaryFile(dir=target.parent, delete=False) as handle:
+        temporary = Path(handle.name)
+        try:
+            if handle.write(content) != len(content):
+                raise OSError('Incomplete attachment staging write')
+            handle.flush()
+            os.fsync(handle.fileno())
+            if replace_partial:
+                os.replace(temporary, target)
+            else:
+                try:
+                    os.link(temporary, target)
+                except FileExistsError:
+                    pass
+        finally:
+            temporary.unlink(missing_ok=True)
+
+
 def stage(root, payload, sources):
     # Read/validate all originals before staging any or reserving a delivery.
     originals = []
@@ -85,14 +105,7 @@ def stage(root, payload, sources):
             raise ValueError('Staged image must not traverse a symlink')
         # Publish atomically without overwriting an existing content-addressed file.
         if not target.exists():
-            with tempfile.NamedTemporaryFile(dir=target.parent, delete=False) as handle:
-                temporary = Path(handle.name)
-                try:
-                    handle.write(content); handle.flush(); os.fsync(handle.fileno())
-                    try: os.link(temporary, target)
-                    except FileExistsError: pass
-                finally:
-                    temporary.unlink()
+            publish_original(target, content)
         if target.is_symlink() or not target.is_file() or target.stat().st_size != len(content):
             raise ValueError('Staged image integrity mismatch; no upload or send attempted')
         if hashlib.sha256(target.read_bytes()).hexdigest() != item['sha256']:

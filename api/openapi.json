@@ -132,6 +132,15 @@
             }
           },
           {
+            "name": "after_revision",
+            "in": "query",
+            "description": "Optional independent cursor for completed history projections. Start at 0 and persist next_revision_cursor with next_cursor. Each revisions item contains revision and the corrected event with its original seq and message_id. Apply it only to a previously ingested record; it is never a new task.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
             "name": "after",
             "in": "query",
             "schema": {
