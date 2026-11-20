@@ -6,6 +6,7 @@ import sqlite3
 from pathlib import Path
 import tempfile
 import unittest
+from contextlib import closing
 from urllib.error import HTTPError
 from urllib.parse import parse_qs, unquote, urlsplit
 from unittest.mock import patch
@@ -70,6 +71,60 @@ class HostChannelTests(unittest.TestCase):
             self.channel.close()
         self.channel = HostChannel(self.root, self.route, None, cursor, self.api)
         self.addCleanup(self.channel.close)
+
+    def test_poll_marks_connection_failure_distinct_from_auth_refusal(self):
+        token = self.root/'local/runtime/http-token'
+        token.parent.mkdir(exist_ok=True, parents=True)
+        token.write_text('synthetic')
+        call = route_api(self.root,self.route,42001)
+        with patch('dingtalk_bridge.host_channel.urlopen', side_effect=ConnectionRefusedError()):
+            with self.assertRaisesRegex(ChannelError,'transport_unavailable'):
+                call('/v1/events?after=0')
+        with patch('dingtalk_bridge.host_channel.urlopen', side_effect=HTTPError('url',403,'forbidden',{},None)):
+            with self.assertRaises(HTTPError) as auth:
+                call('/v1/events?after=0')
+            with auth.exception:
+                self.assertEqual(auth.exception.code,403)
+
+    def test_only_confirmed_same_route_host_text_can_supply_quote_context(self):
+        db_path = self.channel.inbox.cache_root.with_name('bridge.sqlite3')
+        db_path.parent.mkdir(exist_ok=True, parents=True)
+        with closing(sqlite3.connect(db_path)) as transport, transport:
+            transport.executescript("""
+                CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT);
+                CREATE TABLE deliveries (key TEXT, state TEXT, message_id TEXT, payload TEXT);
+            """)
+            transport.execute("INSERT INTO meta VALUES ('scope',?)",
+                              (json.dumps([self.route['profile'], self.route['group']]),))
+            for key, state, kind in [('own','confirmed','text'), ('other','confirmed','text'),
+                                     ('pending','submitted','text'), ('photo','confirmed','image')]:
+                transport.execute('INSERT INTO deliveries VALUES (?,?,?,?)',
+                                  (key,state,'out-'+key,json.dumps({'kind':kind,'text':'建议'})))
+                if key != 'other':
+                    with self.channel.db:
+                        self.channel.db.execute('INSERT INTO host_sends VALUES (?,?)',(key,hashlib.sha256(json.dumps({'text':'建议'}).encode()).hexdigest()))
+        seq = 0
+        def poll_quote(key='own', text='建议', sender='self'):
+            nonlocal seq
+            seq += 1
+            source={'conversationId':'g','messageId':'out-'+key,'text':text,'senderId':sender}
+            self.api.events.append(event(seq,text='展开',quote=source))
+            msg=self.channel.poll_ordered()['message']
+            self.channel.ack(msg['id'],'done')
+            return msg
+
+        for kind in ['group','direct']:
+            self.route['conversationType']=kind
+            for source in ['self', None]:
+                verified=poll_quote(sender=source)
+                self.assertTrue(verified.get('confirmedHostTextQuote'))
+                self.assertEqual(verified['quote']['senderId'],'self')
+            for invalid in [dict(key='other'),dict(key='pending'),dict(key='photo'),
+                            dict(key='missing'),dict(text='不同正文'),dict(sender='third-person')]:
+                self.assertFalse(poll_quote(**invalid).get('confirmedHostTextQuote'))
+        with closing(sqlite3.connect(db_path)) as transport, transport:
+            transport.execute("UPDATE meta SET value='[]'")
+        self.assertFalse(poll_quote().get('confirmedHostTextQuote'))
 
     def test_dispatch_restart_and_self_echo(self):
         self.api.events = [event(1, sender='self'), event(2, sender=''), event(3, text='[Agent] user text'),

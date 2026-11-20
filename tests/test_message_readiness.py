@@ -36,6 +36,23 @@ def mixed_message(seq=1, text=None, quoted=False):
 
 
 class MessageReadinessTests(unittest.TestCase):
+    def test_plain_marker_words_reach_consumer_and_incomplete_media_stays_blocked(self):
+        messages = [event(1, text='/agent 菜单里的[文件]按钮在哪里？'),
+                    event(2, text='群里显示[图片消息]和[语音消息]是什么意思？'),
+                    event(3, text='[文件]'), event(4, text='[图片消息](mediaId='),
+                    event(5, text='[文件] 明细.csv'), event(6, text='图片实例：[图片消息](mediaId=id)'),
+                    event(7, text='[文件]按钮在哪里？'), event(8, text='[文件] 这个按钮在哪里？')]
+        messages[2]['raw']['messageType'] = 'text'
+        messages[5]['raw']['messageType'] = 'text'
+        with tempfile.TemporaryDirectory() as folder:
+            inbox = Inbox(Path(folder), CFG)
+            self.addCleanup(inbox.close)
+            inbox.ingest({'events': messages, 'next_cursor': 8})
+            ready = inbox.ready()
+            self.assertEqual([r['seq'] for r in ready], [1, 2, 3, 6, 7, 8])
+            for row in ready:
+                self.assertEqual(row['message']['parts'], [{'type': 'text', 'text': messages[row['seq']-1]['raw']['text']}])
+
     def test_each_unparsed_image_marker_blocks_mixed_projection_and_preserves_raw(self):
         malformed = [
             '[图片消息](mediaId=ok) [图片消息](mediaId=',

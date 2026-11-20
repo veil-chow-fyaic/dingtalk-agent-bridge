@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 # A marker still needs its resourceRef and verified original before readiness.
 MEDIA = re.compile(r'\[(图片|语音)消息\]\(mediaId=([^\s)]+)\)')
 FILE = re.compile(r'^\[文件\]\s*(.*?)\s+fileId:\s*(\S+)\s*$')
+MARKER = re.compile(r'\[(?:文件|图片消息|语音消息)\]')
 
 
 def ref_key(ref):
@@ -56,8 +57,14 @@ def project(raw, group, depth=0):
         part={'type':media_type,'resource':{'type':kind,'resourceId':rid}}
         if name:part['name']=name
         parts.append(part)
+    # The fixed history endpoint can omit messageType on ordinary text. In
+    # that case prose mentioning a UI label is not evidence of an attachment.
+    declared_type = str(raw.get('messageType') or raw.get('msgType') or '').lower()
+    literal_text = declared_type == 'text' and not (set(refs) - quoted_keys)
     file_match=FILE.fullmatch(text)
-    if file_match:
+    if literal_text:
+        if text:parts.append({'type':'text','text':text})
+    elif file_match:
         media('fileId',file_match[2],'file',file_match[1])
     else:
         offset=0
@@ -67,7 +74,11 @@ def project(raw, group, depth=0):
         if offset<len(text):parts.append({'type':'text','text':text[offset:]})
         # Every marker must be parsed, even beside another complete media part.
         remaining=MEDIA.sub('',text)
-        if any(marker in remaining for marker in ('[图片消息]','[语音消息]')) or ('[文件]' in text and not file_match):
+        if MARKER.search(remaining) and (
+                set(refs) - quoted_keys or declared_type not in ('', 'text')
+                or MARKER.fullmatch(remaining.strip()) or re.fullmatch(r'\[文件\]\s+[^\r\n]+\.[a-zA-Z0-9]{1,16}', remaining.strip())
+                or re.search(r'\[(?:图片消息|语音消息)\]\s*\(', remaining)
+                or re.search(r'\[文件\].*?\bfileId\s*:', remaining)):
             issues.append('unparsed_media_marker')
     # The native client can expose a second mediaId for the same image. Do not
     # discard it or guess its placement. Hydration must prove byte equality with
@@ -268,3 +279,24 @@ def recent_original(model, previous, kind):
     if len(matches) != 1:
         raise ValueError('recent_original_ambiguous')
     return matches[0]
+
+
+def truncated_history(raw):
+    """Only provider-declared partial messages (including a quoted projection) may be completed."""
+    for _ in range(3):
+        if not isinstance(raw, dict):
+            return False
+        if raw.get('partial') or raw.get('truncated'):
+            return True
+        raw = raw.get('quotedMessage')
+    return False
+
+
+def completes_history(before, after):
+    previous, current = before.get('raw', {}), after.get('raw', {})
+    return (truncated_history(previous) and not truncated_history(current)
+            and all(before.get(k) == after.get(k) for k in
+                    ('message_id', 'account_id', 'conversation_id', 'conversation_type', 'from_self'))
+            and bool(current.get('senderId'))
+            and all(previous.get(k) == current.get(k) for k in
+                    ('senderId', 'messageId', 'conversationId', 'createTime')))

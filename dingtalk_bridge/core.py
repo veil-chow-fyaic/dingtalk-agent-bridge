@@ -13,6 +13,8 @@ import time
 import uuid
 from datetime import datetime, timedelta, timezone
 from .text_limits import PERSONAL_TEXT_UNITS, utf16_units
+from .message_model import completes_history, normalize
+from .composition import publish_original
 from .composition import ArtifactIntegrityError, prepare as prepare_composition, stage as stage_composition, markdown as composition_markdown
 from .rejection import read_length_rejection
 from .dws_access import (BridgeError, DWSCredentialStoreUnavailable, DWSAccessSuspended,
@@ -173,6 +175,8 @@ class Bridge:
           CREATE TABLE IF NOT EXISTS events (
             seq INTEGER PRIMARY KEY AUTOINCREMENT, message_id TEXT UNIQUE NOT NULL,
             body TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS history_revisions (
+            revision INTEGER PRIMARY KEY, event_seq INTEGER UNIQUE NOT NULL, previous_body TEXT NOT NULL);
           CREATE TABLE IF NOT EXISTS deliveries (
             key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, payload TEXT NOT NULL,
             state TEXT NOT NULL, task_id TEXT, message_id TEXT, error TEXT);
@@ -282,6 +286,7 @@ class Bridge:
                     else:
                         continuation = {**window, 'token': token, 'seen': [*window['seen'], fingerprint]}
             inserted = 0
+            revised = 0
             with self.lock, self.db:
                 for msg in data.get('messages', []):
                     mid = msg.get('messageId')
@@ -296,9 +301,11 @@ class Bridge:
                              'from_self': msg.get('senderId') == own if own and msg.get('senderId') else None,
                              'attachments': msg.get('resourceRefs', []), 'raw': msg}
                     # Never collapse equal bodies: two equal messages can be intentional.
-                    cur = self.db.execute('INSERT OR IGNORE INTO events(message_id,body) VALUES (?,?)',
-                                          (mid, json.dumps(event, ensure_ascii=False)))
+                    body = json.dumps(event, ensure_ascii=False)
+                    cur = self.db.execute('INSERT OR IGNORE INTO events(message_id,body) VALUES (?,?)', (mid, body))
                     inserted += cur.rowcount
+                    if not cur.rowcount and not failed:
+                        revised += self._complete_history(mid, event, body)
                 if complete:
                     self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)', ('watermark', window['end']))
                     if deep:
@@ -310,14 +317,37 @@ class Bridge:
                     ('last_sync', json.dumps({'at': now.isoformat(), 'complete': complete, 'inserted': inserted, 'deep':deep,
                                              'continuing': continuation is not None, 'error': continuation_error})))
                 self.db.commit()
-                if inserted:self.event_condition.notify_all()
+                if inserted or revised:self.event_condition.notify_all()
             if continuation_error:
                 raise BridgeError(continuation_error)
-            return {'inserted': inserted, 'complete': complete, 'count': data.get('count'),
+            return {'inserted': inserted, 'revised': revised, 'complete': complete, 'count': data.get('count'),
                     'source': 'history_poll', 'deep':deep,
                     'other_member_events_observed':self.health()['other_member_events']}
 
+    def _complete_history(self, mid, event, body):
+        # A complete event is immutable. Check the old flags before decoding JSON
+        # on the common path of overlapping history pages.
+        old = self.db.execute("""SELECT seq,body FROM events WHERE message_id=?
+            AND (instr(body, '"truncated"') OR instr(body, '"partial"'))""", (mid,)).fetchone()
+        if not old or not completes_history(json.loads(old['body']), event):
+            return 0
+        try:
+            model = normalize(event, self.config)
+        except (TypeError, ValueError, KeyError):
+            return 0
+        if model['issues']:
+            return 0
+        self.db.execute('INSERT INTO history_revisions(event_seq,previous_body) VALUES (?,?)',
+                        (old['seq'], old['body']))
+        self.db.execute('UPDATE events SET body=? WHERE seq=?', (body, old['seq']))
+        return 1
+
     def events(self, after=0, limit=100, wait_seconds=0):
+        return self.event_batch(after, limit, wait_seconds)['events']
+
+    def event_batch(self, after=0, limit=100, wait_seconds=0, after_revision=None):
+        if after_revision is not None and (type(after_revision) is not int or after_revision < 0):
+            raise ValueError('Invalid revision cursor')
         if type(after) is not int or after < 0 or type(limit) is not int or not 1 <= limit <= 200:
             raise ValueError('Invalid cursor/limit')
         if type(wait_seconds) not in (int,float) or not 0<=wait_seconds<=30:
@@ -332,12 +362,26 @@ class Bridge:
                 while True:
                     rows = self.db.execute('SELECT seq,body FROM events WHERE seq>? ORDER BY seq LIMIT ?',
                                            (after, limit)).fetchall()
+                    next_cursor = rows[-1]['seq'] if rows else after
+                    revisions = []
+                    if after_revision is not None:
+                        for r in self.db.execute("""SELECT h.revision,e.seq,e.body FROM history_revisions h
+                                JOIN events e ON h.event_seq=e.seq WHERE h.revision>?
+                                ORDER BY h.revision LIMIT ?""", (after_revision, limit)):
+                            # Never pass a revision whose original is beyond this page.
+                            if r['seq'] > next_cursor:
+                                break
+                            revisions.append({'revision':r['revision'], 'event':{'seq':r['seq'], **json.loads(r['body'])}})
                     remaining=deadline-time.monotonic()
-                    if rows or remaining<=0 or self.stopping:break
+                    if rows or revisions or remaining<=0 or self.stopping:break
                     self.event_condition.wait(remaining)
         finally:
             if acquired:self.event_waiters.release()
-        return [{'seq': r['seq'], **json.loads(r['body'])} for r in rows]
+        result = {'events':[{'seq':r['seq'], **json.loads(r['body'])} for r in rows], 'next_cursor':next_cursor}
+        if after_revision is not None:
+            result.update(revisions=revisions,
+                          next_revision_cursor=revisions[-1]['revision'] if revisions else after_revision)
+        return result
 
     def delivery(self, key):
         with self.lock:
@@ -440,12 +484,26 @@ class Bridge:
             if len(content) > 20 * 1024 * 1024:
                 raise ValueError('Experimental service file limit is 20 MiB')
             stage = self.local / 'staged' / digest / stage_name
-            stage.parent.mkdir(parents=True, exist_ok=True)
+            stage.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+            if stage.parent.resolve() != stage.parent or stage.is_symlink():
+                raise ValueError('Staged file must not traverse a symlink')
             if not stage.exists():
-                stage.write_bytes(content)
-                stage.chmod(0o600)
-            if stage.is_symlink() or hashlib.sha256(stage.read_bytes()).hexdigest() != digest:
+                publish_original(stage, content)
+            if not stage.is_file():
                 raise ValueError('Staged file integrity mismatch; no upload or send attempted')
+            if stage.read_bytes() != content:
+                # Older versions wrote directly to the final path. Recover only
+                # an unpublished, exact short prefix of the verified original.
+                with self.lock:
+                    existing = stage.read_bytes()
+                    if existing != content:
+                        used = self.db.execute(
+                            "SELECT 1 FROM deliveries, json_tree(deliveries.payload) AS part "
+                            "WHERE part.key='staged' AND part.value=? LIMIT 1",
+                            (str(stage.relative_to(self.root)),)).fetchone()
+                        if used or len(existing) >= len(content) or not content.startswith(existing):
+                            raise ValueError('Staged file integrity mismatch; no upload or send attempted')
+                        publish_original(stage, content, replace_partial=True)
             payload = file_payload(digest)
         serialized = json.dumps(payload, sort_keys=True, ensure_ascii=False)
         fingerprint = hashlib.sha256(serialized.encode()).hexdigest()
@@ -660,9 +718,17 @@ class Bridge:
             except (ValueError, OSError) as exc:
                 raise BridgeError('Cached attachment manifest is invalid or incomplete; repair local cache explicitly') from exc
             actual = self._verify_download_ledger(cached, self.root / folder, cached=True)
-            if expected-actual:
+            if not expected-actual:
+                return cached
+            # The original projection could have legitimately cached only its
+            # then-visible attachments. Fetch the completed set in a new attempt.
+            with self.lock:
+                revision = self.db.execute('''SELECT h.previous_body FROM history_revisions h
+                    JOIN events e ON h.event_seq=e.seq WHERE e.message_id=?''', (message_id,)).fetchone()
+            old_refs = json.loads(revision[0]).get('attachments', []) if revision else []
+            previous = {(r.get('resourceIdType') or r.get('type'), r.get('resourceId')) for r in old_refs}
+            if not revision or previous-actual or not (expected-previous):
                 raise BridgeError('Cached attachment manifest is incomplete; repair local cache explicitly')
-            return cached
         attempt_folder = folder + '/attempt-' + uuid.uuid4().hex
         data = self.dws.call(['chat', '+messages-mget', '--msg-ids', message_id,
                              '--download-resources', '--output-dir', attempt_folder])

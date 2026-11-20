@@ -3,6 +3,7 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
 from types import SimpleNamespace
 from dingtalk_bridge.core import Bridge, BridgeError, DWS
@@ -267,6 +268,39 @@ class Tests(unittest.TestCase):
         stage.parent.mkdir(parents=True, exist_ok=True); stage.write_bytes(b'corrupt')
         with self.assertRaisesRegex(ValueError, 'integrity'): self.b.send('corrupt', image=f)
         self.assertEqual((self.fake.uploaded, self.fake.sent), (0, 0))
+
+    def test_interrupted_file_staging_can_retry_without_reserving_or_sending(self):
+        source = self.root / 'fixtures' / 'table.csv'
+        source.parent.mkdir(exist_ok=True)
+        data = b'item,units\nA,12\n'
+        source.write_bytes(data)
+        digest = hashlib.sha256(data).hexdigest()
+        target = self.b.local / 'staged' / digest / source.name
+        with patch('os.fsync', side_effect=OSError('no space')), self.assertRaises(OSError):
+            self.b.send('table', file='fixtures/table.csv')
+        self.assertFalse(target.exists())
+        self.assertIsNone(self.b.delivery('table'))
+        self.assertEqual(self.fake.sent, 0)
+        self.assertEqual(self.b.send('table', file='fixtures/table.csv')['state'], 'confirmed')
+        self.assertEqual(target.read_bytes(), data)
+
+    def test_concurrent_sends_recover_unreserved_legacy_partial_file(self):
+        source = self.root / 'fixtures' / 'table.csv'
+        source.parent.mkdir(exist_ok=True)
+        data = b'item,units\nA,12\n'
+        source.write_bytes(data)
+        target = self.b.local / 'staged' / hashlib.sha256(data).hexdigest() / source.name
+        target.parent.mkdir(parents=True)
+        target.write_bytes(data[:4])
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            receipts = list(pool.map(lambda key: self.b.send(key, file='fixtures/table.csv'), ('one', 'two')))
+        self.assertTrue(all(r['state'] == 'confirmed' for r in receipts))
+        self.assertEqual(target.read_bytes(), data)
+        self.assertEqual(self.fake.sent, 2)
+        target.write_bytes(data[:4])
+        with self.assertRaisesRegex(ValueError, 'integrity'):
+            self.b.send('new', file='fixtures/table.csv')
+        self.assertEqual(target.read_bytes(), data[:4])
 
     def test_dws_upload_requires_v2_chat_image_without_compression(self):
         cli = DWS(self.root, CFG)

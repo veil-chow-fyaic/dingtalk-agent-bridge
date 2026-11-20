@@ -16,6 +16,7 @@ def main():
     sub.add_parser('health');sub.add_parser('conversations')
     discovery=sub.add_parser('discovery');discovery.add_argument('--cursor',type=int,default=0);discovery.add_argument('--limit',type=int,default=50)
     events=sub.add_parser('events');events.add_argument('--after',type=int,default=0);events.add_argument('--limit',type=int,default=100)
+    events.add_argument('--after-revision',type=int,help='Include completed history projections after this revision cursor')
     events.add_argument('--wait-seconds',type=float,default=0)
     send=sub.add_parser('send');send.add_argument('--key',required=True)
     send.add_argument('--reply-to',help='Quote an observed message in this route; text only')
@@ -49,7 +50,9 @@ def main():
     elif a.action=='sync':path='/v1/sync';data={**selector,'deep':a.deep}
     else:
         path='/v1/'+('deliveries/'+quote(a.key,safe='') if a.action=='status' else a.action)
-        if a.action=='events':selector.update(after=a.after,limit=a.limit,wait_seconds=a.wait_seconds)
+        if a.action=='events':
+            selector.update(after=a.after,limit=a.limit,wait_seconds=a.wait_seconds)
+            if a.after_revision is not None:selector['after_revision']=a.after_revision
         if a.action=='discovery':selector.update(cursor=a.cursor,limit=a.limit)
         if selector:path+='?'+urlencode(selector)
     token=Path(a.token_file).read_text().strip()

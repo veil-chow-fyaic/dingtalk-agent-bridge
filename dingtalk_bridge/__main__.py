@@ -118,9 +118,11 @@ def main():
                 if not write and u.path == '/v1/events':
                     q = parse_qs(u.query)
                     after = int(q.get('after', ['0'])[0])
-                    events = bridge.events(after, int(q.get('limit', ['100'])[0]),float(q.get('wait_seconds',['0'])[0]))
-                    return self.respond(200, {'account_id':bridge.config.get('accountId','default'),'conversation_id':bridge.config['group'],
-                        'events': events, 'next_cursor': events[-1]['seq'] if events else after})
+                    revision = int(q['after_revision'][0]) if 'after_revision' in q else None
+                    batch = bridge.event_batch(after, int(q.get('limit', ['100'])[0]),
+                                               float(q.get('wait_seconds',['0'])[0]), revision)
+                    return self.respond(200, {'account_id':bridge.config.get('accountId','default'),
+                        'conversation_id':bridge.config['group'], **batch})
                 if not write and u.path.startswith('/v1/deliveries/'):
                     value = bridge.delivery(unquote(u.path[len('/v1/deliveries/'):]))
                     return self.respond(200 if value else 404, value or {'error': 'not_found'})

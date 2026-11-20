@@ -145,6 +145,34 @@ class GroupFileLinkTests(unittest.TestCase):
         self.assertFalse(self.g.execute_one());self.assertEqual(self.runtime.calls,2)
         self.restart();self.cycle();self.assertFalse(self.g.execute_one());self.assertEqual(self.calls,['m1'])
 
+    def test_cancel_cannot_select_a_file_task_later_in_the_same_batch(self):
+        self.events.events = [self.file(1), event(2, text='/agent cancel', sender='other'),
+                              self.task(3, ['订单.csv'])]
+        self.cycle()
+        self.assertEqual(self.state(2), 'completed')
+        self.assertEqual(self.state(3), 'queued')
+        self.assertTrue(self.g.execute_one())
+        self.assertEqual(self.runtime.calls, 1)
+
+    def test_worker_claims_earlier_text_before_a_ready_file_from_the_same_batch(self):
+        self.events.events = [self.file(1), self.task(2, ['订单.csv'])]
+        self.cycle()
+        self.assertTrue(self.g.execute_one())
+        self.events.events.extend([event(3, text='/agent first', sender='other'),
+                                   self.task(4, ['订单.csv'])])
+        publish = self.g.ready_file_requests
+        def publish_then_claim():
+            publish()
+            worker = threading.Thread(target=self.g.execute_one)
+            worker.start()
+            worker.join(5)
+            self.assertFalse(worker.is_alive())
+        with patch.object(self.g, 'ready_file_requests', publish_then_claim):
+            self.g.intake()
+        self.assertEqual((self.state(3), self.state(4)), ('completed', 'queued'))
+        self.assertTrue(self.g.execute_one())
+        self.assertEqual(self.runtime.calls, 3)
+
     def test_unauthorized_request_and_cross_scope_batch_never_download(self):
         self.events.events=[self.file(1),self.task(2,['订单.csv'],sender='stranger')];self.cycle()
         self.assertEqual(self.g.summary()['jobs'],{});self.assertEqual(self.calls,[])
