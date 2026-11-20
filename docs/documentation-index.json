@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "baselineCommit": "3a0e3ade7bccf60c49d2f088443d1855871e6fa1",
   "state": {
-    "documentationEvidence": "E167",
-    "latestUiEvidence": "E167",
+    "documentationEvidence": "E168",
+    "latestUiEvidence": "E168",
     "deployedProduct": "d444ccf",
     "deploymentEvidence": "E156",
-    "candidateProduct": "5d1c09e",
+    "candidateProduct": "907e8e4",
     "uiStateCounts": {
       "passed": 54,
       "blocked": 6,
@@ -16,7 +16,7 @@
     "mustGaps": [
       "R06"
     ],
-    "openclawCandidateProduct": "5d1c09e",
+    "openclawCandidateProduct": "907e8e4",
     "automationStatus": "DELETED",
     "handoff": "plans/completion/HANDOFF.md",
     "automationPurpose": "none_user_requested_direct_ownership",
@@ -50,7 +50,11 @@
     "hostBusinessTools": "OpenClaw",
     "residentBusinessToolsRegisteredByChannel": 0,
     "stageDeliveryEvidence": "E167",
-    "fullProductAcceptance": false
+    "fullProductAcceptance": false,
+    "reviewFixEvidence": "E168",
+    "residentAvailabilityAtE168": "original endpoint refused connection and both original service labels unloaded",
+    "publicCandidatePluginVersion": "0.2.6",
+    "fieldExecutorAtE168": "separate durable consumer with local Qwen3-14B"
   },
   "documents": {
     ".github/PULL_REQUEST_TEMPLATE.md": {

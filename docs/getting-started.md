@@ -80,7 +80,7 @@ cp -n config.routes.example.json local/service-config.json
 先由已授权的另一端发送一条测试文字，使用事件接口读取。下面的 `ACCOUNT`、`CONVERSATION`、`BUSINESS-KEY` 是参数占位符，执行前替换为自己的路由与新业务键；全局选择参数必须写在子命令前。
 
 ```text
-.venv/bin/dab --account-id ACCOUNT --conversation-id CONVERSATION events --after 0 --limit 100
+.venv/bin/dab --account-id ACCOUNT --conversation-id CONVERSATION events --after 0 --after-revision 0 --limit 100
 .venv/bin/dab --account-id ACCOUNT --conversation-id CONVERSATION send --key BUSINESS-KEY --text "首次通道验证"
 .venv/bin/dab --account-id ACCOUNT --conversation-id CONVERSATION status --key BUSINESS-KEY
 ```
@@ -111,3 +111,5 @@ consumer 保存事件游标与规范化 inbox，可按需下载原件，不调�
 - 接自己的程序：[HTTP/OpenAPI](../api/openapi.json)与[consumer边界](22-generic-tool-and-consumer.md#持久消费边界)。
 - 让模型执行任务：先看[实际运行器支持](architecture/agent-integration-map.md)，再准备[独立执行器配置](../config.agent.example.json)。明确 `allowedSenderIds` 后按运行手册启用 gateway；不要把任务执行混入基础通道验证。
 - 维护与升级：[运行手册](15-service-runbook.md)、[已知风险](114-dws-risks-and-resolution.md)、[当前验收范围](102-user-requirements-and-roadmap.md)。
+
+自建 HTTP 消费者可在 `/v1/events` 同时传入 `after` 与 `after_revision`。事务内保存普通事件、`revisions` 和返回的两个游标 `next_cursor`、`next_revision_cursor`。修订项含 `revision` 和保留原 `seq` 的 `event`。旧 transport 只返回消息游标时仍可正常读取。内置持久 consumer 已实现双游标。

@@ -1,0 +1,115 @@
+{
+  "evidence": "E168",
+  "date": "2026-11-20",
+  "publicCode": "907e8e45ab8a7fa2444842ff520e7349fd1410f8",
+  "reviewBase": "30820bcb6c90fc488264ba980b787fed914f78b4",
+  "pluginPackageVersion": "0.2.6",
+  "reviewRegressions": [
+    {
+      "priority": "P1",
+      "case": "Independent group and direct route lifetimes; transient poll retries are route-local",
+      "tests": [
+        "integrations/openclaw-channel/test/route-isolation.test.mjs"
+      ]
+    },
+    {
+      "priority": "P1",
+      "case": "First sends and reconciliation of existing keys both advance during continuous arrivals and after restart",
+      "tests": [
+        "tests/test_agent_gateway.py"
+      ]
+    },
+    {
+      "priority": "P1",
+      "case": "Cancellation respects original message order with file jobs in one batch or split batches",
+      "tests": [
+        "tests/test_group_file_link.py",
+        "tests/test_agent_gateway.py"
+      ]
+    },
+    {
+      "priority": "P2",
+      "case": "Ordinary text mentioning media markers stays readable; incomplete attachment projections remain blocked",
+      "tests": [
+        "tests/test_message_readiness.py"
+      ]
+    },
+    {
+      "priority": "P2",
+      "case": "Confirmed, route-scoped host text can be quoted across senders in the group and direct routes",
+      "tests": [
+        "tests/test_host_channel.py",
+        "integrations/openclaw-channel/test/channel.test.mjs"
+      ]
+    },
+    {
+      "priority": "P2",
+      "case": "Group participation decision sees the end of normal long messages and both ends of oversized messages",
+      "tests": [
+        "integrations/openclaw-channel/test/channel.test.mjs"
+      ]
+    },
+    {
+      "priority": "P2",
+      "case": "Matching history completion reaches durable consumers after the original cursor; retains session and stop ordering",
+      "tests": [
+        "tests/test_history_revision.py",
+        "tests/test_host_stop_chronology.py"
+      ]
+    },
+    {
+      "priority": "P2",
+      "case": "Ordinary file staging publishes verified bytes atomically and recovers an unreferenced short prefix",
+      "tests": [
+        "tests/test_core.py"
+      ]
+    }
+  ],
+  "offline": {
+    "pythonPassed": 625,
+    "nodePassed": 54,
+    "installedSdkContracts": {
+      "2026.7.1-2": 4,
+      "2026.11.3": 4
+    },
+    "installedPluginSource": "3630d17d718e09cbeb5749860d23bce3f8821eba"
+  },
+  "field": {
+    "routes": {
+      "group": 1
+    },
+    "input": "native DingTalk desktop, external sender, one CSV plus one follow-up with a literal media label",
+    "consumer": "separate named durable consumer using the public candidate",
+    "physicalTransport": "E156 d444ccf",
+    "model": "local Qwen3-14B Q4_K_M via llama.cpp",
+    "modelAttempts": 2,
+    "initialAttempt": {
+      "detailRowsCorrect": true,
+      "reportedNet": 3,
+      "delivered": false
+    },
+    "final": {
+      "inputRows": 4,
+      "nonzeroDifferences": [
+        2,
+        -4,
+        3
+      ],
+      "net": 1,
+      "fileBytes": 32,
+      "originalNamePreserved": true,
+      "modelBodyExactlyMatchedClient": true,
+      "modelFileExactlyMatchedClientDownload": true,
+      "confirmedTextDeliveries": 1,
+      "confirmedFileDeliveries": 1
+    },
+    "receiver": "DingTalk desktop save, byte and row comparison; official message history and official attachment download also matched"
+  },
+  "deployment": {
+    "lastVerifiedResidentPlugin": "E166 0.2.5",
+    "sharedHostAtCheck": "previously recorded endpoint refused connection and both original launchd services were unloaded",
+    "residentPluginUpdated": false,
+    "sharedServiceOrWechatChanges": false,
+    "deferred": "R06 native voice outbound"
+  }
+}

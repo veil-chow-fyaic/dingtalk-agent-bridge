@@ -2,6 +2,10 @@
 
 This channel delivers messages and verified file originals between DingTalk and an existing OpenClaw agent. The bridge handles ordinary-account transport through DWS, per-chat routing and delivery receipts. OpenClaw owns the agent, its workspace, tool permissions and tool calls. A request to check a code review, search a company handbook or prepare a report follows the same message and file path.
 
+## Route failures and quoted replies
+
+Each group or direct route has its own polling lifecycle. A temporary read failure backs off on that route. A terminal sidecar error is logged against the route; its durable delivery ledger remains available for recovery. Account shutdown stops all its routes. A quoted reply from the channel is available as context when its original confirmed message, route, text and local send record agree.
+
 ## Install
 
 See the [existing-host pilot](../../docs/resident-openclaw-pilot.md) when the profile already serves another channel. Use the intended profile explicitly for installation and enablement. Review the current SDK, active bindings, and execution owner first.
@@ -19,7 +23,7 @@ For an unattended install on OpenClaw 2026.11.3, review the local source and its
 
 ## Verify the loaded channel
 
-For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.5"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
+For a pinned deployment, set `plugins.entries.dingtalk-bridge.config.expectedRelease` to the package version you installed, such as `"0.2.6"`. On account startup the gateway logs the loaded release, the cancellation protocol and whether it checked the pin. Verify the route owner and a receipt separately. An incompatible release stops before starting a sidecar. Configure the pin only after installing the matching manifest.
 
 This plugin ships from reviewed local source. OpenClaw 2026.7.1-2 can look up a registry package on cold startup when a local plugin advertises a downloadable channel without an install record. Version 0.2.2 declares its runtime channels in `openclaw.plugin.json` and omits the download catalog entry.
 
