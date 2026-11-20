@@ -2,6 +2,7 @@
 from contextlib import closing
 from pathlib import Path
 import tempfile
+import threading
 import unittest
 from urllib.parse import parse_qs, urlsplit
 
@@ -156,6 +157,131 @@ class HistoryRevisionTests(unittest.TestCase):
             self.assertIsNone(host.poll_cancel('running')['message'])
             self.sync(message('stop','/agent cancel'))
             self.assertEqual(host.poll_cancel('running')['message']['id'], 'stop')
+
+    def test_gateway_keeps_prior_generation_repairs_out_of_the_current_session(self):
+        runtime = FakeRuntime()
+        settings = {**SETTINGS, 'chatPresentation':'product'}
+        self.sync(message('seed','/agent previous topic'),
+                  message('old-work','/agent partial',truncated=True),
+                  message('old-unrecognized','/ag',truncated=True),
+                  message('old-new','/agent n',truncated=True),
+                  message('old-cancel','/agent ca',truncated=True),
+                  message('old-file','/agent --files',truncated=True),
+                  message('reset','/agent 新会话'),
+                  message('current','/agent current topic'))
+        with closing(Gateway(self.root, CFG, None, settings, self.api, runtime)) as gateway:
+            gateway.intake()
+            while gateway.execute_one(): pass
+            self.assertEqual(runtime.calls, 2)
+            self.assertIsNone(gateway.db.execute('SELECT id FROM jobs WHERE seq=3').fetchone())
+
+        self.sync(message('old-work','/agent previous topic corrected'),
+                  message('old-unrecognized','/agent now recognizable'),
+                  message('old-new','/agent new'),
+                  message('old-cancel','/agent cancel'),
+                  message('old-file','/agent --files ["stock.csv"] inspect'),
+                  message('current-next','/agent follow up'))
+        with closing(Gateway(self.root, CFG, None, settings, self.api, runtime)) as gateway:
+            gateway.intake()
+            archived = gateway.db.execute('SELECT seq,state,error,runtime_context FROM jobs WHERE seq BETWEEN 2 AND 6 ORDER BY seq')
+            self.assertEqual([tuple(row) for row in archived],
+                             [(seq,'blocked','input_precedes_session_reset',None) for seq in range(2,7)])
+            self.assertTrue(gateway.execute_one())
+            gateway.intake()
+            self.assertFalse(gateway.execute_one())
+            self.assertEqual(gateway.db.execute("SELECT value FROM meta WHERE key='generation'").fetchone()[0], '1')
+            self.assertEqual(gateway.db.execute("SELECT count(*) FROM outbox WHERE key LIKE '%-session-boundary'").fetchone()[0], 5)
+            self.assertEqual(runtime.calls, 3)
+
+    def test_gateway_admits_a_newly_recognizable_command_within_the_same_generation(self):
+        runtime = FakeRuntime()
+        self.sync(message('reset','/agent new'),
+                  message('initially-unrecognized','/ag',truncated=True))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            self.assertFalse(gateway.execute_one())
+        self.sync(message('initially-unrecognized','/agent newly recovered'))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            gateway.intake()
+            self.assertFalse(gateway.execute_one())
+            self.assertEqual(runtime.calls, 1)
+
+    def test_late_reset_keeps_the_session_of_a_later_executed_business_turn(self):
+        runtime = FakeRuntime()
+        self.sync(message('seed','/agent original topic'),
+                  message('reset','/agent ne',truncated=True),
+                  message('later','/agent new question'))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            self.assertTrue(gateway.execute_one())
+        self.sync(message('reset','/agent new'), message('follow','/agent follow up'))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertEqual(tuple(gateway.db.execute('SELECT state,error FROM jobs WHERE seq=2').fetchone()),
+                             ('blocked','reset_overtaken_by_execution'))
+            self.assertTrue(gateway.execute_one())
+            self.assertFalse(gateway.execute_one())
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertFalse(gateway.execute_one())
+            self.assertEqual(gateway.db.execute("SELECT value FROM meta WHERE key='generation'").fetchone()[0], '0')
+            reminders = gateway.db.execute("SELECT payload FROM outbox WHERE key LIKE '%-session-boundary'").fetchall()
+            self.assertEqual(len(reminders), 1)
+            self.assertIn('/agent new', reminders[0][0])
+            self.assertEqual(runtime.sessions, [None,'native-session','native-session'])
+
+    def test_repaired_reset_precedes_an_unclaimed_job_despite_a_later_status_query(self):
+        runtime = FakeRuntime()
+        self.sync(message('seed','/agent previous topic'))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            self.sync(message('reset','/ag',truncated=True),
+                      message('status','/agent status'), message('later','/agent waiting'))
+            gateway.intake()
+            self.sync(message('reset','/agent 新会话'))
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            self.assertTrue(gateway.execute_one())
+            self.assertFalse(gateway.execute_one())
+            self.assertEqual(gateway.db.execute("SELECT value FROM meta WHERE key='generation'").fetchone()[0], '1')
+            self.assertEqual(runtime.sessions, [None,None])
+
+    def test_reset_repaired_during_later_runtime_call_cannot_cut_off_its_followup(self):
+        started, release = threading.Event(), threading.Event()
+        runtime = FakeRuntime()
+        original_run = runtime.run
+        def hold_first(*args):
+            started.set()
+            if not release.wait(5):
+                raise AssertionError('synthetic model was not released')
+            return original_run(*args)
+        runtime.run = hold_first
+        self.sync(message('reset','/agent n',truncated=True),
+                  message('later','/agent work'))
+        with closing(Gateway(self.root, CFG, None, SETTINGS, self.api, runtime)) as gateway:
+            gateway.intake()
+            worker = threading.Thread(target=gateway.execute_one)
+            worker.start()
+            try:
+                self.assertTrue(started.wait(2))
+                self.sync(message('reset','/agent new'))
+                gateway.intake()
+                self.assertEqual(gateway.db.execute('SELECT error FROM jobs WHERE seq=1').fetchone()[0],
+                                 'reset_overtaken_by_execution')
+            finally:
+                release.set()
+                worker.join(5)
+            self.assertFalse(worker.is_alive())
+            self.sync(message('follow','/agent more'))
+            gateway.intake()
+            self.assertTrue(gateway.execute_one())
+            self.assertFalse(gateway.execute_one())
+            self.assertEqual(runtime.sessions, [None,'native-session'])
 
     def test_cached_partial_resource_set_is_refetched_after_a_verified_correction(self):
         ref = {'type':'fileId','resourceId':'pdf'}

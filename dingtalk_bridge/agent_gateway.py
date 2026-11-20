@@ -310,10 +310,32 @@ class Gateway:
 
     def admit(self, job_id, seq, command, model, state, error=None):
         # Both callers hold lock/transaction from the admission check through the write.
+        # A provider correction can reveal a command after /new has already run,
+        # including one whose incomplete projection did not create a job at all.
+        archived = self.db.execute("""SELECT 1 FROM jobs WHERE seq>? AND state='completed'
+            AND command IN ('new','新会话') LIMIT 1""", (seq,)).fetchone()
+        notice = None
+        if archived:
+            state, error = 'blocked', 'input_precedes_session_reset'
+            notice = '这条消息属于已归档的会话，未执行。如仍需处理，请在当前会话重新交办。'
+        elif command in ('new', '新会话') and not model['issues']:
+            # A later business turn may already be using this session. A recovered
+            # reset can precede queued work, but cannot roll back an actual claim.
+            overtaken = self.db.execute("""SELECT 1 FROM jobs WHERE seq>?
+                AND command NOT IN ('status','状态','cancel','取消','new','新会话')
+                AND (state IN ('running','completed','interrupted','failed')
+                     OR (state='cancelled' AND error IS NOT 'cancelled_before_execution')) LIMIT 1""", (seq,)).fetchone()
+            if overtaken:
+                state, error = 'blocked', 'reset_overtaken_by_execution'
+                notice = ('这条新会话指令到达时，后续任务已经开始。当前会话已保留。'
+                          '如需重开，请重新发送 '+self.settings.get('prefix','/agent')+' new。')
         self.db.execute("""INSERT INTO jobs(id,seq,command,model,state,error) VALUES(?,?,?,?,?,?)
             ON CONFLICT(id) DO UPDATE SET command=excluded.command,model=excluded.model,
             state=excluded.state,error=excluded.error""",
             (job_id, seq, command, json.dumps(model,ensure_ascii=False), state, error))
+        if notice:
+            self.notice(job_id, 'session-boundary', notice)
+        return notice is None
 
     def bind_file_requests(self):
         for row in self.inbox.db.execute('SELECT seq,model FROM inbox WHERE model!="null" ORDER BY seq'):
@@ -328,7 +350,7 @@ class Gateway:
                     command,sources=select_file_sources(model,command,previous)
                     model['fileSources']=sources;state='waiting_media';error=None
                 except ValueError as exc:state='blocked';error=str(exc)
-                self.admit(job_id,row['seq'],command,model,state,error)
+                if not self.admit(job_id,row['seq'],command,model,state,error):continue
                 if state=='blocked':
                     self.notice(job_id,'blocked','未执行文件任务。请使用 '+self.settings.get('prefix','/agent')+' --files ["原文件名"] 具体任务。'
                         '最多8个不同文件名，须为你在本群此前50条消息、30分钟内发送的文件。缺失或同名不明确时不会猜选；不能将控制命令作为文件任务。')
@@ -379,7 +401,7 @@ class Gateway:
                     if state=='queued':self.db.execute('UPDATE jobs SET state="queued",model=? WHERE id=? AND state="waiting_media"',
                         (json.dumps(model,ensure_ascii=False),job_id))
                     continue
-                self.admit(job_id,row['seq'],command,model,state)
+                if not self.admit(job_id,row['seq'],command,model,state):continue
                 if state=='blocked':
                     self.notice(job_id,'blocked','这条消息有未能完整解析的内容，暂未执行；请改用文字加文件附件重新说明。');continue
                 if command in {'status','状态'}:

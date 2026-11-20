@@ -4,6 +4,7 @@ import base64
 import binascii
 from concurrent.futures import Future
 from contextlib import ExitStack, closing
+from datetime import datetime, timezone
 import hashlib
 import json
 import os
@@ -18,6 +19,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request
+from zoneinfo import ZoneInfo
 
 from .consumer import Inbox, acquire_consumer_lock, execution_scope
 from .group_participation import GroupMentions, recent_group_context
@@ -385,15 +387,35 @@ class HostChannel:
         self.media_worker = (key, future)
         return None
 
+    def stop_can_follow(self, active, stop):
+        # History seq records first observation. An older message discovered by a
+        # later overlap poll can therefore have a larger seq. Time acts only as a
+        # veto; the original sequence and same-sender claim are still required.
+        def instants(message):
+            stamp = datetime.fromisoformat(message['receivedAt'])
+            if stamp.tzinfo is None:
+                raise ValueError('missing timestamp offset')
+            if message.get('timeZoneAssumed'):
+                zone = ZoneInfo(self.route.get('historyTimezone','Asia/Shanghai'))
+                return [stamp.replace(tzinfo=zone, fold=fold).astimezone(timezone.utc) for fold in (0, 1)]
+            return [stamp.astimezone(timezone.utc)]
+
+        try:
+            # A local timestamp in the repeated DST hour can have two UTC
+            # instants. Do not pair when one possible ordering predates the task.
+            return min(instants(stop)) >= max(instants(active))
+        except (KeyError, TypeError, ValueError, OverflowError):
+            return False
+
     def poll_cancel(self, active_id):
         """During a turn, keep other work durable and search only for a later text stop."""
         active = self.db.execute("""
-            SELECT i.seq, json_extract(i.model,'$.senderId') AS sender
-            FROM inbox i JOIN host_dispatch d USING(message_id)
+            SELECT i.seq,i.model FROM inbox i JOIN host_dispatch d USING(message_id)
             WHERE i.message_id=? AND d.status IN ('claimed','preparing')""", (active_id,)).fetchone()
         if active is None:
             # Its terminal acknowledgment might have reached stdio before this poll.
             return {'message': None}
+        active_model = json.loads(active['model'])
         if self.control_turn != active_id:
             self.control_turn, self.control_cursor = active_id, active['seq']
         if self.control_cursor >= self.inbox.cursor:
@@ -407,7 +429,7 @@ class HostChannel:
             if row['status'] is not None:
                 continue
             msg = json.loads(row['model'])
-            if (not msg or msg['senderId'] != active['sender'] or msg['fromSelf'] is not False
+            if (not msg or msg['senderId'] != active_model['senderId'] or msg['fromSelf'] is not False
                     or msg['issues'] or msg.get('quote') or len(msg['parts']) != 1
                     or msg['parts'][0]['type'] != 'text'):
                 continue
@@ -417,6 +439,12 @@ class HostChannel:
                 continue
             text = raw.strip()
             if (direct and text == '/stop') or re.fullmatch(r'/agent\s+(?:cancel|/stop)', text):
+                if not self.stop_can_follow(active_model, msg):
+                    # Keep the recovered text in the inbox. This older control
+                    # cannot be reassigned to another task after a restart.
+                    with self.db:
+                        self.db.execute("INSERT INTO host_dispatch VALUES (?, 'ignored')", (msg['id'],))
+                    continue
                 # If interrupted after the stop is claimed, the original needs review;
                 # the safe-to-retry pre-model state no longer applies.
                 with self.db:
