@@ -8,7 +8,7 @@ E168 审查的 3 个 P1、5 个 P2 均有代码和回归覆盖，公开修复源
 
 E167 在原群从钉钉客户端交办一份新的 7 行库位盘点表。组织 OpenClaw 用自己的 `write` 工具生成补货清单，原群收到正文和 CSV。收件端下载后逐行复算，3 个库位共需 20 件，文件字节与宿主写入一致。 [本次收件验收](../evidence/2026-11-19/stage-delivery-inventory.json)
 
-本次真实任务使用 E156 独立 transport `d444ccf`。E166 是原组织宿主加载插件 0.2.5（源码 `5d1c09e`）的最近部署收据。E168 检查时原宿主地址拒绝连接，两个原服务均未加载。此次现场验收使用独立执行器，共享宿主升级另行安排。Agent 工具、权限和网络由宿主管理。一次临时 GitHub PR 查询触发了原生工具，现场 DNS 导致宿主在发出 HTTP 请求前拒绝访问。 [宿主工具收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
+本次真实任务使用 E156 独立 transport `d444ccf`。E166 是原组织宿主加载插件 0.2.5（源码 `5d1c09e`）的最近部署收据。E168 开始时，原宿主端口拒绝连接，两项原服务均未加载。文件验收结束后，端口已可连接，原 gateway 作业已加载，原微信容器作业当时仍未加载。此次现场验收使用独立执行器，共享宿主升级另行安排。Agent 工具、权限和网络由宿主管理。一次临时 GitHub PR 查询触发了原生工具，现场 DNS 导致宿主在发出 HTTP 请求前拒绝访问。 [宿主工具收据](../evidence/2026-11-19/host-owned-tools-and-channel-boundary.json)
 
 原 14 项 MUST 中 **13 项通过，R06 部分通过**。本阶段暂缓原生语音条出站。任意多个普通文件合为一个气泡、Hermes 与 DeepSeek Harness 端到端接入、多人和跨组织现场使用仍待验证。双路回切、恢复后续问及真实取消已有独立收据。 [原验收矩阵](../plans/completion/ACCEPTANCE_MATRIX.md) · [恢复与取消实测](resident-openclaw-pilot.md#再次接管与运行中取消)
 

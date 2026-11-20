@@ -52,7 +52,7 @@
     "stageDeliveryEvidence": "E167",
     "fullProductAcceptance": false,
     "reviewFixEvidence": "E168",
-    "residentAvailabilityAtE168": "original endpoint refused connection and both original service labels unloaded",
+    "residentAvailabilityAtE168": "before: original endpoint refused and both original service labels unloaded. After: endpoint accepting connections, original gateway label loaded, original WeChat container label unloaded.",
     "publicCandidatePluginVersion": "0.2.6",
     "fieldExecutorAtE168": "separate durable consumer with local Qwen3-14B"
   },

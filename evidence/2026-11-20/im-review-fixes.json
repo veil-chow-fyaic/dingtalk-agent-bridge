@@ -107,9 +107,10 @@
   },
   "deployment": {
     "lastVerifiedResidentPlugin": "E166 0.2.5",
-    "sharedHostAtCheck": "previously recorded endpoint refused connection and both original launchd services were unloaded",
+    "sharedHostAtCheck": "before the task: original endpoint refused and both original service labels were unloaded",
     "residentPluginUpdated": false,
     "sharedServiceOrWechatChanges": false,
-    "deferred": "R06 native voice outbound"
+    "deferred": "R06 native voice outbound",
+    "sharedHostAfterCheck": "original endpoint accepting connections and original gateway label loaded; original WeChat container label unloaded"
   }
 }
